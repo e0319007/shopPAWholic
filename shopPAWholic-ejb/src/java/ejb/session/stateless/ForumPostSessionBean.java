@@ -6,7 +6,6 @@
 package ejb.session.stateless;
 
 import entity.Comment;
-import entity.Customer;
 import entity.ForumPost;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +40,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
         validator = (Validator) validatorFactory.getValidator();
     }
     
+    @Override
     public ForumPost createNewForumPost(ForumPost post) throws InputDataValidationException, CreateNewForumPostException, ForumTitleExistsException {
         Set<ConstraintViolation<ForumPost>> constraintViolations;
         constraintViolations = validator.validate(post);
@@ -62,6 +62,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
         }
     }
     
+    @Override
     public void updateForumPost(ForumPost post) throws InputDataValidationException, ForumTitleExistsException {
         Set<ConstraintViolation<ForumPost>>  constraintViolations = validator.validate(post);
         if (constraintViolations.isEmpty()) {
@@ -89,6 +90,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
 //        }
 //    }
     
+    @Override
     public List<ForumPost> retrieveAllForumPost() {
         Query query = em.createQuery("SELECT fp FROM ForumPost fp ORDER BY fp.title");
         if (query.getResultList() == null) {
@@ -102,26 +104,51 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
         }
     }
     
-    public void loopComment(Comment comment) {
+    private void loopComment(Comment comment) {
         for (Comment c:comment.getComments()) 
             loopComment(c);
     }
     
-    private ForumPost retrieveForumPostByTitle(String title) {
+    @Override
+    public ForumPost retrieveForumPostByTitle(String title) {
         Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.title = :inTitle");
         query.setParameter("inTitle", title);
         if (query.getSingleResult() != null) {
-            return (ForumPost) query.getSingleResult();
+            ForumPost post = (ForumPost) query.getSingleResult();
+            loopComment((Comment) post.getComments());
+            return post;
         } else {
             return null;
         }
     }
     
+    @Override
+    public List<ForumPost> filterForumPostByTitle(String searchString) {
+        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.title LIKE :inSearchString ORDER BY fp.title ");
+        query.setParameter("inSearchString", "%" + searchString + "%");
+        List<ForumPost> posts = query.getResultList();
+        for (ForumPost fp: posts)
+            loopComment((Comment) fp.getComments());
+        return posts;
+    }
+    
+    @Override
+    public List<ForumPost> filterForumPostByContent(String searchString) {
+        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.content LIKE :inSearchString ORDER BY fp.title ");
+        query.setParameter("inSearchString", "%" + searchString + "%");
+        List<ForumPost> posts = query.getResultList();
+        for (ForumPost fp: posts)
+            loopComment((Comment) fp.getComments());
+        return posts;
+    }
+    
+    @Override
     public void deleteForumPost(Long id) throws ForumPostNotFoundException {
         ForumPost post = retrieveForumPostById(id);
         post.setDeleted(true);
     }
     
+    @Override
     public ForumPost retrieveForumPostById(Long id) throws ForumPostNotFoundException {
         ForumPost post = em.find(ForumPost.class, id);
         if (post != null) return post;
