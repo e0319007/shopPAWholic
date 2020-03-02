@@ -33,8 +33,8 @@ public class Advertisement implements Serializable {
     private List<String> pictures;
     private String url;
     
-    @OneToOne(optional = false)
-    private ServiceProvider serviceProvider;
+   // @OneToOne(optional = false)
+   // private ServiceProvider serviceProvider;
     
     public Long getAdvertisementId() {
         return advertisementId;
