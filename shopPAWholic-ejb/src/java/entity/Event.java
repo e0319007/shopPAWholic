@@ -13,6 +13,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
 
 /**
  *
@@ -26,17 +29,37 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
     
+    @Size(min = 1, message = "Event name must not be empty")
     private String eventName;
+    @Size(min = 10, message = "Event description must be more than 10 characters")
     private String description;
+    @Size(min = 10, message = "Location must be more than 10 characters")
     private String location;
+    @NotNull
     private List<String> pictures;
+    @NotNull
     private Date startDateTime;
+    @NotNull
     private Date endDateTime;
+    @URL
     private String url;
     
 //    @ManyToOne
 //    private ServiceProvider serviceProvider;
 
+    public Event() {
+    }
+
+    public Event(String eventName, String description, String location, List<String> pictures, Date startDateTime, Date endDateTime, String url) {
+        this.eventName = eventName;
+        this.description = description;
+        this.location = location;
+        this.pictures = pictures;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.url = url;
+    }
+    
     public Long getEventId() {
         return eventId;
     }

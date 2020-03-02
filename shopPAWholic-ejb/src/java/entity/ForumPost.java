@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -27,10 +29,16 @@ public class ForumPost implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long forumId;
     
+    @Size(min = 10, message = "Forum post must be more than 10 characters")
     private String content;
+    @NotNull
     private Date date;
+    @NotNull
     private int thumbsUpCount;
+    @NotNull
+    @Size(min = 5, message = "Title must be more than 5 characters")
     private String title;
+    @NotNull
     private boolean deleted;
     
     @ManyToOne(optional = true)
@@ -38,15 +46,17 @@ public class ForumPost implements Serializable {
     @OneToMany
     private List<Comment> comments;
 
+    
+    
     public ForumPost() {
         deleted = false;
+        thumbsUpCount = 0;
     }
 
-    public ForumPost(String content, Date date, int thumbsUpCount, String title, Customer customer, List<Comment> comments) {
+    public ForumPost(String content, Date date, String title, Customer customer, List<Comment> comments) {
         this();
         this.content = content;
         this.date = date;
-        this.thumbsUpCount = thumbsUpCount;
         this.title = title;
         this.customer = customer;
         this.comments = comments;
