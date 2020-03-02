@@ -7,11 +7,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,10 +30,28 @@ public class ForumPost implements Serializable {
     private String content;
     private Date date;
     private int thumbsUpCount;
+    private String title;
+    private boolean deleted;
     
     @ManyToOne(optional = true)
     private Customer customer;
+    @OneToMany
+    private List<Comment> comments;
 
+    public ForumPost() {
+        deleted = false;
+    }
+
+    public ForumPost(String content, Date date, int thumbsUpCount, String title, Customer customer, List<Comment> comments) {
+        this();
+        this.content = content;
+        this.date = date;
+        this.thumbsUpCount = thumbsUpCount;
+        this.title = title;
+        this.customer = customer;
+        this.comments = comments;
+    }
+    
     public Long getForumId() {
         return forumId;
     }
@@ -63,6 +83,62 @@ public class ForumPost implements Serializable {
     @Override
     public String toString() {
         return "entity.ForumPost[ id=" + forumId + " ]";
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getThumbsUpCount() {
+        return thumbsUpCount;
+    }
+
+    public void setThumbsUpCount(int thumbsUpCount) {
+        this.thumbsUpCount = thumbsUpCount;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
     
 }

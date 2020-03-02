@@ -49,15 +49,6 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
                em.flush();
                
                return advertisement;
-            } catch (PersistenceException ex) {
-                if(ex.getCause() != null && 
-                        ex.getCause().getCause() != null &&
-                        ex.getCause().getCause().getClass().getSimpleName().equals("SQLIntegrityConstraintViolationException"))
-                {
-                    throw new CreateNewAdvertisementException("Advertismeent with same name already exist");
-                } else {
-                    throw new CreateNewAdvertisementException("An unexpected error has occurred: " + ex.getMessage());
-                }
             } catch (Exception ex) {
                 throw new CreateNewAdvertisementException("An unexpected error has occurred: " + ex.getMessage());
             }
