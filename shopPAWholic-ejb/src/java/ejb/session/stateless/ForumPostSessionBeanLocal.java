@@ -36,5 +36,7 @@ public interface ForumPostSessionBeanLocal {
 
     public List<ForumPost> filterForumPostByContent(String searchString);
 
+    public List<ForumPost> retrieveForumPostsByUser(Long customerId);
+
     
 }

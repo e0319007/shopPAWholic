@@ -88,8 +88,7 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
     public List<Advertisement> retrieveAllAdvertisements() {
         Query query = em.createQuery("SELECT a FROM Advertisement a ORDER BY a.startDate");
         List<Advertisement> advertisements = query.getResultList();
-        if (advertisements.isEmpty()) return null;
-        else return advertisements;
+        return advertisements;
     }
             
     

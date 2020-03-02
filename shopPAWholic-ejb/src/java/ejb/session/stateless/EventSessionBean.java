@@ -6,14 +6,20 @@
 package ejb.session.stateless;
 
 import entity.Event;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewEventException;
+import util.exception.EventNameExistsException;
+import util.exception.EventNotFoundException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -32,6 +38,77 @@ public class EventSessionBean implements EventSessionBeanLocal {
         validator = (Validator) validatorFactory.getValidator();
     }
 
+    @Override
+    public Event createNewEvent(Event event) throws CreateNewEventException, InputDataValidationException, EventNameExistsException {
+        Set<ConstraintViolation<Event>> constraintViolations;
+        constraintViolations = validator.validate(event);
+        if (retrieveEventByName(event.getEventName()) == null) {
+            if (constraintViolations.isEmpty()) {
+                try {
+                   em.persist(event);
+                   em.flush();
+
+                   return event;
+                } catch (Exception ex) {
+                    throw new CreateNewEventException("An unexpected error has occurred: " + ex.getMessage());
+                }
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+        } else {
+            throw new EventNameExistsException("Event title of name \"" + event.getEventName()+ "\" exists already. Please try another title.");
+        }
+    }
+    
+    @Override
+    public void updateAdvertisement(Event event) throws InputDataValidationException, EventNameExistsException {
+        Set<ConstraintViolation<Event>>constraintViolations = validator.validate(event);
+        if(constraintViolations.isEmpty()) {
+            if (retrieveEventByName(event.getEventName()) == null) {
+                if(event.getEventId()!= null) {
+                    em.merge(event);
+                }
+            } else {
+                throw new EventNameExistsException("Event title of name \"" + event.getEventName()+ "\" exists already. Please try another title.");
+            }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    @Override
+    public Event retrieveEventByName(String name) {
+        Query query = em.createQuery("SELECT e FROM Event e WHERE e.eventName = :inEventName");
+        query.setParameter("inEventName",name);
+        return (Event) query.getSingleResult();
+    }
+    
+    @Override
+    public void deleteEvent(Long id) throws EventNotFoundException {
+        Event event = retrieveEventById(id);
+        em.remove(event);
+    }
+    
+    @Override
+    public Event retrieveEventById(Long id) throws EventNotFoundException {
+        Event event = em.find(Event.class, id);
+        if (event != null) return event;
+        else throw new EventNotFoundException("Event ID " + id + " does not exist!");
+    }
+    
+    @Override
+    public List<Event> retrieveAllEvent() {
+        Query query = em.createQuery("SELECT e FROM Event e");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Event> retrieveEventByServiceProvider(Long serviceProviderId) {
+        Query query = em.createQuery("SELECT e FROM Event e WHERE e.serviceProvider.serviceProviderId = :inServiceProviderId");
+        query.setParameter("inServiceProviderId", serviceProviderId);
+        return query.getResultList();
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Event>>constraintViolations) {
         String msg = "Input data validation error!:";    
         for(ConstraintViolation constraintViolation:constraintViolations) {

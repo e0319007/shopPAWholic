@@ -5,7 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.Event;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateNewEventException;
+import util.exception.EventNameExistsException;
+import util.exception.EventNotFoundException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -13,5 +19,21 @@ import javax.ejb.Local;
  */
 @Local
 public interface EventSessionBeanLocal {
+
+    public Event createNewEvent(Event event) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
+
+    public void updateAdvertisement(Event event) throws InputDataValidationException, EventNameExistsException;
+
+    public Event retrieveEventByName(String name);
+
+    public void deleteEvent(Long id) throws EventNotFoundException;
+
+    public Event retrieveEventById(Long id) throws EventNotFoundException;
+
+    public List<Event> retrieveAllEvent();
+
+    public List<Event> retrieveEventByServiceProvider(Long serviceProviderId);
+
+    
     
 }

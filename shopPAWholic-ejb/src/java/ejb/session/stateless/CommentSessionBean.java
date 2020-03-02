@@ -17,6 +17,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CommentNotFoundException;
 import util.exception.CreateNewCommentException;
 import util.exception.ForumPostNotFoundException;
 import util.exception.InputDataValidationException;
@@ -74,7 +75,7 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
     
     @Override
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId) throws CommentNotFoundException{
         Comment comment = retrieveCommentById(commentId);
         comment.setDeleted(true);
     }
@@ -93,10 +94,10 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
     
     @Override
-    public Comment retrieveCommentById(Long id) {
+    public Comment retrieveCommentById(Long id) throws CommentNotFoundException{
         Comment comment = em.find(Comment.class, id);
         if (comment != null) return comment;
-        else return null;
+        else throw new CommentNotFoundException("Coment ID " + id + " does not exist!");
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Comment>>constraintViolations) {

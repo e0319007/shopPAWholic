@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -32,6 +33,9 @@ public class Event implements Serializable {
     private Date startDateTime;
     private Date endDateTime;
     private String url;
+    
+//    @ManyToOne
+//    private ServiceProvider serviceProvider;
 
     public Long getEventId() {
         return eventId;
@@ -121,5 +125,13 @@ public class Event implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+    
+//    public ServiceProvider getUrl() {
+//        return serviceProvider;
+//    }
+//
+//    public void setUrl(ServiceProvider serviceProvider) {
+//        this.serviceProvider = serviceProvider;
+//    }
     
 }

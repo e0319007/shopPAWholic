@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.Comment;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.CommentNotFoundException;
 import util.exception.CreateNewCommentException;
 import util.exception.ForumPostNotFoundException;
 import util.exception.InputDataValidationException;
@@ -23,10 +24,10 @@ public interface CommentSessionBeanLocal {
 
     public void updateComment(Comment comment) throws InputDataValidationException;
 
-    public void deleteComment(Long commentId);
+    public void deleteComment(Long commentId) throws CommentNotFoundException;
 
     public List<Comment> retrieveCommentsByForumPost(Long id) throws ForumPostNotFoundException;
 
-    public Comment retrieveCommentById(Long id);
+    public Comment retrieveCommentById(Long id) throws CommentNotFoundException;
     
 }
