@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Comment;
 import entity.ForumPost;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -55,7 +56,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
                     throw new CreateNewForumPostException("An unexpected error has occurred: " + ex.getMessage());
                 }
             } else {
-                throw new ForumTitleExistsException("Forum post title of name \"" + post.getTitle() + "\" exists. Please try another title.");
+                throw new ForumTitleExistsException("Forum post title \"" + post.getTitle() + "\" exists already. Please try another title.");
             }
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -76,25 +77,26 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
         }
     }
     
-//    public List<ForumPost> retrieveForumPostsByUser(Customer customer) {
-//        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.customer.customerId = :inCustomerId");
-//        query.setParameter("inCustomerId", customer.getCustomerId);
-//        List<ForumPost> posts = query.getResultList();
-//        if (posts.isEmpty() || posts == null) {
-//            return null;
-//        } else {
-//            for (ForumPost fp: posts)
-//                for (Comment c: fp.getComments())
-//                    loopComment(c);
-//            return posts;
-//        }
-//    }
+    @Override
+    public List<ForumPost> retrieveForumPostsByUser(Long customerId) {
+        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.customer.customerId = :inCustomerId");
+        query.setParameter("inCustomerId", customerId);
+        List<ForumPost> posts = query.getResultList();
+        if (posts.isEmpty() || posts == null) {
+            return new ArrayList<>();
+        } else {
+            for (ForumPost fp: posts)
+                for (Comment c: fp.getComments())
+                    loopComment(c);
+            return posts;
+        }
+    }
     
     @Override
     public List<ForumPost> retrieveAllForumPost() {
         Query query = em.createQuery("SELECT fp FROM ForumPost fp ORDER BY fp.title");
         if (query.getResultList() == null) {
-            return null;
+            return new ArrayList<>();
         } else {
             List<ForumPost> posts = query.getResultList();
             for (ForumPost fp: posts)
@@ -152,7 +154,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
     public ForumPost retrieveForumPostById(Long id) throws ForumPostNotFoundException {
         ForumPost post = em.find(ForumPost.class, id);
         if (post != null) return post;
-        else throw new ForumPostNotFoundException(("Forum Post ID " + id + " does not exist!"));
+        else throw new ForumPostNotFoundException("Forum Post ID " + id + " does not exist!");
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ForumPost>>constraintViolations) {

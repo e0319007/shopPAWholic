@@ -5,7 +5,12 @@
  */
 package ejb.session.stateless;
 
+import entity.Review;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.CreateNewReviewException;
+import util.exception.InputDataValidationException;
+import util.exception.ReviewNotFoundException;
 
 /**
  *
@@ -13,5 +18,15 @@ import javax.ejb.Local;
  */
 @Local
 public interface ReviewSessionBeanLocal {
+
+    public Review createNewReview(Review review) throws CreateNewReviewException, InputDataValidationException;
+
+    public void updateReview(Review review) throws InputDataValidationException;
+
+    public void deleteReview(Long reviewId) throws ReviewNotFoundException;
+
+    public List<Review> filterReviewByImage();
+
+    public Review getReviewById(Long id) throws ReviewNotFoundException;
     
 }
