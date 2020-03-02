@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,13 +28,28 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     
     private Long reviewId;
+    @Size(min = 10, max = 250, message = "Description must be between 10 and 200 characters")
     private String description;
+    @NotNull
+    @Size(max = 5, min = 1)
     private int rating;
+    @NotNull
     private Date date;
+    @NotNull
     private List<String> reviewPictures;
 
 //    @ManyToOne
 //    private Listing listing;
+
+    public Review() {
+    }
+
+    public Review(String description, int rating, Date date, List<String> reviewPictures) {
+        this.description = description;
+        this.rating = rating;
+        this.date = date;
+        this.reviewPictures = reviewPictures;
+    }
     
     public Long getReviewId() {
         return reviewId;

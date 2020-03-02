@@ -14,6 +14,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.URL;
 
 /**
  *
@@ -26,15 +30,36 @@ public class Advertisement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long advertisementId;
+    @Size(min = 10, max = 250, message = "Description must be between 10 and 200 characters")
     private String description;
+    @NotNull
     private Date startDate;
+    @NotNull
     private Date endDate;
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price most be more than $0")
     private BigDecimal price;
+    @NotNull
     private List<String> pictures;
+    @URL
     private String url;
     
    // @OneToOne(optional = false)
    // private ServiceProvider serviceProvider;
+
+    public Advertisement() {
+    }
+
+    public Advertisement(String description, Date startDate, Date endDate, BigDecimal price, List<String> pictures, String url) {
+        this();
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.price = price;
+        this.pictures = pictures;
+        this.url = url;
+    }
+    
+    
     
     public Long getAdvertisementId() {
         return advertisementId;

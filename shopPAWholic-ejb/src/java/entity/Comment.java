@@ -41,14 +41,14 @@ public class Comment implements Serializable {
 
     public Comment() {
         deleted = false;
+        thumbsUpCount = 0;
     }
 
-    public Comment(Long commentId, Date date, String content, int thumbsUpCount, Customer customer, ForumPost forumPost, List<Comment> comments) {
+    public Comment(Long commentId, Date date, String content, Customer customer, ForumPost forumPost, List<Comment> comments) {
         this();
         this.commentId = commentId;
         this.date = date;
         this.content = content;
-        this.thumbsUpCount = thumbsUpCount;
         this.customer = customer;
         this.forumPost = forumPost;
         this.comments = comments;
