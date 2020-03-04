@@ -7,9 +7,11 @@ package ejb.session.stateless;
 
 import entity.Cart;
 import java.util.Set;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -23,6 +25,7 @@ import util.exception.InputDataValidationException;
  * @author Joanna Ng
  */
 @Stateless
+@LocalBean
 public class CartSessionBean implements CartSessionBeanLocal {
 
       @PersistenceContext(unitName = "shopPAWholic-ejbPU")
@@ -81,6 +84,12 @@ public class CartSessionBean implements CartSessionBeanLocal {
             throw new CartNotFoundException("Cart ID " + id + " does not exist");
         }
     }
+    
+    /*public Cart retrieveCartByCustomer(Long customerId) {
+        Query query = em.createQuery("SELECT c FROM Cart c WHERE c.customer.id:=customerId");
+        query.setParameter("inCustomerId", customerId);
+        return (Cart)query.getSingleResult();
+    }*/
     
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Cart>>constraintViolations) {
