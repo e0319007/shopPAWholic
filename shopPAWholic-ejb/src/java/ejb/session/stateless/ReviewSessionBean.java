@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Listing;
 import entity.Review;
 import java.util.List;
 import java.util.Set;
@@ -88,11 +89,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         else throw new ReviewNotFoundException("Review ID " + id + " does not exist");
     }
     
-//    public List<Review> filterReviewsByListing(Listing listingId) {
-//        Query query = em.createQuery("SELECT r FROM Review r WHERE r.listing.listingId = :inListingId");
-//        query.setParameter("inListingId", listingId);
-//        return query.getResultList();
-//    }
+    public List<Review> filterReviewsByListing(Listing listingId) {
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.listing.listingId = :inListingId");
+        query.setParameter("inListingId", listingId);
+        return query.getResultList();
+    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Review>>constraintViolations) {
         String msg = "Input data validation error!:";    
