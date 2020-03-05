@@ -72,6 +72,7 @@ public class BilingDetailSessionBean implements BilingDetailSessionBeanLocal {
         }
     }
     
+    @Override
     public void deleteBilingDetail(Long id) throws BilingDetailNotFoundException {
         BilingDetail bilingDetail = getBilingDetailById(id);
         em.remove(bilingDetail);
@@ -93,6 +94,7 @@ public class BilingDetailSessionBean implements BilingDetailSessionBeanLocal {
         Query query = em.createQuery("SELECT bd FROM BilingDetail bd WHERE bd.customer.id =: customerId");
         query.setParameter("inCustomerId", customerId);
         return query.getResultList();
+    //have to call listings.size cos lazy load
     }*/
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<BilingDetail>>constraintViolations) {

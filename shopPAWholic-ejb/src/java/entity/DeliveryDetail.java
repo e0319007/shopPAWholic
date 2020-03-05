@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -32,7 +33,7 @@ public class DeliveryDetail implements Serializable {
     private Long deliveryDetailId;
     @Size(min=5, message = "Address must be longer than 5 characters")
     private String address;
-    @Size(min=8, message = "Phone Number must be valid")
+    @Pattern(regexp = "65[6|8|9]\\d{7}|\\")
     private String contactNumber;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
