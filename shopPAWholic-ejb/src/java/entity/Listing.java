@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +17,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -28,10 +34,31 @@ public class Listing implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long listingId;
+    
+    @Column(nullable = false, unique = true, length = 7)
+    @NotNull
+    @Size(min = 7, max = 7)
     private String skuCode;
+    
+    @Column(nullable = false, length = 64)
+    @NotNull
+    @Size(max = 64, message = "Listing name must not be more than 64 characters")
     private String name;
+    
+    @Column(length = 128)
+    @Size(max = 128, message = "Description must not be more than 128 characters")
     private String description;
+    
+    /*@Column(nullable = false)
+    @NotNull
+    @Min(0)
     private Integer quantityOnHand;
+    */ 
+    
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull 
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2)
     private BigDecimal unitPrice; 
     
     @ManyToOne(optional = false) 
@@ -42,7 +69,7 @@ public class Listing implements Serializable {
     private List<Tag> tags; 
 
     public Listing() {
-        quantityOnHand = 0;
+        //quantityOnHand = 0;
         unitPrice = new BigDecimal("0.00");
         tags = new ArrayList<>();
     }
@@ -52,7 +79,7 @@ public class Listing implements Serializable {
         this.skuCode = skuCode;
         this.name = name;
         this.description = description;
-        this.quantityOnHand = quantityOnHand;
+        //this.quantityOnHand = quantityOnHand;
         this.unitPrice = unitPrice;
     }
     
@@ -156,16 +183,16 @@ public class Listing implements Serializable {
     /**
      * @return the quantityOnHand
      */
-    public Integer getQuantityOnHand() {
+    /*public Integer getQuantityOnHand() {
         return quantityOnHand;
-    }
+    }*/
 
     /**
      * @param quantityOnHand the quantityOnHand to set
      */
-    public void setQuantityOnHand(Integer quantityOnHand) {
+    /*public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
-    }
+    }*/
 
     /**
      * @return the unitPrice

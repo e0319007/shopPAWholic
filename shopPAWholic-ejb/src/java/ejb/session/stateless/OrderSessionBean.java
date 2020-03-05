@@ -1,0 +1,87 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ejb.session.stateless;
+
+import entity.Order;
+import java.util.List;
+import java.util.Set;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import util.exception.CreateNewOrderException;
+import util.exception.InputDataValidationException;
+import util.exception.OrderNotFoundException;
+
+/**
+ *
+ * @author EileenLeong
+ */
+@Stateless
+public class OrderSessionBean implements OrderSessionBeanLocal {
+    
+    @PersistenceContext(unitName = "shopPAWholic-ejbPU")
+    private EntityManager em;
+    private final ValidatorFactory validatorFactory;
+    private final Validator validator;
+
+    public OrderSessionBean() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = (Validator) validatorFactory.getValidator();
+    }
+    
+    @Override
+    public Order createNewOrder (Order newOrder) throws CreateNewOrderException, InputDataValidationException{
+        Set<ConstraintViolation<Order>> constraintViolations;
+        constraintViolations = validator.validate(newOrder);
+        
+        if (constraintViolations.isEmpty()) {
+            try {
+                em.persist(newOrder);
+                em.flush();
+                
+                return newOrder;
+            } catch (Exception ex) {
+                throw new CreateNewOrderException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+                
+    }
+    
+    @Override
+    public Order getOrderById(Long orderId) throws OrderNotFoundException {
+        Order order = em.find(Order.class, orderId);
+        if (order != null) {
+            return order;
+        } else {
+            throw new OrderNotFoundException("Order Id " + orderId + " does not exist!");
+        }
+    }
+    
+    @Override
+    public List<Order> retrieveAllOrders() {
+        Query query = em.createQuery("SELECT o FROM Order o ORDER BY o.orderId");
+        List<Order> orders = query.getResultList();
+        
+        return orders;
+    }
+   
+
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Order>>constraintViolations) {
+        String msg = "Input data validation error!:";    
+        for(ConstraintViolation constraintViolation:constraintViolations) {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+        return msg;
+    }
+}
+    
