@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Cart;
+import entity.Listing;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -58,8 +59,8 @@ public class CartSessionBean implements CartSessionBeanLocal {
     }
     
     //also add listing to cart???
-    
     public void addListingToCart(Long listingId) throws CartNotFoundException {
+        Listing listing = em.find(Listing.class, listingId);
         
     }
     
