@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -27,7 +29,9 @@ public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price most be more than $0")
     private BigDecimal totalPrice;
+    @NotNull
     private int totalQuantity;
     
     @OneToOne (fetch = FetchType.LAZY)
