@@ -14,6 +14,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -26,7 +29,10 @@ public class BilingDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bilingDetailId;
+    @NotNull
     private String creditCardDetail;
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToOne(optional = true)
