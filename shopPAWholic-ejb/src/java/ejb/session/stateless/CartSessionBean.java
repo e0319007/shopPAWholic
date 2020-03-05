@@ -69,6 +69,8 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
+    //also add listing to cart???
+    
     @Override
     public void deleteCart(Long id) throws CartNotFoundException {
         Cart cart = getCartById(id);
@@ -85,6 +87,7 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
+    //retrieve according to date added & grouped by name of the seller 
     /*public Cart retrieveCartByCustomer(Long customerId) {
         Query query = em.createQuery("SELECT c FROM Cart c WHERE c.customer.id:=customerId");
         query.setParameter("inCustomerId", customerId);
