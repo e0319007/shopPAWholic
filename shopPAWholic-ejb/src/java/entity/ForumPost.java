@@ -26,7 +26,7 @@ public class ForumPost implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long forumId;
     
     @Size(min = 10, message = "Forum post must be more than 10 characters")

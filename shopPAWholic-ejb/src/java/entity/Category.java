@@ -8,12 +8,15 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,7 +29,14 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
+    
+    @Column(nullable = false, length = 32)
+    @NotNull
+    @Size(max = 32, message = "Category name must not be more than 32 characters")
     private String name;
+    
+    @Column(length = 128)
+    @Size(max = 128, message = "Description must not be more than 128 characters")
     private String description; 
     
     @OneToMany(mappedBy="parentCategory")
