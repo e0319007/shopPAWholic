@@ -61,7 +61,7 @@ public class EventSessionBean implements EventSessionBeanLocal {
     }
     
     @Override
-    public void updateAdvertisement(Event event) throws InputDataValidationException, EventNameExistsException {
+    public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException {
         Set<ConstraintViolation<Event>>constraintViolations = validator.validate(event);
         if(constraintViolations.isEmpty()) {
             if (retrieveEventByName(event.getEventName()) == null) {

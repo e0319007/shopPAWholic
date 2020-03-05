@@ -10,13 +10,21 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,16 +37,26 @@ public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    
+    @Column(nullable = false, precision = 11, scale = 2)
+    @NotNull 
+    @DecimalMin("0.00")
+    @Digits(integer = 9, fraction = 2)
     private BigDecimal totalPrice;
+    
+    @NotNull
     private Date orderDate;
-    //private OrderStatus orderStatus; 
+    
+    /*@Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+    */ //add getter and setter
     
     @ManyToOne(optional = false) 
     @JoinColumn(nullable = false) 
     private Customer customer; 
     
-    //@OneToOne(fetch = FetchType.LAZY)
-    //private DeliveryDetail deliveryDetail;
+    @OneToOne(fetch = FetchType.LAZY)
+    private DeliveryDetail deliveryDetail;
     
     @OneToMany(mappedBy="order")
     private List<Listing> listings; 
@@ -142,6 +160,20 @@ public class Order implements Serializable {
      */
     public void setListings(List<Listing> listings) {
         this.listings = listings;
+    }
+
+    /**
+     * @return the deliveryDetail
+     */
+    public DeliveryDetail getDeliveryDetail() {
+        return deliveryDetail;
+    }
+
+    /**
+     * @param deliveryDetail the deliveryDetail to set
+     */
+    public void setDeliveryDetail(DeliveryDetail deliveryDetail) {
+        this.deliveryDetail = deliveryDetail;
     }
     
 }
