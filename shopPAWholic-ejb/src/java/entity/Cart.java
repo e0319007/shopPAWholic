@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,7 +30,7 @@ public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price most be more than $0")
+    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be more than $0")
     private BigDecimal totalPrice;
     @NotNull
     private int totalQuantity;
@@ -41,15 +42,15 @@ public class Cart implements Serializable {
     private List<Listing> listings;
 
     public Cart() {
+        listings = new ArrayList<>();
     }
 
-    public Cart(Long cartId, BigDecimal totalPrice, int totalQuantity, Customer customer, List<Listing> listings) {
+    public Cart(Long cartId, BigDecimal totalPrice, int totalQuantity, Customer customer) {
         this();
         this.cartId = cartId;
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.customer = customer;
-        this.listings = listings;
     }
     
     

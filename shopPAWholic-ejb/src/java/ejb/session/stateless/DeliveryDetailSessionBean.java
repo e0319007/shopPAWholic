@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.DeliveryDetail;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -16,6 +18,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewDeliveryDetailException;
+import util.exception.CustomerNotFoundException;
 import util.exception.DeliveryDetailNotFoundException;
 import util.exception.InputDataValidationException;
 
@@ -55,7 +58,7 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         }
     }
     
-    
+    //add something about changing enum of delivery detail under the update delivery detail
     @Override
     public void updateDeliveryDetail(DeliveryDetail deliveryDetail) throws InputDataValidationException {
         Set<ConstraintViolation<DeliveryDetail>>constraintViolations = validator.validate(deliveryDetail);
@@ -82,9 +85,17 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         else throw new DeliveryDetailNotFoundException("Delivery Detail ID " + id + " does not exist!");
     }
     
-    //add something about changing enum of delivery detail i guess
-    //also retrieve delivery details by customer
+
     
+    //also retrieve delivery details by customer
+    // 
+//    public List<DeliveryDetail> retrieveDeliveryDetailByCustomer(Long customerId) throws DeliveryDetailNotFoundException, CustomerNotFoundException {
+//        Customer customer = em.find(Customer.class, customerId);
+//        if (customer != null) {
+//            customer.getDeliveryDetails();
+//              the rest of the logic
+//        }
+//    }
     
     
 

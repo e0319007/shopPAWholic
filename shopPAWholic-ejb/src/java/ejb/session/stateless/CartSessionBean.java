@@ -20,6 +20,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.CartNotFoundException;
 import util.exception.CreateNewCartException;
 import util.exception.InputDataValidationException;
+import util.exception.ListingNotFoundException;
 
 /**
  *
@@ -58,11 +59,8 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
-    //also add listing to cart???
-    public void addListingToCart(Long listingId) throws CartNotFoundException {
-        Listing listing = em.find(Listing.class, listingId);
-        
-    }
+    //do i need a add listing to cart method? i alr just manually added a listing to the cart in the managed bean but not sure
+    //if it will be persisted even tho i didnt call a SB method
     
     @Override
     public void deleteCart(Long id) throws CartNotFoundException {
