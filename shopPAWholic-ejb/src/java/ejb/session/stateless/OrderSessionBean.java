@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.OrderEntity;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,19 @@ import util.exception.OrderNotFoundException;
  */
 @Stateless
 public class OrderSessionBean implements OrderSessionBeanLocal {
+// order has customer, deliveryDetails, listings, billingdetail
+    @EJB(name = "DeliveryDetailSessionBeanLocal")
+    private DeliveryDetailSessionBean deliveryDetailSessionBeanLocal;
+
+    @EJB(name = "BilingDetailSessionBeanLocal")
+    private BilingDetailSessionBean bilingDetailSessionBeanLocal;
+
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
+
+    @EJB(name = "CustomerSessionBeanLocal")
+    private CustomerSessionBean customerSessionBeanLocal;
+    
     
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
@@ -82,6 +96,10 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
         return msg;
+    }
+
+    public void persist(Object object) {
+        em.persist(object);
     }
 }
     
