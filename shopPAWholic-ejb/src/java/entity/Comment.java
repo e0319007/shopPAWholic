@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,10 +28,13 @@ public class Comment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
-    
+    @NotNull
     private Date date;
+    @Size(min = 10, message = "Content must be more than 10 characters")
     private String content;
+    @NotNull
     private int thumbsUpCount;
+    @NotNull
     private boolean deleted;
     
     @ManyToOne(optional = true)

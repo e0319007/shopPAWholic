@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.singleton;
+package ejb.session.stateless;
 
 import java.util.Set;
 import javax.ejb.LocalBean;
@@ -21,14 +21,14 @@ import javax.validation.ValidatorFactory;
  */
 @Stateless
 @LocalBean
-public class SellerProviderSessionBean implements SellerProviderSessionBeanLocal {
+public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
-    public SellerProviderSessionBean() {
+    public CustomerSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = (Validator) validatorFactory.getValidator();
     }
