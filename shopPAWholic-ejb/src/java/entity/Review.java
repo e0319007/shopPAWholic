@@ -38,8 +38,8 @@ public class Review implements Serializable {
     @NotNull
     private List<String> reviewPictures;
 
-//    @ManyToOne
-//    private Listing listing;
+    @ManyToOne
+    private Listing listing;
 
     public Review() {
     }
@@ -122,6 +122,14 @@ public class Review implements Serializable {
 
     public void setReviewPictures(List<String> reviewPictures) {
         this.reviewPictures = reviewPictures;
+    }
+
+    public Listing getListing() {
+        return listing;
+    }
+
+    public void setListing(Listing listing) {
+        this.listing = listing;
     }
     
 }

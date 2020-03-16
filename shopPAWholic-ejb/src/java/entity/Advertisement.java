@@ -43,8 +43,8 @@ public class Advertisement implements Serializable {
     @URL
     private String url;
     
-   // @OneToOne(optional = false)
-   // private ServiceProvider serviceProvider;
+    @OneToOne(optional = false)
+    private ServiceProvider serviceProvider;
 
     public Advertisement() {
     }
@@ -140,6 +140,14 @@ public class Advertisement implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
     
 }

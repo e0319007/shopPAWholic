@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
+import entity.ServiceProvider;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -38,16 +39,19 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
     }
 
     @Override
-    public Advertisement createNewAdvertisement(Advertisement advertisement) throws CreateNewAdvertisementException, InputDataValidationException {
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId) throws CreateNewAdvertisementException, InputDataValidationException {
         Set<ConstraintViolation<Advertisement>> constraintViolations;
         constraintViolations = validator.validate(advertisement);
         
         if (constraintViolations.isEmpty()) {
             try {
-               em.persist(advertisement);
-               em.flush();
-               
-               return advertisement;
+                ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
+                serviceProvider.getAdvertisements().add(advertisement);
+                advertisement.setServiceProvider(serviceProvider);
+                em.persist(advertisement);
+                em.flush();
+
+                return advertisement;
             } catch (Exception ex) {
                 throw new CreateNewAdvertisementException("An unexpected error has occurred: " + ex.getMessage());
             }

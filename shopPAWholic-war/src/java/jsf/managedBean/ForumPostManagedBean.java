@@ -6,11 +6,18 @@
 package jsf.managedBean;
 
 import ejb.session.stateless.ForumPostSessionBeanLocal;
+import entity.Comment;
+import entity.Customer;
 import entity.ForumPost;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -24,8 +31,24 @@ public class ForumPostManagedBean {
     private ForumPostSessionBeanLocal forumPostSessionBeanLocal;
 
     /**
-     * 
+     * Add new forum post
      */
+    @Size(min = 10, message = "Forum post must be more than 10 characters")
+    private String content;
+    @NotNull
+    private Date date;
+    @NotNull
+    private int thumbsUpCount;
+    @NotNull
+    @Size(min = 5, message = "Title must be more than 5 characters")
+    private String title;
+    @NotNull
+    private boolean deleted;
+    @ManyToOne(optional = true)
+    private Customer customer;
+    @OneToMany
+    private List<Comment> comments;
+    
     List<ForumPost> forumPosts;
     
     public ForumPostManagedBean() {

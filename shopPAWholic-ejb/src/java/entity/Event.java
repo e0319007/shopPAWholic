@@ -44,8 +44,8 @@ public class Event implements Serializable {
     @URL
     private String url;
     
-//    @ManyToOne
-//    private ServiceProvider serviceProvider;
+    @ManyToOne
+    private ServiceProvider serviceProvider;
 
     public Event() {
     }
@@ -156,5 +156,13 @@ public class Event implements Serializable {
 //    public void setUrl(ServiceProvider serviceProvider) {
 //        this.serviceProvider = serviceProvider;
 //    }
+
+    public ServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
+    }
     
 }

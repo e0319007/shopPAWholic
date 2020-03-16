@@ -44,7 +44,7 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
 
     @Override
-    public Comment createNewComment(Comment comment) throws CreateNewCommentException, InputDataValidationException {
+    public Comment createNewComment(Comment comment, Long customerId) throws CreateNewCommentException, InputDataValidationException {
         Set<ConstraintViolation<Comment>> constraintViolations;
         constraintViolations = validator.validate(comment);
         
