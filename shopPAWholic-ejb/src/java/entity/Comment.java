@@ -31,7 +31,7 @@ public class Comment implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     @NotNull
-    private Date date;
+    private Date commentDate;
     @Size(min = 10, message = "Content must be more than 10 characters")
     private String content;
     @NotNull
@@ -63,7 +63,7 @@ public class Comment implements Serializable {
     public Comment(Date date, String content) {
         this();
        
-        this.date = date;
+        this.commentDate = date;
         this.content = content;
         
     }
@@ -102,17 +102,17 @@ public class Comment implements Serializable {
     }
 
     /**
-     * @return the date
+     * @return the commentDate
      */
-    public Date getDate() {
-        return date;
+    public Date getCommentDate() {
+        return commentDate;
     }
 
     /**
-     * @param date the date to set
+     * @param commentDate the commentDate to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCommentDate(Date commentDate) {
+        this.commentDate = commentDate;
     }
 
     /**

@@ -34,7 +34,7 @@ public class ForumPost implements Serializable {
     @Size(min = 10, message = "Forum post must be more than 10 characters")
     private String content;
     @NotNull
-    private Date date;
+    private Date forumDate;
     @NotNull
     private int thumbsUpCount;
     @NotNull
@@ -61,7 +61,7 @@ public class ForumPost implements Serializable {
     public ForumPost(String content, Date date, String title) {
         this();
         this.content = content;
-        this.date = date;
+        this.forumDate = date;
         this.title = title;
         
     }
@@ -107,12 +107,12 @@ public class ForumPost implements Serializable {
         this.content = content;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getForumDate() {
+        return forumDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setForumDate(Date forumDate) {
+        this.forumDate = forumDate;
     }
 
     public int getThumbsUpCount() {

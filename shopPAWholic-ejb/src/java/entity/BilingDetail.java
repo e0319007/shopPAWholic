@@ -34,7 +34,7 @@ public class BilingDetail implements Serializable {
     private String creditCardDetail;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private Date bilingDate;
 
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
@@ -52,7 +52,7 @@ public class BilingDetail implements Serializable {
         this();
         
         this.creditCardDetail = creditCardDetail;
-        this.date = date;
+        this.bilingDate = date;
         
         
     }
@@ -107,17 +107,17 @@ public class BilingDetail implements Serializable {
     }
 
     /**
-     * @return the date
+     * @return the bilingDate
      */
-    public Date getDate() {
-        return date;
+    public Date getBilingDate() {
+        return bilingDate;
     }
 
     /**
-     * @param date the date to set
+     * @param bilingDate the bilingDate to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setBilingDate(Date bilingDate) {
+        this.bilingDate = bilingDate;
     }
 
     /**
