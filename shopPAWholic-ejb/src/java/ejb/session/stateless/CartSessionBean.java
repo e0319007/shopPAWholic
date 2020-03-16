@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Cart;
+import entity.Listing;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -57,19 +58,11 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
-    @Override
-    public void updateCart(Cart cart) throws InputDataValidationException{
-        Set<ConstraintViolation<Cart>>constraintViolations = validator.validate(cart);
-        if(constraintViolations.isEmpty()) {
-            if(cart.getCartId()!= null) {
-                em.merge(cart);
-            }
-        } else {
-            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-        }
-    }
-    
     //also add listing to cart???
+    public void addListingToCart(Long listingId) throws CartNotFoundException {
+        Listing listing = em.find(Listing.class, listingId);
+        
+    }
     
     @Override
     public void deleteCart(Long id) throws CartNotFoundException {
