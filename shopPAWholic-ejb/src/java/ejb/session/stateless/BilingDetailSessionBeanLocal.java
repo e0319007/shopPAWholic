@@ -24,4 +24,5 @@ public interface BilingDetailSessionBeanLocal {
 
     public BilingDetail getBilingDetailById(Long id) throws BilingDetailNotFoundException;
     
+    public void deleteBilingDetail(Long id) throws BilingDetailNotFoundException;
 }

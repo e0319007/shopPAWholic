@@ -20,7 +20,6 @@ public interface CartSessionBeanLocal {
 
     public Cart createNewCart(Cart cart) throws CreateNewCartException, InputDataValidationException;
 
-    public void updateCart(Cart cart) throws InputDataValidationException;
 
     public void deleteCart(Long id) throws CartNotFoundException;
 
