@@ -128,6 +128,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         for (Listing listing : listings) {
             listing.getCategory();
             listing.getTags().size();
+            listing.getOrders().size();
         }
         return listings;
     }
@@ -141,6 +142,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         for (Listing listing : listings) {
             listing.getCategory();
             listing.getTags().size();
+            listing.getOrders().size();
         }
         return listings;
     }
@@ -161,6 +163,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         for (Listing listing : listings) {
             listing.getCategory();
             listing.getTags().size();
+            listing.getOrders().size();
         }
         
         Collections.sort(listings, new Comparator<Listing>() {
@@ -180,6 +183,13 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             for (Category subCategory : category.getSubCategories()) {
                 listings.addAll(addSubCategoryListings(subCategory));
             }
+            
+            for (Listing listing : listings) {
+                listing.getCategory();
+                listing.getTags().size();
+                listing.getOrders().size();
+            }
+            
             return listings;
         }
     }
@@ -220,6 +230,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             for (Listing listing : listings) {
                 listing.getCategory();
                 listing.getTags().size();
+                listing.getOrders().size();
             }
             Collections.sort(listings, new Comparator<Listing>() {
                 public int compare(Listing l1, Listing l2) {

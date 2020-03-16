@@ -5,8 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.Listing;
 import entity.Review;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -39,18 +41,24 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     @Override
-    public Review createNewReview(Review review, Long listingId) throws CreateNewReviewException, InputDataValidationException {
+    public Review createNewReview(Review review, Long listingId, Long customerId ) throws CreateNewReviewException, InputDataValidationException {
         Set<ConstraintViolation<Review>> constraintViolations;
         constraintViolations = validator.validate(review);
-        Listing listing = em.find(Listing.class, listingId);
-        listing.getReviews().add(review);
-        review.setListing(listing);
+        
         if (constraintViolations.isEmpty()) {
             try {
-               em.persist(review);
-               em.flush();
-               
-               return review;
+                Listing listing = em.find(Listing.class, listingId);
+                listing.getReviews().add(review);
+                review.setListing(listing);
+                
+                Customer customer = em.find(Customer.class, customerId);
+                customer.getReviews().add(review);
+                review.setCustomer(customer);
+                
+                em.persist(review);
+                em.flush();
+
+                return review;
             } catch (Exception ex) {
                 throw new CreateNewReviewException("An unexpected error has occurred: " + ex.getMessage());
             }
@@ -82,6 +90,17 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.reviewPictures IS NOT EMPTY ORDER BY r.date DESC");
         List<Review> reviews = query.getResultList();
         return reviews;
+    }
+    
+    public List<Review> filterReviewByImageAndListingId(Long listingId) {
+        List<Review> reviews = filterReviewByImage();
+        List<Review> reviewstoreturn = new ArrayList<>();
+        
+        for(Review r: reviews) {
+            if(r.getListing().getListingId() == listingId)
+                reviewstoreturn.add(r);
+        }
+        return reviewstoreturn;
     }
     
     @Override

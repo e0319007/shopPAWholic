@@ -7,7 +7,9 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,7 +44,7 @@ public class DeliveryDetail implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deliveryDate;
     @NotNull
-    private String statusLists;
+    private List<String> statusLists;
     @NotNull
     private BigDecimal deliveryPrice;
 
@@ -53,15 +55,15 @@ public class DeliveryDetail implements Serializable {
 
     public DeliveryDetail() {
         deliveryMethod = DeliveryMethod.SINGPOST_REGULAR;
+        statusLists = new ArrayList<>();
     }
 
-    public DeliveryDetail(String address, String contactNumber, Date date, String statusLists, DeliveryMethod deliveryMethod) {
+    public DeliveryDetail(String address, String contactNumber, Date date, DeliveryMethod deliveryMethod) {
         this();
        
         this.address = address;
         this.contactNumber = contactNumber;
         this.deliveryDate = date;
-        this.statusLists = statusLists;
         this.deliveryMethod = deliveryMethod;
         double dp = 0;
         if(deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) dp = 1.50;
@@ -154,14 +156,14 @@ public class DeliveryDetail implements Serializable {
     /**
      * @return the statusLists
      */
-    public String getStatusLists() {
+    public List<String> getStatusLists() {
         return statusLists;
     }
 
     /**
      * @param statusLists the statusLists to set
      */
-    public void setStatusLists(String statusLists) {
+    public void setStatusLists(List<String> statusLists) {
         this.statusLists = statusLists;
     }
 

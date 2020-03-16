@@ -5,9 +5,17 @@
  */
 package ejb.session.stateless;
 
+import entity.BilingDetail;
+import entity.Customer;
+import entity.DeliveryDetail;
+import entity.Listing;
 import entity.OrderEntity;
+import entity.Seller;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,6 +25,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.enumeration.OrderStatus;
 import util.exception.CreateNewOrderException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
@@ -51,13 +60,33 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         validator = (Validator) validatorFactory.getValidator();
     }
     
-    @Override
-    public OrderEntity createNewOrder (OrderEntity newOrder) throws CreateNewOrderException, InputDataValidationException{
+    @Override // new billing detail initialised in this method, delivery detail added at customer side
+    public OrderEntity createNewOrder (OrderEntity newOrder, String ccNum, Long customerId, List<Listing> listings, Long sellerId) throws CreateNewOrderException, InputDataValidationException{
         Set<ConstraintViolation<OrderEntity>> constraintViolations;
         constraintViolations = validator.validate(newOrder);
         
         if (constraintViolations.isEmpty()) {
             try {
+                Date date = new Date(System.currentTimeMillis());
+                
+                Seller seller = em.find(Seller.class, sellerId);
+                Customer customer = em.find(Customer.class, customerId);
+                
+                seller.getOrders().add(newOrder);
+                customer.getOrders().add(newOrder);
+                newOrder.setCustomer(customer);
+                newOrder.setSeller(seller);
+                
+                BilingDetail billingDetail = new BilingDetail(ccNum, date);
+                billingDetail.setCustomer(customer);
+                bilingDetailSessionBeanLocal.createNewBilingDetail(billingDetail);
+                newOrder.setBilingDetail(billingDetail);
+                billingDetail.setOrder(newOrder);
+                
+//                for(Listing l:listings) {
+//                    em.persist(listings);
+//                }
+//                
                 em.persist(newOrder);
                 em.flush();
                 
@@ -83,12 +112,43 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     
     @Override
     public List<OrderEntity> retrieveAllOrders() {
-        Query query = em.createQuery("SELECT o FROM Order o ORDER BY o.orderId");
+        Query query = em.createQuery("SELECT o FROM OrderEntity o ORDER BY o.orderId");
         List<OrderEntity> orders = query.getResultList();
         
         return orders;
     }
    
+    @Override
+    public List<OrderEntity> retrieveOrderByCustomerId(Long customerId) {
+        Query q = em.createQuery("SELECT o FROM OrderEntity o WHERE o.customer.userId = :inUserId");
+        q.setParameter("inUserId", customerId);
+        
+        return q.getResultList();
+    }
+    
+    @Override
+    public List<OrderEntity> retrieveOrderBySellerId(Long sellerId) {
+        Query q = em.createQuery("SELECT o FROM OrderEntity o WHERE o.seller.userId = :inSellerId");
+        q.setParameter("inSellerId", sellerId);
+
+        return q.getResultList();
+    }
+    
+    @Override
+    public String changeOrderStatus(OrderStatus os, Long orderId) {
+        try {
+            OrderEntity order = getOrderById(orderId);
+            order.setOrderStatus(os);
+            
+        } catch (OrderNotFoundException ex) {
+            Logger.getLogger(OrderSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(os.equals(OrderStatus.PAID)) return "Order is Paid";
+            else if(os.equals(OrderStatus.REFUND)) return "Order is Refunded";
+            else if(os.equals(OrderStatus.LOST)) return "Order is Lost";
+            else if(os.equals(OrderStatus.SHIPPED)) return "Order is Shipped";
+            else return "Order is Completed";
+    }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<OrderEntity>>constraintViolations) {
         String msg = "Input data validation error!:";    

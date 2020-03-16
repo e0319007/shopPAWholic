@@ -30,7 +30,7 @@ import util.exception.ListingNotFoundException;
 @LocalBean
 public class CartSessionBean implements CartSessionBeanLocal {
 
-      @PersistenceContext(unitName = "shopPAWholic-ejbPU")
+    @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -59,7 +59,7 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
-    @Override
+    @Override //dont need to call
     public void deleteCart(Long id) throws CartNotFoundException {
         Cart cart = getCartById(id);
         em.remove(cart);
@@ -75,6 +75,29 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
+    public Cart getCartByCustomerId(Long customerId) {
+        Query q = em.createQuery("SELECT c FROM Cart c WHERE c.customer.userId = :inCustomerId");
+        Cart cart = (Cart) q.getSingleResult();
+        cart.getListings().size();
+        return cart;
+        
+    }
+    
+    public void addListingToCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException {
+        Listing listing = em.find(Listing.class, listingId);
+        Cart cart = getCartById(cartId);
+        for(int i = 0; i < quantity; i++)
+            cart.getListings().add(listing);
+    }
+    
+    public void deleteListingFromCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException {
+        Listing listing = em.find(Listing.class, listingId);
+        Cart cart = getCartById(cartId);
+        for(int i =0; i < quantity; i++) {
+            cart.getListings().remove(listing);
+        }
+    }
+
     //retrieve according to date added & grouped by name of the seller 
     /*public Cart retrieveCartByCustomer(Long customerId) {
         Query query = em.createQuery("SELECT c FROM Cart c WHERE c.customer.id:=customerId");

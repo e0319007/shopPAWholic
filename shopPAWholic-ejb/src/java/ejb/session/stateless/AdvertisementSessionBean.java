@@ -6,9 +6,14 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
+import entity.BilingDetail;
 import entity.ServiceProvider;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,22 +37,32 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
     private EntityManager em;
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
+    
+    @EJB
+    BilingDetailSessionBeanLocal bilingDetailSessionBeanLocal; 
 
     public AdvertisementSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = (Validator) validatorFactory.getValidator();
     }
 
-    @Override
-    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId) throws CreateNewAdvertisementException, InputDataValidationException {
+    @Override//billing detail initialised in the method,
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException {
         Set<ConstraintViolation<Advertisement>> constraintViolations;
         constraintViolations = validator.validate(advertisement);
-        
         if (constraintViolations.isEmpty()) {
             try {
+               // SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+                Date date = new Date(System.currentTimeMillis());
+                BilingDetail bilingDetail = new BilingDetail(ccNum, date);
+                bilingDetail.setAdvertisement(advertisement);
+                bilingDetailSessionBeanLocal.createNewBilingDetail(bilingDetail);
+                advertisement.setBilingDetail(bilingDetail);
+                
                 ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
                 serviceProvider.getAdvertisements().add(advertisement);
                 advertisement.setServiceProvider(serviceProvider);
+                
                 em.persist(advertisement);
                 em.flush();
 
@@ -93,6 +108,17 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
         Query query = em.createQuery("SELECT a FROM Advertisement a ORDER BY a.startDate");
         List<Advertisement> advertisements = query.getResultList();
         return advertisements;
+    }
+    
+    public List<Advertisement> retrieveAllAdvertisementOnCurrentDay() {
+        List<Advertisement> advertisements = retrieveAllAdvertisements();
+        List<Advertisement> advertisementsToBePassed = new ArrayList<>();
+        Date dateC = new Date(System.currentTimeMillis());
+        for(Advertisement a: advertisements) {
+            if(dateC.compareTo(a.getStartDate()) >= 0 && dateC.compareTo(a.getEndDate()) <= 0) advertisementsToBePassed.add(a);
+        }
+        
+        return advertisementsToBePassed;
     }
             
     

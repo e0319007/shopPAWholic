@@ -44,6 +44,7 @@ public class TagSessionBean implements TagSessionBeanLocal {
         Tag tag = em.find(Tag.class, tagId);
         
         if (tag != null) {
+            tag.getListings().size();
             return tag;
         } else {
             throw new TagNotFoundException("Tag Id " + tagId + " does not exist!");

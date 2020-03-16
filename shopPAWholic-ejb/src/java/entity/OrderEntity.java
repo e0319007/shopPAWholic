@@ -65,6 +65,9 @@ public class OrderEntity implements Serializable {
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Seller seller; 
+    
+    @OneToOne(optional = false)
+    private BilingDetail bilingDetail;
 
     public OrderEntity() {
         totalPrice = new BigDecimal("0.00");
@@ -210,5 +213,13 @@ public class OrderEntity implements Serializable {
      */
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public BilingDetail getBilingDetail() {
+        return bilingDetail;
+    }
+
+    public void setBilingDetail(BilingDetail bilingDetail) {
+        this.bilingDetail = bilingDetail;
     }
 }

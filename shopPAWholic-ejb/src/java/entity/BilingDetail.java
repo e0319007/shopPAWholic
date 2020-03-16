@@ -43,6 +43,9 @@ public class BilingDetail implements Serializable {
     @OneToOne (fetch = FetchType.LAZY)
     private Advertisement advertisement;
     
+    @OneToOne 
+    private OrderEntity order;
+    
     
 
     public BilingDetail() {
@@ -146,6 +149,14 @@ public class BilingDetail implements Serializable {
      */
     public void setAdvertisement(Advertisement advertisement) {
         this.advertisement = advertisement;
+    }
+
+    public OrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderEntity order) {
+        this.order = order;
     }
     
 }

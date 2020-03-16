@@ -41,7 +41,7 @@ public class BilingDetailSessionBean implements BilingDetailSessionBeanLocal {
     
     //didnt add bilingdetailexists exception cos different accounts can have the same biling detail
     //unless want to somehow constrain the same user to not have the same biling detail if they have multiple
-    @Override
+    @Override //billing detail created while creating advertisement and order.-> managed bean need to do view only
     public BilingDetail createNewBilingDetail(BilingDetail bilingDetail) throws CreateNewBilingDetailException, InputDataValidationException{
         Set<ConstraintViolation<BilingDetail>> constraintViolations;
         constraintViolations = validator.validate(bilingDetail);

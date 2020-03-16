@@ -42,6 +42,7 @@ public class AdvertisementManagedBean {
     private BigDecimal price;
     private List<String> pictures;
     private String url;
+    private String ccNum;
     
     //For updating advertisements
     private Advertisement selectedAdvertisementToUpdate;
@@ -70,10 +71,10 @@ public class AdvertisementManagedBean {
         price = price.multiply(new BigDecimal(days));
     }
     
-    public void createNewAdvertisements(ActionEvent event) {
+    public void createNewAdvertisements(ActionEvent event) { //incomplete, add my advertisment ccnum first using get attribute
         try {
             Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
-            advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId);
+            advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId, ccNum);
         } catch (CreateNewAdvertisementException ex) {
             Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InputDataValidationException ex) {

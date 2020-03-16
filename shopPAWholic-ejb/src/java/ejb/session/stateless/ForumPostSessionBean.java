@@ -54,6 +54,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
                     Customer customer = em.find(Customer.class, customerId);
                     customer.getForumPosts().add(post);
                     post.setCustomer(customer);
+                    
                     em.persist(post);
                     em.flush();
                     return post;
@@ -84,7 +85,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
     
     @Override
     public List<ForumPost> retrieveForumPostsByUser(Long customerId) {
-        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.customer.customerId = :inCustomerId");
+        Query query = em.createQuery("SELECT fp FROM ForumPost fp WHERE fp.customer.userId = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
         List<ForumPost> posts = query.getResultList();
         if (posts.isEmpty() || posts == null) {
@@ -160,6 +161,11 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
         ForumPost post = em.find(ForumPost.class, id);
         if (post != null) return post;
         else throw new ForumPostNotFoundException("Forum Post ID " + id + " does not exist!");
+    }
+    
+    public void thumbsUp(Long forumPostId) throws ForumPostNotFoundException  {
+        ForumPost post = retrieveForumPostById(forumPostId);
+        post.setThumbsUpCount(post.getThumbsUpCount() + 1);
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<ForumPost>>constraintViolations) {

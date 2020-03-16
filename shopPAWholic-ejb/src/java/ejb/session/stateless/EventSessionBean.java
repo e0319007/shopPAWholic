@@ -49,6 +49,7 @@ public class EventSessionBean implements EventSessionBeanLocal {
                     ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
                     event.setServiceProvider(serviceProvider);
                     serviceProvider.getEvents().add(event);
+                    
                     em.persist(event);
                     em.flush();
 
@@ -108,7 +109,7 @@ public class EventSessionBean implements EventSessionBeanLocal {
     
     @Override
     public List<Event> retrieveEventByServiceProvider(Long serviceProviderId) {
-        Query query = em.createQuery("SELECT e FROM Event e WHERE e.serviceProvider.serviceProviderId = :inServiceProviderId");
+        Query query = em.createQuery("SELECT e FROM Event e WHERE e.serviceProvider.userId = :inServiceProviderId");
         query.setParameter("inServiceProviderId", serviceProviderId);
         return query.getResultList();
     }

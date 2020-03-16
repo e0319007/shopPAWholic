@@ -5,7 +5,6 @@
  */
 package ejb.session.stateless;
 
-import com.sun.org.apache.bcel.internal.generic.F2D;
 import entity.Comment;
 import entity.Customer;
 import entity.ForumPost;
@@ -46,7 +45,7 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
 
     @Override
-    public Comment createNewComment(Comment comment, Long customerId, Long forumPostId) throws CreateNewCommentException, InputDataValidationException {
+    public Comment createNewCommentForForumPost(Comment comment, Long customerId, Long forumPostId) throws CreateNewCommentException, InputDataValidationException {
         Set<ConstraintViolation<Comment>> constraintViolations;
         constraintViolations = validator.validate(comment);
         
@@ -73,6 +72,34 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
     
     @Override
+    public Comment createNewChildComment(Comment comment, Long customerId, Long parentComentId) throws CreateNewCommentException, InputDataValidationException {
+        Set<ConstraintViolation<Comment>> constraintViolations;
+        constraintViolations = validator.validate(comment);
+        
+        if (constraintViolations.isEmpty()) {
+            try {
+                        
+                Customer customer = em.find(Customer.class, customerId);
+                customer.getComments().add(comment);
+                comment.setCustomer(customer);
+
+                Comment parentComment = em.find(Comment.class, parentComentId);
+                parentComment.getChildComments().add(comment);
+                comment.setParentComment(comment);
+                
+                em.persist(comment);
+                em.flush();
+
+                return comment;
+            } catch (Exception ex) {
+                throw new CreateNewCommentException("An unexpected error has occurred: " + ex.getMessage());
+            }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
+    }
+    
+    @Override
     public void updateComment(Comment comment) throws InputDataValidationException {
         Set<ConstraintViolation<Comment>>constraintViolations = validator.validate(comment);
         if(constraintViolations.isEmpty()) {
@@ -82,6 +109,11 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+    }
+    
+    public void thumbsUp(Long commentId) throws CommentNotFoundException {
+        Comment c = retrieveCommentById(commentId);
+        c.setThumbsUpCount(c.getThumbsUpCount()+1);
     }
     
     @Override

@@ -20,10 +20,10 @@ public class Seller extends User implements Serializable {
     private double totalRating;
     
     @OneToMany(mappedBy = "seller")
-    public List<Listing> listings;
+    private List<Listing> listings;
     
     @OneToMany(mappedBy="seller")
-    public List<OrderEntity> orders; 
+    private List<OrderEntity> orders; 
 
     public Seller() {
         listings = new ArrayList<>();
@@ -60,5 +60,21 @@ public class Seller extends User implements Serializable {
 
     public void setTotalRating(double totalRating) {
         this.totalRating = totalRating;
+    }
+
+    public List<Listing> getListings() {
+        return listings;
+    }
+
+    public void setListings(List<Listing> listings) {
+        this.listings = listings;
+    }
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
 }

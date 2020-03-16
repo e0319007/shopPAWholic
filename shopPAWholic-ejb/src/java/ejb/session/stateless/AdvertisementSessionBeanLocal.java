@@ -19,8 +19,6 @@ import util.exception.InputDataValidationException;
 @Local
 public interface AdvertisementSessionBeanLocal {
 
-    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProvideId) throws CreateNewAdvertisementException, InputDataValidationException;
-
     public void updateAdvertisement(Advertisement advertisement) throws InputDataValidationException;
 
     public void deleteAdvertisement(Long advertisementId) throws AdvertisementNotFoundException;
@@ -28,5 +26,7 @@ public interface AdvertisementSessionBeanLocal {
     public Advertisement retrieveAdvertisementById(Long id) throws AdvertisementNotFoundException;
 
     public List<Advertisement> retrieveAllAdvertisements();
+
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException;
     
 }

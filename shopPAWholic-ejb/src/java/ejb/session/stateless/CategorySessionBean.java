@@ -43,6 +43,8 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     public Category retrieveCategoryByCategoryId(Long categoryId) throws CategoryNotFoundException {
         Category category = em.find(Category.class, categoryId);
         if (category != null) {
+            category.getListings().size();
+            category.getSubCategories().size();
             return category;
         } else {
             throw new CategoryNotFoundException("Category Id " + categoryId + " does not exist!");

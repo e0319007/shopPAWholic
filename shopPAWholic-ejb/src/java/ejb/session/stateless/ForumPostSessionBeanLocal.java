@@ -38,5 +38,7 @@ public interface ForumPostSessionBeanLocal {
 
     public List<ForumPost> retrieveForumPostsByUser(Long customerId);
 
+    public void thumbsUp(Long forumPostId) throws ForumPostNotFoundException;
+
     
 }

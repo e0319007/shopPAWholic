@@ -5,9 +5,14 @@
  */ 
 package ejb.session.stateless;
 
+import entity.Cart;
+import entity.Customer;
 import entity.User;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,6 +25,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewCartException;
 import util.exception.DeleteUserException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -40,6 +46,9 @@ public class UserSessionBean implements UserSessionBeanLocal {
     private EntityManager em;
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
+    
+    @EJB
+    private CartSessionBeanLocal cartSessionBeanLocal;
 
     public UserSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -51,12 +60,13 @@ public class UserSessionBean implements UserSessionBeanLocal {
         
         try{
             constraintViolations = validator.validate(newUser);
-        
+            
             if(constraintViolations.isEmpty()){
+                if(newUser instanceof Customer) cartSessionBeanLocal.createNewCart(new Cart());
                 em.persist(newUser);
                 em.flush();
 
-                return newUser.getUserId();
+               
             }
             else{
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -71,9 +81,12 @@ public class UserSessionBean implements UserSessionBeanLocal {
             } else {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
-        }
-           
+        } catch (CreateNewCartException ex) {
+           Logger.getLogger(UserSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+       }
+         return newUser.getUserId();   
     }
+    
     
     public List<User> retrieveAllUsers(){
         Query query = em.createQuery("SELECT u FROM User u");

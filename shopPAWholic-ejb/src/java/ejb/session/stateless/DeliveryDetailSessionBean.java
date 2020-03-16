@@ -85,7 +85,10 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         else throw new DeliveryDetailNotFoundException("Delivery Detail ID " + id + " does not exist!");
     }
     
-
+    public void setDeliveryStatus(String status, long deliveryStatusId) {
+        DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, deliveryStatusId);
+        deliveryDetail.getStatusLists().add(status);
+    }
     
     //also retrieve delivery details by customer
     // 
