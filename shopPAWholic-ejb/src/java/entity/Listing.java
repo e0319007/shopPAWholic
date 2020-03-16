@@ -70,9 +70,14 @@ public class Listing implements Serializable {
     
     @ManyToMany(mappedBy="listings")
     private List<Tag> tags; 
+    
 
     @OneToMany
     private List<OrderEntity> orders;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false) 
+    private Seller seller; 
     
     public Listing() {
         //quantityOnHand = 0;
@@ -86,7 +91,7 @@ public class Listing implements Serializable {
 
     }
 
-    public Listing(String skuCode, String name, String description, Integer quantityOnHand, BigDecimal unitPrice) {
+    public Listing(String skuCode, String name, String description, BigDecimal unitPrice) {
         this();
         this.skuCode = skuCode;
         this.name = name;
@@ -281,6 +286,20 @@ public class Listing implements Serializable {
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
 
+    }
+
+    /**
+     * @return the seller
+     */
+    public Seller getSeller() {
+        return seller;
+    }
+
+    /**
+     * @param seller the seller to set
+     */
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
     
 }

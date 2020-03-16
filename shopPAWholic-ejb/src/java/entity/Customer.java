@@ -24,14 +24,19 @@ public class Customer extends User implements Serializable {
     
     @OneToMany(mappedBy = "customer")
     private List<BilingDetail> billingDetails;
+    
     @OneToMany(mappedBy = "customer")
     private List<OrderEntity> orders;
+    
     @OneToOne
     private Cart cart;
+    
     @OneToMany(mappedBy = "customer")
     private List<Review> reviews;
+    
     @OneToMany(mappedBy = "customer")
     private List<ForumPost> forumPosts;
+    
     @OneToMany(mappedBy = "customer")
     private List<Comment> comments;
 

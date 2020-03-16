@@ -21,9 +21,13 @@ public class Seller extends User implements Serializable {
     
     @OneToMany(mappedBy = "seller")
     public List<Listing> listings;
+    
+    @OneToMany(mappedBy="seller")
+    public List<OrderEntity> orders; 
 
     public Seller() {
         listings = new ArrayList<>();
+        orders = new ArrayList<>();
     }
 
     public Seller(String firstName, String lastName) {

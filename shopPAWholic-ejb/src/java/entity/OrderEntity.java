@@ -61,8 +61,14 @@ public class OrderEntity implements Serializable {
     
     @OneToMany(mappedBy="order")
     private List<Listing> listings; 
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(nullable = false)
+    private Seller seller; 
 
     public OrderEntity() {
+        totalPrice = new BigDecimal("0.00");
+        orderStatus = OrderStatus.PENDINGPAYMENT;
         listings = new ArrayList<>();
     }
 
@@ -70,6 +76,7 @@ public class OrderEntity implements Serializable {
         this();
         this.totalPrice = totalPrice;
         this.orderDate = orderDate;
+        
     }
     
     
@@ -189,5 +196,19 @@ public class OrderEntity implements Serializable {
      */
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    /**
+     * @return the seller
+     */
+    public Seller getSeller() {
+        return seller;
+    }
+
+    /**
+     * @param seller the seller to set
+     */
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 }

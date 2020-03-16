@@ -41,6 +41,15 @@ public abstract class User implements Serializable{
 
     public User() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
+        isFlag = false;
+    }
+
+    public User(String email, String contactNumber, String password) {
+        this();
+        this.email = email;
+        this.contactNumber = contactNumber;
+        this.password = password;
+        
     }
     
     public Long getUserId() {

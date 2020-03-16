@@ -42,17 +42,19 @@ public class BilingDetail implements Serializable {
     
     @OneToOne (fetch = FetchType.LAZY)
     private Advertisement advertisement;
+    
+    
 
     public BilingDetail() {
     }
 
-    public BilingDetail(Long bilingDetailId, String creditCardDetail, Date date, Customer customer, Advertisement advertisement) {
+    public BilingDetail(String creditCardDetail, Date date) {
         this();
-        this.bilingDetailId = bilingDetailId;
+        
         this.creditCardDetail = creditCardDetail;
         this.date = date;
-        this.customer = customer;
-        this.advertisement = advertisement;
+        
+        
     }
     
     

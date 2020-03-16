@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -13,8 +14,7 @@ public class ServiceProvider extends User implements Serializable {
     @NotNull
     @Size(max = 32)
     private String companyName;
-    @NotNull
-    private double commissionRate;
+    
     @NotNull
     private boolean verified;
     
@@ -24,9 +24,18 @@ public class ServiceProvider extends User implements Serializable {
     @OneToMany(mappedBy = "serviceProvider")
     private List<Event> events; //sz
 
-    public double getCommissionRate() {
-        return commissionRate;
+    public ServiceProvider() {
+        advertisements = new ArrayList<>();
+        events = new ArrayList<>();
     }
+
+    public ServiceProvider(String companyName, boolean verified) {
+        this();
+        this.companyName = companyName;
+        this.verified = verified;
+    }
+
+    
 
     public String getCompanyName() {
         return companyName;
@@ -36,9 +45,7 @@ public class ServiceProvider extends User implements Serializable {
         return verified;
     }
 
-    public void setCommissionRate(double commissionRate) {
-        this.commissionRate = commissionRate;
-    }
+    
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;

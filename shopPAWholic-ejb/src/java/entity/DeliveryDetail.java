@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -39,28 +40,36 @@ public class DeliveryDetail implements Serializable {
     private String contactNumber;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private Date deliveryDate;
     @NotNull
     private String statusLists;
+    @NotNull
+    private BigDecimal deliveryPrice;
 
     @Enumerated(EnumType.STRING)
     private DeliveryMethod deliveryMethod;
     
-    @ManyToOne(optional = true)
-    @JoinColumn(nullable = true)
-    private Customer customer;
+    
 
     public DeliveryDetail() {
+        deliveryMethod = DeliveryMethod.SINGPOST_REGULAR;
     }
 
-    public DeliveryDetail(Long deliveryDetailId, String address, String contactNumber, Date date, String statusLists, Customer customer) {
+    public DeliveryDetail(String address, String contactNumber, Date date, String statusLists, DeliveryMethod deliveryMethod) {
         this();
-        this.deliveryDetailId = deliveryDetailId;
+       
         this.address = address;
         this.contactNumber = contactNumber;
-        this.date = date;
+        this.deliveryDate = date;
         this.statusLists = statusLists;
-        this.customer = customer;
+        this.deliveryMethod = deliveryMethod;
+        double dp = 0;
+        if(deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) dp = 1.50;
+        else if(deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) dp = 3.50;
+        else if(deliveryMethod.equals(DeliveryMethod.QXPRESS)) dp = 5;
+        else if(deliveryMethod.equals(DeliveryMethod.PARKNPARCEL)) dp = 5.50;
+        else if(deliveryMethod.equals(DeliveryMethod.NINJAVAN)) dp = 4;
+        deliveryPrice = new BigDecimal(dp);
     }
     
     
@@ -98,19 +107,7 @@ public class DeliveryDetail implements Serializable {
         return "entity.DeliveryDetail[ id=" + deliveryDetailId + " ]";
     }
 
-    /**
-     * @return the customer
-     */
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    /**
-     * @param customer the customer to set
-     */
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+   
 
     /**
      * @return the address
@@ -141,17 +138,17 @@ public class DeliveryDetail implements Serializable {
     }
 
     /**
-     * @return the date
+     * @return the deliveryDate
      */
-    public Date getDate() {
-        return date;
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
     /**
-     * @param date the date to set
+     * @param deliveryDate the deliveryDate to set
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     /**
@@ -180,6 +177,14 @@ public class DeliveryDetail implements Serializable {
      */
     public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
         this.deliveryMethod = deliveryMethod;
+    }
+
+    public BigDecimal getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(BigDecimal deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
     }
     
 }

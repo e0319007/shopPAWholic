@@ -24,7 +24,7 @@ import util.security.CryptographicHelper;
 @Local(AdminSessionBeanLocal.class)
 public class AdminSessionBean implements AdminSessionBeanLocal {
 
-    @PersistenceContext(unitName = "shopPAWholicTest-ejbPU")
+    @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
     
     private final ValidatorFactory validatorFactory;

@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -35,21 +36,27 @@ public class Review implements Serializable {
     @Size(max = 5, min = 1)
     private int rating;
     @NotNull
-    private Date date;
+    private Date reviewDate;
     @NotNull
     private List<String> reviewPictures;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Listing listing;
-
+    
+    @ManyToOne(optional = true) 
+    @JoinColumn(nullable = true)
+    private Customer customer; 
+    
     public Review() {
+        reviewPictures = new ArrayList<>();
     }
 
     public Review(String description, int rating, Date date, List<String> reviewPictures) {
+        this();
         this.description = description;
         this.rating = rating;
-        this.date = date;
+        this.reviewDate = date;
         this.reviewPictures = reviewPictures;
     }
     
@@ -102,12 +109,12 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getReviewDate() {
+        return reviewDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
     }
     
 //    public Listing getListing() {
@@ -132,6 +139,20 @@ public class Review implements Serializable {
 
     public void setListing(Listing listing) {
         this.listing = listing;
+    }
+
+    /**
+     * @return the customer
+     */
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    /**
+     * @param customer the customer to set
+     */
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
     
 }

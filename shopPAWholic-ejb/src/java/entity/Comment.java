@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -38,28 +39,33 @@ public class Comment implements Serializable {
     @NotNull
     private boolean deleted;
     
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Customer customer;
+    
     @ManyToOne(optional = true)
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private ForumPost forumPost;
-    @OneToMany
+    
+    @OneToMany(mappedBy="parentComment")
     private List<Comment> childComments;
+    
+    @ManyToOne(optional = true) 
+    @JoinColumn(nullable = true)
+    private Comment parentComment;
 
     public Comment() {
         deleted = false;
         thumbsUpCount = 0;
+        childComments = new ArrayList<>();
     }
 
-    public Comment(Long commentId, Date date, String content, Customer customer, ForumPost forumPost, List<Comment> comments) {
+    public Comment(Date date, String content) {
         this();
-        this.commentId = commentId;
+       
         this.date = date;
         this.content = content;
-        this.customer = customer;
-        this.forumPost = forumPost;
-        this.childComments = comments;
+        
     }
     
     public Long getCommentId() {
@@ -191,6 +197,20 @@ public class Comment implements Serializable {
      */
     public void setChildComments(List<Comment> childComments) {
         this.childComments = childComments;
+    }
+
+    /**
+     * @return the parentComment
+     */
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    /**
+     * @param parentComment the parentComment to set
+     */
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
     }
     
 }

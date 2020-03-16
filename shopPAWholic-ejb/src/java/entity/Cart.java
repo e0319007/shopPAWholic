@@ -38,19 +38,20 @@ public class Cart implements Serializable {
     @OneToOne (fetch = FetchType.LAZY)
     private Customer customer;
     
-    @OneToMany(mappedBy = "cart")
+    @OneToMany
     private List<Listing> listings;
 
     public Cart() {
         listings = new ArrayList<>();
+        totalPrice = new BigDecimal("0.00");
     }
 
-    public Cart(Long cartId, BigDecimal totalPrice, int totalQuantity, Customer customer) {
+    public Cart(BigDecimal totalPrice, int totalQuantity) {
         this();
-        this.cartId = cartId;
+        
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
-        this.customer = customer;
+        
     }
     
     

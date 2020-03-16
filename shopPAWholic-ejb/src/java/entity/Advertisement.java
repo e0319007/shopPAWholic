@@ -7,6 +7,7 @@ package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -45,8 +46,13 @@ public class Advertisement implements Serializable {
     
     @OneToOne(optional = false)
     private ServiceProvider serviceProvider;
+    
+    @OneToOne(optional = false) 
+    private BilingDetail bilingDetail;
 
     public Advertisement() {
+        pictures = new ArrayList<>();
+        price = new BigDecimal("0.00");
     }
 
     public Advertisement(String description, Date startDate, Date endDate, BigDecimal price, List<String> pictures, String url) {
@@ -148,6 +154,20 @@ public class Advertisement implements Serializable {
 
     public void setServiceProvider(ServiceProvider serviceProvider) {
         this.serviceProvider = serviceProvider;
+    }
+
+    /**
+     * @return the bilingDetail
+     */
+    public BilingDetail getBilingDetail() {
+        return bilingDetail;
+    }
+
+    /**
+     * @param bilingDetail the bilingDetail to set
+     */
+    public void setBilingDetail(BilingDetail bilingDetail) {
+        this.bilingDetail = bilingDetail;
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package entity;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -44,14 +45,16 @@ public class Event implements Serializable {
     @URL
     private String url;
     
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private ServiceProvider serviceProvider;
 
     public Event() {
+        pictures = new ArrayList<>();
     }
 
     public Event(String eventName, String description, String location, List<String> pictures, Date startDateTime, Date endDateTime, String url) {
+        this();
         this.eventName = eventName;
         this.description = description;
         this.location = location;

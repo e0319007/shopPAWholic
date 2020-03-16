@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -42,9 +43,10 @@ public class ForumPost implements Serializable {
     @NotNull
     private boolean deleted;
     
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Customer customer;
+    
     @OneToMany(mappedBy = "forumPost")
     private List<Comment> comments;
 
@@ -53,15 +55,15 @@ public class ForumPost implements Serializable {
     public ForumPost() {
         deleted = false;
         thumbsUpCount = 0;
+        comments = new ArrayList<>();
     }
 
-    public ForumPost(String content, Date date, String title, Customer customer, List<Comment> comments) {
+    public ForumPost(String content, Date date, String title) {
         this();
         this.content = content;
         this.date = date;
         this.title = title;
-        this.customer = customer;
-        this.comments = comments;
+        
     }
     
     public Long getForumId() {
