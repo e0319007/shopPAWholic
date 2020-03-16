@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
@@ -49,6 +50,9 @@ public class Listing implements Serializable {
     @Size(max = 128, message = "Description must not be more than 128 characters")
     private String description;
     
+    @OneToMany(mappedBy = "listing") //sz
+    private List<Review> reviews;
+    
     /*@Column(nullable = false)
     @NotNull
     @Min(0)
@@ -72,6 +76,7 @@ public class Listing implements Serializable {
         //quantityOnHand = 0;
         unitPrice = new BigDecimal("0.00");
         tags = new ArrayList<>();
+        reviews = new ArrayList<>();
     }
 
     public Listing(String skuCode, String name, String description, Integer quantityOnHand, BigDecimal unitPrice) {
@@ -244,6 +249,14 @@ public class Listing implements Serializable {
      */
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
     
 }

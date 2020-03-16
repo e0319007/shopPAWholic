@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Comment;
+import entity.Customer;
 import entity.ForumPost;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +43,17 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
     }
     
     @Override
-    public ForumPost createNewForumPost(ForumPost post) throws InputDataValidationException, CreateNewForumPostException, ForumTitleExistsException {
+    public ForumPost createNewForumPost(ForumPost post, long customerId) throws InputDataValidationException, CreateNewForumPostException, ForumTitleExistsException {
         Set<ConstraintViolation<ForumPost>> constraintViolations;
         constraintViolations = validator.validate(post);
         
         if(constraintViolations.isEmpty()) {
             if (retrieveForumPostByTitle(post.getTitle()) == null) {
                 try {
+                    
+                    Customer customer = em.find(Customer.class, customerId);
+                    customer.getForumPosts().add(post);
+                    post.setCustomer(customer);
                     em.persist(post);
                     em.flush();
                     return post;
@@ -107,7 +112,7 @@ public class ForumPostSessionBean implements ForumPostSessionBeanLocal {
     }
     
     private void loopComment(Comment comment) {
-        for (Comment c:comment.getComments()) 
+        for (Comment c:comment.getChildComments()) 
             loopComment(c);
     }
     

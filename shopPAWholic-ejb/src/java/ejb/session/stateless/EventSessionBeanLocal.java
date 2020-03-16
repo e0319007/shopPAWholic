@@ -19,9 +19,6 @@ import util.exception.InputDataValidationException;
  */
 @Local
 public interface EventSessionBeanLocal {
-
-    public Event createNewEvent(Event event) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
-
     public Event retrieveEventByName(String name);
 
     public void deleteEvent(Long id) throws EventNotFoundException;
@@ -33,6 +30,8 @@ public interface EventSessionBeanLocal {
     public List<Event> retrieveEventByServiceProvider(Long serviceProviderId);
 
     public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException;
+
+    public Event createNewEvent(Event event, Long serviceProviderId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
 
     
     

@@ -29,6 +29,6 @@ public interface CommentSessionBeanLocal {
 
     public Comment retrieveCommentById(Long id) throws CommentNotFoundException;
 
-    public Comment createNewComment(Comment comment, Long customerId) throws CreateNewCommentException, InputDataValidationException;
+    public Comment createNewComment(Comment comment, Long customerId, Long forumPostId) throws CreateNewCommentException, InputDataValidationException;
     
 }

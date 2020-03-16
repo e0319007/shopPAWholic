@@ -22,17 +22,17 @@ public class Customer extends User implements Serializable {
     @Size(max = 32)
     private String lastName;
     
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<BilingDetail> billingDetails;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Order> orders;
     @OneToOne
     private Cart cart;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Review> reviews;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<ForumPost> forumPosts;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<Comment> comments;
 
     public Customer() {
@@ -66,4 +66,52 @@ public class Customer extends User implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }    
+
+    public List<BilingDetail> getBillingDetails() {
+        return billingDetails;
+    }
+
+    public void setBillingDetails(List<BilingDetail> billingDetails) {
+        this.billingDetails = billingDetails;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<ForumPost> getForumPosts() {
+        return forumPosts;
+    }
+
+    public void setForumPosts(List<ForumPost> forumPosts) {
+        this.forumPosts = forumPosts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

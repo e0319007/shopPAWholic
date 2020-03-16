@@ -6,7 +6,10 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,8 +21,22 @@ public class Seller extends User implements Serializable {
     @NotNull
     @Size(max = 32)
     private String lastName;
-    @NotNull
     private double totalRating;
+    
+    @OneToMany(mappedBy = "seller")
+    public List<Listing> listings;
+
+    public Seller() {
+        listings = new ArrayList<>();
+    }
+
+    public Seller(String firstName, String lastName) {
+        this();
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
+    
 
     public String getFirstName() {
         return firstName;

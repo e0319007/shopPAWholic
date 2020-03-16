@@ -18,8 +18,11 @@ public class ServiceProvider extends User implements Serializable {
     @NotNull
     private boolean verified;
     
-    @OneToMany
+    @OneToMany(mappedBy = "serviceProvider")
     private List<Advertisement> advertisements; //sz
+    
+    @OneToMany(mappedBy = "serviceProvider")
+    private List<Event> events; //sz
 
     public double getCommissionRate() {
         return commissionRate;
@@ -51,5 +54,13 @@ public class ServiceProvider extends User implements Serializable {
 
     public void setAdvertisements(List<Advertisement> advertisements) {
         this.advertisements = advertisements;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
