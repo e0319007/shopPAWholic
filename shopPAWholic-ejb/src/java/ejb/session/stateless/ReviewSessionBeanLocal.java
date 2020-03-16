@@ -19,7 +19,7 @@ import util.exception.ReviewNotFoundException;
 @Local
 public interface ReviewSessionBeanLocal {
 
-    public Review createNewReview(Review review) throws CreateNewReviewException, InputDataValidationException;
+    public Review createNewReview(Review review, Long listingId) throws CreateNewReviewException, InputDataValidationException;
 
     public void updateReview(Review review) throws InputDataValidationException;
 

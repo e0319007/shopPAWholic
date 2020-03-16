@@ -20,7 +20,7 @@ import util.exception.InputDataValidationException;
 @Local
 public interface ForumPostSessionBeanLocal {
 
-    public ForumPost createNewForumPost(ForumPost post) throws InputDataValidationException, CreateNewForumPostException, ForumTitleExistsException;
+    public ForumPost createNewForumPost(ForumPost post, long customer) throws InputDataValidationException, CreateNewForumPostException, ForumTitleExistsException;
 
     public void updateForumPost(ForumPost post) throws InputDataValidationException, ForumTitleExistsException;
 

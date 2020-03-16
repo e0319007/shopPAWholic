@@ -19,7 +19,7 @@ import util.exception.InputDataValidationException;
 @Local
 public interface AdvertisementSessionBeanLocal {
 
-    public Advertisement createNewAdvertisement(Advertisement advertisement) throws CreateNewAdvertisementException, InputDataValidationException;
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProvideId) throws CreateNewAdvertisementException, InputDataValidationException;
 
     public void updateAdvertisement(Advertisement advertisement) throws InputDataValidationException;
 

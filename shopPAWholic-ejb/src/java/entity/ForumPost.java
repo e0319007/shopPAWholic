@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -42,8 +43,9 @@ public class ForumPost implements Serializable {
     private boolean deleted;
     
     @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
     private Customer customer;
-    @OneToMany
+    @OneToMany(mappedBy = "forumPost")
     private List<Comment> comments;
 
     

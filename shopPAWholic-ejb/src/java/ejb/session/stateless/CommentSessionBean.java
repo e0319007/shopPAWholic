@@ -5,7 +5,9 @@
  */
 package ejb.session.stateless;
 
+import com.sun.org.apache.bcel.internal.generic.F2D;
 import entity.Comment;
+import entity.Customer;
 import entity.ForumPost;
 import java.util.List;
 import java.util.Set;
@@ -44,9 +46,17 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
 
     @Override
-    public Comment createNewComment(Comment comment) throws CreateNewCommentException, InputDataValidationException {
+    public Comment createNewComment(Comment comment, Long customerId, Long forumPostId) throws CreateNewCommentException, InputDataValidationException {
         Set<ConstraintViolation<Comment>> constraintViolations;
         constraintViolations = validator.validate(comment);
+        
+        Customer customer = em.find(Customer.class, customerId);
+        customer.getComments().add(comment);
+        comment.setCustomer(customer);
+        
+        ForumPost forumPost = em.find(ForumPost.class, forumPostId);
+        forumPost.getComments().add(comment);
+        comment.setForumPost(forumPost);
         
         if (constraintViolations.isEmpty()) {
             try {
@@ -89,7 +99,7 @@ public class CommentSessionBean implements CommentSessionBeanLocal {
     }
     
     private void loopComment(Comment comment) {
-        for (Comment c:comment.getComments()) 
+        for (Comment c:comment.getChildComments()) 
             loopComment(c);
     }
     

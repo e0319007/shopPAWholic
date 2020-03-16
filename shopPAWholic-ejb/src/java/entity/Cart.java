@@ -38,7 +38,7 @@ public class Cart implements Serializable {
     @OneToOne (fetch = FetchType.LAZY)
     private Customer customer;
     
-    @OneToMany
+    @OneToMany(mappedBy = "cart")
     private List<Listing> listings;
 
     public Cart() {

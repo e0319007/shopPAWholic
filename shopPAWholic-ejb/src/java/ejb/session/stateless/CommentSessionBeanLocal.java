@@ -20,8 +20,7 @@ import util.exception.InputDataValidationException;
 @Local
 public interface CommentSessionBeanLocal {
 
-    public Comment createNewComment(Comment comment) throws CreateNewCommentException, InputDataValidationException;
-
+    
     public void updateComment(Comment comment) throws InputDataValidationException;
 
     public void deleteComment(Long commentId) throws CommentNotFoundException;
@@ -29,5 +28,7 @@ public interface CommentSessionBeanLocal {
     public List<Comment> retrieveCommentsByForumPost(Long id) throws ForumPostNotFoundException;
 
     public Comment retrieveCommentById(Long id) throws CommentNotFoundException;
+
+    public Comment createNewComment(Comment comment, Long customerId, Long forumPostId) throws CreateNewCommentException, InputDataValidationException;
     
 }

@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -38,11 +39,13 @@ public class Comment implements Serializable {
     private boolean deleted;
     
     @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
     private Customer customer;
     @ManyToOne(optional = true)
+    @JoinColumn(nullable = false)
     private ForumPost forumPost;
     @OneToMany
-    private List<Comment> comments;
+    private List<Comment> childComments;
 
     public Comment() {
         deleted = false;
@@ -56,7 +59,7 @@ public class Comment implements Serializable {
         this.content = content;
         this.customer = customer;
         this.forumPost = forumPost;
-        this.comments = comments;
+        this.childComments = comments;
     }
     
     public Long getCommentId() {
@@ -177,17 +180,17 @@ public class Comment implements Serializable {
     }
 
     /**
-     * @return the comments
+     * @return the childComments
      */
-    public List<Comment> getComments() {
-        return comments;
+    public List<Comment> getChildComments() {
+        return childComments;
     }
 
     /**
-     * @param comments the comments to set
+     * @param childComments the childComments to set
      */
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setChildComments(List<Comment> childComments) {
+        this.childComments = childComments;
     }
     
 }

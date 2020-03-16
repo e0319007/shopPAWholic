@@ -39,10 +39,12 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     @Override
-    public Review createNewReview(Review review) throws CreateNewReviewException, InputDataValidationException {
+    public Review createNewReview(Review review, Long listingId) throws CreateNewReviewException, InputDataValidationException {
         Set<ConstraintViolation<Review>> constraintViolations;
         constraintViolations = validator.validate(review);
-        
+        Listing listing = em.find(Listing.class, listingId);
+        listing.getReviews().add(review);
+        review.setListing(listing);
         if (constraintViolations.isEmpty()) {
             try {
                em.persist(review);
