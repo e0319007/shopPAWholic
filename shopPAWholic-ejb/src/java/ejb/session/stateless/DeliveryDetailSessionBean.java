@@ -58,7 +58,7 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         }
     }
     
-    
+    //add something about changing enum of delivery detail under the update delivery detail
     @Override
     public void updateDeliveryDetail(DeliveryDetail deliveryDetail) throws InputDataValidationException {
         Set<ConstraintViolation<DeliveryDetail>>constraintViolations = validator.validate(deliveryDetail);
@@ -85,10 +85,10 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         else throw new DeliveryDetailNotFoundException("Delivery Detail ID " + id + " does not exist!");
     }
     
-    //add something about changing enum of delivery detail i guess
+
     
     //also retrieve delivery details by customer
-    
+    // 
 //    public List<DeliveryDetail> retrieveDeliveryDetailByCustomer(Long customerId) throws DeliveryDetailNotFoundException, CustomerNotFoundException {
 //        Customer customer = em.find(Customer.class, customerId);
 //        if (customer != null) {

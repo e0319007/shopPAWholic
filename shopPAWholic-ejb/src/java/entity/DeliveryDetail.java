@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import util.enumeration.DeliveryMethod;
 
 /**
  *
@@ -40,10 +41,9 @@ public class DeliveryDetail implements Serializable {
     private Date date;
     @NotNull
     private String statusLists;
-    
-    //add relationship to enum DeliveryMethod
-    /*@Enumerated(EnumType.STRING)
-    private DeliveryMethod deliveryMethod;*/
+
+    @Enumerated(EnumType.STRING)
+    private DeliveryMethod deliveryMethod;
     
     @ManyToOne(optional = true)
     private Customer customer;
@@ -164,6 +164,20 @@ public class DeliveryDetail implements Serializable {
      */
     public void setStatusLists(String statusLists) {
         this.statusLists = statusLists;
+    }
+
+    /**
+     * @return the deliveryMethod
+     */
+    public DeliveryMethod getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    /**
+     * @param deliveryMethod the deliveryMethod to set
+     */
+    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
     }
     
 }
