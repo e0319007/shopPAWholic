@@ -25,7 +25,7 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "customer")
     private List<BilingDetail> billingDetails;
     @OneToMany(mappedBy = "customer")
-    private List<Order> orders;
+    private List<OrderEntity> orders;
     @OneToOne
     private Cart cart;
     @OneToMany(mappedBy = "customer")
@@ -75,11 +75,11 @@ public class Customer extends User implements Serializable {
         this.billingDetails = billingDetails;
     }
 
-    public List<Order> getOrders() {
+    public List<OrderEntity> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
     }
 

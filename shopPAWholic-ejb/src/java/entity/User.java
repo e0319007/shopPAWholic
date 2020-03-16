@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ import util.security.CryptographicHelper;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
 
-public class User implements Serializable{
+public abstract class User implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -37,10 +36,11 @@ public class User implements Serializable{
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String salt;
+    @NotNull
+    private boolean isFlag;
 
     public User() {
         this.salt = CryptographicHelper.getInstance().generateRandomString(32);
-
     }
     
     public Long getUserId() {
@@ -81,6 +81,14 @@ public class User implements Serializable{
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public boolean isIsFlag() {
+        return isFlag;
+    }
+
+    public void setIsFlag(boolean isFlag) {
+        this.isFlag = isFlag;
     }
 
     @Override

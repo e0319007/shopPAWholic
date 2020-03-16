@@ -59,9 +59,6 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
-    //do i need a add listing to cart method? i alr just manually added a listing to the cart in the managed bean but not sure
-    //if it will be persisted even tho i didnt call a SB method
-    
     @Override
     public void deleteCart(Long id) throws CartNotFoundException {
         Cart cart = getCartById(id);

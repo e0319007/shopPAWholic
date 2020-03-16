@@ -19,9 +19,8 @@ import util.exception.InputDataValidationException;
 public interface CartSessionBeanLocal {
 
     public Cart createNewCart(Cart cart) throws CreateNewCartException, InputDataValidationException;
-    
-    public void deleteCart(Long id) throws CartNotFoundException;
 
+    public void deleteCart(Long id) throws CartNotFoundException;
     public Cart getCartById(Long id) throws CartNotFoundException;
     
 }

@@ -46,6 +46,8 @@ public class AdvertisementManagedBean {
     //For updating advertisements
     private Advertisement selectedAdvertisementToUpdate;
     
+    private Long serviceProviderId;
+    
 
     /**
      * Creates a new instance of AdvertisementManagedBean
@@ -71,7 +73,7 @@ public class AdvertisementManagedBean {
     public void createNewAdvertisements(ActionEvent event) {
         try {
             Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
-            advertisementSessionBeanLocal.createNewAdvertisement(advertisement);
+            advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId);
         } catch (CreateNewAdvertisementException ex) {
             Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InputDataValidationException ex) {

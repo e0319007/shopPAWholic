@@ -37,8 +37,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
 
-    @EJB(name = "CustomerSessionBeanLocal")
-    private CustomerSessionBean customerSessionBeanLocal;
+    //@EJB(name = "CustomerSessionBeanLocal")
+    //private CustomerSessionBean customerSessionBeanLocal;
     
     
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")

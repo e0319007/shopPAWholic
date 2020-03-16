@@ -190,5 +190,4 @@ public class OrderEntity implements Serializable {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
-    
 }

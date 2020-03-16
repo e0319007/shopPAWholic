@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -72,11 +71,19 @@ public class Listing implements Serializable {
     @ManyToMany(mappedBy="listings")
     private List<Tag> tags; 
 
+    @OneToMany
+    private List<OrderEntity> orders;
+    
     public Listing() {
         //quantityOnHand = 0;
         unitPrice = new BigDecimal("0.00");
         tags = new ArrayList<>();
+
         reviews = new ArrayList<>();
+
+        orders = new ArrayList<>();
+        
+
     }
 
     public Listing(String skuCode, String name, String description, Integer quantityOnHand, BigDecimal unitPrice) {
@@ -251,12 +258,29 @@ public class Listing implements Serializable {
         this.tags = tags;
     }
 
+
     public List<Review> getReviews() {
         return reviews;
     }
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+    /*public OrderEntity getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderEntity order) {
+        this.order = order;
+    }*/
+
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
+
     }
     
 }

@@ -56,6 +56,8 @@ public class EventManagedBean {
     @URL
     private String url;
     
+    private Long serviceProviderId;
+    
     /**
      * Filtering
      */
@@ -72,7 +74,7 @@ public class EventManagedBean {
     public void createNewEvent(ActionEvent event) {
         try {
             Event eventToCreate = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
-            eventSessionBeanLocal.createNewEvent(eventToCreate);
+            eventSessionBeanLocal.createNewEvent(eventToCreate,serviceProviderId);
         } catch (CreateNewEventException ex) {
             Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InputDataValidationException ex) {
@@ -180,6 +182,14 @@ public class EventManagedBean {
 
     public void setFilterByServiceProvider(List<Event> filterByServiceProvider) {
         this.filterByServiceProvider = filterByServiceProvider;
+    }
+
+    public Long getServiceProviderId() {
+        return serviceProviderId;
+    }
+
+    public void setServiceProviderId(Long serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
     }
     
     
