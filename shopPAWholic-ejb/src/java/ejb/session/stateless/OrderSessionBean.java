@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.Order;
+import entity.OrderEntity;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -38,8 +38,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
     
     @Override
-    public Order createNewOrder (Order newOrder) throws CreateNewOrderException, InputDataValidationException{
-        Set<ConstraintViolation<Order>> constraintViolations;
+    public OrderEntity createNewOrder (OrderEntity newOrder) throws CreateNewOrderException, InputDataValidationException{
+        Set<ConstraintViolation<OrderEntity>> constraintViolations;
         constraintViolations = validator.validate(newOrder);
         
         if (constraintViolations.isEmpty()) {
@@ -58,8 +58,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
     
     @Override
-    public Order getOrderById(Long orderId) throws OrderNotFoundException {
-        Order order = em.find(Order.class, orderId);
+    public OrderEntity getOrderById(Long orderId) throws OrderNotFoundException {
+        OrderEntity order = em.find(OrderEntity.class, orderId);
         if (order != null) {
             return order;
         } else {
@@ -68,15 +68,15 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
     
     @Override
-    public List<Order> retrieveAllOrders() {
+    public List<OrderEntity> retrieveAllOrders() {
         Query query = em.createQuery("SELECT o FROM Order o ORDER BY o.orderId");
-        List<Order> orders = query.getResultList();
+        List<OrderEntity> orders = query.getResultList();
         
         return orders;
     }
    
 
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Order>>constraintViolations) {
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<OrderEntity>>constraintViolations) {
         String msg = "Input data validation error!:";    
         for(ConstraintViolation constraintViolation:constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();

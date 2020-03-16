@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.Order;
+import entity.OrderEntity;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewOrderException;
@@ -19,9 +19,9 @@ import util.exception.OrderNotFoundException;
 @Local
 public interface OrderSessionBeanLocal {
     
-    public Order createNewOrder (Order newOrder) throws CreateNewOrderException, InputDataValidationException;
+    public OrderEntity createNewOrder (OrderEntity newOrder) throws CreateNewOrderException, InputDataValidationException;
 
-    public Order getOrderById(Long orderId) throws OrderNotFoundException;
+    public OrderEntity getOrderById(Long orderId) throws OrderNotFoundException;
     
-    public List<Order> retrieveAllOrders();
+    public List<OrderEntity> retrieveAllOrders();
 }

@@ -25,13 +25,14 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import util.enumeration.OrderStatus;
 
 /**
  *
  * @author EileenLeong
  */
 @Entity
-public class Order implements Serializable {
+public class OrderEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,9 +48,9 @@ public class Order implements Serializable {
     @NotNull
     private Date orderDate;
     
-    /*@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
-    */ //add getter and setter
+    
     
     @ManyToOne(optional = false) 
     @JoinColumn(nullable = false) 
@@ -61,11 +62,11 @@ public class Order implements Serializable {
     @OneToMany(mappedBy="order")
     private List<Listing> listings; 
 
-    public Order() {
+    public OrderEntity() {
         listings = new ArrayList<>();
     }
 
-    public Order(BigDecimal totalPrice, Date orderDate) {
+    public OrderEntity(BigDecimal totalPrice, Date orderDate) {
         this();
         this.totalPrice = totalPrice;
         this.orderDate = orderDate;
@@ -91,10 +92,10 @@ public class Order implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the orderId fields are not set
-        if (!(object instanceof Order)) {
+        if (!(object instanceof OrderEntity)) {
             return false;
         }
-        Order other = (Order) object;
+        OrderEntity other = (OrderEntity) object;
         if ((this.orderId == null && other.orderId != null) || (this.orderId != null && !this.orderId.equals(other.orderId))) {
             return false;
         }
@@ -174,6 +175,20 @@ public class Order implements Serializable {
      */
     public void setDeliveryDetail(DeliveryDetail deliveryDetail) {
         this.deliveryDetail = deliveryDetail;
+    }
+
+    /**
+     * @return the orderStatus
+     */
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    /**
+     * @param orderStatus the orderStatus to set
+     */
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
     
 }
