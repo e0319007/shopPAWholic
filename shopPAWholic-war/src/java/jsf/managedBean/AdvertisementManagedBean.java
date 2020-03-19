@@ -31,7 +31,7 @@ import java.io.Serializable;
  */
 @Named(value = "advertisementManagedBean")
 @ViewScoped
-public class AdvertisementManagedBean {
+public class AdvertisementManagedBean implements Serializable{
 
     @EJB(name = "AdvertisementSessionBeanLocal")
     private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;
