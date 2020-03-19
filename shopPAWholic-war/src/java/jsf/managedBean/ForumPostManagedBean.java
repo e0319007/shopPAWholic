@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.annotation.PostConstruct;
+import java.io.Serializable;
 
 /**
  *
@@ -25,7 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Named(value = "forumPostManagedBean")
 @ViewScoped
-public class ForumPostManagedBean {
+public class ForumPostManagedBean implements Serializable{
 
     @EJB(name = "ForumPostSessionBeanLocal")
     private ForumPostSessionBeanLocal forumPostSessionBeanLocal;
@@ -52,6 +54,11 @@ public class ForumPostManagedBean {
     List<ForumPost> forumPosts;
     
     public ForumPostManagedBean() {
+    }
+    
+    @PostConstruct
+    public void PostConstruct() {
+        
     }
     
 }
