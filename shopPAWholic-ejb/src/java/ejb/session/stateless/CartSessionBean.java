@@ -75,6 +75,7 @@ public class CartSessionBean implements CartSessionBeanLocal {
         }
     }
     
+    @Override
     public Cart getCartByCustomerId(Long customerId) {
         Query q = em.createQuery("SELECT c FROM Cart c WHERE c.customer.userId = :inCustomerId");
         Cart cart = (Cart) q.getSingleResult();
@@ -83,6 +84,7 @@ public class CartSessionBean implements CartSessionBeanLocal {
         
     }
     
+    @Override
     public void addListingToCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException {
         Listing listing = em.find(Listing.class, listingId);
         Cart cart = getCartById(cartId);
@@ -90,6 +92,7 @@ public class CartSessionBean implements CartSessionBeanLocal {
             cart.getListings().add(listing);
     }
     
+    @Override
     public void deleteListingFromCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException {
         Listing listing = em.find(Listing.class, listingId);
         Cart cart = getCartById(cartId);

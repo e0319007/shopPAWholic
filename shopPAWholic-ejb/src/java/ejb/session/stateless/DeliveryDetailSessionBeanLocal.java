@@ -25,4 +25,6 @@ public interface DeliveryDetailSessionBeanLocal {
     public void deleteDeliveryDetail(Long id) throws DeliveryDetailNotFoundException;
     
     public DeliveryDetail retrieveDeliveryDetailById(Long id) throws DeliveryDetailNotFoundException;
+    
+    public void setDeliveryStatus(String status, long deliveryStatusId);
 }
