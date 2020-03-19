@@ -61,6 +61,7 @@ public class ForumPostManagedBean implements Serializable{
     
     public void createNewForumPost(ActionEvent event) {
         ForumPost forumPost = new ForumPost(content, date, title);
+        date =  new Date();
         try {
             forumPostSessionBeanLocal.createNewForumPost(forumPost, customer.getUserId());
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New forum post created successfully! (Id: " + forumPost.getForumId()+ ")", null));
