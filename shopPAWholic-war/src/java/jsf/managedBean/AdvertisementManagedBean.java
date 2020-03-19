@@ -23,6 +23,7 @@ import javax.faces.view.ViewScoped;
 import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
+import java.io.Serializable;
 
 /**
  *

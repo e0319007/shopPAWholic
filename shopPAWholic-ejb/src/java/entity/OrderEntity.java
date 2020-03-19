@@ -20,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
@@ -59,7 +60,7 @@ public class OrderEntity implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private DeliveryDetail deliveryDetail;
     
-    @OneToMany(mappedBy="order")
+    @ManyToMany(mappedBy="orders")
     private List<Listing> listings; 
     
     @ManyToOne(optional = false)
