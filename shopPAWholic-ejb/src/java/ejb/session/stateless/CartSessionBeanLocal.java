@@ -22,5 +22,8 @@ public interface CartSessionBeanLocal {
 
     public void deleteCart(Long id) throws CartNotFoundException;
     public Cart getCartById(Long id) throws CartNotFoundException;
+    public Cart getCartByCustomerId(Long customerId);
+    public void addListingToCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException;
+    public void deleteListingFromCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException;
     
 }

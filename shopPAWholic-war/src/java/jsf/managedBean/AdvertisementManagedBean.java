@@ -23,6 +23,7 @@ import javax.faces.view.ViewScoped;
 import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
+import java.io.Serializable;
 
 /**
  *
@@ -30,7 +31,7 @@ import util.exception.InputDataValidationException;
  */
 @Named(value = "advertisementManagedBean")
 @ViewScoped
-public class AdvertisementManagedBean {
+public class AdvertisementManagedBean implements Serializable{
 
     @EJB(name = "AdvertisementSessionBeanLocal")
     private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;

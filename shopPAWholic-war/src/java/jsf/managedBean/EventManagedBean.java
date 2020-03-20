@@ -23,6 +23,8 @@ import util.exception.CreateNewEventException;
 import util.exception.EventNameExistsException;
 import util.exception.EventNotFoundException;
 import util.exception.InputDataValidationException;
+import javax.annotation.PostConstruct;
+import java.io.Serializable;
 
 /**
  *
@@ -30,7 +32,7 @@ import util.exception.InputDataValidationException;
  */
 @Named(value = "eventManagedBean")
 @ViewScoped
-public class EventManagedBean {
+public class EventManagedBean implements Serializable{
 
     @EJB(name = "EventSessionBeanLocal")
     private EventSessionBeanLocal eventSessionBeanLocal;
@@ -67,6 +69,7 @@ public class EventManagedBean {
     public EventManagedBean() {
     }
     
+    @PostConstruct
     public void PostConstruct() {
         events = eventSessionBeanLocal.retrieveAllEvent();
     }

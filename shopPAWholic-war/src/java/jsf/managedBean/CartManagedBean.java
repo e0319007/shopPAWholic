@@ -58,6 +58,8 @@ public class CartManagedBean implements Serializable{
 //        cart.setCustomer(em.find(Customer.class, customerId));
     }
     
+    //technically cart will be created with customer soooooooooooooooooo idt need a create cart
+    
     //salesTransactionEntity not actl needed? is basically the same as the checkoutProductPOJO
     
 //    @PostConstruct
