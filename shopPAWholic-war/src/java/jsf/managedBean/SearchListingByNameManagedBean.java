@@ -84,6 +84,7 @@ public class SearchListingByNameManagedBean implements Serializable{
      */
     public void setSearchStr(String searchStr) {
         this.searchStr = searchStr;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listingSearchStr", searchStr);
     }
 
     /**
