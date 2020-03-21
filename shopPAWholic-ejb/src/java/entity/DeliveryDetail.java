@@ -58,7 +58,7 @@ public class DeliveryDetail implements Serializable {
         statusLists = new ArrayList<>();
     }
 
-    public DeliveryDetail(String address, String contactNumber, Date date, DeliveryMethod deliveryMethod) {
+    public DeliveryDetail(String address, String contactNumber, Date date, DeliveryMethod deliveryMethod, BigDecimal deliveryPrice) {
         this();
        
         this.address = address;
