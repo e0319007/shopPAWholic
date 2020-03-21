@@ -8,7 +8,6 @@ package jsf.managedBean;
 import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import entity.Advertisement;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
