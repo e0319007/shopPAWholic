@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Listing;
 import entity.Review;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,5 +31,9 @@ public interface ReviewSessionBeanLocal {
     public Review createNewReview(Review review, Long listingId, Long customerId) throws CreateNewReviewException, InputDataValidationException;
 
     public List<Review> filterReviewByImageAndListingId(Long listingId);
+
+    public List<Review> getReviewsRelatedGivenSellerId(Long sellerId);
+
+    public List<Review> filterReviewsByListing(Long listingId);
     
 }

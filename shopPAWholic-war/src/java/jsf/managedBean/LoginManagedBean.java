@@ -6,12 +6,15 @@
 package jsf.managedBean;
 
 import ejb.session.stateless.UserSessionBeanLocal;
-import entity.Customer;
+import entity.User;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.event.ActionEvent;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -26,19 +29,22 @@ public class LoginManagedBean {
     private String email;
     private String password;
 
-    /**
-     * Creates a new instance of LoginManagedBean
-     */
-    
-    public LoginManagedBean() {
+  
+    public void login(javafx.event.ActionEvent event) throws IOException{
+        try{
+            User currentUser = userSessionBeanLocal.userLogin(email, password);
+            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
+            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/afterLogin.xhtml");
+        } catch (InvalidLoginCredentialException ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
+        }
     }
     
-    public void clientLogin(ActionEvent event) throws IOException { 
-        
-    }
-    
-    public void adminLogin(ActionEvent event) throws IOException {
-        
+    public void logout(javafx.event.ActionEvent event) throws IOException {
+        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/login.xhtml");
     }
     
 }

@@ -48,8 +48,7 @@ public abstract class User implements Serializable{
         this();
         this.email = email;
         this.contactNumber = contactNumber;
-        this.password = password;
-        
+        setPassword(password);
     }
     
     public Long getUserId() {
@@ -85,7 +84,11 @@ public abstract class User implements Serializable{
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        if(password != null) {
+            this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+        } else {
+            this.password = null;
+        }
     }
 
     public void setSalt(String salt) {
