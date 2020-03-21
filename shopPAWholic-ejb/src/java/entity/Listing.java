@@ -72,7 +72,7 @@ public class Listing implements Serializable {
     private List<Tag> tags; 
     
 
-    @OneToMany
+    @ManyToMany
     private List<OrderEntity> orders;
     
     @ManyToOne(optional = false)

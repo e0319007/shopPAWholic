@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import java.io.Serializable;
 import javax.inject.Inject;
 
 /**
@@ -21,7 +22,7 @@ import javax.inject.Inject;
  */
 @Named(value = "searchListingByNameManagedBean")
 @ViewScoped
-public class SearchListingByNameManagedBean {
+public class SearchListingByNameManagedBean implements Serializable{
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -83,6 +84,7 @@ public class SearchListingByNameManagedBean {
      */
     public void setSearchStr(String searchStr) {
         this.searchStr = searchStr;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listingSearchStr", searchStr);
     }
 
     /**

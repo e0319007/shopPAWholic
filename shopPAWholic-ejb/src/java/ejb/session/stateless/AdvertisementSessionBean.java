@@ -31,7 +31,7 @@ import util.exception.InputDataValidationException;
  * @author Shi Zhan
  */
 @Stateless
-public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal {
+public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;

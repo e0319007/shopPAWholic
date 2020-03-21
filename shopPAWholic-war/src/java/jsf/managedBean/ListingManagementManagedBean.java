@@ -7,10 +7,14 @@ package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
+import ejb.session.stateless.OrderSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import entity.Listing;
 import entity.Tag;
 import entity.Category;
+import entity.OrderEntity;
+import entity.Review;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,6 +44,12 @@ import util.exception.ListingSkuCodeExistException;
 
 public class ListingManagementManagedBean implements Serializable {
 
+    @EJB(name = "OrderSessionBeanLocal")
+    private OrderSessionBeanLocal orderSessionBeanLocal;
+
+    @EJB(name = "ReviewSessionBeanLocal")
+    private ReviewSessionBeanLocal reviewSessionBeanLocal;
+    
     @EJB(name = "TagSessionBeanLocal")
     private TagSessionBeanLocal tagSessionBeanLocal;
 
@@ -48,6 +58,8 @@ public class ListingManagementManagedBean implements Serializable {
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
+    
+    
     
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
@@ -62,7 +74,9 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Tag> tags;
     private Listing selectedListingToUpdate;
     private Long categoryIdUpdate;
-    private List<Long> tagIdsUpdate; 
+    private List<Long> tagIdsUpdate;
+    private List<Review> reviews;
+    private List<OrderEntity> orders;
 
     /**
      * Creates a new instance of ProductManagementManagedBean
@@ -76,6 +90,8 @@ public class ListingManagementManagedBean implements Serializable {
         setListings(listingSessionBeanLocal.retrieveAllListings());
         setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
         setTags(tagSessionBeanLocal.retrieveAllTags());
+        //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
+        setOrders(orderSessionBeanLocal.retrieveAllOrders());
     }
     
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -340,6 +356,34 @@ public class ListingManagementManagedBean implements Serializable {
      */
     public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
         this.viewListingManagedBean = viewListingManagedBean;
+    }
+
+    /**
+     * @return the reviews
+     */
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    /**
+     * @param reviews the reviews to set
+     */
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    /**
+     * @return the orders
+     */
+    public List<OrderEntity> getOrders() {
+        return orders;
+    }
+
+    /**
+     * @param orders the orders to set
+     */
+    public void setOrders(List<OrderEntity> orders) {
+        this.orders = orders;
     }
     
 }
