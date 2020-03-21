@@ -23,6 +23,8 @@ import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -70,10 +72,11 @@ public class AdvertisementManagedBean implements Serializable{
         try {
             Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
             advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId, ccNum);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New forum created successfully! (Id: " + advertisement.getAdvertisementId()+ ")", null));
         } catch (CreateNewAdvertisementException ex) {
-            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the advertisement!", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input validation error: " + ex.getMessage(), null));
         }
     }
     
@@ -81,8 +84,9 @@ public class AdvertisementManagedBean implements Serializable{
         try {
             Advertisement advertisementToDelete = (Advertisement) event.getComponent().getAttributes().get("AdvertisementToDelete");
             advertisementSessionBeanLocal.deleteAdvertisement(advertisementToDelete.getAdvertisementId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Forum deleted successfully! (Id: " + advertisementToDelete.getAdvertisementId()+ ")", null));
         } catch (AdvertisementNotFoundException ex) {
-            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the advertisement!", null));
         }
     }
     
@@ -90,8 +94,9 @@ public class AdvertisementManagedBean implements Serializable{
         try {
             selectedAdvertisementToUpdate = (Advertisement) event.getComponent().getAttributes().get("AdvertisementToUpdate");
             advertisementSessionBeanLocal.updateAdvertisement(selectedAdvertisementToUpdate);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Forum updated successfully! (Id: " + selectedAdvertisementToUpdate.getAdvertisementId()+ ")", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input validation error: " + ex.getMessage(), null));
         }
         
     }

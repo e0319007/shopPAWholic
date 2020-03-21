@@ -32,7 +32,7 @@ public class LoginManagedBean {
   
     public void login(javafx.event.ActionEvent event) throws IOException{
         try{
-            User currentUser = userSessionBeanLocal.userLogin(email, password);
+            User currentUser = userSessionBeanLocal.userLogin(getEmail(), getPassword());
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
@@ -45,6 +45,22 @@ public class LoginManagedBean {
     public void logout(javafx.event.ActionEvent event) throws IOException {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/login.xhtml");
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package jsf.managedBean;
 
+import POJO.CheckoutListingPOJO;
 import entity.OrderEntity;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -19,7 +20,9 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 public class ViewOrderManagedBean implements Serializable{
     
+    
     private OrderEntity orderToView;
+    //private List<CheckoutListingPOJO> checkoutList;
     /**
      * Creates a new instance of ViewOrderManagedBean
      */

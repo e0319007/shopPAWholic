@@ -90,6 +90,10 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                 em.persist(newOrder);
                 em.flush();
                 
+                for (Listing l : listings) {
+                    l.setQuantityOnHand(l.getQuantityOnHand() - 1);
+                }
+                
                 return newOrder;
             } catch (Exception ex) {
                 throw new CreateNewOrderException("An unexpected error has occurred: " + ex.getMessage());

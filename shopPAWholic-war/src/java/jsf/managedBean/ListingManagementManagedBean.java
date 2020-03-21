@@ -17,6 +17,7 @@ import entity.OrderEntity;
 import entity.Review;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
@@ -63,7 +64,13 @@ public class ListingManagementManagedBean implements Serializable {
     
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
- 
+    
+    private String name;
+    private String description;
+    private String skuCode;
+    private BigDecimal unitPrice; 
+    private List<String> pictures;
+    private Integer quantityAtHand;
     
     private List<Listing> listings;
     private List<Listing> filteredListings;
@@ -77,12 +84,14 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Long> tagIdsUpdate;
     private List<Review> reviews;
     private List<OrderEntity> orders;
+    
 
     /**
      * Creates a new instance of ProductManagementManagedBean
      */
     public ListingManagementManagedBean() {
         newListing = new Listing();
+        List<String> pictures = new ArrayList<>();
     }
     
     @PostConstruct 
@@ -106,7 +115,9 @@ public class ListingManagementManagedBean implements Serializable {
             setCategoryIdNew(null);
         }
         try {
-            Listing l = listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew());
+            Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
+            listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
+            //listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew(), getPictures());
             getListings().add(l);
             
             if(getFilteredListings() != null) {
@@ -384,6 +395,90 @@ public class ListingManagementManagedBean implements Serializable {
      */
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+    }
+
+    /**
+     * @return the pictures
+     */
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    /**
+     * @param pictures the pictures to set
+     */
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the skuCode
+     */
+    public String getSkuCode() {
+        return skuCode;
+    }
+
+    /**
+     * @param skuCode the skuCode to set
+     */
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+
+    /**
+     * @return the unitPrice
+     */
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    /**
+     * @param unitPrice the unitPrice to set
+     */
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    /**
+     * @return the quantityAtHand
+     */
+    public Integer getQuantityAtHand() {
+        return quantityAtHand;
+    }
+
+    /**
+     * @param quantityAtHand the quantityAtHand to set
+     */
+    public void setQuantityAtHand(Integer quantityAtHand) {
+        this.quantityAtHand = quantityAtHand;
     }
     
 }
