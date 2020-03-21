@@ -9,6 +9,11 @@ import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 import entity.DeliveryDetail;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,6 +22,7 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import util.enumeration.DeliveryMethod;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.DeliveryDetailNotFoundException;
 import util.exception.InputDataValidationException;
@@ -37,12 +43,19 @@ public class DeliveryDetailManagedBean implements Serializable{
     
     private DeliveryDetail newDeliveryDetail;
     private DeliveryDetail deliveryDetailToUpdate;
-
+    
+    private String address;
+    private String contactNumber;
+    private Date deliveryDate;
+    private List<String> statusLists;
+    private BigDecimal deliveryPrice;
+    private DeliveryMethod deliveryMethod;
+    
     /**
      * Creates a new instance of DeliveryDetailManagementManagedBean
      */
     public DeliveryDetailManagedBean() {
-        newDeliveryDetail = new DeliveryDetail();
+//        newDeliveryDetail = new DeliveryDetail();
     }
     
     @PostConstruct
@@ -58,15 +71,10 @@ public class DeliveryDetailManagedBean implements Serializable{
     
     public void createDeliveryDetail(ActionEvent event) {
           try {
-            DeliveryDetail dd = deliveryDetailSessionBeanLocal.createNewDeliveryDetail(getNewDeliveryDetail());
-            setNewDeliveryDetail(new DeliveryDetail());
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Delivery Detail created successfully (Delivery ID: " + dd.getDeliveryDetailId() + ")", null));
-            
+            DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod);
+            deliveryDetailSessionBeanLocal.createNewDeliveryDetail(newDeliveryDetail);
         } catch (InputDataValidationException | CreateNewDeliveryDetailException ex) {
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new delivery detail: " + ex.getMessage(), null));
-        
+            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -76,13 +84,11 @@ public class DeliveryDetailManagedBean implements Serializable{
     
     public void updateDeliveryDetail(ActionEvent event) {
         try {
-            deliveryDetailSessionBeanLocal.updateDeliveryDetail(getDeliveryDetailToUpdate());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail updated successfully", null));
+            deliveryDetailToUpdate = (DeliveryDetail) event.getComponent().getAttributes().get("DeliveryDetailToUpdate");
+            deliveryDetailSessionBeanLocal.updateDeliveryDetail(deliveryDetailToUpdate);
         } catch (InputDataValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating Delivery Detail: " + ex.getMessage(), null));
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
-        }
+            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
     public void deleteDeliveryDetail(ActionEvent event) {
@@ -90,13 +96,9 @@ public class DeliveryDetailManagedBean implements Serializable{
             DeliveryDetail deliveryDetailToDelete = (DeliveryDetail)event.getComponent().getAttributes().get("deliveryDetailToDelete");
             deliveryDetailSessionBeanLocal.deleteDeliveryDetail(deliveryDetailToDelete.getDeliveryDetailId());
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail deleted successfully", null));
-            
         } catch (DeliveryDetailNotFoundException ex){
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product details: " + ex.getMessage(), null));
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
-        }
+            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
     
 
