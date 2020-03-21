@@ -1,7 +1,7 @@
 package jsf.managedBean;
 
-import ejb.session.stateless.UserSessionBeanLocal;
-import entity.User;
+import ejb.session.stateless.AdminSessionBeanLocal;
+import entity.Admin;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
@@ -12,25 +12,26 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import util.exception.InvalidLoginCredentialException;
 
-@Named(value = "customerLoginManagedBean")
+@Named(value = "adminLoginManagedBean")
 @RequestScoped
-public class UserLoginManagedBean {
+public class AdminLoginManagedBean {
 
-    @EJB(name = "UserSessionBeanLocal")
-    private UserSessionBeanLocal userSessionBeanLocal;
-
+    @EJB(name = "AdminSessionBeanLocal")
+    private AdminSessionBeanLocal adminSessionBeanLocal;
+    
     private String username;
     private String password;
-    
-    public UserLoginManagedBean() {
+
+    public AdminLoginManagedBean() {
         
     }
+    
     public void login(ActionEvent event) throws IOException{
         try{
-            User currentUser = userSessionBeanLocal.userLogin(username, password);
+            Admin currentAdmin = adminSessionBeanLocal.adminLogin(username, password);
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentUser);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/afterLogin.xhtml");
         } catch (InvalidLoginCredentialException ex){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
@@ -57,5 +58,4 @@ public class UserLoginManagedBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
 }
