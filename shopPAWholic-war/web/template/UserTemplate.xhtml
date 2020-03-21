@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="./css/default.css"/>
+        <h:outputStylesheet name="./css/cssLayout.css"/>
+        <title>shopPAWholic</title>
+    </h:head>
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"></link>
+
+    <h:body>
+
+        <div id="top">
+            <ui:insert name="top">
+                <img id="logo" src="./resources/image/shopPAWholic.png" style="width: 200px; text-align: center; display: inline-block;"/>
+                <h:panelGrid style="display: inline-block;">
+                    <p:selectOneMenu value="#{searchEngineFilter.selectedItem}">
+                        <f:selectItems value="#{searchEngineFilter.items}"></f:selectItems>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <div class="searchArea" style="display: inline-block;">
+                    <p:inputText id="searchEngine" value="searchEngine"></p:inputText>
+                    <p:commandButton type="button" icon="ui-icon-search" />
+                </div>
+            </ui:insert>
+            <p:outputLabel value="New user?"><a href="">Register</a></p:outputLabel>
+            <h:panelGroup style="display: inline-block; float:right;">
+                <h:form>
+                    <p:inputText></p:inputText>
+                    <p:inputText></p:inputText>
+                    <p:commandButton type="button" value="Login"></p:commandButton>
+                </h:form>
+            </h:panelGroup>
+            <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" panelWidth="1450" panelHeight="313" showCaption="true"> 
+                <p:graphicImage name="#{image}" />
+            </p:galleria>
+        </div>
+
+        <div id="content" class="center_content">
+            <ui:insert name="content">
+                <!--this is to insert datagrid for each product-->
+            </ui:insert>
+        </div>
+
+        <div id="bottom">
+            <ui:insert name="bottom">
+                <p:panelGrid columns="3" layout="grid" styleClass="showcase-text-align-center">
+                    <h3>Follow us</h3>
+                    <h:outputText value="Facebook" /> 
+                    <h:outputText value="Instagram" /> 
+                    <h:outputText value="Twitter" /> 
+
+                    <h3>Submenu</h3>
+                    <h:outputText value="submenu1" /> 
+                    <h:outputText value="submenu2" /> 
+                    <h:outputText value="submenu3" /> 
+
+                    <h3>Submenu</h3>
+                    <h:outputText value="submenu1" /> 
+                    <h:outputText value="submenu2" /> 
+                    <h:outputText value="submenu3" /> 
+                </p:panelGrid>
+                <h6>&copy; 2020 shopPAWholic. All rights reserved.</h6>
+
+            </ui:insert>
+        </div>
+
+    </h:body>
+
+</html>
