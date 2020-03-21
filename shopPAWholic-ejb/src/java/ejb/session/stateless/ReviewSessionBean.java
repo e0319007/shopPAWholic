@@ -8,9 +8,11 @@ package ejb.session.stateless;
 import entity.Customer;
 import entity.Listing;
 import entity.Review;
+import entity.Seller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,7 +32,11 @@ import util.exception.ReviewNotFoundException;
 @Stateless
 public class ReviewSessionBean implements ReviewSessionBeanLocal {
 
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
+
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
+    
     private EntityManager em;
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -92,6 +98,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         return reviews;
     }
     
+    @Override
     public List<Review> filterReviewByImageAndListingId(Long listingId) {
         List<Review> reviews = filterReviewByImage();
         List<Review> reviewstoreturn = new ArrayList<>();
@@ -110,10 +117,17 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         else throw new ReviewNotFoundException("Review ID " + id + " does not exist");
     }
     
-    public List<Review> filterReviewsByListing(Listing listingId) {
+    public List<Review> filterReviewsByListing(Long listingId) {
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.listing.listingId = :inListingId");
         query.setParameter("inListingId", listingId);
         return query.getResultList();
+    }
+    
+    @Override
+    public List<Review> getReviewsRelatedGivenSellerId(Long sellerId) {
+        Query q = em.createQuery("SELECT r FROM Review r WHERE r.listing.seller.userId = :inSellerId");
+        q.setParameter("inSellerId", sellerId);
+        return q.getResultList();
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Review>>constraintViolations) {
