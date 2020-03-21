@@ -52,7 +52,7 @@ public class AdminLoginManagedBean {
     }
 
     public String getPassword() {
-        return password;
+        return password; 
     }
 
     public void setPassword(String password) {

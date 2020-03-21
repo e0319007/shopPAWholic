@@ -61,7 +61,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
     
     @Override // new billing detail initialised in this method, delivery detail added at customer side
-    public OrderEntity createNewOrder (OrderEntity newOrder, String ccNum, Long customerId, List<Listing> listings, Long sellerId, Integer quantityAtHand) throws CreateNewOrderException, InputDataValidationException{
+    public OrderEntity createNewOrder (OrderEntity newOrder, String ccNum, Long customerId, List<Listing> listings, Long sellerId) throws CreateNewOrderException, InputDataValidationException{
         Set<ConstraintViolation<OrderEntity>> constraintViolations;
         constraintViolations = validator.validate(newOrder);
         
