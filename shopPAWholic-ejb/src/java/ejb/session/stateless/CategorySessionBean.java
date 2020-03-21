@@ -169,6 +169,7 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         }
     }
     
+    @Override
     public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteCategoryException {
         Category categoryToDelete = retrieveCategoryByCategoryId(categoryId);
         

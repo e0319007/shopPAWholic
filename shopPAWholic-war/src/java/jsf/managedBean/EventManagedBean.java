@@ -5,7 +5,6 @@
  */
 package jsf.managedBean;
 
-import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.EventSessionBeanLocal;
 import entity.Event;
 import java.util.Date;
@@ -16,9 +15,6 @@ import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.URL;
 import util.exception.CreateNewEventException;
 import util.exception.EventNameExistsException;
 import util.exception.EventNotFoundException;
@@ -40,29 +36,18 @@ public class EventManagedBean implements Serializable{
     
 
     private List<Event> events;
-    /**
-     * For creating new events
-     */
-    @Size(min = 1, message = "Event name must not be empty")
-    private String eventName;
-    @Size(min = 10, message = "Event description must be more than 10 characters")
-    private String description;
-    @Size(min = 10, message = "Location must be more than 10 characters")
-    private String location;
-    @NotNull
-    private List<String> pictures;
-    @NotNull
-    private Date startDateTime;
-    @NotNull
-    private Date endDateTime;
-    @URL
-    private String url;
     
+    //for creating new events
+    private String eventName;
+    private String description;
+    private String location;
+    private List<String> pictures;
+    private Date startDateTime;
+    private Date endDateTime;
+    private String url;
     private Long serviceProviderId;
     
-    /**
-     * Filtering
-     */
+    //for filtering events
     private List<Event> filterByServiceProvider;
     
     

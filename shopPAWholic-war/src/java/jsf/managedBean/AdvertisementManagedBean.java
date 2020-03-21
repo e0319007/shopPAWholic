@@ -35,6 +35,7 @@ public class AdvertisementManagedBean implements Serializable{
 
     @EJB(name = "AdvertisementSessionBeanLocal")
     private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;
+    
     //For creating advertisements
     private List<Advertisement> advertisements;
     private String description;
@@ -45,16 +46,10 @@ public class AdvertisementManagedBean implements Serializable{
     private String url;
     private String ccNum;
     
-    //For updating advertisements
-    private Advertisement selectedAdvertisementToUpdate;
-    
     private Long serviceProviderId;
     
-
-    /**
-     * Creates a new instance of AdvertisementManagedBean
-     */
-    
+    //For updating advertisements
+    private Advertisement selectedAdvertisementToUpdate;
     
     public AdvertisementManagedBean() {
     }
@@ -72,7 +67,7 @@ public class AdvertisementManagedBean implements Serializable{
         price = price.multiply(new BigDecimal(days));
     }
     
-    public void createNewAdvertisements(ActionEvent event) { //incomplete, add my advertisment ccnum first using get attribute
+    public void createNewAdvertisements(ActionEvent event) {
         try {
             Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
             advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId, ccNum);
@@ -99,10 +94,6 @@ public class AdvertisementManagedBean implements Serializable{
         } catch (InputDataValidationException ex) {
             Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }
-    
-    public void updateAdvertisements() {
         
     }
 

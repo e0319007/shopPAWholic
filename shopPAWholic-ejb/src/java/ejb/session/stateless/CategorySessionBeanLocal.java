@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CategoryNotFoundException;
 import util.exception.CreateNewCategoryException;
+import util.exception.DeleteCategoryException;
 import util.exception.InputDataValidationException;
 import util.exception.UpdateCategoryException;
 
@@ -34,4 +35,5 @@ public interface CategorySessionBeanLocal {
 
     public void updateCategory(Category category, Long parentCategoryId) throws InputDataValidationException, CategoryNotFoundException, UpdateCategoryException;
     
+    public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteCategoryException;
 }
