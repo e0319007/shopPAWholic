@@ -6,8 +6,11 @@
 package jsf.managedBean;
 
 import entity.BilingDetail;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -33,6 +36,14 @@ public class ViewBilingDetailManagedBean implements Serializable {
     public void postConstruct(){
         
     }
+    
+    public void foo() {        
+    }
+//    
+//     public void back(ActionEvent event) throws IOException {
+//        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("DeliveryDetailIdToView", deliveryDetailIdToUpdate);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("ViewDeliveryDetails.xhtml");
+//    }
 
     /**
      * @return the bilingDetailToView

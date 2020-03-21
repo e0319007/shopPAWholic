@@ -29,6 +29,7 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "cartManagedBean")
 @ApplicationScoped
+//@SessionScoped
 public class CartManagedBean implements Serializable{
 
     @EJB(name = "CartSessionBeanLocal")
@@ -62,10 +63,10 @@ public class CartManagedBean implements Serializable{
     
     //salesTransactionEntity not actl needed? is basically the same as the checkoutProductPOJO
     
-//    @PostConstruct
-//    public void PostConstruct() {
+    @PostConstruct
+    public void PostConstruct() {
 //        listings = listingSessionBeanLocal.retrieveAllListings();
-//    }
+    }
     
     
 //    public void addListingToCart(ActionEvent event) {
@@ -88,7 +89,7 @@ public class CartManagedBean implements Serializable{
         }
         
         //checkout what's in the cart
-        //see shizhan's newTransactionWithoutStaff???
+        //means create new order right 
         
     }
      
