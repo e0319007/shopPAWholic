@@ -19,6 +19,9 @@ public class CheckoutListingPOJO {
     private int quantity;
     private String id = UUID.randomUUID().toString().substring(0, 8);
     
+    
+    //line transaction shit
+    
     public CheckoutListingPOJO(Listing listing) {
         this.listing = listing;
 //        this.quantity = quantity;
