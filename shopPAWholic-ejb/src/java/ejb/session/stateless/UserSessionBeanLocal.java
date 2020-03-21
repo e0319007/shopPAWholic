@@ -5,7 +5,15 @@
  */
 package ejb.session.stateless;
 
+import entity.User;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.DeleteUserException;
+import util.exception.InputDataValidationException;
+import util.exception.InvalidLoginCredentialException;
+import util.exception.UnknownPersistenceException;
+import util.exception.UserNotFoundException;
+import util.exception.UserUsernameExistException;
 
 /**
  *
@@ -13,5 +21,17 @@ import javax.ejb.Local;
  */
 @Local
 public interface UserSessionBeanLocal {
+
+    public User userLogin(String username, String password) throws InvalidLoginCredentialException;
+
+    public Long createNewUser(User newUser) throws UserUsernameExistException, UnknownPersistenceException, InputDataValidationException;
+
+    public User retrieveUserByUserId(Long userId) throws UserNotFoundException;
+
+    public List<User> retrieveAllUsers();
+
+    public User retrieveUserByUsername(String username) throws UserNotFoundException;
+
+    public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
     
 }
