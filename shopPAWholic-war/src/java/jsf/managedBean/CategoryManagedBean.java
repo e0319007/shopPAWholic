@@ -14,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -37,12 +39,14 @@ public class CategoryManagedBean implements Serializable {
     @EJB(name = "CategorySessionBeanLocal")
     private CategorySessionBeanLocal categorySessionBeanLocal;
     
-     private List<Category> categories;
+    private List<Category> categories;
      
     private String name;
     private String description; 
     
     private Long parentCategoryId;
+    
+    private Category categoryToUpdate;
 
     /**
      * Creates a new instance of CategoryManagedBean
@@ -56,23 +60,27 @@ public class CategoryManagedBean implements Serializable {
     }
     
     public void createNewCategory(ActionEvent event) {
+        
+        Category category = new Category(name, description);
         try {
-            Category categoryToCreate = new Category(getName(), getDescription());
-            categorySessionBeanLocal.createNewCategory(categoryToCreate, getParentCategoryId());
+            
+            categorySessionBeanLocal.createNewCategory(category, getParentCategoryId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category created successfully! (Id: " + category.getCategoryId()+ ")", null));
         } catch (CreateNewCategoryException ex) {
-            Logger.getLogger(CategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with name " + category.getName()+ "exists: " + ex.getMessage(), null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(CategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating category: " + ex.getMessage(), null));
         } 
     }
     
-    public void updateCategory(ActionEvent event) throws UpdateCategoryException, CategoryNotFoundException {
+    public void updateCategory(ActionEvent event) throws UpdateCategoryException {
         try {
-            Category categoryToUpdate = (Category) event.getComponent().getAttributes().get("CategoryToUpdate");
             categorySessionBeanLocal.updateCategory(categoryToUpdate, getParentCategoryId());
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(CategoryManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while editing category: " + ex.getMessage(), null));
+        } catch (CategoryNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with title " + categoryToUpdate.getName()+ "exists: " + ex.getMessage(), null));
+        }
     }
     
      public void deleteCategory(ActionEvent event ) throws DeleteCategoryException{
@@ -80,7 +88,7 @@ public class CategoryManagedBean implements Serializable {
             Category categoryToDelete = (Category) event.getComponent().getAttributes().get("CategoryToDelete");
             categorySessionBeanLocal.deleteCategory(categoryToDelete.getCategoryId());
         } catch (CategoryNotFoundException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with given ID is not found", null));
         }
     }
 

@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -49,14 +50,17 @@ public class Listing implements Serializable {
     @Size(max = 128, message = "Description must not be more than 128 characters")
     private String description;
     
+    @NotNull
+    private List<String> pictures;
+    
     @OneToMany(mappedBy = "listing") //sz
     private List<Review> reviews;
     
-    /*@Column(nullable = false)
+    
+    @Column(nullable = false)
     @NotNull
-    @Min(0)
     private Integer quantityOnHand;
-    */ 
+     
     
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull 
@@ -80,24 +84,25 @@ public class Listing implements Serializable {
     private Seller seller; 
     
     public Listing() {
-        //quantityOnHand = 0;
+        quantityOnHand = 0;
         unitPrice = new BigDecimal("0.00");
         tags = new ArrayList<>();
-
         reviews = new ArrayList<>();
-
         orders = new ArrayList<>();
-        
+        pictures = new ArrayList<>();
 
     }
 
-    public Listing(String skuCode, String name, String description, BigDecimal unitPrice) {
+    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, List<String> pictures, Integer quantityAtHand) {
         this();
         this.skuCode = skuCode;
         this.name = name;
         this.description = description;
         //this.quantityOnHand = quantityOnHand;
         this.unitPrice = unitPrice;
+        this.pictures = pictures;
+        this.quantityOnHand = quantityOnHand;
+        
     }
     
     public void addTag(Tag tag) {
@@ -300,6 +305,34 @@ public class Listing implements Serializable {
      */
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    /**
+     * @return the pictures
+     */
+    public List<String> getPictures() {
+        return pictures;
+    }
+
+    /**
+     * @param pictures the pictures to set
+     */
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
+    }
+
+    /**
+     * @return the quantityOnHand
+     */
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    /**
+     * @param quantityOnHand the quantityOnHand to set
+     */
+    public void setQuantityOnHand(Integer quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
     }
     
 }
