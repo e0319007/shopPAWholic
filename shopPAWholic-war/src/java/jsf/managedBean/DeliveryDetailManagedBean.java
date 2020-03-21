@@ -27,7 +27,7 @@ import util.exception.InputDataValidationException;
  */
 @Named(value = "deliveryDetailManagementManagedBean")
 @ViewScoped
-public class DeliveryDetailManagementManagedBean implements Serializable{
+public class DeliveryDetailManagedBean implements Serializable{
     
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
@@ -41,7 +41,7 @@ public class DeliveryDetailManagementManagedBean implements Serializable{
     /**
      * Creates a new instance of DeliveryDetailManagementManagedBean
      */
-    public DeliveryDetailManagementManagedBean() {
+    public DeliveryDetailManagedBean() {
         newDeliveryDetail = new DeliveryDetail();
     }
     
