@@ -24,6 +24,7 @@ import javax.faces.view.ViewScoped;
 import util.enumeration.OrderStatus;
 import util.exception.CreateNewOrderException;
 import util.exception.InputDataValidationException;
+import util.exception.OrderNotFoundException;
 
 /**
  *
@@ -71,22 +72,16 @@ public class OrderManagedBean implements Serializable{
         setListings(listingSessionBeanLocal.retrieveAllListings());
         
     }
-    public void createNewOrder(ActionEvent event) {
-        try {
-            OrderEntity order = orderSessionBeanLocal.createNewOrder(getNewOrder(), getCcNum(), getCustomerIdNew(), getListings(), getSellerIdNew());
-            getOrders().add(order);
-            
-            setNewOrder(new OrderEntity());
-            setSellerIdNew(null);
-            setCustomerIdNew(null);
-            setListingIdsNew(null);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New order created successfully! (Order Id: " + order.getOrderId() + ")", null));
-        } catch (InputDataValidationException | CreateNewOrderException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new order: " + ex.getMessage(), null));
-        }
-    }
+    
+  
+    
+    public void changeOrderStatus(ActionEvent event) {
+        OrderEntity orderStatusToChange = (OrderEntity) event.getComponent().getAttributes().get("orderStatusToChange");
+      
+        orderSessionBeanLocal.changeOrderStatus(orderStatusToChange.getOrderStatus(), getSellerIdNew());
        
+    }
+           
 
     /**
      * @return the totalPrice

@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -37,7 +39,8 @@ public class TagManagedBean implements Serializable {
     
     private Long tagId;
     private String name; 
-
+    
+     private Tag tagToUpdate;
     /**
      * Creates a new instance of TagManagedBean
      */
@@ -50,33 +53,34 @@ public class TagManagedBean implements Serializable {
     }
     
     public void createNewTag(ActionEvent event) {
+        Tag tag = new Tag(name);
         try {
-            Tag tagToCreate = new Tag(getName());
-            tagSessionBeanLocal.createNewTag(tagToCreate);
+            tagSessionBeanLocal.createNewTag(tag);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New tag created successfully! (Id: " + tag.getTagId()+ ")", null));
         } catch (CreateNewTagException ex) {
-            Logger.getLogger(TagManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tag with name " + tag.getName()+ "exists: " + ex.getMessage(), null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(TagManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating tag: " + ex.getMessage(), null));
         } 
     }
     
     public void updateTag(ActionEvent event) throws UpdateTagException {
         try {
-            Tag tagToUpdate = (Tag) event.getComponent().getAttributes().get("TagToUpdate");
+            
             tagSessionBeanLocal.updateTag(tagToUpdate);
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(TagManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while editing tag: " + ex.getMessage(), null));
         } catch (TagNotFoundException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tag with name " + getTagToUpdate().getName() + "exists: " + ex.getMessage(), null));
         }
     }
     
     public void deleteTag(ActionEvent event ) throws DeleteTagException{
+        Tag tagToDelete = (Tag) event.getComponent().getAttributes().get("TagToDelete");
         try {
-            Tag tagToDelete = (Tag) event.getComponent().getAttributes().get("TagToDelete");
             tagSessionBeanLocal.deleteTag(tagToDelete.getTagId());
         } catch (TagNotFoundException ex) {
-            Logger.getLogger(TagManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tag with given ID is not found", null));
         }
     }
 
@@ -120,6 +124,20 @@ public class TagManagedBean implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the tagToUpdate
+     */
+    public Tag getTagToUpdate() {
+        return tagToUpdate;
+    }
+
+    /**
+     * @param tagToUpdate the tagToUpdate to set
+     */
+    public void setTagToUpdate(Tag tagToUpdate) {
+        this.tagToUpdate = tagToUpdate;
     }
     
 }
