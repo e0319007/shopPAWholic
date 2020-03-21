@@ -7,19 +7,20 @@ package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
 import entity.Category;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author EileenLeong
  */
 @Named(value = "viewAllCategoriesManagedBean")
-@RequestScoped
-public class ViewAllCategoriesManagedBean {
+@ViewScoped
+public class ViewAllCategoriesManagedBean implements Serializable {
 
     @EJB(name = "CategorySessionBeanLocal")
     private CategorySessionBeanLocal categorySessionBeanLocal;

@@ -7,19 +7,20 @@ package jsf.managedBean;
 
 import ejb.session.stateless.TagSessionBeanLocal;
 import entity.Tag;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author EileenLeong
  */
 @Named(value = "viewAllTagsManagedBean")
-@RequestScoped
-public class ViewAllTagsManagedBean {
+@ViewScoped
+public class ViewAllTagsManagedBean implements Serializable{
 
     @EJB(name = "TagSessionBeanLocal")
     private TagSessionBeanLocal tagSessionBeanLocal;
