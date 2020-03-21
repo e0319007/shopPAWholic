@@ -18,6 +18,9 @@ import java.util.logging.Logger;
 import javax.faces.event.ActionEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import util.exception.CommentNotFoundException;
 import util.exception.CreateNewCommentException;
 import util.exception.InputDataValidationException;
 
@@ -54,10 +57,11 @@ public class CommentManagedBean {
         Comment comment = new Comment(commentDate, content);
         try {
             commentSessionBeanLocal.createNewCommentForForumPost(comment, customer.getUserId(), forumPost.getForumId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Comment created successfully! (Id: " + comment.getCommentId()+ ")", null));
         } catch (CreateNewCommentException ex) {
-            Logger.getLogger(CommentManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the comment!", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(CommentManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input validation error: " + ex.getMessage(), null));
         }
     }
     
@@ -66,8 +70,9 @@ public class CommentManagedBean {
             commentDate =  new Date();
             Comment comment = new Comment(commentDate, content);
             commentSessionBeanLocal.createNewCommentForForumPost(comment, customer.getUserId(), parentComment.getParentComment().getCommentId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Comment created successfully! (Id: " + comment.getCommentId()+ ")", null));
         } catch (CreateNewCommentException | InputDataValidationException ex) {
-            Logger.getLogger(CommentManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the comment!", null));
         }
     }
     
@@ -75,8 +80,18 @@ public class CommentManagedBean {
         Comment comment = (Comment) event.getComponent().getAttributes().get("commentToUpdate");
         try {
             commentSessionBeanLocal.updateComment(comment);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Comment updated successfully! (Id: " + comment.getCommentId()+ ")", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(CommentManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Input validation error: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void deleteComment(ActionEvent event) {
+        Comment comment = (Comment) event.getComponent().getAttributes().get("eventToDelete");
+        try {
+            commentSessionBeanLocal.deleteComment(comment.getCommentId());
+        } catch (CommentNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown error while deleting the comment!", null));
         }
     }
 

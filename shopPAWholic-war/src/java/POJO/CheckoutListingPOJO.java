@@ -22,9 +22,9 @@ public class CheckoutListingPOJO {
     
     //line transaction shit
     
-    public CheckoutListingPOJO(Listing listing) {
+    public CheckoutListingPOJO(Listing listing, int quantity) {
         this.listing = listing;
-//        this.quantity = quantity;
+        this.quantity = quantity;
     }
     
     public Long getCheckoutProductId() {
@@ -62,6 +62,14 @@ public class CheckoutListingPOJO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
     
 }
