@@ -49,7 +49,6 @@ public abstract class User implements Serializable{
         this.email = email;
         this.contactNumber = contactNumber;
         setPassword(password);
-        
     }
     
     public Long getUserId() {

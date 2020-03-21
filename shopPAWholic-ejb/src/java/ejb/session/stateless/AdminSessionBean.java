@@ -25,11 +25,11 @@ import util.security.CryptographicHelper;
 public class AdminSessionBean implements AdminSessionBeanLocal {
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
-    private EntityManager em;
+    private EntityManager em;    
     
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-
+    
     public AdminSessionBean() {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
@@ -157,4 +157,12 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         }
         return msg;
     }    
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
+
+    public void persist1(Object object) {
+        em.persist(object);
+    }
 }
