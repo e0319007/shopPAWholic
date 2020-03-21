@@ -93,12 +93,9 @@ public class CartSessionBean implements CartSessionBeanLocal {
     }
     
     @Override
-    public void deleteListingFromCart(Long listingId, Long cartId, int quantity) throws CartNotFoundException {
-        Listing listing = em.find(Listing.class, listingId);
+    public void clearCart(Long cartId) throws CartNotFoundException {
         Cart cart = getCartById(cartId);
-        for(int i =0; i < quantity; i++) {
-            cart.getListings().remove(listing);
-        }
+        cart.getListings().clear();
     }
 
     //retrieve according to date added & grouped by name of the seller 

@@ -21,6 +21,8 @@ import util.exception.EventNotFoundException;
 import util.exception.InputDataValidationException;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -63,12 +65,13 @@ public class EventManagedBean implements Serializable{
         try {
             Event eventToCreate = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
             eventSessionBeanLocal.createNewEvent(eventToCreate,serviceProviderId);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + eventToCreate.getEventId() + ")", null));
         } catch (CreateNewEventException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
         } catch (EventNameExistsException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
     
@@ -76,10 +79,11 @@ public class EventManagedBean implements Serializable{
         try {
             Event eventToUpdate = (Event) event.getComponent().getAttributes().get("EventToUpdate");
             eventSessionBeanLocal.updateEvent(eventToUpdate);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event updated successfully! (Id: " + eventToUpdate.getEventId() + ")", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
         } catch (EventNameExistsException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
     
@@ -87,8 +91,9 @@ public class EventManagedBean implements Serializable{
         try {
             Event eventToDelete = (Event) event.getComponent().getAttributes().get("EventToDelete");
             eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event deleted successfully! (Id: " + eventToDelete.getEventId() + ")", null));
         } catch (EventNotFoundException ex) {
-            Logger.getLogger(EventManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
         }
     }
 

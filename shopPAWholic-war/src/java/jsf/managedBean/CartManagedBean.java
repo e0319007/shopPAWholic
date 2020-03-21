@@ -8,8 +8,14 @@ package jsf.managedBean;
 import POJO.CheckoutListingPOJO;
 import ejb.session.stateless.CartSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
+import ejb.session.stateless.OrderSessionBeanLocal;
+import entity.BilingDetail;
 import entity.Cart;
 import entity.Customer;
+import entity.DeliveryDetail;
+import entity.Listing;
+import entity.OrderEntity;
+import entity.Seller;
 import java.awt.event.ActionEvent;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,20 +23,32 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import util.enumeration.OrderStatus;
+import util.exception.CartNotFoundException;
+import java.util.HashMap;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import util.exception.CreateNewOrderException;
+import util.exception.InputDataValidationException;
+
 
 /**
  *
  * @author Joanna Ng
  */
 @Named(value = "cartManagedBean")
-@ApplicationScoped
-//@SessionScoped
+@SessionScoped
 public class CartManagedBean implements Serializable{
+
+    @EJB(name = "orderSessionBeanLocal")
+    private OrderSessionBeanLocal orderSessionBeanLocal;
 
     @EJB(name = "CartSessionBeanLocal")
     private CartSessionBeanLocal cartSessionBeanLocal;
@@ -38,14 +56,22 @@ public class CartManagedBean implements Serializable{
     @EJB(name ="ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
     
+    
+    
     private List<CheckoutListingPOJO> shoppingCart;
-    private List<CheckoutListingPOJO> checkoutList;
+    private List<CheckoutListingPOJO> checkoutList; 
+    private List<Listing> savedShoppingCart; //stable
     private boolean completeCheckoutOut = false;
     private BigDecimal selectedItemPrice;
     private int numOfListing;
     private int totalQuantity;
     private Long customerId;
     private Cart cart; 
+    
+    
+    //create new billing detail for order entity
+    private String ccNum;
+     
     
     /**
      * Creates a new instance of CartManagedBean
@@ -56,6 +82,7 @@ public class CartManagedBean implements Serializable{
         System.out.println("Called cart managed bean");
         Customer c = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomerEntity");
         customerId = c.getUserId();
+        cart = cartSessionBeanLocal.getCartByCustomerId(customerId);
 //        cart.setCustomer(em.find(Customer.class, customerId));
     }
     
@@ -65,9 +92,29 @@ public class CartManagedBean implements Serializable{
     
     @PostConstruct
     public void PostConstruct() {
+        savedShoppingCart = cart.getListings();
+        for(Listing l:savedShoppingCart) {
+            boolean isRepeatedItem = false;
+            for(CheckoutListingPOJO itemQtyPair: shoppingCart) {
+                if(l.getListingId() == itemQtyPair.getListing().getListingId()) {
+                    isRepeatedItem = true;
+                    itemQtyPair.setQuantity(itemQtyPair.getQuantity() + 1);
+                }
+            }
+            if(isRepeatedItem == false) {
+                CheckoutListingPOJO listPojo = new CheckoutListingPOJO(l, 1);
+            }
+        }
 //        listings = listingSessionBeanLocal.retrieveAllListings();
     }
     
+    @PreDestroy
+    public void PreDestroy() throws CartNotFoundException {
+        cartSessionBeanLocal.clearCart(cart.getCartId());
+        for(CheckoutListingPOJO cl: shoppingCart) {
+            cartSessionBeanLocal.addListingToCart(cl.getListing().getListingId(), cart.getCartId(), cl.getQuantity());
+        }
+    }
     
 //    public void addListingToCart(ActionEvent event) {
 //        CheckoutListingPOJO checkoutListingEntityToAdd = (CheckoutListingPOJO) event.getComponent().getAttributes().get("listingToAdd");
@@ -81,16 +128,63 @@ public class CartManagedBean implements Serializable{
 //    
     public void checkout(ActionEvent event) {
         System.out.println("***going through checkout");
-//        Date date = new Date();
-        for (CheckoutListingPOJO clp:checkoutList) {
-            BigDecimal subTotal;
-            subTotal = clp.getListing().getUnitPrice();
-            cart.getListings().add(clp.getListing());
+        Date orderDate = new Date();
+        
+        
+        //creating a hashmap that maps seller to a list of checkoutpojo
+        HashMap sellerMapListQtyPair = new HashMap<Seller, List<CheckoutListingPOJO>>();
+        for(CheckoutListingPOJO itemQtyPair: checkoutList) {
+            Seller seller = itemQtyPair.getListing().getSeller();
+            if(sellerMapListQtyPair.containsKey(seller)) {
+                List<CheckoutListingPOJO> newList = (List<CheckoutListingPOJO>) sellerMapListQtyPair.get(seller);
+                newList.add(itemQtyPair);
+                sellerMapListQtyPair.replace(seller, newList);
+            } else {
+                List<CheckoutListingPOJO> newList = new ArrayList<>();
+                newList.add(itemQtyPair);
+                sellerMapListQtyPair.put(seller, newList);
+            }
         }
         
-        //checkout what's in the cart
-        //means create new order right 
+        //creating an order for each of the seller
+        Iterator hmIterator = sellerMapListQtyPair.entrySet().iterator(); 
+        while (hmIterator.hasNext()) { 
+            Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
+            Seller seller = (Seller) mapElement.getKey();
+            List<CheckoutListingPOJO> checkoutListings = (List<CheckoutListingPOJO>) mapElement.getValue();
+            OrderEntity newOrder = new OrderEntity(totalPrice(checkoutListings), orderDate);
+            try {
+                orderSessionBeanLocal.createNewOrder(newOrder, ccNum, customerId, convertCheckoutPojoIntoListings(checkoutListings), seller.getUserId());
+            } catch (CreateNewOrderException ex) {
+                Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InputDataValidationException ex) {
+                Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
         
+        //clear items checkout alr
+        for(CheckoutListingPOJO clp: checkoutList) {
+            shoppingCart.remove(clp);
+        }
+        
+    }
+    
+    private List<Listing> convertCheckoutPojoIntoListings(List<CheckoutListingPOJO> listingpojos) {
+        List<Listing> listings = new ArrayList<>();
+        for(CheckoutListingPOJO cl: listingpojos) {
+            for(int i = 0; i < cl.getQuantity(); i++) {
+                listings.add(cl.getListing());
+            }
+        }
+        return listings;
+    }
+    
+    private BigDecimal totalPrice(List<CheckoutListingPOJO> clp) {
+        BigDecimal price = BigDecimal.ZERO;
+        for(CheckoutListingPOJO item : clp) {
+            price.add(item.getListing().getUnitPrice().multiply(new BigDecimal(item.getQuantity())));
+        }
+        return price;
     }
      
      public void message() {
