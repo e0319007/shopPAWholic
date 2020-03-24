@@ -80,7 +80,7 @@ public class AdvertisementResource {
         
         try {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
-            System.out.println("********** Advertisement.retrieveAllProducts(): Staff " + seller.getEmail()+ " login remotely via web service");
+            System.out.println("********** Advertisement.retrieveAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             Advertisement advertisement  = advertisementSessionBeanLocal.retrieveAdvertisementById(advertisementId);
             return Response.status(Response.Status.OK).entity(advertisement).build();
             
@@ -90,6 +90,9 @@ public class AdvertisementResource {
         } catch (AdvertisementNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+        } catch(Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build(); 
         }
     }
     
@@ -101,7 +104,7 @@ public class AdvertisementResource {
     public Response createNewAdvertisement(AdvertisementCreateNewReq createNewAdvertisementReq) {
         try {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(createNewAdvertisementReq.getEmail(), createNewAdvertisementReq.getPassword());
-            System.out.println("********** Advertisement.retrieveAllProducts(): Staff " + seller.getEmail()+ " login remotely via web service");
+            System.out.println("********** Advertisement.createNewAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             Advertisement advertisement  = advertisementSessionBeanLocal.createNewAdvertisement(createNewAdvertisementReq.getAdvertisement(), seller.getUserId(), createNewAdvertisementReq.getCcNum());
             
             //CreateNewAdvertisementRsp createNewAdvertisementRsp = new CreateNewAdvertisementRsp(advertisement.getAdvertisementId());
@@ -129,7 +132,7 @@ public class AdvertisementResource {
         try {
             if (updateAdvertisementReq != null) {
                 Seller seller = (Seller) userSessionBeanLocal.userLogin(updateAdvertisementReq.getEmail(), updateAdvertisementReq.getPassword());
-                System.out.println("********** Advertisement.retrieveAllProducts(): Staff " + seller.getEmail()+ " login remotely via web service");
+                System.out.println("********** Advertisement.updateAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
                 advertisementSessionBeanLocal.updateAdvertisement(updateAdvertisementReq.getAdvertisement());
                 if (!Objects.equals(updateAdvertisementReq.getAdvertisement().getServiceProvider().getUserId(), seller.getUserId())) {
                     throw new InvalidLoginCredentialException();
@@ -139,7 +142,11 @@ public class AdvertisementResource {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(AdvertisementResource.class.getName()).log(Level.SEVERE, null, ex);
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+        }catch(Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build(); 
         }
         return Response.status(Response.Status.OK).build();
     }
@@ -153,7 +160,7 @@ public class AdvertisementResource {
                                         @PathParam("advertisementId") Long advertisementId) {
         try {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
-            System.out.println("********** Advertisement.retrieveAllProducts(): Staff " + seller.getEmail()+ " login remotely via web service");
+            System.out.println("********** Advertisement.deleteAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             advertisementSessionBeanLocal.deleteAdvertisement(advertisementId);
             return Response.status(Status.OK).build();
         } catch (InvalidLoginCredentialException ex) {
