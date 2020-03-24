@@ -74,7 +74,7 @@ public class AdvertisementResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveProduct(@QueryParam("email") String email, 
+    public Response retrieveAdvertisement(@QueryParam("email") String email, 
                                         @QueryParam("password") String password,
                                         @PathParam("advertisementId") Long advertisementId) {
         

@@ -90,12 +90,14 @@ public class BillingDetailSessionBean implements BillingDetailSessionBeanLocal {
     }
     
     
-    /*public List<BillingDetail> retrieveBillingDetailByCustomer(Long customerId) {
-        Query query = em.createQuery("SELECT bd FROM BillingDetail bd WHERE bd.customer.id =: customerId");
+    public List<BillingDetail> retrieveBillingDetailByCustomer(Long customerId) {
+        Query query = em.createQuery("SELECT bd FROM BillingDetail bd WHERE bd.customer.userId =: customerId");
         query.setParameter("inCustomerId", customerId);
-        return query.getResultList();
+        
+        List<BillingDetail> billingDetails = query.getResultList();
+        return billingDetails;
     //have to call listings.size cos lazy load
-    }*/
+    }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<BillingDetail>>constraintViolations) {
         String msg = "Input data validation error!:";    

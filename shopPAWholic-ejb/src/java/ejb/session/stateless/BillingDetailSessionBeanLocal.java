@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.BillingDetail;
+import java.util.List;
 import javax.ejb.Local;
 import util.exception.BillingDetailNotFoundException;
 import util.exception.CreateNewBillingDetailException;
@@ -25,4 +26,6 @@ public interface BillingDetailSessionBeanLocal {
     public BillingDetail getBillingDetailById(Long id) throws BillingDetailNotFoundException;
     
     public void deleteBillingDetail(Long id) throws BillingDetailNotFoundException;
+    
+    public List<BillingDetail> retrieveBillingDetailByCustomer(Long customerId);
 }
