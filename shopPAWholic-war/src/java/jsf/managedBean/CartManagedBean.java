@@ -109,10 +109,14 @@ public class CartManagedBean implements Serializable{
     }
     
     @PreDestroy
-    public void PreDestroy() throws CartNotFoundException {
-        cartSessionBeanLocal.clearCart(cart.getCartId());
-        for(CheckoutListingPOJO cl: shoppingCart) {
-            cartSessionBeanLocal.addListingToCart(cl.getListing().getListingId(), cart.getCartId(), cl.getQuantity());
+    public void PreDestroy() {
+        try {
+            cartSessionBeanLocal.clearCart(cart.getCartId());
+            for(CheckoutListingPOJO cl: shoppingCart) {
+                cartSessionBeanLocal.addListingToCart(cl.getListing().getListingId(), cart.getCartId(), cl.getQuantity());
+            }
+        } catch (CartNotFoundException ex) {
+            Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
