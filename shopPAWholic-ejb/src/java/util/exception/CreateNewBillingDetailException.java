@@ -9,22 +9,22 @@ package util.exception;
  *
  * @author Joanna Ng
  */
-public class CreateNewBilingDetailException extends Exception {
+public class CreateNewBillingDetailException extends Exception {
 
     /**
-     * Creates a new instance of <code>CreateNewBilingDetailException</code>
+     * Creates a new instance of <code>CreateNewBillingDetailException</code>
      * without detail message.
      */
-    public CreateNewBilingDetailException() {
+    public CreateNewBillingDetailException() {
     }
 
     /**
-     * Constructs an instance of <code>CreateNewBilingDetailException</code>
+     * Constructs an instance of <code>CreateNewBillingDetailException</code>
      * with the specified detail message.
      *
      * @param msg the detail message.
      */
-    public CreateNewBilingDetailException(String msg) {
+    public CreateNewBillingDetailException(String msg) {
         super(msg);
     }
 }

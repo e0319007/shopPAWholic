@@ -22,7 +22,7 @@ public class Customer extends User implements Serializable {
     private String lastName;
     
     @OneToMany(mappedBy = "customer")
-    private List<BilingDetail> billingDetails;
+    private List<BillingDetail> billingDetails;
     
     @OneToMany(mappedBy = "customer")
     private List<OrderEntity> orders;
@@ -71,11 +71,11 @@ public class Customer extends User implements Serializable {
         this.lastName = lastName;
     }    
 
-    public List<BilingDetail> getBillingDetails() {
+    public List<BillingDetail> getBillingDetails() {
         return billingDetails;
     }
 
-    public void setBillingDetails(List<BilingDetail> billingDetails) {
+    public void setBillingDetails(List<BillingDetail> billingDetails) {
         this.billingDetails = billingDetails;
     }
 

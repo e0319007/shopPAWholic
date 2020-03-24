@@ -5,7 +5,6 @@
  */
 package ws.restful;
 import ejb.session.stateless.AdvertisementSessionBeanLocal;
-import ejb.session.stateless.BilingDetailSessionBeanLocal;
 import ejb.session.stateless.CartSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.CommentSessionBeanLocal;
@@ -20,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import ejb.session.stateless.BillingDetailSessionBeanLocal;
 
 /**
  *
@@ -49,10 +49,10 @@ public class SessionBeanLookup {
         }
     }
     
-    public BilingDetailSessionBeanLocal lookupBilingDetailSessionBeanLocal() {
+    public BillingDetailSessionBeanLocal lookupBillingDetailSessionBeanLocal() {
         try {
-            String path = "BilingDetailSessionBean!ejb.session.stateless.BilingDetailSessionBeanLocal";
-            return (BilingDetailSessionBeanLocal) initialContextLookup(path);
+            String path = "BillingDetailSessionBean!ejb.session.stateless.BillingDetailSessionBeanLocal";
+            return (BillingDetailSessionBeanLocal) initialContextLookup(path);
         } catch (NamingException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
             throw new RuntimeException(ex);

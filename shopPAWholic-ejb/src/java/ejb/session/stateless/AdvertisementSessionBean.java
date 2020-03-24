@@ -6,7 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
-import entity.BilingDetail;
+import entity.BillingDetail;
 import entity.ServiceProvider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
     private final Validator validator;
     
     @EJB
-    BilingDetailSessionBeanLocal bilingDetailSessionBeanLocal; 
+    BillingDetailSessionBeanLocal billingDetailSessionBeanLocal; 
 
     public AdvertisementSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -54,10 +54,10 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
             try {
                // SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
                 Date date = new Date(System.currentTimeMillis());
-                BilingDetail bilingDetail = new BilingDetail(ccNum, date);
-                bilingDetail.setAdvertisement(advertisement);
-                bilingDetailSessionBeanLocal.createNewBilingDetail(bilingDetail);
-                advertisement.setBilingDetail(bilingDetail);
+                BillingDetail billingDetail = new BillingDetail(ccNum, date);
+                billingDetail.setAdvertisement(advertisement);
+                billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
+                advertisement.setBillingDetail(billingDetail);
                 
                 ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
                 serviceProvider.getAdvertisements().add(advertisement);

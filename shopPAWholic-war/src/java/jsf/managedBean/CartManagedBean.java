@@ -9,7 +9,7 @@ import POJO.CheckoutListingPOJO;
 import ejb.session.stateless.CartSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
-import entity.BilingDetail;
+import entity.BillingDetail;
 import entity.Cart;
 import entity.Customer;
 import entity.DeliveryDetail;

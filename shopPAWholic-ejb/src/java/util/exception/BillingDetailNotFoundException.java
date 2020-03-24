@@ -9,22 +9,22 @@ package util.exception;
  *
  * @author Joanna Ng
  */
-public class BilingDetailNotFoundException extends Exception {
+public class BillingDetailNotFoundException extends Exception {
 
     /**
-     * Creates a new instance of <code>BilingDetailNotFoundException</code>
+     * Creates a new instance of <code>BillingDetailNotFoundException</code>
      * without detail message.
      */
-    public BilingDetailNotFoundException() {
+    public BillingDetailNotFoundException() {
     }
 
     /**
-     * Constructs an instance of <code>BilingDetailNotFoundException</code> with
+     * Constructs an instance of <code>BillingDetailNotFoundException</code> with
      * the specified detail message.
      *
      * @param msg the detail message.
      */
-    public BilingDetailNotFoundException(String msg) {
+    public BillingDetailNotFoundException(String msg) {
         super(msg);
     }
 }

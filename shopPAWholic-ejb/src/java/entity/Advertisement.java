@@ -48,7 +48,7 @@ public class Advertisement implements Serializable {
     private ServiceProvider serviceProvider;
     
     @OneToOne(optional = false) 
-    private BilingDetail bilingDetail;
+    private BillingDetail billingDetail;
 
     public Advertisement() {
         pictures = new ArrayList<>();
@@ -157,17 +157,17 @@ public class Advertisement implements Serializable {
     }
 
     /**
-     * @return the bilingDetail
+     * @return the billingDetail
      */
-    public BilingDetail getBilingDetail() {
-        return bilingDetail;
+    public BillingDetail getBillingDetail() {
+        return billingDetail;
     }
 
     /**
-     * @param bilingDetail the bilingDetail to set
+     * @param billingDetail the billingDetail to set
      */
-    public void setBilingDetail(BilingDetail bilingDetail) {
-        this.bilingDetail = bilingDetail;
+    public void setBillingDetail(BillingDetail billingDetail) {
+        this.billingDetail = billingDetail;
     }
     
 }
