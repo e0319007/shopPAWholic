@@ -33,7 +33,7 @@ import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import ws.datamodel.ErrorRsp;
-import ws.datamodel.RetrieveAllCategoriesRsp;
+import ws.datamodel.CategoriesRetrieveAllRsp;
 
 /**
  *
@@ -78,7 +78,7 @@ public class CategoryResource
                 category.getSubCategories().clear();
                 category.getListings().clear();
             }
-            return Response.status(Status.OK).entity(new RetrieveAllCategoriesRsp(categoryEntities)).build();
+            return Response.status(Status.OK).entity(new CategoriesRetrieveAllRsp(categoryEntities)).build();
         }
         catch(InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

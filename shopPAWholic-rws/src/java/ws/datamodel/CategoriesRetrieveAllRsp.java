@@ -12,19 +12,19 @@ import java.util.List;
  *
  * @author shizhan
  */
-public class RetrieveAllCategoriesRsp
+public class CategoriesRetrieveAllRsp
 {
     private List<Category> categoryEntities;
 
     
     
-    public RetrieveAllCategoriesRsp()
+    public CategoriesRetrieveAllRsp()
     {
     }
     
     
     
-    public RetrieveAllCategoriesRsp(List<Category> categoryEntities)
+    public CategoriesRetrieveAllRsp(List<Category> categoryEntities)
     {
         this.categoryEntities = categoryEntities;
     }
