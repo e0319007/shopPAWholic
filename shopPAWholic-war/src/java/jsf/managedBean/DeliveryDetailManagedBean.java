@@ -71,10 +71,15 @@ public class DeliveryDetailManagedBean implements Serializable{
     
     public void createDeliveryDetail(ActionEvent event) {
           try {
-            DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod);
+            DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod, deliveryPrice);
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(newDeliveryDetail);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Delivery Detail created successfully (Delivery ID: " + newDeliveryDetail.getDeliveryDetailId() + ")", null));
+            
         } catch (InputDataValidationException | CreateNewDeliveryDetailException ex) {
-            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new delivery detail: " + ex.getMessage(), null));
+        
         }
     }
     
@@ -86,8 +91,9 @@ public class DeliveryDetailManagedBean implements Serializable{
         try {
             deliveryDetailToUpdate = (DeliveryDetail) event.getComponent().getAttributes().get("DeliveryDetailToUpdate");
             deliveryDetailSessionBeanLocal.updateDeliveryDetail(deliveryDetailToUpdate);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail updated successfully", null));
         } catch (InputDataValidationException ex) {
-            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating Delivery Detail: " + ex.getMessage(), null));
         } 
     }
     
@@ -95,9 +101,9 @@ public class DeliveryDetailManagedBean implements Serializable{
          try {
             DeliveryDetail deliveryDetailToDelete = (DeliveryDetail)event.getComponent().getAttributes().get("deliveryDetailToDelete");
             deliveryDetailSessionBeanLocal.deleteDeliveryDetail(deliveryDetailToDelete.getDeliveryDetailId());
-            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail deleted successfully", null));         
         } catch (DeliveryDetailNotFoundException ex){
-            Logger.getLogger(AdvertisementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product details: " + ex.getMessage(), null));
         } 
     }
     
