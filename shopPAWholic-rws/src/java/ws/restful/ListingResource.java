@@ -60,9 +60,9 @@ public class ListingResource {
         listingSessionBeanLocal = sessionBeanLookup.lookupListingSessionBeanLocal();
     }
     
-    public Seller getSellerInstance(String email, String password) throws InvalidLoginCredentialException {
+    public Seller getSellerInstance(String email, String password, String methodName) throws InvalidLoginCredentialException {
         User user =  userSessionBeanLocal.userLogin(email, password);
-        System.out.println("********** ListingResource.retrieveAllListings(): User " + user.getEmail()+ " login remotely via web service");
+        System.out.println("********** ListingResource." + methodName + "(): User " + user.getEmail()+ " login remotely via web service");
         if(user instanceof Seller) return (Seller) user;
         else throw new InvalidLoginCredentialException();
     }
@@ -131,7 +131,7 @@ public class ListingResource {
     {
         if(createListingReq != null) {
             try {
-                Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword());
+                Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword(), "createListing");
                 Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds());
                 
                 return Response.status(Response.Status.OK).entity(listing.getListingId()).build();
@@ -164,7 +164,7 @@ public class ListingResource {
     {
         if(listingUpdateReq != null) {
             try {                
-                Seller seller = getSellerInstance(listingUpdateReq.getEmail(), listingUpdateReq.getPassword());
+                Seller seller = getSellerInstance(listingUpdateReq.getEmail(), listingUpdateReq.getPassword(), "updateListing");
                 
                 listingSessionBeanLocal.updateListing(listingUpdateReq.getListing(), listingUpdateReq.getCategoryId(), listingUpdateReq.getTagIds());
                 
@@ -195,11 +195,11 @@ public class ListingResource {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteProduct(@QueryParam("email") String email, 
+    public Response deleteListing(@QueryParam("email") String email, 
                                         @QueryParam("password") String password,
                                         @PathParam("listingId") Long listingId) {
         try {
-            Seller seller = getSellerInstance(email, password);
+            Seller seller = getSellerInstance(email, password, "deleteListing");
             listingSessionBeanLocal.deleteListing(listingId);
             return Response.status(Status.OK).build();
         }
