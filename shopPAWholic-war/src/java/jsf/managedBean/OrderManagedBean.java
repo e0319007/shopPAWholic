@@ -54,7 +54,7 @@ public class OrderManagedBean implements Serializable{
     private List<Long> listingIdsNew; 
     private Long customerIdNew; 
     private Long deliveryDetailIdNew; 
-    private Long bilingDetailIdNew; 
+    private Long billingDetailIdNew; 
     private List<Listing> listings; 
     private String ccNum;
     
@@ -210,17 +210,17 @@ public class OrderManagedBean implements Serializable{
     }
 
     /**
-     * @return the bilingDetailIdNew
+     * @return the billingDetailIdNew
      */
-    public Long getBilingDetailIdNew() {
-        return bilingDetailIdNew;
+    public Long getBillingDetailIdNew() {
+        return billingDetailIdNew;
     }
 
     /**
-     * @param bilingDetailIdNew the bilingDetailIdNew to set
+     * @param billingDetailIdNew the billingDetailIdNew to set
      */
-    public void setBilingDetailIdNew(Long bilingDetailIdNew) {
-        this.bilingDetailIdNew = bilingDetailIdNew;
+    public void setBillingDetailIdNew(Long billingDetailIdNew) {
+        this.billingDetailIdNew = billingDetailIdNew;
     }
 
     /**

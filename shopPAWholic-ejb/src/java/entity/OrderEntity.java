@@ -68,7 +68,7 @@ public class OrderEntity implements Serializable {
     private Seller seller; 
     
     @OneToOne(optional = false)
-    private BilingDetail bilingDetail;
+    private BillingDetail billingDetail;
 
     public OrderEntity() {
         totalPrice = new BigDecimal("0.00");
@@ -216,11 +216,11 @@ public class OrderEntity implements Serializable {
         this.seller = seller;
     }
 
-    public BilingDetail getBilingDetail() {
-        return bilingDetail;
+    public BillingDetail getBillingDetail() {
+        return billingDetail;
     }
 
-    public void setBilingDetail(BilingDetail bilingDetail) {
-        this.bilingDetail = bilingDetail;
+    public void setBillingDetail(BillingDetail billingDetail) {
+        this.billingDetail = billingDetail;
     }
 }

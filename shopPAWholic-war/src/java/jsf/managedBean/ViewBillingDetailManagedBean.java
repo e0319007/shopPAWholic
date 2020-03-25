@@ -5,7 +5,7 @@
  */
 package jsf.managedBean;
 
-import entity.BilingDetail;
+import entity.BillingDetail;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -18,17 +18,17 @@ import javax.faces.view.ViewScoped;
  *
  * @author Joanna Ng
  */
-@Named(value = "viewBilingDetailManagedBean")
+@Named(value = "viewBillingDetailManagedBean")
 @ViewScoped
-public class ViewBilingDetailManagedBean implements Serializable {
+public class ViewBillingDetailManagedBean implements Serializable {
     
-    private BilingDetail bilingDetailToView;
+    private BillingDetail billingDetailToView;
     
     /**
-     * Creates a new instance of ViewBilingDetailManagedBean
+     * Creates a new instance of ViewBillingDetailManagedBean
      */
-    public ViewBilingDetailManagedBean() {
-        bilingDetailToView = new BilingDetail();
+    public ViewBillingDetailManagedBean() {
+        billingDetailToView = new BillingDetail();
     }
     
     
@@ -46,17 +46,17 @@ public class ViewBilingDetailManagedBean implements Serializable {
 //    }
 
     /**
-     * @return the bilingDetailToView
+     * @return the billingDetailToView
      */
-    public BilingDetail getBilingDetailToView() {
-        return bilingDetailToView;
+    public BillingDetail getBillingDetailToView() {
+        return billingDetailToView;
     }
 
     /**
-     * @param bilingDetailToView the bilingDetailToView to set
+     * @param billingDetailToView the billingDetailToView to set
      */
-    public void setBilingDetailToView(BilingDetail bilingDetailToView) {
-        this.bilingDetailToView = bilingDetailToView;
+    public void setBillingDetailToView(BillingDetail billingDetailToView) {
+        this.billingDetailToView = billingDetailToView;
     }
     
     

@@ -24,17 +24,17 @@ import javax.validation.constraints.NotNull;
  * @author Joanna Ng
  */
 @Entity
-public class BilingDetail implements Serializable {
+public class BillingDetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bilingDetailId;
+    private Long billingDetailId;
     @NotNull
     private String creditCardDetail;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date bilingDate;
+    private Date billingDate;
 
     @ManyToOne(optional = true)
     @JoinColumn(nullable = true)
@@ -48,43 +48,43 @@ public class BilingDetail implements Serializable {
     
     
 
-    public BilingDetail() {
+    public BillingDetail() {
     }
 
-    public BilingDetail(String creditCardDetail, Date date) {
+    public BillingDetail(String creditCardDetail, Date date) {
         this();
         
         this.creditCardDetail = creditCardDetail;
-        this.bilingDate = date;
+        this.billingDate = date;
         
         
     }
     
     
     
-    public Long getBilingDetailId() {
-        return bilingDetailId;
+    public Long getBillingDetailId() {
+        return billingDetailId;
     }
 
-    public void setBilingDetailId(Long bilingDetailId) {
-        this.bilingDetailId = bilingDetailId;
+    public void setBillingDetailId(Long billingDetailId) {
+        this.billingDetailId = billingDetailId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (bilingDetailId != null ? bilingDetailId.hashCode() : 0);
+        hash += (billingDetailId != null ? billingDetailId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the bilingDetailId fields are not set
-        if (!(object instanceof BilingDetail)) {
+        // TODO: Warning - this method won't work in the case the billingDetailId fields are not set
+        if (!(object instanceof BillingDetail)) {
             return false;
         }
-        BilingDetail other = (BilingDetail) object;
-        if ((this.bilingDetailId == null && other.bilingDetailId != null) || (this.bilingDetailId != null && !this.bilingDetailId.equals(other.bilingDetailId))) {
+        BillingDetail other = (BillingDetail) object;
+        if ((this.billingDetailId == null && other.billingDetailId != null) || (this.billingDetailId != null && !this.billingDetailId.equals(other.billingDetailId))) {
             return false;
         }
         return true;
@@ -92,7 +92,7 @@ public class BilingDetail implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.BilingDetail[ id=" + bilingDetailId + " ]";
+        return "entity.BillingDetail[ id=" + billingDetailId + " ]";
     }
 
     /**
@@ -110,17 +110,17 @@ public class BilingDetail implements Serializable {
     }
 
     /**
-     * @return the bilingDate
+     * @return the billingDate
      */
-    public Date getBilingDate() {
-        return bilingDate;
+    public Date getBillingDate() {
+        return billingDate;
     }
 
     /**
-     * @param bilingDate the bilingDate to set
+     * @param billingDate the billingDate to set
      */
-    public void setBilingDate(Date bilingDate) {
-        this.bilingDate = bilingDate;
+    public void setBillingDate(Date billingDate) {
+        this.billingDate = billingDate;
     }
 
     /**

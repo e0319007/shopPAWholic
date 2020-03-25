@@ -5,7 +5,7 @@
  */
 package ejb.session.stateless;
 
-import entity.BilingDetail;
+import entity.BillingDetail;
 import entity.Customer;
 import entity.DeliveryDetail;
 import entity.Listing;
@@ -40,8 +40,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBean deliveryDetailSessionBeanLocal;
 
-    @EJB(name = "BilingDetailSessionBeanLocal")
-    private BilingDetailSessionBean bilingDetailSessionBeanLocal;
+    @EJB(name = "BillingDetailSessionBeanLocal")
+    private BillingDetailSessionBean billingDetailSessionBeanLocal;
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -77,10 +77,10 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                 newOrder.setCustomer(customer);
                 newOrder.setSeller(seller);
                 
-                BilingDetail billingDetail = new BilingDetail(ccNum, date);
+                BillingDetail billingDetail = new BillingDetail(ccNum, date);
                 billingDetail.setCustomer(customer);
-                bilingDetailSessionBeanLocal.createNewBilingDetail(billingDetail);
-                newOrder.setBilingDetail(billingDetail);
+                billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
+                newOrder.setBillingDetail(billingDetail);
                 billingDetail.setOrder(newOrder);
                 
 //                for(Listing l:listings) {

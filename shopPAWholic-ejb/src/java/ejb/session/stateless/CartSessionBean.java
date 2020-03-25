@@ -105,6 +105,11 @@ public class CartSessionBean implements CartSessionBeanLocal {
         return (Cart)query.getSingleResult();
     }*/
     
+    @Override
+    public void updateCart(Cart cart) {
+        em.merge(cart);
+    }
+    
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Cart>>constraintViolations) {
         String msg = "Input data validation error!:";    
