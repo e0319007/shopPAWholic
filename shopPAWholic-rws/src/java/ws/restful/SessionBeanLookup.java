@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import ejb.session.stateless.BillingDetailSessionBeanLocal;
+import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 
 /**
  *
@@ -89,6 +90,16 @@ public class SessionBeanLookup {
         }
     }
     
+    public DeliveryDetailSessionBeanLocal lookupDeliveryDetailSessionBeanLocal() {
+        try {
+            String path = "DeliveryDetailSessionBean!ejb.session.stateless.DeliveryDetailSessionBeanLocal";
+            return (DeliveryDetailSessionBeanLocal) initialContextLookup(path);
+        } catch (NamingException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
+            throw new RuntimeException(ex);
+        }
+    }
+    
     public EventSessionBeanLocal lookupEventSessionBeanLocal() {
         try {
             String path = "EventSessionBean!ejb.session.stateless.EventSessionBeanLocal";
@@ -99,7 +110,7 @@ public class SessionBeanLookup {
         }
     }
     
-    public ForumPostSessionBeanLocal ForumPostSessionBeanLocal() {
+    public ForumPostSessionBeanLocal lookupForumPostSessionBeanLocal() {
         try {
             String path = "ForumPostSessionBean!ejb.session.stateless.ForumPostSessionBeanLocal";
             return (ForumPostSessionBeanLocal) initialContextLookup(path);
