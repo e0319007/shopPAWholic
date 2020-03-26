@@ -42,4 +42,6 @@ public class DeliveryDetailsResource {
         deliveryDetailSessionBeanLocal = sessionBeanLookup.lookupDeliveryDetailSessionBeanLocal();
         userSessionBeanLocal = sessionBeanLookup.lookupUserSessionBeanLocal();
     }
+    
+//    public 
 }
