@@ -86,13 +86,13 @@ public class AdvertisementResource {
             
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch (AdvertisementNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
         } catch(Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build(); 
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build(); 
         }
     }
     

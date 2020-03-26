@@ -29,4 +29,6 @@ public class OrderEntityResource {
     
     //createorder, change order status, retrieve order for customer/ seller.
     
+    //when creating order, delivery detail and billing detail attributes to be passed in.
+    
 }
