@@ -50,25 +50,15 @@ public class Advertisement implements Serializable {
     @URL
     private String url;
 
-<<<<<<< HEAD
+
     @OneToOne(optional = false)
     private Seller seller;
 
-   
-
-
-    
+  
     @OneToOne(optional = false) 
     private BillingDetail billingDetail;
 
-    
-=======
-    @OneToOne(optional = false)
-    private Seller seller;
 
-    @OneToOne(optional = false)
-    private BilingDetail bilingDetail;
->>>>>>> origin/yeeqing
 
     public Advertisement() {
         pictures = new ArrayList<>();
