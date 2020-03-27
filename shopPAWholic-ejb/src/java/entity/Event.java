@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package entity;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,25 +30,31 @@ public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
-    
+
     @Size(min = 1, message = "Event name must not be empty")
     private String eventName;
+
     @Size(min = 10, message = "Event description must be more than 10 characters")
     private String description;
+
     @Size(min = 10, message = "Location must be more than 10 characters")
     private String location;
+
     @NotNull
     private List<String> pictures;
+
     @NotNull
     private Date startDateTime;
+
     @NotNull
     private Date endDateTime;
+
     @URL
     private String url;
-    
+
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
-    private ServiceProvider serviceProvider;
+    private Seller seller;
 
     public Event() {
         pictures = new ArrayList<>();
@@ -63,7 +70,7 @@ public class Event implements Serializable {
         this.endDateTime = endDateTime;
         this.url = url;
     }
-    
+
     public Long getEventId() {
         return eventId;
     }
@@ -152,21 +159,12 @@ public class Event implements Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-    
-//    public ServiceProvider getUrl() {
-//        return serviceProvider;
-//    }
-//
-//    public void setUrl(ServiceProvider serviceProvider) {
-//        this.serviceProvider = serviceProvider;
-//    }
 
-    public ServiceProvider getServiceProvider() {
-        return serviceProvider;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setServiceProvider(ServiceProvider serviceProvider) {
-        this.serviceProvider = serviceProvider;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
-    
 }

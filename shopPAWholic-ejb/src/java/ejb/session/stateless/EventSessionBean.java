@@ -6,7 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Event;
-import entity.ServiceProvider;
+import entity.Seller;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -40,15 +40,15 @@ public class EventSessionBean implements EventSessionBeanLocal {
     }
 
     @Override
-    public Event createNewEvent(Event event, Long serviceProviderId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException {
+    public Event createNewEvent(Event event, Long sellerId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException {
         Set<ConstraintViolation<Event>> constraintViolations;
         constraintViolations = validator.validate(event);
         if (retrieveEventByName(event.getEventName()) == null) {
             if (constraintViolations.isEmpty()) {
                 try {
-                    ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
-                    event.setServiceProvider(serviceProvider);
-                    serviceProvider.getEvents().add(event);
+                    Seller seller = em.find(Seller.class, sellerId);
+                    event.setSeller(seller);
+                    seller.getEvents().add(event);
                     
                     em.persist(event);
                     em.flush();

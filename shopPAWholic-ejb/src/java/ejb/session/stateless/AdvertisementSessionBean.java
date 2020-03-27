@@ -6,9 +6,10 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
+
 import entity.BillingDetail;
-import entity.ServiceProvider;
 import java.text.SimpleDateFormat;
+import entity.Seller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
     }
 
     @Override//billing detail initialised in the method,
-    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException {
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long sellerId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException {
         Set<ConstraintViolation<Advertisement>> constraintViolations;
         constraintViolations = validator.validate(advertisement);
         if (constraintViolations.isEmpty()) {
@@ -59,9 +60,9 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 advertisement.setBillingDetail(billingDetail);
                 
-                ServiceProvider serviceProvider = em.find(ServiceProvider.class, serviceProviderId);
-                serviceProvider.getAdvertisements().add(advertisement);
-                advertisement.setServiceProvider(serviceProvider);
+                Seller seller = em.find(Seller.class, sellerId);
+                seller.getAdvertisements().add(advertisement);
+                advertisement.setSeller(seller);
                 
                 em.persist(advertisement);
                 em.flush();

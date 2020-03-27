@@ -6,6 +6,8 @@
 package jsf.managedBean;
 
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Customer;
+import entity.Seller;
 import entity.User;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -29,21 +31,27 @@ public class LoginManagedBean {
     private String email;
     private String password;
 
-  
-    public void login(javafx.event.ActionEvent event) throws IOException{
-        try{
+    public void login(javafx.event.ActionEvent event) throws IOException {
+        try {
             User currentUser = userSessionBeanLocal.userLogin(getEmail(), getPassword());
-            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
-            FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/afterLogin.xhtml");
-        } catch (InvalidLoginCredentialException ex){
+            if (currentUser instanceof Customer) {
+                FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/customerOperation/customerHomepage.xhtml");
+            } else if (currentUser instanceof Seller){
+                FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/sellerOperation/sellerHomepage.xhtml");
+            }
+        } catch (InvalidLoginCredentialException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
         }
     }
-    
+
     public void logout(javafx.event.ActionEvent event) throws IOException {
-        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/login.xhtml");
     }
 
@@ -62,5 +70,5 @@ public class LoginManagedBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
 }

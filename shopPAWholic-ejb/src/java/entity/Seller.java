@@ -1,4 +1,3 @@
-
 package entity;
 
 import java.io.Serializable;
@@ -9,53 +8,49 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Entity
+@Entity (name="Seller")
 public class Seller extends User implements Serializable {
-    @NotNull
-    @Size(max = 32)
-    private String firstName;
-    @NotNull
-    @Size(max = 32)
-    private String lastName;
-    private double totalRating;
     
+    @NotNull
+    private boolean verified;
+
+    private double totalRating;
+
     @OneToMany(mappedBy = "seller")
     private List<Listing> listings;
+
+    @OneToMany(mappedBy = "seller")
+    private List<OrderEntity> orders;
     
-    @OneToMany(mappedBy="seller")
-    private List<OrderEntity> orders; 
+    @OneToMany(mappedBy = "seller")
+    private List<Advertisement> advertisements; //sz
+
+    @OneToMany(mappedBy = "seller")
+    private List<Event> events; //sz
 
     public Seller() {
         listings = new ArrayList<>();
         orders = new ArrayList<>();
+        advertisements = new ArrayList<>();
+        events = new ArrayList<>();
     }
 
-    public Seller(String firstName, String lastName) {
-        this();
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-    
-    
-
-    public String getFirstName() {
-        return firstName;
+    public Seller(String name, String email, String contactNumber, String password, boolean verified, double totalRating ) {
+        super(name, email, contactNumber, password);
+        this.verified = verified;
+        this.totalRating = totalRating;
     }
 
-    public String getLastName() {
-        return lastName;
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     public double getTotalRating() {
         return totalRating;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public void setTotalRating(double totalRating) {
@@ -76,5 +71,21 @@ public class Seller extends User implements Serializable {
 
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+    }
+
+    public List<Advertisement> getAdvertisements() {
+        return advertisements;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
