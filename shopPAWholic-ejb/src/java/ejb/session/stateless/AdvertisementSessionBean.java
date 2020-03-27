@@ -6,9 +6,13 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
+<<<<<<< HEAD
 
 import entity.BillingDetail;
 import java.text.SimpleDateFormat;
+=======
+import entity.BilingDetail;
+>>>>>>> origin/yeeqing
 import entity.Seller;
 import java.util.ArrayList;
 import java.util.Date;

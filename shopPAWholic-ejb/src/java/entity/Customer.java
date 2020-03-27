@@ -42,10 +42,14 @@ public class Customer extends User implements Serializable {
         super(name, email, contactNumber, password);
     }
     
+<<<<<<< HEAD
 
 
     public List<BillingDetail> getBillingDetails() {
 
+=======
+    public List<BilingDetail> getBillingDetails() {
+>>>>>>> origin/yeeqing
         return billingDetails;
     }
 
