@@ -31,23 +31,29 @@ public class Advertisement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long advertisementId;
+
     @Size(min = 10, max = 250, message = "Description must be between 10 and 200 characters")
     private String description;
+
     @NotNull
     private Date startDate;
+
     @NotNull
     private Date endDate;
+
     @DecimalMin(value = "0.0", inclusive = false, message = "Price most be more than $0")
     private BigDecimal price;
+
     @NotNull
     private List<String> pictures;
+
     @URL
     private String url;
-    
+
     @OneToOne(optional = false)
-    private ServiceProvider serviceProvider;
-    
-    @OneToOne(optional = false) 
+    private Seller seller;
+
+    @OneToOne(optional = false)
     private BilingDetail bilingDetail;
 
     public Advertisement() {
@@ -64,9 +70,7 @@ public class Advertisement implements Serializable {
         this.pictures = pictures;
         this.url = url;
     }
-    
-    
-    
+
     public Long getAdvertisementId() {
         return advertisementId;
     }
@@ -148,14 +152,6 @@ public class Advertisement implements Serializable {
         this.url = url;
     }
 
-    public ServiceProvider getServiceProvider() {
-        return serviceProvider;
-    }
-
-    public void setServiceProvider(ServiceProvider serviceProvider) {
-        this.serviceProvider = serviceProvider;
-    }
-
     /**
      * @return the bilingDetail
      */
@@ -169,5 +165,13 @@ public class Advertisement implements Serializable {
     public void setBilingDetail(BilingDetail bilingDetail) {
         this.bilingDetail = bilingDetail;
     }
-    
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
+
 }

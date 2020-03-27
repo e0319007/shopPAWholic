@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
@@ -23,10 +18,10 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import util.exception.CreateNewListingException;
 import util.exception.InputDataValidationException;
@@ -40,7 +35,7 @@ import util.exception.ListingSkuCodeExistException;
  * @author EileenLeong
  */
 @Named(value = "productManagementManagedBean")
-@ViewScoped
+@ApplicationScoped
 
 
 public class ListingManagementManagedBean implements Serializable {

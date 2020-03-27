@@ -44,9 +44,9 @@ public class UserSessionBean implements UserSessionBeanLocal {
     
     //user login
    @Override
-    public User userLogin(String username, String password) throws InvalidLoginCredentialException{
+    public User userLogin(String email, String password) throws InvalidLoginCredentialException{
         try{
-            User user = retrieveUserByUsername(username);            
+            User user = retrieveUserByEmail(email);            
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + user.getSalt()));
             
             if(user.getPassword().equals(passwordHash)){
@@ -106,14 +106,14 @@ public class UserSessionBean implements UserSessionBeanLocal {
     
     
    @Override
-    public User retrieveUserByUsername(String username) throws UserNotFoundException{
-        Query query = em.createQuery("SELECT u FROM User u WHERE u.username = :inUsername");
-        query.setParameter("inUsername", username);
+    public User retrieveUserByEmail(String email) throws UserNotFoundException{
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.email = :inEmail");
+        query.setParameter("inEmail", email);
         
         try {
             return (User)query.getSingleResult();
         } catch(NoResultException | NonUniqueResultException ex) {
-            throw new UserNotFoundException("User's Username " + username + " does not exist!");
+            throw new UserNotFoundException("User's Email " + email + " does not exist!");
         }
     }
     
