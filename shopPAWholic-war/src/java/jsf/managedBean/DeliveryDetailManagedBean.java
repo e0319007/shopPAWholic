@@ -12,8 +12,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -33,80 +31,79 @@ import util.exception.InputDataValidationException;
  */
 @Named(value = "deliveryDetailManagementManagedBean")
 @ViewScoped
-public class DeliveryDetailManagedBean implements Serializable{
-    
+public class DeliveryDetailManagedBean implements Serializable {
+
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
-    
+
     @Inject
     private ViewDeliveryDetailManagedBean viewDeliveryDetailBean;
-    
+
     private DeliveryDetail newDeliveryDetail;
     private DeliveryDetail deliveryDetailToUpdate;
-    
+
     private String address;
     private String contactNumber;
     private Date deliveryDate;
     private List<String> statusLists;
     private BigDecimal deliveryPrice;
     private DeliveryMethod deliveryMethod;
-    
+
     /**
      * Creates a new instance of DeliveryDetailManagementManagedBean
      */
     public DeliveryDetailManagedBean() {
 //        newDeliveryDetail = new DeliveryDetail();
     }
-    
+
     @PostConstruct
     public void postConstruct() {
-        
+
     }
-    
+
     public void viewDeliveryDetail(ActionEvent event) throws IOException {
-        Long deliveryDetailIdToView = (Long)event.getComponent().getAttributes().get("deliveryDetailId");
+        Long deliveryDetailIdToView = (Long) event.getComponent().getAttributes().get("deliveryDetailId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("deliveryDetailIdToView", deliveryDetailIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("ViewDeliveryDetails.xhtml");
     }
-    
+
     public void createDeliveryDetail(ActionEvent event) {
-          try {
+        try {
             DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod, deliveryPrice);
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(newDeliveryDetail);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Delivery Detail created successfully (Delivery ID: " + newDeliveryDetail.getDeliveryDetailId() + ")", null));
-            
+
         } catch (InputDataValidationException | CreateNewDeliveryDetailException ex) {
 //            Logger.getLogger(DeliveryDetailManagedBean.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new delivery detail: " + ex.getMessage(), null));
-        
+
         }
     }
-    
+
     public void doUpdateDeliveryDetail(ActionEvent event) {
-        deliveryDetailToUpdate = (DeliveryDetail)event.getComponent().getAttributes().get("deliveryDetailToUpdate");       
+        deliveryDetailToUpdate = (DeliveryDetail) event.getComponent().getAttributes().get("deliveryDetailToUpdate");
     }
-    
+
     public void updateDeliveryDetail(ActionEvent event) {
         try {
             deliveryDetailToUpdate = (DeliveryDetail) event.getComponent().getAttributes().get("DeliveryDetailToUpdate");
             deliveryDetailSessionBeanLocal.updateDeliveryDetail(deliveryDetailToUpdate);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail updated successfully", null));
         } catch (InputDataValidationException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating Delivery Detail: " + ex.getMessage(), null));
-        } 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating Delivery Detail: " + ex.getMessage(), null));
+        }
     }
-    
+
     public void deleteDeliveryDetail(ActionEvent event) {
-         try {
-            DeliveryDetail deliveryDetailToDelete = (DeliveryDetail)event.getComponent().getAttributes().get("deliveryDetailToDelete");
+        try {
+            DeliveryDetail deliveryDetailToDelete = (DeliveryDetail) event.getComponent().getAttributes().get("deliveryDetailToDelete");
             deliveryDetailSessionBeanLocal.deleteDeliveryDetail(deliveryDetailToDelete.getDeliveryDetailId());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail deleted successfully", null));         
-        } catch (DeliveryDetailNotFoundException ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Delivery Detail deleted successfully", null));
+        } catch (DeliveryDetailNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product details: " + ex.getMessage(), null));
-        } 
+        }
     }
-    
 
     /**
      * @return the newDeliveryDetail
@@ -149,7 +146,5 @@ public class DeliveryDetailManagedBean implements Serializable{
     public void setViewDeliveryDetailBean(ViewDeliveryDetailManagedBean viewDeliveryDetailBean) {
         this.viewDeliveryDetailBean = viewDeliveryDetailBean;
     }
-    
-    
-    
+
 }

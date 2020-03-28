@@ -18,31 +18,31 @@ public class AdminLoginManagedBean {
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
-    
+
     private String username;
     private String password;
 
     public AdminLoginManagedBean() {
-        
+
     }
-    
-    public void login(ActionEvent event) throws IOException{
-        try{
+
+    public void login(ActionEvent event) throws IOException {
+        try {
             Admin currentAdmin = adminSessionBeanLocal.adminLogin(username, password);
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentAdmin", currentAdmin);
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/adminOperation/adminHomepage.xhtml");
-        } catch (InvalidLoginCredentialException ex){
+        } catch (InvalidLoginCredentialException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
         }
     }
-    
+
     public void logout(ActionEvent event) throws IOException {
-        ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -52,7 +52,7 @@ public class AdminLoginManagedBean {
     }
 
     public String getPassword() {
-        return password; 
+        return password;
     }
 
     public void setPassword(String password) {
