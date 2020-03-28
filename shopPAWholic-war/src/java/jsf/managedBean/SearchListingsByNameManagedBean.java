@@ -22,7 +22,7 @@ import javax.inject.Inject;
  */
 @Named(value = "searchListingByNameManagedBean")
 @ViewScoped
-public class SearchListingByNameManagedBean implements Serializable{
+public class SearchListingsByNameManagedBean implements Serializable{
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -36,25 +36,25 @@ public class SearchListingByNameManagedBean implements Serializable{
     /**
      * Creates a new instance of SearchListingByNameManagedBean
      */
-    public SearchListingByNameManagedBean() {
+    public SearchListingsByNameManagedBean() {
     }
     
     @PostConstruct 
     public void postConstruct() {
-        setSearchStr((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingSearchStr"));
+        searchStr = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingSearchStr");
         
-        if (getSearchStr() == null || getSearchStr().trim().length() == 0) {
-            setListings(listingSessionBeanLocal.retrieveAllListings());
+        if (searchStr == null || searchStr.trim().length() == 0) {
+            listings = listingSessionBeanLocal.retrieveAllListings();
         } else {
-            setListings(listingSessionBeanLocal.searchListingsByName(getSearchStr()));
+            listings = listingSessionBeanLocal.searchListingsByName(searchStr);
         }
     }
     
     public void searchListing() {
-        if (getSearchStr() == null || getSearchStr().trim().length() == 0) {
-            setListings(listingSessionBeanLocal.retrieveAllListings());
+        if (searchStr == null || searchStr.trim().length() == 0) {
+            listings = listingSessionBeanLocal.retrieveAllListings();
         } else {
-            setListings(listingSessionBeanLocal.searchListingsByName(getSearchStr()));
+            listings = listingSessionBeanLocal.searchListingsByName(searchStr);
         }
     }
 

@@ -69,14 +69,17 @@ public class ListingManagementManagedBean implements Serializable {
     
     private List<Listing> listings;
     private List<Listing> filteredListings;
+    
     private Listing newListing;
     private Long categoryIdNew; 
     private List<Long> tagIdsNew; 
     private List<Category> categories; 
     private List<Tag> tags;
+    
     private Listing selectedListingToUpdate;
     private Long categoryIdUpdate;
     private List<Long> tagIdsUpdate;
+    
     private List<Review> reviews;
     private List<OrderEntity> orders;
     
@@ -91,11 +94,15 @@ public class ListingManagementManagedBean implements Serializable {
     
     @PostConstruct 
     public void postConstruct() {
-        setListings(listingSessionBeanLocal.retrieveAllListings());
-        setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
-        setTags(tagSessionBeanLocal.retrieveAllTags());
+        //setListings(listingSessionBeanLocal.retrieveAllListings());
+        //setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
+        //setTags(tagSessionBeanLocal.retrieveAllTags());
         //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
-        setOrders(orderSessionBeanLocal.retrieveAllOrders());
+        //setOrders(orderSessionBeanLocal.retrieveAllOrders());
+        listings = listingSessionBeanLocal.retrieveAllListings();
+        categories = categorySessionBeanLocal.retrieveAllLeafCategories();
+        tags = tagSessionBeanLocal.retrieveAllTags();
+        //reviews = reviewSessionBeanLocal.retrieveAllReviews();
     }
     
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -110,18 +117,23 @@ public class ListingManagementManagedBean implements Serializable {
             setCategoryIdNew(null);
         }
         try {
-            Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
-            listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew);
+            listings.add(l);
+            //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
+            //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
             //listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew(), getPictures());
-            getListings().add(l);
+            //getListings().add(l);
             
-            if(getFilteredListings() != null) {
-                getFilteredListings().add(l);
+            if(filteredListings != null) {
+                filteredListings.add(l);
             }
             
-            setNewListing(new Listing());
-            setCategoryIdNew(null);
-            setTagIdsNew(null); 
+            newListing = new Listing();
+            categoryIdNew = null;
+            tagIdsNew = null;
+            //setNewListing(new Listing());
+            //setCategoryIdNew(null);
+            //setTagIdsNew(null); 
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully! (Listing Id: " + l.getListingId() + ")", null));
             
