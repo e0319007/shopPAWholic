@@ -38,11 +38,13 @@ public class LoginManagedBean {
                 FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now loggeed in as Customer", null));
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/customerOperation/customerHomepage.xhtml");
-            } else if (currentUser instanceof Seller){
+            } else if (currentUser instanceof Seller) {
                 FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", currentUser);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now loggeed in as Seller", null));
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/sellerOperation/sellerHomepage.xhtml");
             }
         } catch (InvalidLoginCredentialException ex) {
