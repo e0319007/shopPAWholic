@@ -64,7 +64,7 @@ public class ListingManagementManagedBean implements Serializable {
     private String description;
     private String skuCode;
     private BigDecimal unitPrice; 
-    private List<String> pictures;
+    //private List<String> pictures;
     private Integer quantityAtHand;
     
     private List<Listing> listings;
@@ -89,7 +89,7 @@ public class ListingManagementManagedBean implements Serializable {
      */
     public ListingManagementManagedBean() {
         newListing = new Listing();
-        List<String> pictures = new ArrayList<>();
+        //List<String> pictures = new ArrayList<>();
     }
     
     @PostConstruct 
@@ -407,16 +407,16 @@ public class ListingManagementManagedBean implements Serializable {
     /**
      * @return the pictures
      */
-    public List<String> getPictures() {
+   /* public List<String> getPictures() {
         return pictures;
-    }
+    }*/
 
     /**
      * @param pictures the pictures to set
      */
-    public void setPictures(List<String> pictures) {
+    /*public void setPictures(List<String> pictures) {
         this.pictures = pictures;
-    }
+    }*/
 
     /**
      * @return the name

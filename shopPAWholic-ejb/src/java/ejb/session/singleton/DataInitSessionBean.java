@@ -19,6 +19,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewListingException;
@@ -55,7 +56,7 @@ public class DataInitSessionBean {
 
     @PostConstruct
     public void postConstruct() {
-        if (em.find(Admin.class, 1l) == null) {
+        if(em.find(Admin.class, 1l) == null){
             initializeData();
         }
     }
@@ -87,29 +88,32 @@ public class DataInitSessionBean {
 
             List<Long> tagIdsEmpty = new ArrayList<>();
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"), null, 10), categoryA.getCategoryId(), tagIdsPopular);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"), null, 20), categoryA.getCategoryId(), tagIdsDiscount);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"), null, 30), categoryA.getCategoryId(), tagIdsPopularDiscount);
+           // List<String> pictures = new ArrayList<>();
+            //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"), null, 10), categoryB.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"), null, 20), categoryB.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"), null, 30), categoryB.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"), 10), categoryA.getCategoryId(), tagIdsPopular);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"),  20), categoryA.getCategoryId(), tagIdsDiscount);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"),  30), categoryA.getCategoryId(), tagIdsPopularDiscount);
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"), null, 10), categoryC.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"), null, 20), categoryC.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"), null, 30), categoryC.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"),  10), categoryB.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"),  20), categoryB.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"),  30), categoryB.getCategoryId(), tagIdsEmpty);
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Listing X1", "Listing X1", new BigDecimal("10.00"), null, 10), categoryX.getCategoryId(), tagIdsPopular);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"), null, 20), categoryX.getCategoryId(), tagIdsDiscount);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"), null, 30), categoryX.getCategoryId(), tagIdsPopularDiscount);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"),  10), categoryC.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"),  20), categoryC.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"),  30), categoryC.getCategoryId(), tagIdsEmpty);
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"), null, 10), categoryY.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"), null, 20), categoryY.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"), null, 30), categoryY.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Listing X1", "Listing X1", new BigDecimal("10.00"),  10), categoryX.getCategoryId(), tagIdsPopular);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"),  20), categoryX.getCategoryId(), tagIdsDiscount);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"),  30), categoryX.getCategoryId(), tagIdsPopularDiscount);
             
-            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), null, 10), categoryZ.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"), null, 20), categoryZ.getCategoryId(), tagIdsEmpty);
-            listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"), null, 30), categoryZ.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"),  10), categoryY.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"),  20), categoryY.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"),  30), categoryY.getCategoryId(), tagIdsEmpty);
+            
+            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), 10), categoryZ.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20), categoryZ.getCategoryId(), tagIdsEmpty);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30), categoryZ.getCategoryId(), tagIdsEmpty);
         } catch (AdminUsernameExistException | ListingSkuCodeExistException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException ex) {
             ex.printStackTrace();
         } 

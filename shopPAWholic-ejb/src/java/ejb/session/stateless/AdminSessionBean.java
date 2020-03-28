@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -79,12 +81,11 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     public Admin retrieveAdminByUsername(String username) throws AdminNotFoundException {
         Query query = em.createQuery("SELECT a FROM Admin a WHERE a.username = :inUsername");
         query.setParameter("inUsername", username);
-        return (Admin) query.getSingleResult();
-//        try {
-//            return (Admin)query.getSingleResult();
-//        } catch (NoResultException | NonUniqueResultException ex) {
-//            throw new AdminNotFoundException("Admin Username " + username + " does not exist!");
-//        }
+        try {
+            return (Admin)query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new AdminNotFoundException("Admin Username " + username + " does not exist!");
+        }
     }
 
     @Override
