@@ -34,6 +34,7 @@ import util.exception.InvalidLoginCredentialException;
 import ws.datamodel.AdvertisementCreateNewReq;
 import ws.datamodel.ErrorRsp;
 import ws.datamodel.AdvertisementRetrieveAllRsp;
+import ws.datamodel.AdvertisementRetrieveByIdRsp;
 import ws.datamodel.AdvertisementUpdateReq;
 
 /**
@@ -106,10 +107,9 @@ public class AdvertisementResource {
         try {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(createNewAdvertisementReq.getEmail(), createNewAdvertisementReq.getPassword());
             System.out.println("********** Advertisement.createNewAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
-            Advertisement advertisement  = advertisementSessionBeanLocal.createNewAdvertisement(createNewAdvertisementReq.getAdvertisement(), seller.getUserId(), createNewAdvertisementReq.getCcNum());
-            
+            Advertisement advertisement  = advertisementSessionBeanLocal.createNewAdvertisement(createNewAdvertisementReq.getAdvertisement(), seller.getUserId(), createNewAdvertisementReq.getCcNum()); 
             //CreateNewAdvertisementRsp createNewAdvertisementRsp = new CreateNewAdvertisementRsp(advertisement.getAdvertisementId());
-            return Response.status(Response.Status.OK).entity(advertisement).build();
+            return Response.status(Response.Status.OK).entity(new AdvertisementRetrieveByIdRsp(advertisement)).build();
             
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
