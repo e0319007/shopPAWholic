@@ -30,8 +30,8 @@ public interface UserSessionBeanLocal {
 
     public List<User> retrieveAllUsers();
 
-    public User retrieveUserByUsername(String username) throws UserNotFoundException;
-
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
+
+    public User retrieveUserByEmail(String email) throws UserNotFoundException;
     
 }

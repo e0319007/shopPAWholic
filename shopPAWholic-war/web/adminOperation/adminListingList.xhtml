@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+   
+
+    <ui:define name="content">
+        <ez:Breadcrumb pageName="adminListingList" />
+        <div>
+            <br/><br/>
+            <h1 style="color:#0063dc; font-weight: bold;">Listing Management</h1>
+            <h:outputLabel value="#{viewListingManagedBean.listingToView.name}"></h:outputLabel>
+            <!--admin no need to create listing
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="Sell">
+                        <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="fa fa-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form> -->
+            
+           
+            <!-- table of listings --> 
+            <!--<h:form id="formAllListings">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.listings}" var="listing" rowKey="#{listing.productId}" rowIndexVar="row"
+                             filteredValue="#{listingManagementManagedBean.filteredListings}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+
+                   <f:facet name="header">
+                        <p:outputPanel style="text-align: right; color: #045491">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllListings').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet> 
+
+                    <p:column style="background-color: steelblue" headerText="SKU Code" sortBy="#{listing.skuCode}" filterBy="#{listing.skuCode}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.skuCode}" />
+                    </p:column>
+
+                    <p:column style="background-color: steelblue" headerText="Listing ID" sortBy="#{listing.productId}" filterBy="#{listing.productId}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.productId}" />
+                    </p:column>                            
+
+                    <p:column style="background-color: steelblue" headerText="Name" sortBy="#{listing.name}" filterBy="#{listing.name}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.name}" />
+                    </p:column>
+                    
+                    
+                    
+                    <p:column style="background-color: steelblue" headerText="Description" sortBy="#{listing.description}" filterBy="#{listing.description}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.description}" />
+                    </p:column>
+
+                   
+
+                    <p:column headerText="Unit Price" sortBy="#{listing.unitPrice}" filterBy="#{listing.unitPrice}" filterMatchMode="contains" style="text-align: right; background-color: steelblue">
+                        <h:outputText value="#{listing.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column style="background-color: steelblue" headerText="Category" sortBy="#{listing.category.name}" filterBy="#{listing.category.name}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllListings').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.name}" itemLabel="#{category.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{listing.category.name}" />
+                    </p:column>
+
+                    <p:column style="background-color: steelblue" headerText="Action" >
+                        <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.viewListingManagedBean.listingToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{listingManagementManagedBean.doUpdateListing}" update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="listingToUpdate" value="#{listing}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="formAllListings:dataTableAllListings formAllListings:messages">
+                            <f:attribute name="listingToDelete" value="#{listing}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+              
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form> -->
+            
+            
+            
+            <ez:ViewListing id="ccViewListing" />
+            
+            <h:form id="formUpdateListing">
+
+                <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Update Listing" closable="true">
+
+                    <p:messages id="messagesUpdateListing" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Listing ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.listingId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="SKU Code: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.skuCode}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{listingManagementManagedBean.selectedListingToUpdate.name}" placeholder="Listing 1" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        
+
+                       
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{listingManagementManagedBean.selectedListingToUpdate.description}" placeholder="Listing 1" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{listingManagementManagedBean.selectedListingToUpdate.quantityOnHand}" placeholder="1" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Unit Price " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="unitPrice" value="#{listingManagementManagedBean.selectedListingToUpdate.unitPrice}" placeholder="10.00" min="0" max="1000000" required="true" requiredMessage="Unit Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>                  
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selCategory" value="Category " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdUpdate}">
+                                    <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                    <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selCategory" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
+                                    <f:selectItems value="#{listingManagementManagedBean.tagEntities}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}" />
+                                </p:selectManyMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selTags" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton style="color: black; background-color: orange;" value="Update Product" update="@form formAllListings:dataTableAllListings" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdatListing').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form> 
+        </div>
+    </ui:define>
+
+</ui:composition>

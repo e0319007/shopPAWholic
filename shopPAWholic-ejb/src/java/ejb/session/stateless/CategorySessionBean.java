@@ -66,6 +66,8 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
                 }
                 em.persist(newCategory);
                 em.flush();
+                System.out.println("I am in the database now");
+                
                 return newCategory;
             } catch (Exception ex) {
                     throw new CreateNewCategoryException("An  error has occurred: " + ex.getMessage());

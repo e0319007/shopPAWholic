@@ -23,19 +23,27 @@ public abstract class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    
+    @NotNull
+    @Size(max = 32)
+    private String name;
+    
     @Email(message = "Email should be valid")
     @NotNull
     @Column(nullable = false, unique = true, length = 64)
     @Size(max=64)
     private String email;
-    @Pattern(regexp = "65[6|8|9]\\d{7}|\\")
+    
     private String contactNumber;
+    
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String password;
+    
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String salt;
+    
     @NotNull
     private boolean isFlag;
 
@@ -44,12 +52,21 @@ public abstract class User implements Serializable{
         isFlag = false;
     }
 
-    public User(String email, String contactNumber, String password) {
+    public User(String name, String email, String contactNumber, String password) {
         this();
+        this.name = name;
         this.email = email;
         this.contactNumber = contactNumber;
         setPassword(password);
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     public Long getUserId() {

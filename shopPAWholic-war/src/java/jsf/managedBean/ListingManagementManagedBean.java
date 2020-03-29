@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
@@ -23,10 +18,10 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import util.exception.CreateNewListingException;
 import util.exception.InputDataValidationException;
@@ -40,7 +35,7 @@ import util.exception.ListingSkuCodeExistException;
  * @author EileenLeong
  */
 @Named(value = "productManagementManagedBean")
-@ViewScoped
+@ApplicationScoped
 
 
 public class ListingManagementManagedBean implements Serializable {
@@ -69,19 +64,22 @@ public class ListingManagementManagedBean implements Serializable {
     private String description;
     private String skuCode;
     private BigDecimal unitPrice; 
-    private List<String> pictures;
+    //private List<String> pictures;
     private Integer quantityAtHand;
     
     private List<Listing> listings;
     private List<Listing> filteredListings;
+    
     private Listing newListing;
     private Long categoryIdNew; 
     private List<Long> tagIdsNew; 
     private List<Category> categories; 
     private List<Tag> tags;
+    
     private Listing selectedListingToUpdate;
     private Long categoryIdUpdate;
     private List<Long> tagIdsUpdate;
+    
     private List<Review> reviews;
     private List<OrderEntity> orders;
     
@@ -91,16 +89,20 @@ public class ListingManagementManagedBean implements Serializable {
      */
     public ListingManagementManagedBean() {
         newListing = new Listing();
-        List<String> pictures = new ArrayList<>();
+        //List<String> pictures = new ArrayList<>();
     }
     
     @PostConstruct 
     public void postConstruct() {
-        setListings(listingSessionBeanLocal.retrieveAllListings());
-        setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
-        setTags(tagSessionBeanLocal.retrieveAllTags());
+        //setListings(listingSessionBeanLocal.retrieveAllListings());
+        //setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
+        //setTags(tagSessionBeanLocal.retrieveAllTags());
         //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
-        setOrders(orderSessionBeanLocal.retrieveAllOrders());
+        //setOrders(orderSessionBeanLocal.retrieveAllOrders());
+        listings = listingSessionBeanLocal.retrieveAllListings();
+        categories = categorySessionBeanLocal.retrieveAllLeafCategories();
+        tags = tagSessionBeanLocal.retrieveAllTags();
+        //reviews = reviewSessionBeanLocal.retrieveAllReviews();
     }
     
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -115,18 +117,23 @@ public class ListingManagementManagedBean implements Serializable {
             setCategoryIdNew(null);
         }
         try {
-            Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
-            listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew);
+            listings.add(l);
+            //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
+            //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
             //listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew(), getPictures());
-            getListings().add(l);
+            //getListings().add(l);
             
-            if(getFilteredListings() != null) {
-                getFilteredListings().add(l);
+            if(filteredListings != null) {
+                filteredListings.add(l);
             }
             
-            setNewListing(new Listing());
-            setCategoryIdNew(null);
-            setTagIdsNew(null); 
+            newListing = new Listing();
+            categoryIdNew = null;
+            tagIdsNew = null;
+            //setNewListing(new Listing());
+            //setCategoryIdNew(null);
+            //setTagIdsNew(null); 
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully! (Listing Id: " + l.getListingId() + ")", null));
             
@@ -400,16 +407,16 @@ public class ListingManagementManagedBean implements Serializable {
     /**
      * @return the pictures
      */
-    public List<String> getPictures() {
+   /* public List<String> getPictures() {
         return pictures;
-    }
+    }*/
 
     /**
      * @param pictures the pictures to set
      */
-    public void setPictures(List<String> pictures) {
+    /*public void setPictures(List<String> pictures) {
         this.pictures = pictures;
-    }
+    }*/
 
     /**
      * @return the name

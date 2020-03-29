@@ -36,7 +36,7 @@ public class DeliveryDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryDetailId;
-    @Size(min=5, message = "Address must be longer than 5 characters")
+    @Size(min = 5, message = "Address must be longer than 5 characters")
     private String address;
     @Pattern(regexp = "65[6|8|9]\\d{7}|\\")
     private String contactNumber;
@@ -50,31 +50,33 @@ public class DeliveryDetail implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private DeliveryMethod deliveryMethod;
-    
-    
 
     public DeliveryDetail() {
         deliveryMethod = DeliveryMethod.SINGPOST_REGULAR;
         statusLists = new ArrayList<>();
     }
 
-    public DeliveryDetail(String address, String contactNumber, Date date, DeliveryMethod deliveryMethod) {
+    public DeliveryDetail(String address, String contactNumber, Date date, DeliveryMethod deliveryMethod, BigDecimal deliveryPrice) {
         this();
-       
+
         this.address = address;
         this.contactNumber = contactNumber;
         this.deliveryDate = date;
         this.deliveryMethod = deliveryMethod;
         double dp = 0;
-        if(deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) dp = 1.50;
-        else if(deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) dp = 3.50;
-        else if(deliveryMethod.equals(DeliveryMethod.QXPRESS)) dp = 5;
-        else if(deliveryMethod.equals(DeliveryMethod.PARKNPARCEL)) dp = 5.50;
-        else if(deliveryMethod.equals(DeliveryMethod.NINJAVAN)) dp = 4;
+        if (deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) {
+            dp = 1.50;
+        } else if (deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) {
+            dp = 3.50;
+        } else if (deliveryMethod.equals(DeliveryMethod.QXPRESS)) {
+            dp = 5;
+        } else if (deliveryMethod.equals(DeliveryMethod.PARKNPARCEL)) {
+            dp = 5.50;
+        } else if (deliveryMethod.equals(DeliveryMethod.NINJAVAN)) {
+            dp = 4;
+        }
         deliveryPrice = new BigDecimal(dp);
     }
-    
-    
 
     public Long getDeliveryDetailId() {
         return deliveryDetailId;
@@ -108,8 +110,6 @@ public class DeliveryDetail implements Serializable {
     public String toString() {
         return "entity.DeliveryDetail[ id=" + deliveryDetailId + " ]";
     }
-
-   
 
     /**
      * @return the address
@@ -188,5 +188,5 @@ public class DeliveryDetail implements Serializable {
     public void setDeliveryPrice(BigDecimal deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
     }
-    
+
 }

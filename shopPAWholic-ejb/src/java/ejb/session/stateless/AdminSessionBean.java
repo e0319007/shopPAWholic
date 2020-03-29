@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -25,31 +27,30 @@ import util.security.CryptographicHelper;
 public class AdminSessionBean implements AdminSessionBeanLocal {
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
-    private EntityManager em;    
-    
+    private EntityManager em;
+
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
-    
+
     public AdminSessionBean() {
         this.validatorFactory = Validation.buildDefaultValidatorFactory();
         this.validator = validatorFactory.getValidator();
     }
-    
+
     @Override
-    public Long createNewAdmin(Admin newAdmin) throws AdminUsernameExistException, UnknownPersistenceException, InputDataValidationException{
+    public Long createNewAdmin(Admin newAdmin) throws AdminUsernameExistException, UnknownPersistenceException, InputDataValidationException {
         try {
-            Set<ConstraintViolation<Admin>>constraintViolations = validator.validate(newAdmin);
-            if(constraintViolations.isEmpty()) {
+            Set<ConstraintViolation<Admin>> constraintViolations = validator.validate(newAdmin);
+            if (constraintViolations.isEmpty()) {
                 em.persist(newAdmin);
                 em.flush();
                 return newAdmin.getAdminId();
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-            }            
-        }
-        catch(PersistenceException ex) {
-            if(ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")){
-                if(ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")){
+            }
+        } catch (PersistenceException ex) {
+            if (ex.getCause() != null && ex.getCause().getClass().getName().equals("org.eclipse.persistence.exceptions.DatabaseException")) {
+                if (ex.getCause().getCause() != null && ex.getCause().getCause().getClass().getName().equals("java.sql.SQLIntegrityConstraintViolationException")) {
                     throw new AdminUsernameExistException();
                 } else {
                     throw new UnknownPersistenceException(ex.getMessage());
@@ -59,8 +60,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             }
         }
     }
-    
-    
+
     @Override
     public List<Admin> retrieveAllAdmins() {
         Query query = em.createQuery("SELECT a FROM Admin a");
@@ -70,99 +70,46 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     @Override
     public Admin retrieveAdminByAdminId(Long adminId) throws AdminNotFoundException {
         Admin admin = em.find(Admin.class, adminId);
-        if(admin != null) {
+        if (admin != null) {
             return admin;
         } else {
             throw new AdminNotFoundException("Admin ID " + adminId + " does not exist!");
         }
     }
+
     @Override
     public Admin retrieveAdminByUsername(String username) throws AdminNotFoundException {
         Query query = em.createQuery("SELECT a FROM Admin a WHERE a.username = :inUsername");
         query.setParameter("inUsername", username);
-        return (Admin)query.getSingleResult();
-//        try {
-//            return (Admin)query.getSingleResult();
-//        } catch (NoResultException | NonUniqueResultException ex) {
-//            throw new AdminNotFoundException("Admin Username " + username + " does not exist!");
-//        }
+        try {
+            return (Admin)query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new AdminNotFoundException("Admin Username " + username + " does not exist!");
+        }
     }
 
     @Override
-    public Admin adminLogin(String username, String password) throws InvalidLoginCredentialException{
+    public Admin adminLogin(String username, String password) throws InvalidLoginCredentialException {
         try {
-            Admin admin = retrieveAdminByUsername(username);            
+            Admin admin = retrieveAdminByUsername(username);
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + admin.getSalt()));
-            
-            if(admin.getPassword().equals(passwordHash)){
-               // admin.getSaleTransactionEntities().size();                
+
+            if (admin.getPassword().equals(passwordHash)) {
+                // admin.getSaleTransactionEntities().size();                
                 return admin;
             } else {
                 throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
             }
-        }
-        catch(AdminNotFoundException ex) {
+        } catch (AdminNotFoundException ex) {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
     }
-    
-//    public void updateAdmin(Admin staffEntity) throws AdminNotFoundException, UpdateAdminException, InputDataValidationException {
-//        if(staffEntity != null && staffEntity.getAdminId() != null) {
-//            Set<ConstraintViolation<Admin>>constraintViolations = validator.validate(staffEntity);
-//            if(constraintViolations.isEmpty()) {
-//                Admin staffEntityToUpdate = retrieveAdminByAdminId(staffEntity.getAdminId());
-//
-//                if(staffEntityToUpdate.getUsername().equals(staffEntity.getUsername())) {
-//                    staffEntityToUpdate.setFirstName(staffEntity.getFirstName());
-//                    staffEntityToUpdate.setLastName(staffEntity.getLastName());
-//                    staffEntityToUpdate.setAccessRightEnum(staffEntity.getAccessRightEnum());                
-//                    // Username and password are deliberately NOT updated to demonstrate that client is not allowed to update account credential through this business method
-//                }
-//                else
-//                {
-//                    throw new UpdateAdminException("Username of staff record to be updated does not match the existing record");
-//                }
-//            }
-//            else
-//            {
-//                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
-//            }
-//        }
-//        else
-//        {
-//            throw new AdminNotFoundException("Admin ID not provided for staff to be updated");
-//        }
-//    }
-//    
-//    
-//    public void deleteAdmin(Long staffId) throws AdminNotFoundException, DeleteAdminException
-//    {
-//        Admin staffEntityToRemove = retrieveAdminByAdminId(staffId);
-//        
-//        if(staffEntityToRemove.getSaleTransactionEntities().isEmpty())
-//        {
-//            em.remove(staffEntityToRemove);
-//        }
-//        else
-//        {
-//            // New in v4.1 to prevent deleting staff with existing sale transaction(s)
-//            throw new DeleteAdminException("Admin ID " + staffId + " is associated with existing sale transaction(s) and cannot be deleted!");
-//        }
-//    }
-    
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Admin>>constraintViolations) {
+
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Admin>> constraintViolations) {
         String msg = "Input data validation error!:";
-        for(ConstraintViolation constraintViolation:constraintViolations){
+        for (ConstraintViolation constraintViolation : constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
         return msg;
-    }    
-
-    public void persist(Object object) {
-        em.persist(object);
-    }
-
-    public void persist1(Object object) {
-        em.persist(object);
     }
 }

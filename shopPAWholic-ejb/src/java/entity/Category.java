@@ -44,7 +44,7 @@ public class Category implements Serializable {
     private List<Category> subCategories; 
     
     @ManyToOne
-    @JoinColumn(nullable = false)
+    //@JoinColumn(nullable = false)
     private Category parentCategory; 
     
     @OneToMany(mappedBy="category")
