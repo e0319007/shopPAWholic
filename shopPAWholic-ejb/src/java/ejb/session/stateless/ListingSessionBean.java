@@ -130,6 +130,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             listing.getTags().size();
             listing.getOrders().size();
         }
+        System.out.println("Listing Session Bean "+ listings);
         return listings;
     }
     
