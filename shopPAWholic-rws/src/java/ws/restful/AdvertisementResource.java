@@ -134,7 +134,7 @@ public class AdvertisementResource {
                 Seller seller = (Seller) userSessionBeanLocal.userLogin(updateAdvertisementReq.getEmail(), updateAdvertisementReq.getPassword());
                 System.out.println("********** Advertisement.updateAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
                 advertisementSessionBeanLocal.updateAdvertisement(updateAdvertisementReq.getAdvertisement());
-                if (!Objects.equals(updateAdvertisementReq.getAdvertisement().getServiceProvider().getUserId(), seller.getUserId())) {
+                if (!Objects.equals(updateAdvertisementReq.getAdvertisement().getSeller().getUserId(), seller.getUserId())) {
                     throw new InvalidLoginCredentialException();
                 }
             }
