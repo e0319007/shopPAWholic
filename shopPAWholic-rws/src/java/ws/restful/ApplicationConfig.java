@@ -27,7 +27,5 @@ public class ApplicationConfig extends Application {
         resources.add(ws.restful.CartResource.class);
         resources.add(ws.restful.CategoryResource.class);
         resources.add(ws.restful.ListingResource.class);
-        //add in our ws.restful resource classes.
-        resources.add(ws.restful.OrderEntityResource.class);
     }
 }
