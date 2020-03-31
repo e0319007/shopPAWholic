@@ -59,8 +59,7 @@ public class BillingDetailResource {
             System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Customer " + customer.getEmail()+ " login remotely via web service");
             List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailByCustomer(customer.getUserId());
             for(BillingDetail b:billingDetails) {
-                b.getAdvertisement().setBillingDetail(null);
-                b.getCustomer().setBillingDetails(null);
+                b.getCustomer().getBillingDetails().clear();
                 b.getOrder().setBillingDetail(null);
             }
             return Response.status(Status.OK).entity(new BillingDetailRetrieveAllByCustomerRsp(billingDetails)).build();
@@ -84,12 +83,12 @@ public class BillingDetailResource {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Seller " + seller.getEmail()+ " login remotely via web service");
             List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailBySeller(seller.getUserId());
-           
+            System.out.println("Size: " + billingDetails.size());
+      
             for(BillingDetail b:billingDetails) {
-                b.getAdvertisement().setBillingDetail(null);
-                b.getCustomer().setBillingDetails(null);
-                b.getOrder().setBillingDetail(null);
+                b.getSeller().getBillingDetails().clear();
             }
+    
             System.out.println("Size: " + billingDetails.size());
             return Response.status(Status.OK).entity(new BillingDetailRetrieveBySellerRsp(billingDetails)).build();
         } catch (InvalidLoginCredentialException ex) {

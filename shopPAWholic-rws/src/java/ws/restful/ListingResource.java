@@ -82,6 +82,7 @@ public class ListingResource {
                 for(Tag t:l.getTags()) {
                     t.getListings().clear();
                 }
+                l.getSeller().getListings().clear();
             }
             return Response.status(Status.OK).entity(new ListingsRetrieveAllRsp(listings)).build();
         }
@@ -105,10 +106,11 @@ public class ListingResource {
                 listing.getCategory().getParentCategory().getSubCategories().clear();
             }
             listing.getCategory().getListings().clear();
-            
+            listing.getSeller().getListings().clear();
             for(Tag tag:listing.getTags()) {
                 tag.getListings().clear();
             }
+            
             return Response.status(Status.OK).entity(listing).build(); //need to wrap??
         }
         catch(ListingNotFoundException ex) {
@@ -131,7 +133,7 @@ public class ListingResource {
         if(createListingReq != null) {
             try {
                 Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword(), "createListing");
-                Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds());
+                Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds(), seller.getUserId());
                 
                 return Response.status(Response.Status.OK).entity(listing.getListingId()).build();
             }
