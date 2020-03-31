@@ -18,9 +18,9 @@ import java.util.List;
 import javax.faces.event.ActionEvent;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.inject.Inject;
 import util.exception.CreateNewListingException;
@@ -28,15 +28,12 @@ import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
 import util.exception.ListingSkuCodeExistException;
 
-
-
 /**
  *
  * @author EileenLeong
  */
-@Named(value = "productManagementManagedBean")
-@ApplicationScoped
-
+@Named(value = "listingManagementManagedBean")
+@ViewScoped
 
 public class ListingManagementManagedBean implements Serializable {
 
@@ -45,7 +42,7 @@ public class ListingManagementManagedBean implements Serializable {
 
     @EJB(name = "ReviewSessionBeanLocal")
     private ReviewSessionBeanLocal reviewSessionBeanLocal;
-    
+
     @EJB(name = "TagSessionBeanLocal")
     private TagSessionBeanLocal tagSessionBeanLocal;
 
@@ -54,35 +51,47 @@ public class ListingManagementManagedBean implements Serializable {
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
-    
-    
-    
+
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
-    
+
     private String name;
     private String description;
     private String skuCode;
-    private BigDecimal unitPrice; 
+    private BigDecimal unitPrice;
     //private List<String> pictures;
     private Integer quantityAtHand;
-    
+
     private List<Listing> listings;
     private List<Listing> filteredListings;
-    
+
     private Listing newListing;
-    private Long categoryIdNew; 
-    private List<Long> tagIdsNew; 
-    private List<Category> categories; 
+    private Long categoryIdNew;
+    private List<Long> tagIdsNew;
+    private List<Category> categories;
     private List<Tag> tags;
-    
+
     private Listing selectedListingToUpdate;
     private Long categoryIdUpdate;
     private List<Long> tagIdsUpdate;
-    
+
     private List<Review> reviews;
     private List<OrderEntity> orders;
-    
+
+    @PostConstruct
+    public void postConstruct() {
+        //setListings(listingSessionBeanLocal.retrieveAllListings());
+        //setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
+        //setTags(tagSessionBeanLocal.retrieveAllTags());
+        //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
+        //setOrders(orderSessionBeanLocal.retrieveAllOrders());
+        System.out.println("******************************** iamin");
+        listings = listingSessionBeanLocal.retrieveAllListings();
+        System.out.println("Listing" + listings);
+        categories = categorySessionBeanLocal.retrieveAllLeafCategories();
+        tags = tagSessionBeanLocal.retrieveAllTags();
+        //reviews = reviewSessionBeanLocal.retrieveAllReviews();
+    }
 
     /**
      * Creates a new instance of ProductManagementManagedBean
@@ -91,27 +100,13 @@ public class ListingManagementManagedBean implements Serializable {
         newListing = new Listing();
         //List<String> pictures = new ArrayList<>();
     }
-    
-    @PostConstruct 
-    public void postConstruct() {
-        //setListings(listingSessionBeanLocal.retrieveAllListings());
-        //setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
-        //setTags(tagSessionBeanLocal.retrieveAllTags());
-        //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
-        //setOrders(orderSessionBeanLocal.retrieveAllOrders());
-        listings = listingSessionBeanLocal.retrieveAllListings();
-        categories = categorySessionBeanLocal.retrieveAllLeafCategories();
-        tags = tagSessionBeanLocal.retrieveAllTags();
-        //reviews = reviewSessionBeanLocal.retrieveAllReviews();
-    }
-    
+
     public void viewListingDetails(ActionEvent event) throws IOException {
-        Long listingIdToView = (Long)event.getComponent().getAttributes().get("listingId");
+        Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewListingDetails.xhtml");
-        
     }
-    
+
     public void createNewListing(ActionEvent event) {
         if (getCategoryIdNew() == 0) {
             setCategoryIdNew(null);
@@ -123,104 +118,85 @@ public class ListingManagementManagedBean implements Serializable {
             //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
             //listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew(), getPictures());
             //getListings().add(l);
-            
-            if(filteredListings != null) {
+
+            if (filteredListings != null) {
                 filteredListings.add(l);
             }
-            
+
             newListing = new Listing();
             categoryIdNew = null;
             tagIdsNew = null;
             //setNewListing(new Listing());
             //setCategoryIdNew(null);
             //setTagIdsNew(null); 
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully! (Listing Id: " + l.getListingId() + ")", null));
-            
+
         } catch (InputDataValidationException | CreateNewListingException | ListingSkuCodeExistException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
-        }   
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
+        }
     }
-    public void deleteListing(ActionEvent event)
-    {
-        try
-        {
-            Listing listingToDelete = (Listing)event.getComponent().getAttributes().get("listingToDelete");
+
+    public void deleteListing(ActionEvent event) {
+        try {
+            Listing listingToDelete = (Listing) event.getComponent().getAttributes().get("listingToDelete");
             listingSessionBeanLocal.deleteListing(listingToDelete.getListingId());
-            
+
             listings.remove(listingToDelete);
-            
-            if(filteredListings != null)
-            {
+
+            if (filteredListings != null) {
                 filteredListings.remove(listingToDelete);
             }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing deleted successfully", null));
-        }
-        catch(ListingNotFoundException ex)
-        {
+        } catch (ListingNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting listing: " + ex.getMessage(), null));
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-    
-     public void updateListing(ActionEvent event)
-    {        
-        if(categoryIdUpdate  == 0)
-        {
+
+    public void updateListing(ActionEvent event) {
+        if (categoryIdUpdate == 0) {
             categoryIdUpdate = null;
-        }                
-        
-        try
-        {
+        }
+
+        try {
             listingSessionBeanLocal.updateListing(selectedListingToUpdate, categoryIdUpdate, tagIdsUpdate);
-                        
-            for(Category c:categories)
-            {
-                if(c.getCategoryId().equals(categoryIdUpdate))
-                {
+
+            for (Category c : categories) {
+                if (c.getCategoryId().equals(categoryIdUpdate)) {
                     selectedListingToUpdate.setCategory(c);
                     break;
-                }                
+                }
             }
-            
+
             selectedListingToUpdate.getTags().clear();
-            
-            for(Tag t:tags)
-            {
-                if(tagIdsUpdate.contains(t.getTagId()))
-                {
+
+            for (Tag t : tags) {
+                if (tagIdsUpdate.contains(t.getTagId())) {
                     selectedListingToUpdate.getTags().add(t);
-                }                
+                }
             }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Listing updated successfully", null));
-        }
-        catch(ListingNotFoundException ex)
-        {
+        } catch (ListingNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating listing: " + ex.getMessage(), null));
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-     public void doUpdateListing(ActionEvent event)
-    {
-        selectedListingToUpdate = (Listing)event.getComponent().getAttributes().get("listingToUpdate");
-        
+
+    public void doUpdateListing(ActionEvent event) {
+        selectedListingToUpdate = (Listing) event.getComponent().getAttributes().get("listingToUpdate");
+
         categoryIdUpdate = selectedListingToUpdate.getCategory().getCategoryId();
         tagIdsUpdate = new ArrayList<>();
 
-        for(Tag tag:selectedListingToUpdate.getTags())
-        {
+        for (Tag tag : selectedListingToUpdate.getTags()) {
             tagIdsUpdate.add(tag.getTagId());
         }
     }
-    
 
     /**
      * @return the listings
@@ -407,17 +383,15 @@ public class ListingManagementManagedBean implements Serializable {
     /**
      * @return the pictures
      */
-   /* public List<String> getPictures() {
+    /* public List<String> getPictures() {
         return pictures;
     }*/
-
     /**
      * @param pictures the pictures to set
      */
     /*public void setPictures(List<String> pictures) {
         this.pictures = pictures;
     }*/
-
     /**
      * @return the name
      */
@@ -487,5 +461,5 @@ public class ListingManagementManagedBean implements Serializable {
     public void setQuantityAtHand(Integer quantityAtHand) {
         this.quantityAtHand = quantityAtHand;
     }
-    
+
 }

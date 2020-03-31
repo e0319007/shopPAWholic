@@ -69,7 +69,7 @@ public class DeliveryDetailManagedBean implements Serializable {
 
     public void createDeliveryDetail(ActionEvent event) {
         try {
-            DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod, deliveryPrice);
+            DeliveryDetail newDeliveryDetail = new DeliveryDetail(address, contactNumber, deliveryDate, deliveryMethod);
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(newDeliveryDetail);
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Delivery Detail created successfully (Delivery ID: " + newDeliveryDetail.getDeliveryDetailId() + ")", null));

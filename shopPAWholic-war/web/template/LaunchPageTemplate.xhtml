@@ -24,36 +24,36 @@
         <title>shopPAWholic</title>
     </h:head>
 
-<!--    <script type="text/javascript">
-        function handleAdminLoginRequest(xhr, status, args) {
-            if (args.validationFailed || !args.loggedIn) {
-                PF('adminLogin').jq.effect("shake", {times: 5}, 100);
-            } else {
-                PF('adminLogin').hide();
-                $('#adminLoginLink').fadeOut();
+    <!--    <script type="text/javascript">
+            function handleAdminLoginRequest(xhr, status, args) {
+                if (args.validationFailed || !args.loggedIn) {
+                    PF('adminLogin').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('adminLogin').hide();
+                    $('#adminLoginLink').fadeOut();
+                }
             }
-        }
-
-        function handleUserLoginRequest(xhr, status, args) {
-            if (argd.validationFailed) {
-                PF('userLogin').jq.effect("shake", {times: 5}, 100);
-            } else {
-                PF('userLogin').hide();
-                $('#userLoginLink').fadeOut();
-            }
-        }
-
-        function handleUserRegistration(xhr, status, args) {
-            if (argd.validationFailed) {
-                PF('userRegistration').jq.effect("shake", {times: 5}, 100);
-            } else {
-                PF('userRegistration').hide();
-                #('#userRegistrationLink').fadeOut();
-            }
-        }
-        
-    </script>-->
     
+            function handleUserLoginRequest(xhr, status, args) {
+                if (argd.validationFailed) {
+                    PF('userLogin').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('userLogin').hide();
+                    $('#userLoginLink').fadeOut();
+                }
+            }
+    
+            function handleUserRegistration(xhr, status, args) {
+                if (argd.validationFailed) {
+                    PF('userRegistration').jq.effect("shake", {times: 5}, 100);
+                } else {
+                    PF('userRegistration').hide();
+                    #('#userRegistrationLink').fadeOut();
+                }
+            }
+            
+        </script>-->
+
     <h:body>
         <div id="wrapper">
             <div id="top" class="top">
@@ -156,7 +156,7 @@
                                     </ul>
                                 </div>
                             </h:panelGroup>
-                            
+
                         </div>
                     </nav>
                     <!-- END NAVBAR -->
@@ -180,30 +180,22 @@
             <div id="content" class="center_content">
                 <ui:insert name="content">
                     <h:form id="form">
-                        <p:dataGrid var="car" value="#{dataGridView.cars}" columns="3" layout="grid"
+                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" layout="grid"
                                     rows="12" paginator="true" id="cars"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
                             <f:facet name="header">
-                                Products
+                                Products List
                             </f:facet>
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:graphicImage name="demo/images/car/#{lisitng.brand}.gif"/> 
-
-                                    <h:outputText value="#{car.year}" />
-
-                                    <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
-                                        <h:outputText styleClass="pi pi-search" style="margin:0 auto;"/>
-                                        <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
-                                    </p:commandLink>
+                                    <h:outputText value="#{listing.name}" />
+                                    <h:outputText value="#{listing.listingId}"/>
                                 </h:panelGrid>
                             </p:panel>
-
                         </p:dataGrid>
-
                     </h:form>
                 </ui:insert>
             </div>

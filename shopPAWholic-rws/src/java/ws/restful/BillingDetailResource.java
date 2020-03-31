@@ -54,7 +54,9 @@ public class BillingDetailResource {
     {
         try {
             Customer customer = (Customer) userSessionBeanLocal.userLogin(email, password);
-            System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Customer " + customer.getFirstName() + " " + customer.getLastName()+ " login remotely via web service");
+
+            System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Customer " + customer.getEmail() + " login remotely via web service");
+
             List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailByCustomer(customer.getUserId());
             return Response.status(Status.OK).entity(new BillingDetailRetrieveAllByCustomerRsp((BillingDetail) billingDetails)).build();
         } catch (InvalidLoginCredentialException ex) {
