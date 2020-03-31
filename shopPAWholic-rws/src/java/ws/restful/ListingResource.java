@@ -7,6 +7,7 @@ package ws.restful;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Listing;
+import entity.Review;
 import entity.Seller;
 import entity.Tag;
 import entity.User;
@@ -83,6 +84,11 @@ public class ListingResource {
                     t.getListings().clear();
                 }
                 l.getSeller().getListings().clear();
+                l.getSeller().getAdvertisements().clear();
+                l.getSeller().getBillingDetails().clear();
+                l.getSeller().getEvents().clear();
+                for (Review r: l.getReviews()) r.setListing(null);
+                l.getSeller().getOrders().clear();
             }
             return Response.status(Status.OK).entity(new ListingsRetrieveAllRsp(listings)).build();
         }

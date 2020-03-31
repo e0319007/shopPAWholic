@@ -60,7 +60,10 @@ public class BillingDetailResource {
             List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailByCustomer(customer.getUserId());
             for(BillingDetail b:billingDetails) {
                 b.getCustomer().getBillingDetails().clear();
-                b.getOrder().setBillingDetail(null);
+                b.getCustomer().getReviews().clear();
+                b.getCustomer().getComments().clear();
+                b.getCustomer().getForumPosts().clear();
+                b.getCustomer().getOrders().clear();
             }
             return Response.status(Status.OK).entity(new BillingDetailRetrieveAllByCustomerRsp(billingDetails)).build();
         } catch (InvalidLoginCredentialException ex) {
@@ -86,7 +89,13 @@ public class BillingDetailResource {
             System.out.println("Size: " + billingDetails.size());
       
             for(BillingDetail b:billingDetails) {
+                b.getSeller().getListings().clear();
+                b.getSeller().getAdvertisements().clear();
                 b.getSeller().getBillingDetails().clear();
+                b.getSeller().getEvents().clear();
+                b.getSeller().getOrders().clear();
+                b.getAdvertisement().setBillingDetail(null);
+                b.getAdvertisement().setSeller(null);
             }
     
             System.out.println("Size: " + billingDetails.size());

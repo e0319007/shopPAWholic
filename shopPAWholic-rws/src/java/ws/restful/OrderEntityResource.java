@@ -102,8 +102,8 @@ public class OrderEntityResource {
             else orders = orderSessionBeanLocal.retrieveOrderBySellerId(user.getUserId());
             
             for(OrderEntity o:orders) {
-                o.getCustomer().setOrders(null);
-                o.getSeller().setOrders(null);
+                o.getCustomer().getOrders().clear();
+                o.getSeller().getOrders().clear();
             }
             
             return Response.status(Status.OK).build();

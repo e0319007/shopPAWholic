@@ -66,7 +66,12 @@ public class AdvertisementResource {
             List<Advertisement> advertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
             for(Advertisement a : advertisements) {
                 a.getBillingDetail().setAdvertisement(null);
-                a.getSeller().setAdvertisements(null);
+                a.getSeller().getAdvertisements().clear();
+                a.getSeller().getListings().clear();
+                a.getSeller().getAdvertisements().clear();
+                a.getSeller().getBillingDetails().clear();
+                a.getSeller().getEvents().clear();
+                a.getSeller().getOrders().clear();
             }
             return Response.status(Status.OK).entity(new AdvertisementRetrieveAllRsp(advertisements)).build();
         } catch (Exception ex) {
@@ -88,7 +93,7 @@ public class AdvertisementResource {
             System.out.println("********** Advertisement.retrieveAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             Advertisement advertisement  = advertisementSessionBeanLocal.retrieveAdvertisementById(advertisementId);
             advertisement.getBillingDetail().setAdvertisement(null);
-            advertisement.getSeller().setAdvertisements(null);
+            advertisement.getSeller().getAdvertisements().clear();
             return Response.status(Response.Status.OK).entity(advertisement).build();
             
         } catch (InvalidLoginCredentialException ex) {
