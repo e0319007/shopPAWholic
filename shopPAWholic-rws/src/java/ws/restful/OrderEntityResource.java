@@ -41,6 +41,8 @@ import ws.datamodel.OrderUpdateOrderReq;
  *
  * @author shizhan
  */
+
+@Path("Order")
 public class OrderEntityResource {
     @Context
     private UriInfo context;
@@ -68,6 +70,7 @@ public class OrderEntityResource {
                 if (user instanceof Customer == false) throw new InvalidLoginCredentialException();
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(orderCreateNewReq.getOrderEntity(), orderCreateNewReq.getDeliveryDetailId(), 
                         orderCreateNewReq.getCcNum(), user.getUserId(), orderCreateNewReq.getListings(), orderCreateNewReq.getSeller().getUserId());
+                
                 return Response.status(Response.Status.OK).entity(new OrderCreateNewRsp(orderEntity.getOrderId())).build();
             } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -93,9 +96,16 @@ public class OrderEntityResource {
                                         @QueryParam("password") String password) {
         try {
             User user = getUser(email, password, "OrderEntityResource.retrieveAllOrderByCustomerId()");
+            
             List<OrderEntity> orders;
             if (user instanceof Customer) orders = orderSessionBeanLocal.retrieveOrderByCustomerId(user.getUserId());
             else orders = orderSessionBeanLocal.retrieveOrderBySellerId(user.getUserId());
+            
+            for(OrderEntity o:orders) {
+                o.getCustomer().setOrders(null);
+                o.getSeller().setOrders(null);
+            }
+            
             return Response.status(Status.OK).build();
         } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

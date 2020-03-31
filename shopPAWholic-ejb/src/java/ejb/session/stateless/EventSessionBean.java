@@ -108,9 +108,9 @@ public class EventSessionBean implements EventSessionBeanLocal {
     }
     
     @Override
-    public List<Event> retrieveEventByServiceProvider(Long serviceProviderId) {
-        Query query = em.createQuery("SELECT e FROM Event e WHERE e.serviceProvider.userId = :inServiceProviderId");
-        query.setParameter("inServiceProviderId", serviceProviderId);
+    public List<Event> retrieveEventBySellerId(Long sellerId) {
+        Query query = em.createQuery("SELECT e FROM Event e WHERE e.seller.userId = :sellerId");
+        query.setParameter("sellerId", sellerId);
         return query.getResultList();
     }
     

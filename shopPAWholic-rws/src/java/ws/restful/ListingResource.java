@@ -39,8 +39,7 @@ import ws.datamodel.ListingsRetrieveAllRsp;
  * @author shizhan
  */
 
- @Path("Product")
-
+@Path("Listing")
 public class ListingResource {    
     @Context
     private UriInfo context;
@@ -67,7 +66,7 @@ public class ListingResource {
         else throw new InvalidLoginCredentialException();
     }
     
-    @Path("retrieveAllProducts")
+    @Path("retrieveAllListings")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -98,7 +97,7 @@ public class ListingResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveProduct(@PathParam("listingId") Long listingId) {
+    public Response retrieveListing(@PathParam("listingId") Long listingId) {
         try {
             Listing listing = listingSessionBeanLocal.retrieveListingByListingId(listingId);
             
@@ -191,7 +190,7 @@ public class ListingResource {
     
     
     
-    @Path("{productId}")
+    @Path("{listingId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

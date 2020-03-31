@@ -27,6 +27,6 @@ public interface AdvertisementSessionBeanLocal {
 
     public List<Advertisement> retrieveAllAdvertisements();
 
-    public Advertisement createNewAdvertisement(Advertisement advertisement, Long serviceProviderId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException;
+    public Advertisement createNewAdvertisement(Advertisement advertisement, Long sellerId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException;
     
 }
