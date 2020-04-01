@@ -13,7 +13,7 @@
         
         <div>
             <br /><br/>
-            <h1>Search Listings by Name</h1>                        
+            <h1 style="color:#0063dc; font-weight: bold;">Search Listings by Name</h1>                        
 
             <h:form id="formMain">
                                 
@@ -21,7 +21,7 @@
                 
                 <div style="text-align: center;">
                 
-                    <p:inputText id="txtSearchString" value="#{searchListingsByNameManagedBean.searchString}" style="font-size: x-large;">
+                    <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchStr}" style="font-size: x-large;">
                         <p:ajax event="keyup" process="@this" update="formMain:dataTableMain" listener="#{searchListingByNameManagedBean.searchListing}" />
                     </p:inputText>
                     &nbsp;
@@ -47,17 +47,9 @@
                     <p:column headerText="Name" sortBy="#{listing.name}">
                         <h:outputText value="#{listing.name}" />
                     </p:column>
-                    
-                    <!--<p:column headerText="Photo(s)" sortBy="#{listing.pictures}">
-                        <h:outputText value="#{listing.pictures}" />
-                    </p:column>-->
-                    
+        
                     <p:column headerText="Description" sortBy="#{listing.description}">
                         <h:outputText value="#{listing.description}" />
-                    </p:column>
-
-                    <p:column headerText="Quantity on Hand" sortBy="#{listing.quantityOnHand}">
-                        <h:outputText value="#{listing.quantityOnHand}" />
                     </p:column>
 
                     <p:column headerText="Unit Price" sortBy="#{listing.unitPrice}">

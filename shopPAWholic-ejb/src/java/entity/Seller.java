@@ -23,10 +23,13 @@ public class Seller extends User implements Serializable {
     private List<OrderEntity> orders;
     
     @OneToMany(mappedBy = "seller")
-    private List<Advertisement> advertisements; //sz
+    private List<Advertisement> advertisements; 
 
     @OneToMany(mappedBy = "seller")
-    private List<Event> events; //sz
+    private List<Event> events; 
+    
+    @OneToMany(mappedBy="seller") 
+    private List<BillingDetail> billingDetails;
 
     public Seller() {
         listings = new ArrayList<>();
@@ -87,5 +90,13 @@ public class Seller extends User implements Serializable {
 
     public void setEvents(List<Event> events) {
         this.events = events;
+    }
+
+    public List<BillingDetail> getBillingDetails() {
+        return billingDetails;
+    }
+
+    public void setBillingDetails(List<BillingDetail> billingDetails) {
+        this.billingDetails = billingDetails;
     }
 }

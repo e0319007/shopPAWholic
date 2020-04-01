@@ -60,8 +60,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         validator = (Validator) validatorFactory.getValidator();
     }
     
-    @Override // new billing detail initialised in this method, delivery detail added at customer side
-    public OrderEntity createNewOrder (OrderEntity newOrder, String ccNum, Long customerId, List<Listing> listings, Long sellerId) throws CreateNewOrderException, InputDataValidationException{
+    @Override // new billing detail initialised in this method, delivery detail created at customer side and bind it in this method by passing id in.
+    public OrderEntity createNewOrder (OrderEntity newOrder, Long DeliveryDetailId, String ccNum, Long customerId, List<Listing> listings, Long sellerId) throws CreateNewOrderException, InputDataValidationException{
         Set<ConstraintViolation<OrderEntity>> constraintViolations;
         constraintViolations = validator.validate(newOrder);
         
@@ -71,17 +71,19 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                 
                 Seller seller = em.find(Seller.class, sellerId);
                 Customer customer = em.find(Customer.class, customerId);
-                
+                DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, DeliveryDetailId);
                 seller.getOrders().add(newOrder);
                 customer.getOrders().add(newOrder);
                 newOrder.setCustomer(customer);
                 newOrder.setSeller(seller);
+                newOrder.setDeliveryDetail(deliveryDetail);
                 
                 BillingDetail billingDetail = new BillingDetail(ccNum, date);
                 billingDetail.setCustomer(customer);
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 newOrder.setBillingDetail(billingDetail);
                 billingDetail.setOrder(newOrder);
+                customer.getBillingDetails().add(billingDetail);
                 
 //                for(Listing l:listings) {
 //                    em.persist(listings);

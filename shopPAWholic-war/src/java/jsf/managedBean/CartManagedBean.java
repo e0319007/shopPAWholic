@@ -7,6 +7,7 @@ package jsf.managedBean;
 
 import POJO.CheckoutListingPOJO;
 import ejb.session.stateless.CartSessionBeanLocal;
+import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import entity.BillingDetail;
@@ -35,6 +36,8 @@ import java.util.HashMap;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.enumeration.DeliveryMethod;
+import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewOrderException;
 import util.exception.InputDataValidationException;
 
@@ -47,6 +50,9 @@ import util.exception.InputDataValidationException;
 @SessionScoped
 public class CartManagedBean implements Serializable{
 
+    @EJB(name = "DeliveryDetailSessionBeanLocal")
+    private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
+
     @EJB(name = "orderSessionBeanLocal")
     private OrderSessionBeanLocal orderSessionBeanLocal;
 
@@ -55,6 +61,7 @@ public class CartManagedBean implements Serializable{
 
     @EJB(name ="ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
+    
     
     
     
@@ -67,6 +74,13 @@ public class CartManagedBean implements Serializable{
     private int totalQuantity;
     private Long customerId;
     private Cart cart; 
+    
+    //for creating delivey detail
+    private String contactNumber;
+    private List<String> statusLists;
+    private BigDecimal deliveryPrice;
+    private DeliveryMethod deliveryMethod;
+    private String address;
     
     
     //create new billing detail for order entity
@@ -131,44 +145,52 @@ public class CartManagedBean implements Serializable{
 //}
 //    
     public void checkout(ActionEvent event) {
-        System.out.println("***going through checkout");
-        Date orderDate = new Date();
-        
-        
-        //creating a hashmap that maps seller to a list of checkoutpojo
-        HashMap sellerMapListQtyPair = new HashMap<Seller, List<CheckoutListingPOJO>>();
-        for(CheckoutListingPOJO itemQtyPair: checkoutList) {
-            Seller seller = itemQtyPair.getListing().getSeller();
-            if(sellerMapListQtyPair.containsKey(seller)) {
-                List<CheckoutListingPOJO> newList = (List<CheckoutListingPOJO>) sellerMapListQtyPair.get(seller);
-                newList.add(itemQtyPair);
-                sellerMapListQtyPair.replace(seller, newList);
-            } else {
-                List<CheckoutListingPOJO> newList = new ArrayList<>();
-                newList.add(itemQtyPair);
-                sellerMapListQtyPair.put(seller, newList);
+        try {
+            System.out.println("***going through checkout");
+            Date orderDate = new Date();
+            
+            //creating delivery detail
+            DeliveryDetail deliveryDetail = new DeliveryDetail(address, contactNumber, orderDate, deliveryMethod);
+            deliveryDetailSessionBeanLocal.createNewDeliveryDetail(deliveryDetail);
+            //creating a hashmap that maps seller to a list of checkoutpojo
+            HashMap sellerMapListQtyPair = new HashMap<Seller, List<CheckoutListingPOJO>>();
+            for(CheckoutListingPOJO itemQtyPair: checkoutList) {
+                Seller seller = itemQtyPair.getListing().getSeller();
+                if(sellerMapListQtyPair.containsKey(seller)) {
+                    List<CheckoutListingPOJO> newList = (List<CheckoutListingPOJO>) sellerMapListQtyPair.get(seller);
+                    newList.add(itemQtyPair);
+                    sellerMapListQtyPair.replace(seller, newList);
+                } else {
+                    List<CheckoutListingPOJO> newList = new ArrayList<>();
+                    newList.add(itemQtyPair);
+                    sellerMapListQtyPair.put(seller, newList);
+                }
             }
-        }
-        
-        //creating an order for each of the seller
-        Iterator hmIterator = sellerMapListQtyPair.entrySet().iterator(); 
-        while (hmIterator.hasNext()) { 
-            Map.Entry mapElement = (Map.Entry)hmIterator.next(); 
-            Seller seller = (Seller) mapElement.getKey();
-            List<CheckoutListingPOJO> checkoutListings = (List<CheckoutListingPOJO>) mapElement.getValue();
-            OrderEntity newOrder = new OrderEntity(totalPrice(checkoutListings), orderDate);
-            try {
-                orderSessionBeanLocal.createNewOrder(newOrder, ccNum, customerId, convertCheckoutPojoIntoListings(checkoutListings), seller.getUserId());
-            } catch (CreateNewOrderException ex) {
-                Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InputDataValidationException ex) {
-                Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            
+            //creating an order for each of the seller
+            Iterator hmIterator = sellerMapListQtyPair.entrySet().iterator();
+            while (hmIterator.hasNext()) {
+                Map.Entry mapElement = (Map.Entry)hmIterator.next();
+                Seller seller = (Seller) mapElement.getKey();
+                List<CheckoutListingPOJO> checkoutListings = (List<CheckoutListingPOJO>) mapElement.getValue();
+                OrderEntity newOrder = new OrderEntity(totalPrice(checkoutListings), orderDate);
+                try {
+                    orderSessionBeanLocal.createNewOrder(newOrder, deliveryDetail.getDeliveryDetailId(), ccNum, customerId, convertCheckoutPojoIntoListings(checkoutListings), seller.getUserId());
+                } catch (CreateNewOrderException ex) {
+                    Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InputDataValidationException ex) {
+                    Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } 
-        
-        //clear items checkout alr
-        for(CheckoutListingPOJO clp: checkoutList) {
-            shoppingCart.remove(clp);
+            
+            //clear items checkout alr
+            for(CheckoutListingPOJO clp: checkoutList) {
+                shoppingCart.remove(clp);
+            }
+        } catch (CreateNewDeliveryDetailException ex) {
+            Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InputDataValidationException ex) {
+            Logger.getLogger(CartManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -320,6 +342,78 @@ public class CartManagedBean implements Serializable{
      */
     public void setListingSessionBeanLocal(ListingSessionBeanLocal listingSessionBeanLocal) {
         this.listingSessionBeanLocal = listingSessionBeanLocal;
+    }
+
+    public OrderSessionBeanLocal getOrderSessionBeanLocal() {
+        return orderSessionBeanLocal;
+    }
+
+    public void setOrderSessionBeanLocal(OrderSessionBeanLocal orderSessionBeanLocal) {
+        this.orderSessionBeanLocal = orderSessionBeanLocal;
+    }
+
+    public List<Listing> getSavedShoppingCart() {
+        return savedShoppingCart;
+    }
+
+    public void setSavedShoppingCart(List<Listing> savedShoppingCart) {
+        this.savedShoppingCart = savedShoppingCart;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public List<String> getStatusLists() {
+        return statusLists;
+    }
+
+    public void setStatusLists(List<String> statusLists) {
+        this.statusLists = statusLists;
+    }
+
+    public BigDecimal getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(BigDecimal deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
+    public DeliveryMethod getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(DeliveryMethod deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCcNum() {
+        return ccNum;
+    }
+
+    public void setCcNum(String ccNum) {
+        this.ccNum = ccNum;
     }
 
     

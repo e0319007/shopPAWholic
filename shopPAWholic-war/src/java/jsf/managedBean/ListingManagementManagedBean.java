@@ -10,6 +10,7 @@ import entity.Tag;
 import entity.Category;
 import entity.OrderEntity;
 import entity.Review;
+import entity.Seller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -55,12 +56,12 @@ public class ListingManagementManagedBean implements Serializable {
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
 
-    private String name;
-    private String description;
-    private String skuCode;
-    private BigDecimal unitPrice;
+    //private String name;
+    //private String description;
+    //private String skuCode;
+    //private BigDecimal unitPrice;
     //private List<String> pictures;
-    private Integer quantityAtHand;
+    //private Integer quantityAtHand;
 
     private List<Listing> listings;
     private List<Listing> filteredListings;
@@ -78,6 +79,18 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Review> reviews;
     private List<OrderEntity> orders;
 
+    private Seller seller;
+    
+
+
+     /**
+     * Creates a new instance of ProductManagementManagedBean
+     */
+    public ListingManagementManagedBean() {
+        newListing = new Listing();
+        //List<String> pictures = new ArrayList<>();
+    }
+    
     @PostConstruct
     public void postConstruct() {
         //setListings(listingSessionBeanLocal.retrieveAllListings());
@@ -89,15 +102,10 @@ public class ListingManagementManagedBean implements Serializable {
         categories = categorySessionBeanLocal.retrieveAllLeafCategories();
         tags = tagSessionBeanLocal.retrieveAllTags();
         //reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        Seller seller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentSellerEntity");
     }
 
-    /**
-     * Creates a new instance of ProductManagementManagedBean
-     */
-    public ListingManagementManagedBean() {
-        newListing = new Listing();
-        //List<String> pictures = new ArrayList<>();
-    }
+   
 
     public void viewListingDetails(ActionEvent event) throws IOException {
         Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
@@ -106,11 +114,11 @@ public class ListingManagementManagedBean implements Serializable {
     }
 
     public void createNewListing(ActionEvent event) {
-        if (getCategoryIdNew() == 0) {
-            setCategoryIdNew(null);
+        if (categoryIdNew == 0) {
+            categoryIdNew = null;
         }
         try {
-            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew);
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, seller.getUserId());
             listings.add(l);
             //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
             //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
@@ -378,86 +386,6 @@ public class ListingManagementManagedBean implements Serializable {
         this.orders = orders;
     }
 
-    /**
-     * @return the pictures
-     */
-    /* public List<String> getPictures() {
-        return pictures;
-    }*/
-    /**
-     * @param pictures the pictures to set
-     */
-    /*public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }*/
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the description
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    /**
-     * @return the skuCode
-     */
-    public String getSkuCode() {
-        return skuCode;
-    }
-
-    /**
-     * @param skuCode the skuCode to set
-     */
-    public void setSkuCode(String skuCode) {
-        this.skuCode = skuCode;
-    }
-
-    /**
-     * @return the unitPrice
-     */
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    /**
-     * @param unitPrice the unitPrice to set
-     */
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    /**
-     * @return the quantityAtHand
-     */
-    public Integer getQuantityAtHand() {
-        return quantityAtHand;
-    }
-
-    /**
-     * @param quantityAtHand the quantityAtHand to set
-     */
-    public void setQuantityAtHand(Integer quantityAtHand) {
-        this.quantityAtHand = quantityAtHand;
-    }
+    
 
 }

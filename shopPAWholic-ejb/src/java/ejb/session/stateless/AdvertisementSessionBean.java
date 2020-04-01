@@ -57,13 +57,16 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
                // SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
                 Date date = new Date(System.currentTimeMillis());
                 BillingDetail billingDetail = new BillingDetail(ccNum, date);
-                billingDetail.setAdvertisement(advertisement);
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
+                billingDetail.setAdvertisement(advertisement);
                 advertisement.setBillingDetail(billingDetail);
                 
                 Seller seller = em.find(Seller.class, sellerId);
                 seller.getAdvertisements().add(advertisement);
                 advertisement.setSeller(seller);
+                
+                seller.getBillingDetails().add(billingDetail);
+                billingDetail.setSeller(seller);
                 
                 em.persist(advertisement);
                 em.flush();

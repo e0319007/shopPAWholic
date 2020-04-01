@@ -10,6 +10,7 @@ import ejb.session.stateless.BillingDetailSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.BillingDetail;
+import entity.Seller;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.Response.Status;
 import java.util.List;
 import util.exception.InvalidLoginCredentialException;
 import ws.datamodel.BillingDetailRetrieveAllByCustomerRsp;
+import ws.datamodel.BillingDetailRetrieveBySellerRsp;
 import ws.datamodel.ErrorRsp;
 
 /**
@@ -45,7 +47,7 @@ public class BillingDetailResource {
         userSessionBeanLocal = sessionBeanLookup.lookupUserSessionBeanLocal();
     }
     
-    @Path("retrieveAllBillingDetails") 
+    @Path("retrieveAllCustomerBillingDetails") 
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,9 +56,18 @@ public class BillingDetailResource {
     {
         try {
             Customer customer = (Customer) userSessionBeanLocal.userLogin(email, password);
-            System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Customer " + customer.getFirstName() + " " + customer.getLastName()+ " login remotely via web service");
+
+            System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Customer " + customer.getEmail() + " login remotely via web service");
+
             List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailByCustomer(customer.getUserId());
-            return Response.status(Status.OK).entity(new BillingDetailRetrieveAllByCustomerRsp((BillingDetail) billingDetails)).build();
+            for(BillingDetail b:billingDetails) {
+                b.getCustomer().getBillingDetails().clear();
+                b.getCustomer().getReviews().clear();
+                b.getCustomer().getComments().clear();
+                b.getCustomer().getForumPosts().clear();
+                b.getCustomer().getOrders().clear();
+            }
+            return Response.status(Status.OK).entity(new BillingDetailRetrieveAllByCustomerRsp(billingDetails)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
@@ -66,4 +77,39 @@ public class BillingDetailResource {
         }
     }
     
+    @Path("retrieveAllSellerBillingDetails") 
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllBillingDetailBySeller(@QueryParam("email") String email, 
+                                        @QueryParam("password") String password)
+    {
+        try {
+            Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
+            System.out.println("********** BillingDetailResource.retrieveAllBillingDetail(): Seller " + seller.getEmail()+ " login remotely via web service");
+            List<BillingDetail> billingDetails = billingDetailSessionBeanLocal.retrieveBillingDetailBySeller(seller.getUserId());
+            System.out.println("Size: " + billingDetails.size());
+      
+            for(BillingDetail b:billingDetails) {
+                b.getSeller().getListings().clear();
+                b.getSeller().getAdvertisements().clear();
+                b.getSeller().getBillingDetails().clear();
+                b.getSeller().getEvents().clear();
+                b.getSeller().getOrders().clear();
+                b.getAdvertisement().setBillingDetail(null);
+                b.getAdvertisement().setSeller(null);
+            }
+    
+            System.out.println("Size: " + billingDetails.size());
+            return Response.status(Status.OK).entity(new BillingDetailRetrieveBySellerRsp(billingDetails)).build();
+        } catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+        } catch (Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            System.out.println(errorRsp.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    //add a get by order Id method
 }
