@@ -33,6 +33,8 @@ import ws.datamodel.ErrorRsp;
  *
  * @author shizhan
  */
+
+@Path("DeliveryDetail")
 public class DeliveryDetailsResource {
     @Context
     private UriInfo context;
@@ -55,6 +57,7 @@ public class DeliveryDetailsResource {
             User user = userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** DeliveryDetailsResource.retrieveDeliveryDetailByOrderId(): user " + user.getEmail()+ " login remotely via web service");
             DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.retrieveDeliveryDetailById(deliveryDetailId);
+            
             return Response.status(Response.Status.OK).entity(deliveryDetail).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

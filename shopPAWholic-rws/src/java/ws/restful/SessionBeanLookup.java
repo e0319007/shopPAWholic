@@ -32,7 +32,7 @@ public class SessionBeanLookup {
     
     
     public SessionBeanLookup() {
-        ejbModuleJndiPath = "java:global/ShopPAWholic/ShopPAWholic-ejb";
+        ejbModuleJndiPath = "java:global/shopPAWholic/shopPAWholic-ejb/";
     }
     
     public Object initialContextLookup(String path) throws NamingException {
@@ -42,8 +42,8 @@ public class SessionBeanLookup {
     
     public AdvertisementSessionBeanLocal lookupAdvertisementSessionBeanLocal() {
         try {
-            String path = "AdvertisementSessionBean!ejb.session.stateless.AdvertisementSessionBeanLocal";
-            return (AdvertisementSessionBeanLocal) initialContextLookup(path);
+            javax.naming.Context c = new InitialContext();
+            return (AdvertisementSessionBeanLocal) c.lookup(ejbModuleJndiPath + "AdvertisementSessionBean!ejb.session.stateless.AdvertisementSessionBeanLocal");
         } catch (NamingException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
             throw new RuntimeException(ex);

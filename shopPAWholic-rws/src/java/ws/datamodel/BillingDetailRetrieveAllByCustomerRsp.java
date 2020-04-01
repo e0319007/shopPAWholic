@@ -6,27 +6,28 @@
 package ws.datamodel;
 
 import entity.BillingDetail;
+import java.util.List;
 
 /**
  *
  * @author shizhan
  */
 public class BillingDetailRetrieveAllByCustomerRsp {
-    BillingDetail billingDetail;
+    List<BillingDetail> billingDetails;
 
-    public BillingDetail getBillingDetail() {
-        return billingDetail;
+    public List<BillingDetail> getBillingDetails() {
+        return billingDetails;
     }
 
-    public void setBillingDetail(BillingDetail billingDetail) {
-        this.billingDetail = billingDetail;
+    public void setBillingDetails(List<BillingDetail> billingDetails) {
+        this.billingDetails = billingDetails;
     }
 
     public BillingDetailRetrieveAllByCustomerRsp() {
     }
 
-    public BillingDetailRetrieveAllByCustomerRsp(BillingDetail billingDetail) {
-        this.billingDetail = billingDetail;
+    public BillingDetailRetrieveAllByCustomerRsp(List<BillingDetail> billingDetail) {
+        this.billingDetails = billingDetail;
     }
     
     

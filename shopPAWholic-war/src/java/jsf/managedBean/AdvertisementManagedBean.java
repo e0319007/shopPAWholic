@@ -47,7 +47,7 @@ public class AdvertisementManagedBean implements Serializable{
     private String url;
     private String ccNum;
     
-    private Long serviceProviderId;
+    private Long seller;
     
     //For updating advertisements
     private Advertisement selectedAdvertisementToUpdate;
@@ -71,7 +71,7 @@ public class AdvertisementManagedBean implements Serializable{
     public void createNewAdvertisements(ActionEvent event) {
         try {
             Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
-            advertisementSessionBeanLocal.createNewAdvertisement(advertisement, serviceProviderId, ccNum);
+            advertisementSessionBeanLocal.createNewAdvertisement(advertisement, seller, ccNum);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New forum created successfully! (Id: " + advertisement.getAdvertisementId()+ ")", null));
         } catch (CreateNewAdvertisementException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the advertisement!", null));

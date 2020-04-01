@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Category;
 import entity.Listing;
+import entity.Seller;
 import entity.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,7 +88,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
     
     @Override
-    public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException {
+    public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds, Long sellerId) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException {
         Set<ConstraintViolation<Listing>> constraintViolations;
         constraintViolations = validator.validate(newListing); 
         
@@ -103,7 +104,9 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                 }
                 em.persist(newListing);
                 newListing.setCategory(category);
-                
+                Seller seller = em.find(Seller.class, sellerId);
+                seller.getListings().add(newListing);
+                newListing.setSeller(seller);
                 if(tagIds != null && (!tagIds.isEmpty())) {
                     for (Long tagId : tagIds) {
                         Tag tag = tagSessionBeanLocal.retrieveTagByTagId(tagId);

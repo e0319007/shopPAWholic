@@ -27,8 +27,6 @@ public interface ListingSessionBeanLocal {
 
     public Listing retrieveListingBySkuCode(String skuCode) throws ListingNotFoundException;
 
-    public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException;
-
     public List<Listing> retrieveAllListings();
 
     public List<Listing> searchListingsByName(String searchName);
@@ -40,4 +38,6 @@ public interface ListingSessionBeanLocal {
     public void updateListing(Listing listing, Long categoryId, List<Long> tagIds) throws ListingNotFoundException, CategoryNotFoundException, TagNotFoundException, UpdateListingException, InputDataValidationException;
     
     public void deleteListing(Long listingId) throws ListingNotFoundException;
+
+    public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds, Long sellerId) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException;
 }

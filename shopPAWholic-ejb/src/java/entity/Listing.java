@@ -53,7 +53,7 @@ public class Listing implements Serializable {
     //@NotNull
     //private List<String> pictures;
     
-    @OneToMany(mappedBy = "listing") //sz
+    @OneToMany(mappedBy = "listing") 
     private List<Review> reviews;
     
     

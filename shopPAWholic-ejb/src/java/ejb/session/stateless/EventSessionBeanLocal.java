@@ -27,11 +27,11 @@ public interface EventSessionBeanLocal {
 
     public List<Event> retrieveAllEvent();
 
-    public List<Event> retrieveEventByServiceProvider(Long serviceProviderId);
+    public List<Event> retrieveEventBySellerId(Long sellerId);
 
     public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException;
 
-    public Event createNewEvent(Event event, Long serviceProviderId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
+    public Event createNewEvent(Event event, Long sellerId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
 
     
     
