@@ -3,14 +3,18 @@ package ejb.session.singleton;
 import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
+import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
+import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
 import entity.Advertisement;
 import entity.Category;
 import entity.Customer;
+import entity.DeliveryDetail;
 import entity.Listing;
+import entity.OrderEntity;
 import entity.Seller;
 import entity.Tag;
 import java.math.BigDecimal;
@@ -26,11 +30,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import util.enumeration.DeliveryMethod;
 import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.CreateNewCategoryException;
+import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewListingException;
+import util.exception.CreateNewOrderException;
 import util.exception.CreateNewTagException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingSkuCodeExistException;
@@ -41,6 +48,12 @@ import util.exception.UserUsernameExistException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "DeliveryDetailSessionBeanLocal")
+    private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
+
+    @EJB(name = "OrderSessionBeanLocal")
+    private OrderSessionBeanLocal orderSessionBeanLocal;
 
     @EJB
     private AdvertisementSessionBeanLocal advertisementSessionBean;
@@ -104,7 +117,8 @@ public class DataInitSessionBean {
             //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
             
             Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", true, 0);
-            userSessionBeanLocal.createNewUser(new Customer("Customer One", "customerOne@email.com", "91234567", "password"));
+            Customer customer = new Customer("Customer One", "customerOne@email.com", "91234567", "password");
+            userSessionBeanLocal.createNewUser(customer);
             userSessionBeanLocal.createNewUser(seller);
             em.flush();
             
@@ -132,7 +146,12 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             
-     
+            DeliveryDetail delivery = new DeliveryDetail("BLK 1", "98765432", new Date(), DeliveryMethod.QXPRESS);
+            OrderEntity order = new OrderEntity(new BigDecimal(100), new Date());
+            List<Listing> listings = new ArrayList<>();
+            listings.add(em.find(Listing.class, 1l));
+            deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
            
             
             Advertisement advertisement1;
@@ -140,7 +159,7 @@ public class DataInitSessionBean {
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewOrderException | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
             ex.printStackTrace();
         } 
     }

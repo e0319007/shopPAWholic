@@ -10,6 +10,7 @@ import entity.Tag;
 import entity.Category;
 import entity.OrderEntity;
 import entity.Review;
+import entity.Seller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -82,6 +83,7 @@ public class ListingManagementManagedBean implements Serializable {
     
     private List<Review> reviews;
     private List<OrderEntity> orders;
+    private Seller seller;
     
 
     /**
@@ -103,6 +105,7 @@ public class ListingManagementManagedBean implements Serializable {
         categories = categorySessionBeanLocal.retrieveAllLeafCategories();
         tags = tagSessionBeanLocal.retrieveAllTags();
         //reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        Seller seller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentSellerEntity");
     }
     
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -117,7 +120,7 @@ public class ListingManagementManagedBean implements Serializable {
             setCategoryIdNew(null);
         }
         try {
-            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew);
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, seller.getUserId());
             listings.add(l);
             //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
             //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
