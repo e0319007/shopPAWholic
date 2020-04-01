@@ -1,17 +1,24 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
+import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
+import entity.Advertisement;
 import entity.Category;
+import entity.Customer;
 import entity.Listing;
+import entity.Seller;
 import entity.Tag;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -21,17 +28,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
+import util.exception.CreateNewAdvertisementException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewListingException;
 import util.exception.CreateNewTagException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingSkuCodeExistException;
 import util.exception.UnknownPersistenceException;
+import util.exception.UserUsernameExistException;
 
 @Singleton
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private AdvertisementSessionBeanLocal advertisementSessionBean;
 
     @EJB(name = "CategorySessionBeanLocal")
     private CategorySessionBeanLocal categorySessionBeanLocal;
@@ -114,12 +126,28 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), 10), categoryZ.getCategoryId(), tagIdsEmpty);
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20), categoryZ.getCategoryId(), tagIdsEmpty);
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30), categoryZ.getCategoryId(), tagIdsEmpty);
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException ex) {
+            
+     
+            Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", true, 0);
+            userSessionBeanLocal.createNewUser(new Customer("Customer One", "customerOne@email.com", "91234567", "password"));
+            userSessionBeanLocal.createNewUser(seller);
+            em.flush();
+            
+            Advertisement advertisement1;
+            List<String> pictures = new ArrayList<>();
+            pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
             ex.printStackTrace();
         } 
     }
 
     public void persist(Object object) {
+        em.persist(object);
+    }
+
+    public void persist1(Object object) {
         em.persist(object);
     }
 
