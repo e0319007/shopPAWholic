@@ -21,38 +21,10 @@
         <!-- ICONS -->
         <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png"/>
         <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+
         <title>shopPAWholic</title>
     </h:head>
-
-    <!--    <script type="text/javascript">
-            function handleAdminLoginRequest(xhr, status, args) {
-                if (args.validationFailed || !args.loggedIn) {
-                    PF('adminLogin').jq.effect("shake", {times: 5}, 100);
-                } else {
-                    PF('adminLogin').hide();
-                    $('#adminLoginLink').fadeOut();
-                }
-            }
-    
-            function handleUserLoginRequest(xhr, status, args) {
-                if (argd.validationFailed) {
-                    PF('userLogin').jq.effect("shake", {times: 5}, 100);
-                } else {
-                    PF('userLogin').hide();
-                    $('#userLoginLink').fadeOut();
-                }
-            }
-    
-            function handleUserRegistration(xhr, status, args) {
-                if (argd.validationFailed) {
-                    PF('userRegistration').jq.effect("shake", {times: 5}, 100);
-                } else {
-                    PF('userRegistration').hide();
-                    #('#userRegistrationLink').fadeOut();
-                }
-            }
-            
-        </script>-->
 
     <h:body>
         <div id="wrapper">
@@ -67,7 +39,7 @@
                             <form class="navbar-form navbar-left">
                                 <div class="input-group">
                                     <input type="text" value="" class="form-control" placeholder="Search ..."/>
-                                    <span class="input-group-btn"><button type="button" class="btn btn-primary"><i class="lnr lnr-magnifier"></i></button></span>
+                                    <span class="input-group-btn"><button type="button" class="btn btn-primary"><i class="pi pi-search"></i></button></span>
                                 </div>
                             </form>
 
@@ -75,18 +47,14 @@
                                 <div id="navbar-menu">
                                     <ul class="nav navbar-nav navbar-right">
                                         <li class="dropdown">
-
                                             <h:form>     
-                                                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />   
-                                                <h:outputLink value="javascript:void(0)" onclick="PF('adminLogin').show();" title="adminLogin">
-                                                    <p:commandButton value="Admin" style="margin-top: 26px; margin-right: 10px;"></p:commandButton>
-                                                </h:outputLink>
-
+                                                <p:growl id="growl" showDetail="true" life="1000" />   
+                                                <p:commandButton value="Admin" type="button" onclick="PF('adminLogin').show()" style="margin-top: 26px; margin-right: 10px;"/>
                                                 <p:dialog header="Admin Login" widgetVar="adminLogin" resizable="false">
                                                     <h:panelGrid columns="2" cellpadding="5">
                                                         <h:outputLabel for="adminUsername" value="Username: " />
                                                         <p:inputText id="adminUsername" value="#{adminLoginManagedBean.username}" required="true" label="adminUsername" />
-                                                        <h:outputLabel for="adminPassword" value="Password:" />
+                                                        <h:outputLabel for="adminPassword" value="Password: " />
                                                         <p:password id="adminPassword" value="#{adminLoginManagedBean.password}" required="true" label="adminPassword" />
                                                         <f:facet name="footer">
                                                             <p:commandButton value="Login" update="growl" action="#{adminLoginManagedBean.login(event)}"/>
@@ -97,21 +65,16 @@
                                         </li>
                                         <li class="dropdown">
                                             <h:form>        
-                                                <h:outputLink value="javascript:void(0)" onclick="PF('userLogin').show();" title="Login">
-                                                    <p:commandButton value="Login" style="margin-top: 26px; margin-right: 10px;"></p:commandButton>
-                                                </h:outputLink>
-                                                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                                                <p:growl id="growl" showDetail="true" life="1000" />
+                                                <p:commandButton value="Login" onclick="PF('userLogin').show();" style="margin-top: 26px; margin-right: 10px;"/>
                                                 <p:dialog header="User Login" widgetVar="userLogin" resizable="false">
                                                     <h:panelGrid columns="2" cellpadding="5">
-                                                        <h:outputLabel for="userEmail" value="Email" />
+                                                        <h:outputLabel for="userEmail" value="Email: " />
                                                         <p:inputText id="userEmail" value="#{loginManagedBean.email}" required="true" label="userEmail" />
-
-                                                        <h:outputLabel for="userPassword" value="Password:" />
+                                                        <h:outputLabel for="userPassword" value="Password: " />
                                                         <p:password id="userPassword" value="#{loginManagedBean.password}" required="true" label="userPassword" />
-
                                                         <f:facet name="footer">
-                                                            <p:commandButton value="Login" update="growl" action="#{loginManagedBean.login(event)}"
-                                                                             oncomplete="handleUserLoginRequest(xhr, status, args)" />
+                                                            <p:commandButton value="Login" update="growl" action="#{loginManagedBean.login(event)}"/>
                                                         </f:facet>  
                                                     </h:panelGrid>
                                                 </p:dialog>    
@@ -119,34 +82,32 @@
                                         </li>
                                         <li class="dropdown">
                                             <h:form>
-
-                                                <h:outputLink value="javascript:void(0)" onclick="PF('userRegistration').show();" title="Login">
-                                                    <p:commandButton value="Register" style="margin-top: 26px; "/>
-                                                </h:outputLink>
-                                                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+                                                <p:growl id="growl" showDetail="true" life="1000" />
+                                                <p:commandButton value="Register" onclick="PF('userRegistration').show()" style="margin-top: 26px; "/>
                                                 <p:dialog header="User Registration" widgetVar="userRegistration" resizable="false">
                                                     <h:panelGrid columns="2" cellpadding="5">
                                                         <h:outputLabel>Sign up as: </h:outputLabel>
-                                                        <p:selectOneRadio id="console" value="#{registerManagedBean.role}" unselectable="true">
+                                                        <p:selectOneRadio id="console" value="#{registerManagedBean.role}" unselectable="true" required="true" label="Role">
                                                             <f:selectItem itemLabel="Customer" itemValue="Customer" />
                                                             <f:selectItem itemLabel="Seller" itemValue="Seller" />
                                                         </p:selectOneRadio>
-
                                                         <h:outputLabel for="registerName" value="Name" />
-                                                        <p:inputText id="registerName" value="#{registerManagedBean.name}" required="true" label="registerName" />
-
+                                                        <p:inputText id="registerName" value="#{registerManagedBean.name}" required="true" label="Register Name"
+                                                                     validatorMessage="You have exceeded 20 words.">
+                                                            <f:validateLength maximum="20"></f:validateLength>
+                                                        </p:inputText>
                                                         <h:outputLabel for="registerEmail" value="Email" />
-                                                        <p:inputText id="registerEmail" value="#{registerManagedBean.email}" required="true" label="registerEmail" />
-
+                                                        <p:inputText id="registerEmail" value="#{registerManagedBean.email}" required="true" label="registerEmail" validatorMessage="Wrong email format. Please try again.">
+                                                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                        </p:inputText>
                                                         <h:outputLabel for="registerPassword" value="Password:" />
-                                                        <p:password id="registerPassword" value="#{registerManagedBean.password}" required="true" label="registerPassword" />
-
+                                                        <p:password id="registerPassword" value="#{registerManagedBean.password}" required="true" label="Register Password" />
                                                         <h:outputLabel for="registerContactNumber" value="Contact Number" />
-                                                        <p:inputText id="registerContactNumber" value="#{registerManagedBean.contactNumber}" required="true" label="registerContactNumber" />
-
+                                                        <p:inputText id="registerContactNumber" value="#{registerManagedBean.contactNumber}" required="true" label="Register Contact Number">
+                                                            <f:validateRegex pattern="[6|8|9]\d{7}|\+65[6|8|9]\d{7}|\+65\s[6|8|9]\d{7}"/>
+                                                        </p:inputText>
                                                         <f:facet name="footer">
-                                                            <p:commandButton value="Register" update="growl" action="#{registerManagedBean.createNewUser(event)}"
-                                                                             oncomplete="handleUserRegistration(xhr, status, args)" />
+                                                            <p:commandButton value="Register" update="growl" action="#{registerManagedBean.createNewUser(event)}" />
                                                         </f:facet>  
                                                     </h:panelGrid>
                                                 </p:dialog> 
@@ -163,7 +124,7 @@
                     <nav class="navbar navbar-default-below navbar-fixed-top">
                         <ul class="mainMenuBar">
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Products</a></li>
-                            <li class="menuBarGroup"><a hred="#" class="mainMenuLink">Events</a></li>
+                            <li class="menuBarGroup"><a href="#" class="mainMenuLink">Events</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Advertisement</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Forums</a></li>
                         </ul>
@@ -200,10 +161,9 @@
                 </ui:insert>
             </div>
 
-            <div id="bottom">
+            <div id="bottom" >
                 <ui:insert name="bottom">
-                    bottom
-                    <!--footer-->
+                    footer
                 </ui:insert>
             </div>
         </div>

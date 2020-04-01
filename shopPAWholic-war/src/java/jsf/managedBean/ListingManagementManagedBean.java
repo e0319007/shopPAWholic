@@ -93,9 +93,7 @@ public class ListingManagementManagedBean implements Serializable {
         //setTags(tagSessionBeanLocal.retrieveAllTags());
         //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
         //setOrders(orderSessionBeanLocal.retrieveAllOrders());
-        System.out.println("******************************** iamin");
         listings = listingSessionBeanLocal.retrieveAllListings();
-        System.out.println("Listing" + listings);
         categories = categorySessionBeanLocal.retrieveAllLeafCategories();
         tags = tagSessionBeanLocal.retrieveAllTags();
         //reviews = reviewSessionBeanLocal.retrieveAllReviews();
