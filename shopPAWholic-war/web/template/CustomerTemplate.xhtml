@@ -21,6 +21,7 @@
         <!-- ICONS -->
         <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png"/>
         <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>shopPAWholic</title>
     </h:head>
 
@@ -30,6 +31,7 @@
     <script src="../resources/script/adminScript.js"></script>
 
     <h:body>
+        <p:growl id="growl" showDetail="true" life="1000" />   
         <div id="wrapper">
             <div id="top" class="top">
                 <ui:insert name="top">
@@ -42,35 +44,40 @@
                             <form class="navbar-form navbar-left">
                                 <div class="input-group">
                                     <input type="text" value="" class="form-control" placeholder="Search ..."/>
-                                    <span class="input-group-btn"><button type="button" class="btn btn-primary"><i class="lnr lnr-magnifier"></i></button></span>
+                                    <span class="input-group-btn"><button type="button" class="btn btn-primary"><i class="pi pi-search"></i></button></span>
                                 </div>
                             </form>
 
                             <div id="navbar-menu">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
-                                            <i class="lnr lnr-alarm"></i>
-                                            <span class="badge bg-danger">5</span>
-                                        </a>
-                                        <ul class="dropdown-menu notifications">
-                                            <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
-                                            <li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-                                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
-                                            <li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-                                            <li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
-                                            <li><a href="#" class="more">See all notifications</a></li>
-                                        </ul>
+
                                     </li>
                                     <li class="dropdown">                                        
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-user"></i> <h:outputLabel value="#{sessionScope.currentUser.name}"></h:outputLabel> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="pi pi-user"></i> 
+                                            <h:outputLabel value="#{sessionScope.currentUser.name}"></h:outputLabel> 
+                                            <i class="icon-submenu pi pi-chevron-down">
+                                            </i>
+                                        </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Profile</a></li>
-                                            <li><a href="#">Logout</a></li>
+                                            <li>
+                                                <h:form>
+                                                    <p:commandLink value="Profile" action="sellerProfile?faces-redirect=true"></p:commandLink>
+                                                </h:form>
+                                            </li>
+                                            <li>
+                                                <h:form>
+                                                    <p:commandLink value="Logout" update="growl" action="#{loginManagedBean.logout(event)}"/>
+                                                </h:form>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-
+                                        <h:outputLabel>
+                                        <i class="icon-submenu pi pi-comment">
+                                        </i>
+                                        </h:outputLabel> 
                                     </li>
                                     <li>
                                     </li> 
@@ -99,30 +106,26 @@
             <div id="content" class="center_content">
                 <ui:insert name="content">
                     <h:form id="form">
-                        <p:dataGrid var="car" value="#{dataGridView.cars}" columns="3" layout="grid"
+                        <!--based on time-->
+                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" layout="grid"
                                     rows="12" paginator="true" id="cars"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
                             <f:facet name="header">
-                                Products
+                                Fresh Finds
                             </f:facet>
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <p:graphicImage name="demo/images/car/#{lisitng.brand}.gif"/> 
 
-                                    <h:outputText value="#{car.year}" />
 
-                                    <p:commandLink update=":form:carDetail" oncomplete="PF('carDialog').show()" title="View Detail">
-                                        <h:outputText styleClass="pi pi-search" style="margin:0 auto;"/>
-                                        <f:setPropertyActionListener value="#{car}" target="#{dataGridView.selectedCar}" />
-                                    </p:commandLink>
+                                    <h:outputText value="#{listing.name}" />
+                                    <h:outputText value="#{listing.listingId}"/>
+
                                 </h:panelGrid>
                             </p:panel>
-
                         </p:dataGrid>
-
                     </h:form>
                 </ui:insert>
             </div>

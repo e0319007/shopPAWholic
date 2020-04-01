@@ -57,13 +57,22 @@ public class AdvertisementResource {
         userSessionBeanLocal = sessionBeanLookup.lookupUserSessionBeanLocal();
     }
     
-    @Path("retrieveAllAdvertisement")
+    @Path("retrieveAllAdvertisements")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllAdvertisements() {
         try {
             List<Advertisement> advertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
+            for(Advertisement a : advertisements) {
+                a.getBillingDetail().setAdvertisement(null);
+                a.getSeller().getAdvertisements().clear();
+                a.getSeller().getListings().clear();
+                a.getSeller().getAdvertisements().clear();
+                a.getSeller().getBillingDetails().clear();
+                a.getSeller().getEvents().clear();
+                a.getSeller().getOrders().clear();
+            }
             return Response.status(Status.OK).entity(new AdvertisementRetrieveAllRsp(advertisements)).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -83,7 +92,8 @@ public class AdvertisementResource {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** Advertisement.retrieveAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             Advertisement advertisement  = advertisementSessionBeanLocal.retrieveAdvertisementById(advertisementId);
-            
+            advertisement.getBillingDetail().setAdvertisement(null);
+            advertisement.getSeller().getAdvertisements().clear();
             return Response.status(Response.Status.OK).entity(advertisement).build();
             
         } catch (InvalidLoginCredentialException ex) {
@@ -127,6 +137,7 @@ public class AdvertisementResource {
     }
     
     @POST
+    @Path("updateAdvertisement")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateAdvertisement(AdvertisementUpdateReq updateAdvertisementReq) {

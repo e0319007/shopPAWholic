@@ -4,6 +4,14 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Production</param-value>
     </context-param>
+    <context-param>
+<<<<<<< HEAD
+        <param-name>primefaces.FONT_AWESOME</param-name>
+=======
+        <param-name>javax.faces.FONT_AWESOME></param-name>
+>>>>>>> origin/yeeqing
+        <param-value>true</param-value>
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

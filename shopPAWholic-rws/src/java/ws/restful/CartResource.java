@@ -52,6 +52,7 @@ public class CartResource { //cart transactions will be managed by service
             Customer customer = (Customer) userSessionBean.userLogin(email, password);
             System.out.println("********** CartResource.retrieveCartByCustomerId(): Customer " + customer.getEmail()+ " login remotely via web service");
             Cart cart = cartSessionBean.getCartByCustomerId(customer.getUserId());
+            cart.getCustomer().setCart(null);
             return Response.status(Response.Status.OK).entity(cart).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

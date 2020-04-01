@@ -61,7 +61,7 @@ public class CategoryResource
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllCategories(@QueryParam("username") String email, 
+    public Response retrieveAllCategories(@QueryParam("email") String email, 
                                         @QueryParam("password") String password)
     {
         try

@@ -28,4 +28,6 @@ public interface BillingDetailSessionBeanLocal {
     public void deleteBillingDetail(Long id) throws BillingDetailNotFoundException;
     
     public List<BillingDetail> retrieveBillingDetailByCustomer(Long customerId);
+    
+    public List<BillingDetail> retrieveBillingDetailBySeller(Long sellerId);
 }
