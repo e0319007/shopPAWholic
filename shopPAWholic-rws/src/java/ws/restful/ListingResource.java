@@ -7,6 +7,7 @@ package ws.restful;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Listing;
+import entity.Review;
 import entity.Seller;
 import entity.Tag;
 import entity.User;
@@ -39,8 +40,7 @@ import ws.datamodel.ListingsRetrieveAllRsp;
  * @author shizhan
  */
 
- @Path("Product")
-
+@Path("Listing")
 public class ListingResource {    
     @Context
     private UriInfo context;
@@ -67,7 +67,7 @@ public class ListingResource {
         else throw new InvalidLoginCredentialException();
     }
     
-    @Path("retrieveAllProducts")
+    @Path("retrieveAllListings")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,6 +83,12 @@ public class ListingResource {
                 for(Tag t:l.getTags()) {
                     t.getListings().clear();
                 }
+                l.getSeller().getListings().clear();
+                l.getSeller().getAdvertisements().clear();
+                l.getSeller().getBillingDetails().clear();
+                l.getSeller().getEvents().clear();
+                for (Review r: l.getReviews()) r.setListing(null);
+                l.getSeller().getOrders().clear();
             }
             return Response.status(Status.OK).entity(new ListingsRetrieveAllRsp(listings)).build();
         }
@@ -98,7 +104,7 @@ public class ListingResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveProduct(@PathParam("listingId") Long listingId) {
+    public Response retrieveListing(@PathParam("listingId") Long listingId) {
         try {
             Listing listing = listingSessionBeanLocal.retrieveListingByListingId(listingId);
             
@@ -106,10 +112,11 @@ public class ListingResource {
                 listing.getCategory().getParentCategory().getSubCategories().clear();
             }
             listing.getCategory().getListings().clear();
-            
+            listing.getSeller().getListings().clear();
             for(Tag tag:listing.getTags()) {
                 tag.getListings().clear();
             }
+            
             return Response.status(Status.OK).entity(listing).build(); //need to wrap??
         }
         catch(ListingNotFoundException ex) {
@@ -132,7 +139,7 @@ public class ListingResource {
         if(createListingReq != null) {
             try {
                 Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword(), "createListing");
-                Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds());
+                Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds(), seller.getUserId());
                 
                 return Response.status(Response.Status.OK).entity(listing.getListingId()).build();
             }
@@ -191,7 +198,7 @@ public class ListingResource {
     
     
     
-    @Path("{productId}")
+    @Path("{listingId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

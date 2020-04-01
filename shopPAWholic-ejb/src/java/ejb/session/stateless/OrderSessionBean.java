@@ -83,6 +83,7 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 newOrder.setBillingDetail(billingDetail);
                 billingDetail.setOrder(newOrder);
+                customer.getBillingDetails().add(billingDetail);
                 
 //                for(Listing l:listings) {
 //                    em.persist(listings);

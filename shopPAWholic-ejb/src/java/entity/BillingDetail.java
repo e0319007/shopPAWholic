@@ -40,10 +40,14 @@ public class BillingDetail implements Serializable {
     @JoinColumn(nullable = true)
     private Customer customer;
     
-    @OneToOne (fetch = FetchType.LAZY)
+    @ManyToOne(optional = true)
+    @JoinColumn(nullable = true)
+    private Seller seller;
+    
+    @OneToOne (optional = true)
     private Advertisement advertisement;
     
-    @OneToOne 
+    @OneToOne (optional = true)
     private OrderEntity order;
     
     
@@ -157,6 +161,14 @@ public class BillingDetail implements Serializable {
 
     public void setOrder(OrderEntity order) {
         this.order = order;
+    }
+
+    public Seller getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
     
 }

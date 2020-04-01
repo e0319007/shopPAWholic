@@ -47,10 +47,10 @@ public class EventManagedBean implements Serializable{
     private Date startDateTime;
     private Date endDateTime;
     private String url;
-    private Long serviceProviderId;
+    private Long sellerId;
     
     //for filtering events
-    private List<Event> filterByServiceProvider;
+    private List<Event> filterBySeller;
     
     
     public EventManagedBean() {
@@ -64,7 +64,7 @@ public class EventManagedBean implements Serializable{
     public void createNewEvent(ActionEvent event) {
         try {
             Event eventToCreate = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
-            eventSessionBeanLocal.createNewEvent(eventToCreate,serviceProviderId);
+            eventSessionBeanLocal.createNewEvent(eventToCreate,sellerId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + eventToCreate.getEventId() + ")", null));
         } catch (CreateNewEventException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
@@ -169,20 +169,20 @@ public class EventManagedBean implements Serializable{
         this.url = url;
     }
 
-    public List<Event> getFilterByServiceProvider() {
-        return filterByServiceProvider;
+    public List<Event> getFilterBySeller() {
+        return filterBySeller;
     }
 
-    public void setFilterByServiceProvider(List<Event> filterByServiceProvider) {
-        this.filterByServiceProvider = filterByServiceProvider;
+    public void setFilterBySeller(List<Event> filterBySeller) {
+        this.filterBySeller = filterBySeller;
     }
 
-    public Long getServiceProviderId() {
-        return serviceProviderId;
+    public Long getSellerId() {
+        return sellerId;
     }
 
-    public void setServiceProviderId(Long serviceProviderId) {
-        this.serviceProviderId = serviceProviderId;
+    public void setSellerId(Long sellerId) {
+        this.sellerId = sellerId;
     }
     
     

@@ -40,6 +40,8 @@ public class AdminLoginManagedBean {
 
     public void logout(ActionEvent event) throws IOException {
         ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now loggeed out.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 

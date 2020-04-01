@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="8">
+        <file>
+            <url>src/java/ws/restful/ListingResouce.java</url>
+            <bookmark id="8">
+                <name/>
+                <line>112</line>
+                <key/>
+            </bookmark>
+        </file>
+        <file>
+            <url>src/java/ws/restful/AdminResource.java</url>
+            <bookmark id="4">
+                <name/>
+                <line>100</line>
+                <key/>
+            </bookmark>
+            <bookmark id="5">
+                <name/>
+                <line>102</line>
+                <key/>
+            </bookmark>
+            <bookmark id="6">
+                <name/>
+                <line>106</line>
+                <key/>
+            </bookmark>
+            <bookmark id="1">
+                <name/>
+                <line>118</line>
+                <key/>
+            </bookmark>
+            <bookmark id="7">
+                <name/>
+                <line>133</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group/>
+    </open-files>
+</project-private>

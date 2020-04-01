@@ -58,16 +58,16 @@ public class FilterListingsByTagsManagedBean implements Serializable{
     public void postConstruct()
     {
         List<Tag> tags = tagSessionBeanLocal.retrieveAllTags();
-        setSelectItems(new ArrayList<>());
+        selectItems = new ArrayList<>();
         
         for(Tag tag:tags)
         {
-            getSelectItems().add(new SelectItem(tag.getTagId(), tag.getName(), tag.getName()));
+            selectItems.add(new SelectItem(tag.getTagId(), tag.getName(), tag.getName()));
         }
       
         
-        setCondition((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCondition"));        
-        setSelectedTagIds((List<Long>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterTags"));
+        condition = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCondition");        
+        selectedTagIds = (List<Long>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterTags");
         
         filterListing();
     }
@@ -80,13 +80,13 @@ public class FilterListingsByTagsManagedBean implements Serializable{
     
     public void filterListing()
     {        
-        if(getSelectedTagIds() != null && getSelectedTagIds().size() > 0)
+        if(selectedTagIds != null && selectedTagIds.size() > 0)
         {
-            setListings(listingSessionBeanLocal.filterListingsByTags(getSelectedTagIds(), getCondition()));
+            listings = listingSessionBeanLocal.filterListingsByTags(selectedTagIds, condition);
         }
         else
         {
-            setListings(listingSessionBeanLocal.retrieveAllListings());
+            listings = listingSessionBeanLocal.retrieveAllListings();
         }
     }
     
