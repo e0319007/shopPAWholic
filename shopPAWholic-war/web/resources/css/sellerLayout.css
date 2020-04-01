@@ -278,7 +278,8 @@ html.fullscreen-bg #wrapper {
         position: absolute;
         width: 100%;
         margin-top: 3px;
-        background-color: #fff; }
+        background-color: #fff; 
+    }
     .navbar-nav .open .dropdown-menu > li > a {
         padding: 10px 15px; }
     .navbar-nav .icon-menu {
@@ -1805,14 +1806,7 @@ ul.activity-timeline > li:last-child:after {
     transition-duration: 0.2s;
 }
 
-
-/* advertisement*/
-.advertisement{
-    margin-top: 140px;
-    text-align: center;
-}
-
-.ui-panel-images {
+ .ui-panel-images {
     width: 100%;
     height: 100%;
 }
@@ -1825,4 +1819,3 @@ ul.activity-timeline > li:last-child:after {
 .ui-growl{
     top: 150px;
 }
-

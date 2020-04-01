@@ -9,7 +9,7 @@ $(document).ready(function () {
             $('body').removeClass('layout-default'); // also remove default behaviour if set
         }
 
-        $(this).find('.lnr').toggleClass('lnr-arrow-left-circle lnr-arrow-right-circle');
+        $(this).find('.pi').toggleClass('pi-chevron-left pi-chevron-right');
 
         if ($(window).innerWidth() < 1025) {
             if (!$('body').hasClass('offcanvas-active')) {
@@ -88,7 +88,7 @@ $(document).ready(function () {
                 }
 
                 $(this).parents('.panel').find(affectedElement).slideUp(300);
-                $(this).find('i.lnr-chevron-up').toggleClass('lnr-chevron-down');
+                $(this).find('i.pi-chevron-up').toggleClass('pi-chevron-down');
             },
             function (e) {
                 e.preventDefault();
@@ -99,7 +99,7 @@ $(document).ready(function () {
                 }
 
                 $(this).parents('.panel').find(affectedElement).slideDown(300);
-                $(this).find('i.lnr-chevron-up').toggleClass('lnr-chevron-down');
+                $(this).find('i.pi-chevron-up').toggleClass('pi-chevron-down');
             }
     );
 
