@@ -49,6 +49,7 @@ import util.exception.UserUsernameExistException;
 @Startup
 public class DataInitSessionBean {
 
+
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
 
@@ -138,6 +139,7 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"),  20), categoryX.getCategoryId(), tagIdsDiscount, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"),  30), categoryX.getCategoryId(), tagIdsPopularDiscount, seller.getUserId());
             
+
             listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"),  10), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"),  20), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"),  30), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
@@ -160,8 +162,8 @@ public class DataInitSessionBean {
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
    
-           
-            
+
+         
         } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 
             ex.printStackTrace();
