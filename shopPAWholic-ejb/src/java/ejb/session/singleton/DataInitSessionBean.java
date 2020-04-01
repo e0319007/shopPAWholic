@@ -145,8 +145,8 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), 10), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            
-            DeliveryDetail delivery = new DeliveryDetail("BLK 1", "98765432", new Date(), DeliveryMethod.QXPRESS);
+            Date date = new Date();
+            DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
             OrderEntity order = new OrderEntity(new BigDecimal(100), new Date());
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
