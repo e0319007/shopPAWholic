@@ -123,17 +123,18 @@ public class DataInitSessionBean {
             userSessionBeanLocal.createNewUser(seller);
             em.flush();
             
-            
+
             Date date = new Date(); 
-            
+
+
             listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"),  10, date), categoryA.getCategoryId(), tagIdsPopular, seller.getUserId() );
             listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"),  20, date), categoryA.getCategoryId(), tagIdsDiscount, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"),  30, date), categoryA.getCategoryId(), tagIdsPopularDiscount, seller.getUserId());
-            
+
             listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"),  10, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"),  20, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"),  30, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            
+
             listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"),  10, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"),  20, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"),  30, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());

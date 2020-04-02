@@ -21,7 +21,6 @@
                 <library dirs="200">
                     <file>${libs.jsf20.classpath}</file>
                 </library>
-
             </web-module-libraries>
             <web-module-additional-libraries/>
             <source-roots>

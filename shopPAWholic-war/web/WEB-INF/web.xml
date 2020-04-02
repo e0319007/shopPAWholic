@@ -5,7 +5,15 @@
         <param-value>Production</param-value>
     </context-param>
     <context-param>
+<<<<<<< HEAD
         <param-name>primefaces.FONT_AWESOME</param-name>
+=======
+<<<<<<< HEAD
+        <param-name>primefaces.FONT_AWESOME</param-name>
+=======
+        <param-name>javax.faces.FONT_AWESOME></param-name>
+>>>>>>> origin/yeeqing
+>>>>>>> 8ac617fa950f6ea77b17f921e69736a58506f53f
         <param-value>true</param-value>
     </context-param>
     <servlet>

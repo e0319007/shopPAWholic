@@ -10,12 +10,8 @@
     </cc:interface>
 
     <cc:implementation>
-        
         <h:form id="formMain">
-        
             <p:breadCrumb homeDisplay="false">
-
-
                 <p:menuitem value="System Administration" rendered="#{cc.attrs.pageName == 'adminListingList' ||                                                                              
                                                                         cc.attrs.pageName == 'adminSearchListingsByName' ||
                                                                         cc.attrs.pageName == 'adminFilterListingsByCategory' ||
@@ -27,10 +23,10 @@
                 <p:menuitem value="Filter Listings by Tags" url="#{application.contextPath}/adminOperation/adminFilterListingsByTags.xhtml" rendered="#{cc.attrs.pageName == 'adminFilterListingsByTags'}" />
 
             </p:breadCrumb>
-        
+
         </h:form>
-        
+
     </cc:implementation>
 </html>
 
-                            
+

@@ -10,8 +10,10 @@
 
 
     <ui:define name="content">
+        
         <ez:Breadcrumb pageName="adminListingList" />
         <div>
+            <h:outputLabel value="#{application.contextPath}">""</h:outputLabel>
             <br/><br/>
             <h1 style="color:#0063dc; font-weight: bold;">Listing Management</h1>
             <h:outputLabel value="#{viewListingManagedBean.listingToView.name}"></h:outputLabel>
