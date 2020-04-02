@@ -47,7 +47,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     @Override
-    public Review createNewReview(Review review, Long listingId, Long customerId ) throws CreateNewReviewException, InputDataValidationException {
+    public Review createNewReview(Review review, Long listingId, Long customerId) throws CreateNewReviewException, InputDataValidationException {
         Set<ConstraintViolation<Review>> constraintViolations;
         constraintViolations = validator.validate(review);
         
