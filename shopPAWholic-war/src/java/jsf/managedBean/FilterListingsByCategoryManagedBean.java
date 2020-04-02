@@ -55,29 +55,29 @@ public class FilterListingsByCategoryManagedBean implements Serializable{
     public void postConstruct()
     {
         List<Category> categories = categorySessionBeanLocal.retrieveAllRootCategories();
-        setTreeNode(new DefaultTreeNode("Root", null));
+        treeNode = new DefaultTreeNode("Root", null);
         
         for(Category category:categories)
         {
-            createTreeNode(category, getTreeNode());
+            createTreeNode(category, treeNode);
         }
         
         Long selectedCategoryId = (Long)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCategory");
         
         if(selectedCategoryId != null)
         {
-            for(TreeNode tn:getTreeNode().getChildren())
+            for(TreeNode tn:treeNode.getChildren())
             {
                 Category c = (Category)tn.getData();
 
                 if(c.getCategoryId().equals(selectedCategoryId))
                 {
-                    setSelectedTreeNode(tn);
+                    selectedTreeNode = tn;
                     break;
                 }
                 else
                 {
-                    setSelectedTreeNode(searchTreeNode(selectedCategoryId, tn));
+                    selectedTreeNode = searchTreeNode(selectedCategoryId, tn);
                 }            
             }
         }
@@ -87,21 +87,21 @@ public class FilterListingsByCategoryManagedBean implements Serializable{
     
     public void filterListing()
     {
-        if(getSelectedTreeNode() != null)
+        if(selectedTreeNode != null)
         {               
             try
             {
-                Category c = (Category)getSelectedTreeNode().getData();
-                setListings(listingSessionBeanLocal.filterListingsByCategory(c.getCategoryId()));
+                Category c = (Category)selectedTreeNode.getData();
+                listings = listingSessionBeanLocal.filterListingsByCategory(c.getCategoryId());
             }
             catch(CategoryNotFoundException ex)
             {
-                setListings(listingSessionBeanLocal.retrieveAllListings());
+                listings = listingSessionBeanLocal.retrieveAllListings();
             }
         }
         else
         {
-            setListings(listingSessionBeanLocal.retrieveAllListings());
+            listings = listingSessionBeanLocal.retrieveAllListings();
         }
     }
     

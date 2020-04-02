@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,6 +69,9 @@ public class Listing implements Serializable {
     @Digits(integer = 9, fraction = 2)
     private BigDecimal unitPrice; 
     
+    @NotNull
+    private Date listDate;
+    
     @ManyToOne(optional = false) 
     @JoinColumn(nullable = false)
     private Category category; 
@@ -93,7 +97,7 @@ public class Listing implements Serializable {
 
     }
 
-    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, /*List<String> pictures,*/ Integer quantityAtHand) {
+    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, /*List<String> pictures,*/ Integer quantityAtHand, Date listDate) {
         this();
         this.skuCode = skuCode;
         this.name = name;
@@ -102,6 +106,7 @@ public class Listing implements Serializable {
         this.unitPrice = unitPrice;
        // this.pictures = pictures;
         this.quantityOnHand = quantityOnHand;
+        this.listDate = listDate;
         
     }
     
@@ -333,6 +338,20 @@ public class Listing implements Serializable {
      */
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    /**
+     * @return the listDate
+     */
+    public Date getListDate() {
+        return listDate;
+    }
+
+    /**
+     * @param listDate the listDate to set
+     */
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
     }
     
 }

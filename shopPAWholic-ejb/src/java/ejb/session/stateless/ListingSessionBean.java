@@ -12,6 +12,7 @@ import entity.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -102,6 +103,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                 if(!category.getSubCategories().isEmpty()) {
                     throw new CreateNewListingException("Selected category for the new product is not a leaf category");
                 }
+                
                 em.persist(newListing);
                 newListing.setCategory(category);
                 Seller seller = em.find(Seller.class, sellerId);
@@ -133,6 +135,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             listing.getTags().size();
             listing.getOrders().size();
         }
+        System.out.println("Listing Session Bean "+ listings);
         return listings;
     }
     

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="./../template/SellerFormTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>  
+            <p:growl id="messages" showDetail="false"/>
+            <p:menu>
+                <p:menuitem value="Edit Profile" update="messages" icon="pi pi-save" />
+                <p:menuitem value="Change Password"  update="messages" icon="pi pi-refresh"/>
+            </p:menu>
+        </h:form>
+        <h:form>
+            <p:panel header="Edit Profile">
+                <!--change dp-->
+                <p:outputLabel value="Public Profile"></p:outputLabel>
+                
+                <p:outputLabel value="Username"></p:outputLabel>
+                <p:inputText></p:inputText>
+                
+                <p:outputLabel value="Name"></p:outputLabel>
+                <p:inputText></p:inputText>
+                
+                <p:outputLabel value="Email"></p:outputLabel>
+                <p:inputText disabled="true"></p:inputText>
+
+                <p:outputLabel value="Contact Number"></p:outputLabel>
+                <p:inputText disabled="true"></p:inputText>
+                
+                <p:commandButton value="Save changes"/>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
