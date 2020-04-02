@@ -38,7 +38,7 @@ public class DeliveryDetail implements Serializable {
     private Long deliveryDetailId;
     @Size(min = 5, message = "Address must be longer than 5 characters")
     private String address;
-    @Pattern(regexp = "65[6|8|9]\\d{7}|\\")
+//    @Pattern(regexp = "65[6|8|9]\\d{7}|\\")
     private String contactNumber;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
