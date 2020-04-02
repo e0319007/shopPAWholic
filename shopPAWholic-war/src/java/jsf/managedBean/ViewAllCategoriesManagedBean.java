@@ -34,8 +34,7 @@ public class ViewAllCategoriesManagedBean implements Serializable {
     }
     
     @PostConstruct
-    public void postConstruct()
-    {
+    public void postConstruct(){
         setCategories(categorySessionBeanLocal.retrieveAllCategories());
     }
 

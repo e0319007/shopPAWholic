@@ -53,8 +53,8 @@ public class ListingManagementManagedBean implements Serializable {
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
 
-    @Inject
-    private ViewListingManagedBean viewListingManagedBean;
+    //@Inject
+    //private ViewListingManagedBean viewListingManagedBean;
 
     //private String name;
     //private String description;
@@ -71,7 +71,8 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Long> tagIdsNew;
     private List<Category> categories;
     private List<Tag> tags;
-
+    
+    private Listing selectedListingToView;
     private Listing selectedListingToUpdate;
     private Long categoryIdUpdate;
     private List<Long> tagIdsUpdate;
@@ -347,16 +348,16 @@ public class ListingManagementManagedBean implements Serializable {
     /**
      * @return the viewListingManagedBean
      */
-    public ViewListingManagedBean getViewListingManagedBean() {
+    /*public ViewListingManagedBean getViewListingManagedBean() {
         return viewListingManagedBean;
-    }
+    }*/
 
     /**
      * @param viewListingManagedBean the viewListingManagedBean to set
      */
-    public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
+    /*public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
         this.viewListingManagedBean = viewListingManagedBean;
-    }
+    }*/
 
     /**
      * @return the reviews
@@ -384,6 +385,14 @@ public class ListingManagementManagedBean implements Serializable {
      */
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
+    }
+
+    public Listing getSelectedListingToView() {
+        return selectedListingToView;
+    }
+
+    public void setSelectedListingToView(Listing selectedListingToView) {
+        this.selectedListingToView = selectedListingToView;
     }
 
     

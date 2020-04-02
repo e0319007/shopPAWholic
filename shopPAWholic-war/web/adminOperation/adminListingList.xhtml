@@ -4,31 +4,26 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
-
-
-
+                xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        
-        <ez:Breadcrumb pageName="adminListingList" />
+        <!--<ez:Breadcrumb pageName="adminListingList" />-->
         <div>
-            <h:outputLabel value="#{application.contextPath}">""</h:outputLabel>
-            <br/><br/>
+            <br/><br/><br/><br/>
             <h1 style="color:#0063dc; font-weight: bold;">Listing Management</h1>
-            <h:outputLabel value="#{viewListingManagedBean.listingToView.name}"></h:outputLabel>
+
+
             <!--admin no need to create listing
             <h:form>
             
                 <p:menubar>
-
+    
                     <p:submenu label="Sell">
                         <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="fa fa-plus" />
                     </p:submenu>                                        
-
+    
                 </p:menubar>
                 <br/>
-
+    
             </h:form> -->
 
 
@@ -83,30 +78,99 @@
                     </p:column>
 
                     <p:column style="background-color: steelblue" headerText="Action" >
-                        <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.viewListingManagedBean.listingToView}" />
+                        <p:commandButton update="formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-file" title="View">
+                            <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToView}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{listingManagementManagedBean.doUpdateListing}" update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="listingToUpdate" value="#{listing}" />
+                        <p:commandButton update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" icon="pi pi-pencil" title="Update">
+                            <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToUpdate}" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="formAllListings:dataTableAllListings formAllListings:messages">
+                        <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="formAllListings:dataTableAllListings formAllListings:messages">
                             <f:attribute name="listingToDelete" value="#{listing}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="ui-icon-alert" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="pi pi-exclamation-triangle" />
                         </p:commandButton>
-
                     </p:column>
-
                 </p:dataTable>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
                 </p:confirmDialog>
             </h:form> 
 
             <!--create new listing form here-->
 
-            <ez:ViewListing id="ccViewListing" />
+            <!--<ez:ViewListing id="ccViewListing" />-->
+            <h:form id="formViewListing"> 
+
+                <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
+                    <p:panelGrid> 
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="listingId" value="Listing ID: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="listingId" value="#{listingManagementManagedBean.selectedListingToView.listingId}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="name" value="Name: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="name" value="#{listingManagementManagedBean.selectedListingToView.name}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="description" value="Description: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="description" value="#{listingManagementManagedBean.selectedListingToView.description}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="unitPrice" value="Unit Price: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="unitPrice" value="#{listingManagementManagedBean.selectedListingToView.unitPrice}" /> 
+                                <!--<f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>-->
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="category" value="Category: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="category" value="#{listingManagementManagedBean.selectedListingToView.category}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="tag" value="Tag(s): "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <p:dataList id="tag" value="#{listingManagementManagedBean.selectedListingToView.tags}" var="tag" type="unordered">
+                                    #{tag.name}
+                                </p:dataList>
+                            </p:column> 
+                        </p:row>
+
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+
             <h:form id="formUpdateListing">
                 <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Update Listing" closable="true">
                     <p:messages id="messagesUpdateListing" redisplay="false" />
@@ -159,7 +223,7 @@
                             </p:column>
                         </p:row>
 
-                        
+
 
                         <p:row>
                             <p:column>
@@ -194,7 +258,7 @@
                             </p:column>
                             <p:column>
                                 <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
-                                    <f:selectItems value="#{listingManagementManagedBean.tags}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}" />
+                                    <f:selectItems value="#{listingManagementManagedBean.tags}" var="seltag" itemValue="#{seltag.tagId}" itemLabel="#{seltag.name}" />
                                 </p:selectManyMenu>
                             </p:column>
                             <p:column>
@@ -210,7 +274,11 @@
                     </p:panelGrid>
                 </p:dialog>
             </h:form> 
-            
+
         </div>
+        <p:commandButton id="showDialogButton" type="button" value="Show" onclick="PF('submit').show()" />
+        <p:dialog header="Testing" widgetVar="submit">
+            <h:outputText value="This is a Dialog." />
+        </p:dialog>  
     </ui:define>
 </ui:composition>

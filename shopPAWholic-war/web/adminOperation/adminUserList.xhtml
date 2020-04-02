@@ -4,9 +4,69 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <div>
+            <br></br><br></br>
+            <h3>All Users</h3>
+            <h:form id="formAllUsers">
+                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:dataTable id="dataTableAllUsers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.userList}" var="user" rowKey="#{user.userId}" rowIndexVar="row"
+                             filteredValue="#{userManagementManagedBean.filteredUserList}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
-                
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllUsers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="User Id" sortBy="#{user.userId}" filterBy="#{user.userId}" filterMatchMode="contains">
+                        <h:outputText value="#{user.userId}" />
+                    </p:column>
+
+                    <p:column headerText="Name" sortBy="#{user.name}" filterBy="#{user.name}" filterMatchMode="contains">
+                        <h:outputText value="#{user.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="formViewUsers" oncomplete="PF('dlg1').show()" icon="pi pi-user">
+                            <f:setPropertyActionListener value="#{user}" target="#{userManagementManagedBean.viewUserManagedBean.userToView}" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+            <h:form>
+                <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
+                    <h:outputText value="Resistance to PrimeFaces is futile!" />
+                </p:dialog>
+            </h:form>
+
+            <h:form id="formViewUsers">
+                <p:dialog id="dialogViewUser" widgetVar="dialogViewUser" header="View User" closable="true">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="User ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewUserManagedBean.userToView.userId}" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+            </h:form>
+
+        </div>
+    </ui:define>
+
 </ui:composition>
 
 

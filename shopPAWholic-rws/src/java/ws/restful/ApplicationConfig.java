@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package ws.restful;
+
 import java.util.Set;
 import java.util.HashSet;
 import javax.ws.rs.core.Application;
@@ -14,13 +15,14 @@ import javax.ws.rs.core.Application;
  */
 @javax.ws.rs.ApplicationPath("Resources")
 public class ApplicationConfig extends Application {
+
     @Override
     public Set<Class<?>> getClasses() {
-        Set<Class<?>> resources  = new HashSet<>();
+        Set<Class<?>> resources = new HashSet<>();
         addRestResourceClasses(resources);
         return resources;
     }
-    
+
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ws.restful.AdvertisementResource.class);
         resources.add(ws.restful.BillingDetailResource.class);
