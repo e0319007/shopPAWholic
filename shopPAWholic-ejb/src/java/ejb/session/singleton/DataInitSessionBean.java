@@ -49,7 +49,6 @@ import util.exception.UserUsernameExistException;
 @Startup
 public class DataInitSessionBean {
 
-
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
 
@@ -122,7 +121,7 @@ public class DataInitSessionBean {
             userSessionBeanLocal.createNewUser(customer);
             userSessionBeanLocal.createNewUser(seller);
             em.flush();
-            
+   
 
             Date date = new Date(); 
 
@@ -159,22 +158,19 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
             orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
            
-            
+
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
+
    
 
-         
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+ 
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewOrderException | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 
             ex.printStackTrace();
-        } catch (CreateNewDeliveryDetailException ex) {
-            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CreateNewOrderException ex) {
-            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 
