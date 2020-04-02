@@ -44,10 +44,10 @@ public class BillingDetail implements Serializable {
     @JoinColumn(nullable = true)
     private Seller seller;
     
-    @OneToOne (optional = true)
+    @OneToOne(optional = true)
     private Advertisement advertisement;
     
-    @OneToOne (optional = true)
+    @OneToOne(optional = true)
     private OrderEntity order;
     
     

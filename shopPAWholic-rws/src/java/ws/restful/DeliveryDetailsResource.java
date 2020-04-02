@@ -49,7 +49,10 @@ public class DeliveryDetailsResource {
     }
     
     //retrieve and get
-    
+    @Path("retrieveDeliveryDetail/{deliverDetailId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveDeliveryDetailByOrderId(@QueryParam("email") String email,
                                                     @QueryParam("password") String password,
                                                     @PathParam("deliveryDetailId") Long deliveryDetailId) {
