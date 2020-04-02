@@ -7,12 +7,14 @@ package ejb.session.stateless;
 
 import entity.Seller;
 import entity.User;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -47,7 +49,6 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
             if (constraintViolations.isEmpty()) {
                 em.persist(newSeller);
                 em.flush();
-                System.out.println("I've created a seller. Check out the database.");
                 return newSeller.getUserId();
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -65,6 +66,13 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
         }
     }
 
+    
+    @Override
+    public List<Seller> retrieveAllSellers(){
+        Query query = em.createQuery("SELECT s FROM Seller s");
+        return query.getResultList();
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Seller>> constraintViolations) {
         String msg = "Input data validation error!:";
         for (ConstraintViolation constraintViolation : constraintViolations) {

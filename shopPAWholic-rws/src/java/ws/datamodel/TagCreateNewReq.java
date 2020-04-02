@@ -14,12 +14,16 @@ import entity.Tag;
 public class TagCreateNewReq {
     
     private Tag tag;
+    private String email;
+    private String password;
 
     public TagCreateNewReq() {
     }
 
-    public TagCreateNewReq(Tag tag) {
+    public TagCreateNewReq(Tag tag, String email, String password) {
         this.tag = tag;
+        this.email = email;
+        this.password = password;
     }
 
     /**
@@ -34,6 +38,34 @@ public class TagCreateNewReq {
      */
     public void setTag(Tag tag) {
         this.tag = tag;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
     
     

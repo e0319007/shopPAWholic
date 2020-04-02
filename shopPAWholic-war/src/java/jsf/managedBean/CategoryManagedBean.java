@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
@@ -10,8 +5,6 @@ import ejb.session.stateless.ListingSessionBeanLocal;
 import entity.Category;
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -25,10 +18,6 @@ import util.exception.DeleteCategoryException;
 import util.exception.InputDataValidationException;
 import util.exception.UpdateCategoryException;
 
-/**
- *
- * @author EileenLeong
- */
 @Named(value = "categoryManagedBean")
 @ViewScoped
 public class CategoryManagedBean implements Serializable {
@@ -38,28 +27,35 @@ public class CategoryManagedBean implements Serializable {
 
     @EJB(name = "CategorySessionBeanLocal")
     private CategorySessionBeanLocal categorySessionBeanLocal;
-    
+
     private List<Category> categories;
-     
+    private Category newCategory;
+
+    private Category parentCategory;
+    private List<Category> parentCategories;
+
     private String name;
-    private String description; 
-    
+    private String description;
+
     private Long parentCategoryId;
-    
+
     private Category categoryToUpdate;
 
     /**
      * Creates a new instance of CategoryManagedBean
      */
     public CategoryManagedBean() {
+        newCategory = new Category();
     }
-    
+
     @PostConstruct
     public void PostConstruct() {
         setCategories(categorySessionBeanLocal.retrieveAllCategories());
+        setParentCategories(categorySessionBeanLocal.retrieveAllRootCategories());
+        System.out.println(parentCategories + " i am the parent");
     }
-    
-    public void createNewCategory(ActionEvent event) {
+
+    /*public void createNewCategory(ActionEvent event) {
         
         Category category = new Category(name, description);
         try {
@@ -71,22 +67,35 @@ public class CategoryManagedBean implements Serializable {
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating category: " + ex.getMessage(), null));
         } 
+    }*/
+    public void createNewCategory(ActionEvent event) {
+        try {
+            Category category = categorySessionBeanLocal.createNewCategory(newCategory, parentCategoryId);
+            categories.add(category);
+
+            newCategory = new Category();
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category " + category.getName() + " created successfully", null));
+        } catch (InputDataValidationException | CreateNewCategoryException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new category: " + ex.getMessage(), null));
+        }
     }
-    
+
     public void updateCategory(ActionEvent event) throws UpdateCategoryException {
         try {
-            categorySessionBeanLocal.updateCategory(categoryToUpdate, getParentCategoryId());
+            categorySessionBeanLocal.updateCategory(getCategoryToUpdate(), getParentCategoryId());
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while editing category: " + ex.getMessage(), null));
         } catch (CategoryNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with title " + categoryToUpdate.getName()+ "exists: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with title " + getCategoryToUpdate().getName() + "exists: " + ex.getMessage(), null));
         }
     }
-    
-     public void deleteCategory(ActionEvent event ) throws DeleteCategoryException{
+
+    public void deleteCategory(ActionEvent event) throws DeleteCategoryException {
         try {
             Category categoryToDelete = (Category) event.getComponent().getAttributes().get("CategoryToDelete");
             categorySessionBeanLocal.deleteCategory(categoryToDelete.getCategoryId());
+            categories.remove(categoryToDelete);
         } catch (CategoryNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with given ID is not found", null));
         }
@@ -146,5 +155,37 @@ public class CategoryManagedBean implements Serializable {
      */
     public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
+    }
+
+    public Category getNewCategory() {
+        return newCategory;
+    }
+
+    public void setNewCategory(Category newCategory) {
+        this.newCategory = newCategory;
+    }
+
+    public Category getCategoryToUpdate() {
+        return categoryToUpdate;
+    }
+
+    public List<Category> getParentCategories() {
+        return parentCategories;
+    }
+
+    public void setCategoryToUpdate(Category categoryToUpdate) {
+        this.categoryToUpdate = categoryToUpdate;
+    }
+
+    public void setParentCategories(List<Category> parentCategories) {
+        this.parentCategories = parentCategories;
+    }
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
     }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.CategorySessionBeanLocal;
@@ -23,126 +18,93 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 import util.exception.CategoryNotFoundException;
 
-/**
- *
- * @author EileenLeong
- */
 @Named(value = "filterListingsByCategoryManagedBean")
 @ViewScoped
-public class FilterListingsByCategoryManagedBean implements Serializable{
+public class FilterListingsByCategoryManagedBean implements Serializable {
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
 
     @EJB(name = "CategorySessionBeanLocal")
     private CategorySessionBeanLocal categorySessionBeanLocal;
-    
+
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
-        
+
     private TreeNode treeNode;
     private TreeNode selectedTreeNode;
-    
+
     private List<Listing> listings;
 
-    /**
-     * Creates a new instance of FilterListingsByCategoryManagedBean
-     */
     public FilterListingsByCategoryManagedBean() {
     }
-    
+
     @PostConstruct
-    public void postConstruct()
-    {
+    public void postConstruct() {
         List<Category> categories = categorySessionBeanLocal.retrieveAllRootCategories();
         treeNode = new DefaultTreeNode("Root", null);
-        
-        for(Category category:categories)
-        {
+
+        for (Category category : categories) {
             createTreeNode(category, treeNode);
         }
-        
-        Long selectedCategoryId = (Long)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCategory");
-        
-        if(selectedCategoryId != null)
-        {
-            for(TreeNode tn:treeNode.getChildren())
-            {
-                Category c = (Category)tn.getData();
 
-                if(c.getCategoryId().equals(selectedCategoryId))
-                {
+        Long selectedCategoryId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCategory");
+
+        if (selectedCategoryId != null) {
+            for (TreeNode tn : treeNode.getChildren()) {
+                Category c = (Category) tn.getData();
+
+                if (c.getCategoryId().equals(selectedCategoryId)) {
                     selectedTreeNode = tn;
                     break;
-                }
-                else
-                {
+                } else {
                     selectedTreeNode = searchTreeNode(selectedCategoryId, tn);
-                }            
+                }
             }
         }
-        
+
         filterListing();
     }
-    
-    public void filterListing()
-    {
-        if(selectedTreeNode != null)
-        {               
-            try
-            {
-                Category c = (Category)selectedTreeNode.getData();
+
+    public void filterListing() {
+        if (selectedTreeNode != null) {
+            try {
+                Category c = (Category) selectedTreeNode.getData();
                 listings = listingSessionBeanLocal.filterListingsByCategory(c.getCategoryId());
-            }
-            catch(CategoryNotFoundException ex)
-            {
+            } catch (CategoryNotFoundException ex) {
                 listings = listingSessionBeanLocal.retrieveAllListings();
             }
-        }
-        else
-        {
+        } else {
             listings = listingSessionBeanLocal.retrieveAllListings();
         }
     }
-    
-    public void viewListingDetails(ActionEvent event) throws IOException
-    {
-        Long listingIdToView = (Long)event.getComponent().getAttributes().get("listingId");
+
+    public void viewListingDetails(ActionEvent event) throws IOException {
+        Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("backMode", "filterListingsByCategory");
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewListingDetails.xhtml");
     }
-    
-    
-    
-    private void createTreeNode(Category category, TreeNode parentTreeNode)
-    {
+
+    private void createTreeNode(Category category, TreeNode parentTreeNode) {
         TreeNode treeNode = new DefaultTreeNode(category, parentTreeNode);
-                
-        for(Category c:category.getSubCategories())
-        {
+
+        for (Category c : category.getSubCategories()) {
             createTreeNode(c, treeNode);
         }
     }
-    
-    
-    
-    private TreeNode searchTreeNode(Long selectedCategoryId, TreeNode treeNode)
-    {
-        for(TreeNode tn:treeNode.getChildren())
-        {
-            Category c = (Category)tn.getData();
-            
-            if(c.getCategoryId().equals(selectedCategoryId))
-            {
+
+    private TreeNode searchTreeNode(Long selectedCategoryId, TreeNode treeNode) {
+        for (TreeNode tn : treeNode.getChildren()) {
+            Category c = (Category) tn.getData();
+
+            if (c.getCategoryId().equals(selectedCategoryId)) {
                 return tn;
-            }
-            else
-            {
+            } else {
                 return searchTreeNode(selectedCategoryId, tn);
-            }            
+            }
         }
-        
+
         return null;
     }
 
@@ -186,9 +148,8 @@ public class FilterListingsByCategoryManagedBean implements Serializable{
      */
     public void setSelectedTreeNode(TreeNode selectedTreeNode) {
         this.selectedTreeNode = selectedTreeNode;
-        if(selectedTreeNode != null)
-        {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listingFilterCategory", ((Category)selectedTreeNode.getData()).getCategoryId());
+        if (selectedTreeNode != null) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listingFilterCategory", ((Category) selectedTreeNode.getData()).getCategoryId());
         }
     }
 

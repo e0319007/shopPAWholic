@@ -71,9 +71,11 @@ public class SecurityFilter implements Filter {
                     || path.equals("/adminOperation/adminFilterListingsByTags.xhtml")
                     || path.equals("/adminOperation/adminHomepage.xhtml")
                     || path.equals("/adminOperation/adminListingList.xhtml")
-                    || path.equals("/adminOperation/adminOperation")
                     || path.equals("/adminOperation/adminSearchListingsByName.xhtml")
-                    || path.equals("/adminOperation/adminUserList.xhtml")) {
+                    || path.equals("/adminOperation/adminUserList.xhtml")
+                    || path.equals("/adminOperation/adminCategoryList.xhtml")
+                    || path.equals("/adminOperation/adminTagList.xhtml")
+                    ) {
                 return true;
             } else {
                 return false;
