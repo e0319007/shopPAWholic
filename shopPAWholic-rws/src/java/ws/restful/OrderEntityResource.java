@@ -8,6 +8,7 @@ package ws.restful;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
+import entity.Listing;
 import entity.OrderEntity;
 import entity.Seller;
 import entity.User;
@@ -36,6 +37,7 @@ import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import ws.datamodel.ErrorRsp;
 import ws.datamodel.OrderCreateNewRsp;
+import ws.datamodel.OrderRetrieveAllRsp;
 import ws.datamodel.OrderUpdateOrderReq;
 /**
  *
@@ -92,6 +94,9 @@ public class OrderEntityResource {
         }
     }
     
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllOrderByUser(@QueryParam("email") String email, 
                                         @QueryParam("password") String password) {
         try {
@@ -100,13 +105,35 @@ public class OrderEntityResource {
             List<OrderEntity> orders;
             if (user instanceof Customer) orders = orderSessionBeanLocal.retrieveOrderByCustomerId(user.getUserId());
             else orders = orderSessionBeanLocal.retrieveOrderBySellerId(user.getUserId());
-            
+            System.out.println("***************** ORDERS SIZE: " + orders.size());
             for(OrderEntity o:orders) {
                 o.getCustomer().getOrders().clear();
                 o.getSeller().getOrders().clear();
+                o.getSeller().getListings().clear();
+                o.getSeller().getAdvertisements().clear();
+                o.getSeller().getBillingDetails().clear();
+                o.getSeller().getEvents().clear();
+                o.getSeller().getOrders().clear();
+                o.getCustomer().getBillingDetails().clear();
+                o.getCustomer().getReviews().clear();
+                o.getCustomer().getComments().clear();
+                o.getCustomer().getForumPosts().clear();
+                o.getCustomer().getOrders().clear();
+                o.getCustomer().setCart(null);
+                o.getBillingDetail().setOrder(null);
+                o.getBillingDetail().setCustomer(null);
+                o.getBillingDetail().setSeller(null);
+                o.getBillingDetail().setAdvertisement(null);
+                for(Listing l: o.getListings()) {
+                    l.setCategory(null);
+                    l.setSeller(null);
+                    l.getReviews().clear();
+                    l.getTags().clear();
+                    l.getOrders().clear();
+                }
+                
             }
-            
-            return Response.status(Status.OK).build();
+            return Response.status(Status.OK).entity(new OrderRetrieveAllRsp(orders)).build();
         } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
@@ -116,14 +143,17 @@ public class OrderEntityResource {
         }
     }
 
-    
+    @POST
+    @Path("changeOrderStatusByCustomer")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response changeOrderStatusByCustomer(OrderUpdateOrderReq orderUpdateOrderReq) {
         try {
             User user = getUser(orderUpdateOrderReq.getEmail(), orderUpdateOrderReq.getPassword(), "OrderEntityResource.changeOrderStatusByCustomer()");
             if (user instanceof Customer)
                 orderSessionBeanLocal.changeOrderStatus(orderUpdateOrderReq.getOrder().getOrderStatus(), orderUpdateOrderReq.getOrder().getOrderId());
             else throw new InvalidLoginCredentialException();
-            return Response.status(Status.OK).build();
+            return Response.status(Status.OK).entity(orderUpdateOrderReq.getOrder().getOrderId()).build();
         } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
@@ -132,14 +162,17 @@ public class OrderEntityResource {
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
-    
+    @POST
+    @Path("changeOrderStatusBySeller")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response changeOrderStatusBySeller(OrderUpdateOrderReq orderUpdateOrderReq) {
         try {
             User user = getUser(orderUpdateOrderReq.getEmail(), orderUpdateOrderReq.getPassword(), "OrderEntityResource.changeOrderStatusBySeller()");
             if (user instanceof Seller)
                 orderSessionBeanLocal.changeOrderStatus(orderUpdateOrderReq.getOrder().getOrderStatus(), orderUpdateOrderReq.getOrder().getOrderId());
             else throw new InvalidLoginCredentialException();
-            return Response.status(Status.OK).build();
+            return Response.status(Status.OK).entity(orderUpdateOrderReq.getOrder().getOrderId()).build();
         } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();

@@ -38,10 +38,10 @@ import util.exception.OrderNotFoundException;
 public class OrderSessionBean implements OrderSessionBeanLocal {
 // order has customer, deliveryDetails, listings, billingdetail
     @EJB(name = "DeliveryDetailSessionBeanLocal")
-    private DeliveryDetailSessionBean deliveryDetailSessionBeanLocal;
+    private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
 
     @EJB(name = "BillingDetailSessionBeanLocal")
-    private BillingDetailSessionBean billingDetailSessionBeanLocal;
+    private BillingDetailSessionBeanLocal billingDetailSessionBeanLocal;
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
@@ -67,34 +67,37 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         
         if (constraintViolations.isEmpty()) {
             try {
+                System.out.println("Entering bean");
                 Date date = new Date(System.currentTimeMillis());
+                BillingDetail billingDetail = new BillingDetail(ccNum, date);
+                billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 
                 Seller seller = em.find(Seller.class, sellerId);
                 Customer customer = em.find(Customer.class, customerId);
                 DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, DeliveryDetailId);
+              
                 seller.getOrders().add(newOrder);
                 customer.getOrders().add(newOrder);
                 newOrder.setCustomer(customer);
                 newOrder.setSeller(seller);
                 newOrder.setDeliveryDetail(deliveryDetail);
                 
-                BillingDetail billingDetail = new BillingDetail(ccNum, date);
                 billingDetail.setCustomer(customer);
-                billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 newOrder.setBillingDetail(billingDetail);
                 billingDetail.setOrder(newOrder);
                 customer.getBillingDetails().add(billingDetail);
-                
+      
 //                for(Listing l:listings) {
 //                    em.persist(listings);
 //                }
-//                
-                em.persist(newOrder);
-                em.flush();
-                
+//              
                 for (Listing l : listings) {
                     l.setQuantityOnHand(l.getQuantityOnHand() - 1);
                 }
+                em.persist(newOrder);
+                em.flush();
+                
+                
                 
                 return newOrder;
             } catch (Exception ex) {
