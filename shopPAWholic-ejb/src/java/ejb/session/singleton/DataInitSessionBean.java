@@ -123,7 +123,7 @@ public class DataInitSessionBean {
             em.flush();
    
 
-            Date date = new Date(); 
+            Date date = new Date(System.currentTimeMillis()); 
 
 
             listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"),  10, date), categoryA.getCategoryId(), tagIdsPopular, seller.getUserId() );
@@ -151,13 +151,17 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             
-            DeliveryDetail delivery = new DeliveryDetail("BLK 1", "98765432", new Date(), DeliveryMethod.QXPRESS);
-//            OrderEntity order = new OrderEntity(new BigDecimal(100), new Date());
+
+            
+            DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
+            OrderEntity order = new OrderEntity(new BigDecimal(100), date);
+            System.out.println("New Order Created with ID: " + order.getOrderId());
+            System.out.println("New Order has price of: " + order.getTotalPrice());
+            System.out.println("New Order has date of: " + order.getOrderDate());
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
-//            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
-           
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
 
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
@@ -165,11 +169,7 @@ public class DataInitSessionBean {
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
 
-   
-
- 
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
-//CreateNewOrderException
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewOrderException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
             ex.printStackTrace();
         } 
     }

@@ -106,18 +106,25 @@ public class ListingResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveListing(@PathParam("listingId") Long listingId) {
         try {
-            Listing listing = listingSessionBeanLocal.retrieveListingByListingId(listingId);
+            Listing l = listingSessionBeanLocal.retrieveListingByListingId(listingId);
             
-            if(listing.getCategory().getParentCategory() != null) {
-                listing.getCategory().getParentCategory().getSubCategories().clear();
+            if(l.getCategory().getParentCategory() != null) {
+                l.getCategory().getParentCategory().getSubCategories().clear();
             }
-            listing.getCategory().getListings().clear();
-            listing.getSeller().getListings().clear();
-            for(Tag tag:listing.getTags()) {
+            l.getCategory().getListings().clear();
+            l.getSeller().getListings().clear();
+            for(Tag tag:l.getTags()) {
                 tag.getListings().clear();
             }
             
-            return Response.status(Status.OK).entity(listing).build(); //need to wrap??
+            l.getSeller().getListings().clear();
+            l.getSeller().getAdvertisements().clear();
+            l.getSeller().getBillingDetails().clear();
+            l.getSeller().getEvents().clear();
+            for (Review r: l.getReviews()) r.setListing(null);
+            l.getSeller().getOrders().clear();
+            
+            return Response.status(Status.OK).entity(l).build(); 
         }
         catch(ListingNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
