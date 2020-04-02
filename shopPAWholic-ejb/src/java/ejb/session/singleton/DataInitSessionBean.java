@@ -150,7 +150,7 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"),  10, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            
+
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
@@ -169,6 +169,7 @@ public class DataInitSessionBean {
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
+
 
    
 
