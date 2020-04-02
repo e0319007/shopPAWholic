@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <br/><br/><br/><br/>
+        <h:form id="formCreateNewTag"> 
+            <p:panel header="Create New Tag" toggleable="true" collapsed="true">
+                <h:messages id="messagesCreateNewTag" /> 
+                <p:panelGrid> 
+                    <p:row> 
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: "/> 
+                        </p:column>
+                        <p:column> 
+                            <p:inputText id="name" value="#{tagManagedBean.newTag.name}" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3"> 
+                            <p:commandButton id="createNewTag" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableTags" actionListener="#{tagManagedBean.createNewTag}" />
+                        </p:column> 
+                    </p:row>
+                </p:panelGrid> 
+            </p:panel>
+        </h:form> 
+
+        <h:form id="formDataTable">
+            <p:dataTable id="dataTableTags" widgetVar="dataTableTags" value="#{viewAllTagsManagedBean.tags}" var="tag">
+                <p:column headerText="Name"> 
+                    <h:outputText value="#{tag.name}"/> 
+                </p:column>
+
+                <p:column headerText="Action"> 
+                    <p:commandButton icon="pi pi-trash" actionListener="#{tagManagedBean.deleteTag}" update="formDataTable">
+                        <f:attribute name="tagToDelete" value="tag" />
+                        <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="pi pi-alert" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

@@ -151,7 +151,6 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             
-            
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
@@ -160,7 +159,9 @@ public class DataInitSessionBean {
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
-            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+
+//            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+
 
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
@@ -171,7 +172,9 @@ public class DataInitSessionBean {
    
 
  
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewOrderException | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+//CreateNewOrderException
 
             ex.printStackTrace();
         } 

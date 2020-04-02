@@ -5,9 +5,15 @@
         <param-value>Production</param-value>
     </context-param>
     <context-param>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 52536b5eea7180c8e8c2827aa8aa3d2c2a3fe8b3
         <param-name>primefaces.FONT_AWESOME</param-name>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 52536b5eea7180c8e8c2827aa8aa3d2c2a3fe8b3
         <param-value>true</param-value>
     </context-param>
     <servlet>

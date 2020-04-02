@@ -1742,3 +1742,8 @@ ul.activity-timeline > li {
   .project-table > tbody > tr > td .avatar {
     width: 22px;
     border: 1px solid #CCC; }
+  
+  .ui-confirm-dialog{
+      top:40% !important;
+      left:40% !important;
+  }
