@@ -6,6 +6,7 @@
     </context-param>
     <context-param>
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 52536b5eea7180c8e8c2827aa8aa3d2c2a3fe8b3
@@ -13,6 +14,9 @@
 <<<<<<< HEAD
 
 =======
+>>>>>>> 52536b5eea7180c8e8c2827aa8aa3d2c2a3fe8b3
+=======
+        <param-name>primefaces.FONT_AWESOME</param-name>
 >>>>>>> 52536b5eea7180c8e8c2827aa8aa3d2c2a3fe8b3
         <param-value>true</param-value>
     </context-param>

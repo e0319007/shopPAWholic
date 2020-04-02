@@ -160,6 +160,7 @@ public class DataInitSessionBean {
             listings.add(em.find(Listing.class, 1l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
+
 //            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
 
 
@@ -171,8 +172,7 @@ public class DataInitSessionBean {
 
    
 
- 
-
+    
         } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException
 
