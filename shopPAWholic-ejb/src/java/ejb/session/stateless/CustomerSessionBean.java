@@ -2,13 +2,14 @@
 package ejb.session.stateless;
 
 import entity.Customer;
-import entity.User;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -54,6 +55,12 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
         }
+    }
+    
+    @Override
+    public List<Customer> retrieveAllCustomer(){
+        Query query = em.createQuery("SELECT c FROM Customer c");
+        return query.getResultList();
     }
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Customer>> constraintViolations) {

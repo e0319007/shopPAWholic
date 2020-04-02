@@ -43,15 +43,16 @@ public class BillingDetailSessionBean implements BillingDetailSessionBeanLocal {
     //unless want to somehow constrain the same user to not have the same billing detail if they have multiple
     @Override //billing detail created while creating advertisement and order.-> managed bean need to do view only
     public BillingDetail createNewBillingDetail(BillingDetail billingDetail) throws CreateNewBillingDetailException, InputDataValidationException{
+        System.out.println("Entering Billing Detail ***");
         Set<ConstraintViolation<BillingDetail>> constraintViolations;
         constraintViolations = validator.validate(billingDetail);
-        
         if (constraintViolations.isEmpty()) {
             try{
                 em.persist(billingDetail);
                 em.flush();
                 return billingDetail;
             } catch (Exception ex) {
+                System.out.println("ERROR*****************" + ex.getMessage());
                 throw new CreateNewBillingDetailException("An unexpected error has occurred: " + ex.getMessage());
             }
         } else {
@@ -91,7 +92,7 @@ public class BillingDetailSessionBean implements BillingDetailSessionBeanLocal {
     
     
     public List<BillingDetail> retrieveBillingDetailByCustomer(Long customerId) {
-        Query query = em.createQuery("SELECT bd FROM BillingDetail bd WHERE bd.customer.userId =: customerId");
+        Query query = em.createQuery("SELECT bd FROM BillingDetail bd WHERE bd.customer.userId = :inCustomerId");
         query.setParameter("inCustomerId", customerId);
         
         List<BillingDetail> billingDetails = query.getResultList();

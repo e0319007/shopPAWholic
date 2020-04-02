@@ -80,9 +80,12 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
     
     @Override
     public DeliveryDetail retrieveDeliveryDetailById(Long id) throws DeliveryDetailNotFoundException {
-        DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, id);
-        if (deliveryDetail != null) return deliveryDetail;
-        else throw new DeliveryDetailNotFoundException("Delivery Detail ID " + id + " does not exist!");
+        try {
+            DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, id);
+            return deliveryDetail;
+        } catch (Exception ex) {
+            throw new DeliveryDetailNotFoundException("Delivery Detail ID " + id + " does not exist!");
+        }
     }
     
     @Override

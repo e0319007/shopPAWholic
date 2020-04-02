@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <ui:define name="content">
+        <div>
+            <br/><br/><br/><br/>
+            <h:form id="formCreateNewCategory"> 
+                <p:panel header="Create New Category" >
+                    <h:messages id="messagesCreateNewCategory"/> 
+                    <p:panelGrid> 
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="name" value="#{categoryManagedBean.newCategory.name}" required="true" requiredMessage="Name is required"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="description" value="Description: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="description" value="#{categoryManagedBean.newCategory.description}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3"> 
+                                <p:commandButton id="createNewCategory" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableCategories" actionListener="#{categoryManagedBean.createNewCategory}" />
+                            </p:column> 
+                        </p:row>
+                    </p:panelGrid> 
+                </p:panel>
+            </h:form>
+
+            <h:outputLabel value="#{categoryManagedBean.parentCategories}"></h:outputLabel>
+            <h:form id="formCreateNewSubCategory"> 
+                <p:panel header="Create New Sub Category">
+                    <p:panelGrid> 
+
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="parentCat" value="Select Category: " /> 
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="parentCat" value="#{categoryManagedBean.parentCategory}" dynamic="true">
+                                    <f:selectItem itemLabel="Select Parent Category" itemValue=""/>
+                                    <f:selectItems value="#{categoryManagedBean.parentCategories}" var="category" itemValue="#{category}" itemLabel="#{category.name}"/> 
+                                </p:selectOneMenu> 
+                            </p:column>
+
+                        </p:row>
+
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="name" value="Sub Category Name: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="name" value="#{categoryManagedBean.newCategory.name}" required="true" requiredMessage="Sub Category Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="description" value="Description: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="description" value="#{categoryManagedBean.newCategory.description}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3"> 
+                                <p:commandButton id="createNewSubCategory" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableCategories" actionListener="#{categoryManagedBean.createNewCategory}" />
+                            </p:column> 
+                        </p:row>
+                    </p:panelGrid> 
+                </p:panel>
+            </h:form>
+
+            <!--table of categories--> 
+            <h:form id="formDataTable">
+                <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{viewAllCategoriesManagedBean.categories}" var="category">
+                    <p:column headerText="Name"> 
+                        <h:outputText value="#{category.name}"/> 
+                    </p:column>
+
+                    <p:column headerText="Description"> 
+                        <h:outputText value="#{category.description}"/> 
+                    </p:column>
+
+                    <p:column headerText="Action"> 
+                        <p:commandButton icon="pi pi-trash" actionListener="#{categoryManagedBean.deleteCategory}" update="formDataTable">
+                            <f:attribute name="categoryToDelete" value="category" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="pi pi-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
