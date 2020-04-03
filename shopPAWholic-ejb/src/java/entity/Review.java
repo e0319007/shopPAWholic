@@ -33,7 +33,6 @@ public class Review implements Serializable {
     @Size(min = 10, max = 250, message = "Description must be between 10 and 200 characters")
     private String description;
     @NotNull
-    @Size(max = 5, min = 1)
     private int rating;
     @NotNull
     private Date reviewDate;

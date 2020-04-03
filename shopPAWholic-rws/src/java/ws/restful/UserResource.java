@@ -6,6 +6,8 @@
 package ws.restful;
 
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Customer;
+import entity.Seller;
 import entity.User;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -66,6 +68,24 @@ public class UserResource {
             user.setPassword(null);
             user.setSalt(null);          
             //might need to set all the stuff to null based on the different user types
+            
+            if (user instanceof Customer) {
+                Customer customer = (Customer) user;
+                customer.getBillingDetails().clear();
+                customer.getForumPosts().clear();
+                customer.setCart(null);
+                customer.getCart().setCustomer(null);
+                customer.getComments().clear();
+                customer.getOrders().clear();
+                customer.getReviews().clear();
+            } else if (user instanceof Seller) {
+                Seller seller = (Seller) user;
+                seller.getAdvertisements().clear();
+                seller.getBillingDetails().clear();
+                seller.getEvents().clear();
+                seller.getListings().clear();
+                seller.getOrders().clear();
+            }
             
             return Response.status(Status.OK).entity(new UserLoginRsp(user)).build();           
         } catch (InvalidLoginCredentialException ex) {
