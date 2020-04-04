@@ -42,7 +42,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
 
     @Override
-    public Long createNewCustomer(Customer newCustomer) throws UserUsernameExistException, CreateNewCartException, UnknownPersistenceException, InputDataValidationException {
+    public Long createNewCustomer(Customer newCustomer) throws UserUsernameExistException, UnknownPersistenceException, InputDataValidationException {
         try {
             Set<ConstraintViolation<Customer>> constraintViolations = validator.validate(newCustomer);
             if (constraintViolations.isEmpty()) {

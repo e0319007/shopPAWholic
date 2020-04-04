@@ -11,7 +11,7 @@ import util.exception.UserUsernameExistException;
 @Local
 public interface CustomerSessionBeanLocal {
 
-    public Long createNewCustomer(Customer newCustomer) throws UserUsernameExistException, CreateNewCartException, UnknownPersistenceException, InputDataValidationException;
+    public Long createNewCustomer(Customer newCustomer) throws UserUsernameExistException, UnknownPersistenceException, InputDataValidationException;
 
     public List<Customer> retrieveAllCustomer();
 

@@ -59,22 +59,6 @@ public class UserSessionBean implements UserSessionBeanLocal {
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + user.getSalt()));
             
             if(user.getPassword().equals(passwordHash)){            
-                if (user instanceof Customer) {
-                    Customer customer = (Customer) user;
-                    customer.getBillingDetails().size();
-                    customer.getComments().size();
-                    customer.getForumPosts().size();
-                    customer.getOrders().size();
-                    customer.getReviews().size();
-                    customer.getCart();
-                } else if (user instanceof Seller) {
-                    Seller seller = (Seller) user;
-                    seller.getAdvertisements().size();
-                    seller.getBillingDetails().size();
-                    seller.getEvents().size();
-                    seller.getListings().size();
-                    seller.getOrders().size();
-                }
                 return user;
             }
             else {
@@ -92,6 +76,14 @@ public class UserSessionBean implements UserSessionBeanLocal {
             Set<ConstraintViolation<User>>constraintViolations = validator.validate(newUser);
             if(constraintViolations.isEmpty()) {
                 em.persist(newUser);
+                if (newUser instanceof Customer) {
+                    Cart cart = new Cart();
+                    
+                    ((Customer) newUser).setCart(cart);
+                    cart.setCustomer((Customer) newUser);
+                    
+                    em.persist(cart);
+                }
                 em.flush();
                 return newUser.getUserId();
             } else {
