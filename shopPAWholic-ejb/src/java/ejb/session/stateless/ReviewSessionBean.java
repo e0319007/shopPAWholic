@@ -50,7 +50,6 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     public Review createNewReview(Review review, Long listingId, Long customerId) throws CreateNewReviewException, InputDataValidationException {
         Set<ConstraintViolation<Review>> constraintViolations;
         constraintViolations = validator.validate(review);
-        
         if (constraintViolations.isEmpty()) {
             try {
                 Listing listing = em.find(Listing.class, listingId);
@@ -60,15 +59,15 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
                 Customer customer = em.find(Customer.class, customerId);
                 customer.getReviews().add(review);
                 review.setCustomer(customer);
-                
                 em.persist(review);
                 em.flush();
-
                 return review;
             } catch (Exception ex) {
+                System.out.println("*******************An unexpected error has occuredd: " + ex.getMessage());
                 throw new CreateNewReviewException("An unexpected error has occurred: " + ex.getMessage());
             }
         } else {
+            System.out.println("******************constrain ");
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
@@ -134,6 +133,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         String msg = "Input data validation error!:";    
         for(ConstraintViolation constraintViolation:constraintViolations) {
             msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+            System.out.println( "**************8" + msg);
         }
         return msg;
     }

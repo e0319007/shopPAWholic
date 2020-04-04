@@ -104,7 +104,6 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
 //        }
 //    }
     
-    
 
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<DeliveryDetail>>constraintViolations) {
         String msg = "Input data validation error!:";    

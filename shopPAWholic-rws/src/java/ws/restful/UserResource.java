@@ -75,10 +75,10 @@ public class UserResource {
         }     
     }
 
-    /**
-     * PUT method for updating or creating an instance of UserResource
-     * @param createNewUserReq
-     */
+    
+//      PUT method for updating or creating an instance of UserResource
+//      @param createNewUserReq
+//    
 //    @PUT
 //    @Consumes(MediaType.APPLICATION_JSON) //create/register new user?
 //    @Produces(MediaType.APPLICATION_JSON)    
@@ -89,7 +89,7 @@ public class UserResource {
 //        } catch (UserUsernameExistException ex) {
 //            
 //        }
-        
+//        
 //    }
     
     
