@@ -74,7 +74,6 @@ public class UserResource {
                 customer.getBillingDetails().clear();
                 customer.getForumPosts().clear();
                 customer.setCart(null);
-                customer.getCart().setCustomer(null);
                 customer.getComments().clear();
                 customer.getOrders().clear();
                 customer.getReviews().clear();
