@@ -9,9 +9,8 @@
 
     <ui:define name="content">
         <div>
-            <br/><br/><br/><br/>
-            <h:form id="formCreateNewCategory"> 
-                <p:panel header="Create New Category" >
+            <h:form id="formCreateNewCategory" > 
+                <p:panel header="Create New Category" toggleable="true" collapsed="true" >
                     <h:messages id="messagesCreateNewCategory"/> 
                     <p:panelGrid> 
                         <p:row> 
@@ -47,11 +46,9 @@
                 </p:panel>
             </h:form>
 
-            <h:outputLabel value="#{categoryManagedBean.parentCategories}"></h:outputLabel>
             <h:form id="formCreateNewSubCategory"> 
-                <p:panel header="Create New Sub Category">
+                <p:panel header="Create New Sub Category" toggleable="true" collapsed="true">
                     <p:panelGrid> 
-
                         <p:row> 
                             <p:column>
                                 <p:outputLabel for="parentCat" value="Select Category: " /> 
