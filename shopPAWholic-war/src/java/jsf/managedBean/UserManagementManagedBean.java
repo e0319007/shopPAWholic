@@ -11,11 +11,14 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
 
 @Named(value = "userManagementManagedBean")
 @ViewScoped
@@ -50,6 +53,10 @@ public class UserManagementManagedBean implements Serializable {
     private Customer customerToView;
     private Seller sellerToView;
     
+    private Customer selectedCustomerToUpdate; 
+    private Long customerIdUpdate;
+   
+    
     public UserManagementManagedBean() {
     }
 
@@ -65,7 +72,17 @@ public class UserManagementManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("userIdToView", userIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("adminViewUserDetails.xhtml");
     }
-
+    
+    public void updateCustomer(ActionEvent event) throws InputDataValidationException {
+        
+        try {
+            customerSessionBeanLocal.updateCustomer(selectedCustomerToUpdate);
+            
+    } catch (CustomerNotFoundException ex){
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
+    }
+ }
+    
     public List<Customer> getCustomerList() {
         return customerList;
     }
@@ -168,6 +185,34 @@ public class UserManagementManagedBean implements Serializable {
 
     public void setSellerToView(Seller sellerToView) {
         this.sellerToView = sellerToView;
+    }
+
+    /**
+     * @return the selectedCustomerToUpdate
+     */
+    public Customer getSelectedCustomerToUpdate() {
+        return selectedCustomerToUpdate;
+    }
+
+    /**
+     * @param selectedCustomerToUpdate the selectedCustomerToUpdate to set
+     */
+    public void setSelectedCustomerToUpdate(Customer selectedCustomerToUpdate) {
+        this.selectedCustomerToUpdate = selectedCustomerToUpdate;
+    }
+
+    /**
+     * @return the customerIdUpdate
+     */
+    public Long getCustomerIdUpdate() {
+        return customerIdUpdate;
+    }
+
+    /**
+     * @param customerIdUpdate the customerIdUpdate to set
+     */
+    public void setCustomerIdUpdate(Long customerIdUpdate) {
+        this.customerIdUpdate = customerIdUpdate;
     }
 
 }

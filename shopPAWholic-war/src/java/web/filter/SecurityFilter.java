@@ -86,10 +86,11 @@ public class SecurityFilter implements Filter {
         } else if (currentUser instanceof Customer) {
             if (path.equals("/customerOperation/customerEventpage.xhtml")
                     || path.equals("/customerOperation/customerForumpage.xhtml")
-                    || path.equals("/customerOperation/customerHomepage.xhtml")
-                    || path.equals("/customerOperation/customerOperation.xhtml")
-                    || path.equals("/customerOperation/customerFilterListingsByTags.xhtml")
-                    || path.equals("/customerOperation/customerProduct.xhtml")) {
+                    || path.equals("/customerOperation/customerHomepage.xhtml")    
+                    || path.equals("/customerOperation/customerProfile.xhtml")
+                    || path.equals("/customerOperation/customerListingList.xhtml")
+                    || path.equals("/customerOperation/customerEditProfile.xhtml")
+                    || path.equals("/customerOperation/customerEventpage.xhtml")) {
                 return true;
             } else {
                 return false;

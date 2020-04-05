@@ -129,6 +129,76 @@
                     </p:panelGrid>
                 </p:dialog>
             </h:form>
+            <h:form id="formViewListing"> 
+
+                <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
+                    <p:panelGrid> 
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="listingId" value="Listing ID: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="listingId" value="#{listingManagementManagedBean.selectedListingToView.listingId}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="name" value="Name: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="name" value="#{listingManagementManagedBean.selectedListingToView.name}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="description" value="Description: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="description" value="#{listingManagementManagedBean.selectedListingToView.description}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="unitPrice" value="Unit Price: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="unitPrice" value="#{listingManagementManagedBean.selectedListingToView.unitPrice}" /> 
+                                <!--<f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>-->
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="category" value="Category: "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <h:outputText id="category" value="#{listingManagementManagedBean.selectedListingToView.category}" /> 
+                            </p:column> 
+                        </p:row>
+
+                        <p:row> 
+                            <p:column> 
+                                <p:outputLabel for="tag" value="Tag(s): "/> 
+                            </p:column> 
+
+                            <p:column> 
+                                <p:dataList id="tag" value="#{listingManagementManagedBean.selectedListingToView.tags}" var="tag" type="unordered">
+                                    #{tag.name}
+                                </p:dataList>
+                            </p:column> 
+                        </p:row>
+
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
         </div>
     </ui:define>
 </ui:composition>

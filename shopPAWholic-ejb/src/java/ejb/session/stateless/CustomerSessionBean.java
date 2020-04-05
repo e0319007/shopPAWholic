@@ -18,6 +18,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.CreateNewCartException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -62,6 +63,35 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             } else {
                 throw new UnknownPersistenceException(ex.getMessage());
             }
+        }
+    }
+    
+    @Override
+    public void updateCustomer(Customer customer) throws CustomerNotFoundException, InputDataValidationException {
+        if(customer != null && customer.getUserId() !=null) {
+            Set<ConstraintViolation<Customer>>constraintViolations = validator.validate(customer); 
+            if(constraintViolations.isEmpty()) {
+                Customer customerToUpdate = retrieveCustomerById(customer.getUserId()); 
+                if(customerToUpdate.getEmail().equals(customer.getEmail())) {
+                    customerToUpdate.setName(customer.getName());
+                    customerToUpdate.setContactNumber(customer.getContactNumber());
+                    customerToUpdate.setPassword(customer.getPassword());
+                } else {
+                    throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+                }
+            } else {
+                throw new CustomerNotFoundException("Customer ID not provided for customer to be updated");
+            }
+        }
+    }
+    
+    @Override
+    public Customer retrieveCustomerById(Long customerId) throws CustomerNotFoundException {
+        Customer customer = em.find(Customer.class, customerId);
+        if(customer != null) {
+            return customer;
+        } else {
+            throw new CustomerNotFoundException("Customer ID " + customerId + " does not exist!");
         }
     }
     

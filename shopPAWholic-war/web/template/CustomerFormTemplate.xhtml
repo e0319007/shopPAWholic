@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui-composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="../resources/vendor/linearicons/style.css"/>
         <link rel="stylesheet" href="../resources/vendor/chartist/css/chartist-custom.css"/>
         <!-- MAIN CSS -->
-        <link rel="stylesheet" href="../resources/css/customerLayout.css"/>
+        <link rel="stylesheet" href="../resources/css/sellerLayout.css"/>
         <!-- GOOGLE FONTS -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"/>
         <!-- ICONS -->
@@ -24,23 +24,21 @@
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>shopPAWholic</title>
     </h:head>
-    
-    
-    <script src="../resources/vendor/jquery/jquery.min.js"></script>
+<!--    <script src="../resources/vendor/jquery/jquery.min.js"></script>
     <script src="../resources/vendor/bootstrap/js/bootstrap.min.js"></script>
     <script src="../resources/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="../resources/script/adminScript.js"></script>
-     
-    
+    <script src="../resources/script/adminScript.js"></script>-->
+
     <h:body>
-        <p:growl id="growl" showDetail="true" life="1000" />   
+        <p:growl id="growl" sticky="true" showDetail="true" life="3000" />   
+
         <div id="wrapper">
             <div id="top" class="top">
                 <ui:insert name="top">
                     <!--NAV CLASS-->
                     <nav class="navbar navbar-default navbar-fixed-top">
                         <div class="brand">
-                            <a href="index.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" class="img-responsive logo"/></a>
+                            <a href="../index.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" class="img-responsive logo"/></a>
                         </div>
                         <div class="container-fluid">
                             <form class="navbar-form navbar-left">
@@ -53,15 +51,9 @@
                             <div id="navbar-menu">
                                 <ul class="nav navbar-nav navbar-right">
                                     <li class="dropdown">
-
                                     </li>
                                     <li class="dropdown">                                        
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="pi pi-user"></i> 
-                                            <h:outputLabel value="#{sessionScope.currentUser.name}"></h:outputLabel> 
-                                            <i class="icon-submenu pi pi-chevron-down">
-                                            </i>
-                                        </a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="pi pi-user"></i> <h:outputLabel value="#{sessionScope.currentUser.name}"></h:outputLabel> <i class="icon-submenu pi pi-chevron-down"></i></a>
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <h:form>
@@ -76,10 +68,7 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <h:outputLabel>
-                                        <i class="icon-submenu pi pi-comment">
-                                        </i>
-                                        </h:outputLabel> 
+                                        
                                     </li>
                                     <li>
                                     </li> 
@@ -90,18 +79,12 @@
                     <!-- END NAVBAR -->
                     <nav class="navbar navbar-default-below">
                         <ul class="mainMenuBar">
-                            <li class="menuBarGroup"><a href="../customerOperation/customerListingList.xhtml" class="mainMenuLink">Listings</a></li>
-                            <li class="menuBarGroup"><a href="#" class="mainMenuLink">Events</a></li>
+                            <li class="menuBarGroup"><a href="#" class="mainMenuLink">Listings</a></li>
+                            <li class="menuBarGroup"><a hred="#" class="mainMenuLink">Events</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Advertisement</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Forums</a></li>
                         </ul>
                     </nav>
-
-                    <!--advertisement-->
-                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1440" panelHeight="450"> 
-                        <p:graphicImage name="image/advertisementDummy/#{image}" />
-                    </p:galleria>
-
                 </ui:insert>
             </div>
 
@@ -109,10 +92,8 @@
                 <ui:insert name="content">
                     <h:form id="form">
                         <!--based on time-->
-
-                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" 
-                                    rows="12" paginator="true" id="listings"
-
+                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" layout="grid"
+                                    rows="12" paginator="true" id="cars"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
@@ -122,11 +103,8 @@
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-
-
                                     <h:outputText value="#{listing.name}" />
                                     <h:outputText value="#{listing.listingId}"/>
-
                                 </h:panelGrid>
                             </p:panel>
                         </p:dataGrid>
@@ -136,10 +114,10 @@
 
             <div id="bottom">
                 <ui:insert name="bottom">
-                    bottom
+                    
                     <!--footer-->
                 </ui:insert>
             </div>
         </div>
     </h:body>
-</ui:composition>
+</ui-composition>
