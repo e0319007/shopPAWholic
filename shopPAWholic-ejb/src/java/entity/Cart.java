@@ -30,7 +30,7 @@ public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be more than $0")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Price must be more than $0")
     private BigDecimal totalPrice;
     @NotNull
     private int totalQuantity;
@@ -44,6 +44,7 @@ public class Cart implements Serializable {
     public Cart() {
         listings = new ArrayList<>();
         totalPrice = new BigDecimal("0.00");
+        totalQuantity = 0;
     }
 
     public Cart(BigDecimal totalPrice, int totalQuantity) {
