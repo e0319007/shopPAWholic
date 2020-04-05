@@ -52,7 +52,6 @@ public class CategoryManagedBean implements Serializable {
     public void PostConstruct() {
         setCategories(categorySessionBeanLocal.retrieveAllCategories());
         setParentCategories(categorySessionBeanLocal.retrieveAllRootCategories());
-        System.out.println(parentCategories + " i am the parent");
     }
 
     /*public void createNewCategory(ActionEvent event) {
@@ -71,7 +70,7 @@ public class CategoryManagedBean implements Serializable {
     public void createNewCategory(ActionEvent event) {
         try {
             Category category = categorySessionBeanLocal.createNewCategory(newCategory, parentCategoryId);
-            categories.add(category);
+            categories.add(newCategory);
 
             newCategory = new Category();
 

@@ -19,141 +19,78 @@
         <link rel="stylesheet" href="../resources/css/adminLayout.css"/>
         <!-- GOOGLE FONTS -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"/>
-        <!-- ICONS -->
-        <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png"/>
-        <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png"/>
         <!--PRIMEFACEICON-->
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>Homepage</title>
     </h:head>
 
-    <script src="../resources/vendor/jquery/jquery.min.js"></script>
-    <script src="../resources/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../resources/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="../resources/script/adminScript.js"></script>
 
     <h:body>
-        <p:growl id="growl" showDetail="true" life="1000" />   
-        <div id="wrapper">
-            <div id="top" class="top">
-                <ui:insert name="top">
-                    <!--NAV CLASS-->
-                    <nav class="navbar navbar-default navbar-fixed-top">
-                        <div class="brand">
-                            <a href="index.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" class="img-responsive logo"/></a>
+        <p:growl id="messages" showDetail="true" life="1000" />   
+        <div id="top" class="top" style="background-color: rgb(236, 239, 244); ">
+            <ui:insert name="top">
+                <h:panelGroup>
+                    <div>
+                        <div class="navbar-btn" style="float: left;">
+                            <button onclick="PF('sidebar1').show()"><i class="pi pi-bars"></i></button>
                         </div>
-                        <div class="container-fluid">
-                            <div class="navbar-btn">
-                                <button type="button" class="btn-toggle-fullwidth"><i class="pi pi-chevron-left"></i></button>
-                            </div>
-                            <form class="navbar-form navbar-left">
-                                <div class="input-group">
-                                    <input type="text" value="" class="form-control" placeholder="Search dashboard..."/>
-                                    <span class="input-group-btn"><button type="button" class="btn btn-primary">Go</button></span>
-                                </div>
-                            </form>
+                        <a href="index.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
+                        <a href="" style="float: right;"><i class="pi pi-envelope" style="size: 25px;"></i></a>
+                        <h:form style="padding: 15px 10px; float: right;">
+                            <p:menuButton value="#{sessionScope.currentAdmin.username}">
+                                <p:menuitem value="Logout" action="#{adminLoginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
+                            </p:menuButton>
+                        </h:form>
+                    </div>
+                </h:panelGroup>
+            </ui:insert>
+        </div>
 
-                            <div id="navbar-menu">
-                                <ul class="nav navbar-nav navbar-right">
-                                    <li class="dropdown">                                        
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="pi pi-user"></i> <h:outputLabel value="#{sessionScope.currentAdmin.username}"></h:outputLabel> <i class="icon-submenu pi pi-chevron-down"></i></a>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                            </li>
-                                            <li>
-                                                <h:form>
-                                                    <p:commandLink value="Logout" update="growl" action="#{adminLoginManagedBean.logout(event)}"/>
-                                                </h:form>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropdown">
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-                    <!-- END NAVBAR -->
-                </ui:insert>
-            </div>
+        <div id="left">
+            <ui:insert name="left">
+                <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
+                    <h:form>
+                        <p:panelMenu style="width:280px; margin-top:40px;">
+                            <p:submenu label="Home" >
+                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml"></p:menuitem>
+                            </p:submenu>                            
 
-            <div>
-                <div id="left">
-                    <ui:insert name="left">
-                        <!-- LEFT SIDEBAR -->
-                        <div id="sidebar-nav" class="sidebar">
-                            <div class="sidebar-scroll">
-                                <nav>
-                                    <ul class="nav">
-                                        <li><a href="../adminOperation/adminHomepage.xhtml" class="active"><i class="pi pi-home"></i> <span>Home</span></a></li>
-                                        <li>
-                                            <a href="#subUserPages" data-toggle="collapse" class="collapsed">
-                                                <i class="pi pi-user"></i> 
-                                                <span>User</span>
-                                                <i class="icon-submenu pi pi-chevron-left"></i>
-                                            </a>
-                                            <div id="subUserPages" class="collapse">
-                                                <ul class="nav">
-                                                    <li><a href="../adminOperation/adminUserList.xhtml">View All Users</a></li>
-                                                    <li><a href="#">View Customers</a></li>
-                                                    <li><a href="#">View Sellers</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a href="#subListingPages" data-toggle="collapse" class="collapsed">
-                                                <i class="pi pi-shopping-cart"></i> 
-                                                <span>Listing</span>
-                                                <i class="icon-submenu pi pi-chevron-left"></i>
-                                            </a>
-                                            <div id="subListingPages" class="collapse">
-                                                <ul class="nav">
-                                                    <li><a href="../adminOperation/adminListingList.xhtml">View all Listings</a></li>
-                                                    <li><a href="../adminOperation/adminSearchListingsByName.xhtml"> Search Listings By Name</a></li>
-                                                    <li><a href="../adminOperation/adminFilterListingsByTags.xhtml">Filter Listings By Tags</a></li>
-                                                    <li><a href="../adminOperation/adminFilterListingsByCategory.xhtml">Filter Listings By Category</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        
-                                        <li>
-                                            <a href="#subCatPages" data-toggle="collapse" class="collapsed">
-                                                <i class="pi pi-th-large"></i> 
-                                                <span>Category</span>
-                                                <i class="icon-submenu pi pi-chevron-left"></i>
-                                            </a>
-                                            <div id="subCatPages" class="collapse">
-                                                <ul class="nav">
-                                                    <li><a href="../adminOperation/adminCategoryList.xhtml">View all Category</a></li>
-                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        
-                                        <li>
-                                            <a href="#subTagPages" data-toggle="collapse" class="collapsed">
-                                                <i class="pi pi-tag"></i> 
-                                                <span>Tag</span>
-                                                <i class="icon-submenu pi pi-chevron-left"></i>
-                                            </a>
-                                            <div id="subTagPages" class="collapse">
-                                                <ul class="nav">
-                                                    <li><a href="../adminOperation/adminTagList.xhtml">View all Tags</a></li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                        </ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <!-- END LEFT SIDEBAR -->
-                    </ui:insert>
-                </div>
-                <div id="content" class="left_content">
-                    <ui:insert name="content">Content</ui:insert>
-                </div>
-            </div>
+                            <p:submenu label="User">
+                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false"/>
+                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false"></p:menuitem>
+                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Listing" >
+                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml"></p:menuitem>
+                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml"></p:menuitem>
+                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml"></p:menuitem>
+                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Category">
+                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon=""></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Tag">
+                                <p:menuitem value="View all Tags" ajax="false" url="../adminOperation/adminTagList.xhtml" icon="pi pi-tags"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Forum">
+                                <p:menuitem value="View all Forums" ajax="false" icon="pi pi-file-o"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Review">
+                                <p:menuitem value="View all Reviews" ajax="false" icon="pi pi-comments"></p:menuitem>
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:sidebar>
+            </ui:insert>
+        </div>
+
+        <div id="content" class="left_content">
+            <ui:insert name="content"></ui:insert>
         </div>
     </h:body>
-
 </ui-composition>

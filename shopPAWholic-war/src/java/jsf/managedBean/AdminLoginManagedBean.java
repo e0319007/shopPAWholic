@@ -3,12 +3,20 @@ package jsf.managedBean;
 import ejb.session.stateless.AdminSessionBeanLocal;
 import entity.Admin;
 import java.io.IOException;
+import java.util.Properties;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.URLName;
 import javax.servlet.http.HttpSession;
 import util.exception.InvalidLoginCredentialException;
 
@@ -22,7 +30,9 @@ public class AdminLoginManagedBean {
     private String username;
     private String password;
 
-    public AdminLoginManagedBean() {
+    public AdminLoginManagedBean() throws MessagingException {
+//        System.out.println("********** readEmail");
+//        getEmailNumber();
 
     }
 
@@ -44,6 +54,75 @@ public class AdminLoginManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now loggeed out.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
+
+//    public void getEmailNumber() throws NoSuchProviderException, MessagingException {
+//
+////        URLName url = new URLName("imaps", "imap.gmail.com", 993, "INBOX", "shoppawholic@gmail.com", "shoppawholic2020");
+////        Properties props = null;
+////        try {
+////            props = System.getProperties();
+////        } catch (SecurityException sex) {
+////            props = new Properties();
+////        }
+////        Session session = Session.getDefaultInstance(props, null);
+////        Store store = session.getStore(url);
+////        store.connect();
+////        Folder folder = store.getFolder(url);
+////        folder.open(Folder.READ_ONLY);
+////
+////        Message[] messages = folder.getMessages();
+////        System.out.println("messages.length---" + messages.length);
+//
+//        try {
+//
+//            //create properties field
+//            Properties properties = new Properties();
+//
+//            properties.put("mail.host", "pop.gmail.com");
+//            properties.put("mail.pop3.port", "995");
+//            properties.put("mail.pop3.auth", "true");
+//            properties.put("mail.store.protocol", "pop3s");
+//            
+////            properties.put("mail.smtp.ssl.trust", "pop.gmail.com");
+////            properties.put("mail.pop3.starttls.enable", "true");
+//
+//            Session emailSession = Session.getDefaultInstance(properties, null);
+//            System.out.println("******** emailSession" + emailSession);
+//            //create the POP3 store object and connect with the pop server
+//            Store store = emailSession.getStore();
+//
+//            store.connect("shoppawholic@gmail.com", "shoppawholic2020");
+//            System.out.println("********* store" + store);
+//            //create the folder object and open it
+//            Folder emailFolder = store.getFolder("INBOX");
+//            emailFolder.open(Folder.READ_ONLY);
+//
+//            // retrieve the messages from the folder in an array and print it
+//            Message[] messages = emailFolder.getMessages();
+//            System.out.println("messages.length---" + messages.length);
+//
+//            for (int i = 0, n = messages.length; i < n; i++) {
+//                Message message = messages[i];
+//                System.out.println("---------------------------------");
+//                System.out.println("Email Number " + (i + 1));
+//                System.out.println("Subject: " + message.getSubject());
+//                System.out.println("From: " + message.getFrom()[0]);
+//                System.out.println("Text: " + message.getContent().toString());
+//
+//            }
+//
+//            //close the store and folder objects
+//            emailFolder.close(false);
+//            store.close();
+//
+//        } catch (NoSuchProviderException e) {
+//            e.printStackTrace();
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public String getUsername() {
         return username;
