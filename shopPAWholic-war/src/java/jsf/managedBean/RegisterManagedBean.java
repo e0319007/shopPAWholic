@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import util.email.EmailManager;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -45,15 +46,35 @@ public class RegisterManagedBean implements Serializable {
         if (role.equals("Customer")) {
             customerSessionBeanLocal.createNewCustomer(new Customer(name, email, contactNumber, password));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You can now login as customer.", null));
+            if (sendEmail(event) == true) {
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You can now login as customer", null));
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured.", null));
+            }
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         } else if (role.equals("Seller")) {
             sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, false, 5));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You can now login as seller.", null));
+            if (sendEmail(event)) {
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You can now login as seller.", null));
+
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured.", null));
+            }
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         }
 
+    }
+
+    public Boolean sendEmail(ActionEvent event) {
+        EmailManager emailManager = new EmailManager("shoppawholic@gmail.com", "shoppawholic2020");
+        System.out.println(email);
+        Boolean result = emailManager.email("shoppawholic@gmail.com", email);
+        return result;
     }
 
     public String getContactNumber() {

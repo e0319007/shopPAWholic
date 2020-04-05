@@ -64,6 +64,7 @@ public class ReviewResource {
      * @param ListingId
      * @return an instance of java.lang.String
      */
+    @Path("retrieveAllReviewsByListingId/{listingId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)

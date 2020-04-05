@@ -1,9 +1,12 @@
 
 package ejb.session.stateless;
 
+import entity.Cart;
 import entity.Customer;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -14,6 +17,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewCartException;
 import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -22,11 +26,15 @@ import util.exception.UserUsernameExistException;
 @Local(CustomerSessionBeanLocal.class)
 public class CustomerSessionBean implements CustomerSessionBeanLocal {
 
+    @EJB(name = "CartSessionBeanLocal")
+    private CartSessionBeanLocal cartSessionBeanLocal;
+
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
+    
 
     public CustomerSessionBean() {
         validatorFactory = Validation.buildDefaultValidatorFactory();
@@ -58,7 +66,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     }
     
     @Override
-    public List<Customer> retrieveAllCustomer(){
+    public List<Customer> retrieveAllCustomers(){
         Query query = em.createQuery("SELECT c FROM Customer c");
         return query.getResultList();
     }

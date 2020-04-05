@@ -12,13 +12,14 @@
                           invalidSizeMessage="JournalDev: Invalid Size"
                           invalidFileMessage="JournalDev: Invalid File Type"
                           fileLimitMessage="JournalDev: Invalid File Limit"
-                          mode="advanced" multiple="true" fileLimit="3" sizeLimit="2048"
+                          mode="advanced" multiple="true" fileLimit="3" sizeLimit="100000"
                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
                           fileUploadListener="#{fileUploadView.fileUploadListener}"
                           auto="true"
                           update="msg"></p:fileUpload>
 
-
+        </h:form>
+        <h:form>
 
             <p:panel header="What are you listing today?" style="width: 490px;">
                 <p:panelGrid columns="2" >
