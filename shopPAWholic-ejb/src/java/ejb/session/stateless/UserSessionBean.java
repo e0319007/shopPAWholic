@@ -78,13 +78,10 @@ public class UserSessionBean implements UserSessionBeanLocal {
                 em.persist(newUser);
                 if (newUser instanceof Customer) {
                     Cart cart = new Cart();
-
-                    
                     ((Customer) newUser).setCart(cart);
                     cart.setCustomer((Customer) newUser);
                     
                     em.persist(cart);
-
                 }
                 em.flush();
                 return newUser.getUserId();

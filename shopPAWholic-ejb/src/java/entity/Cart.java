@@ -44,6 +44,7 @@ public class Cart implements Serializable {
     public Cart() {
         listings = new ArrayList<>();
         totalPrice = new BigDecimal("0.00");
+        totalQuantity = 0;
     }
 
     public Cart(BigDecimal totalPrice, int totalQuantity) {
