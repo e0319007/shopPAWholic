@@ -56,19 +56,14 @@ public class TagResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllTags(@QueryParam("email") String email, @QueryParam("password") String password) throws InvalidLoginCredentialException {
+    public Response retrieveAllTags() {
         
         try {
-            User user = sessionBeanLookup.lookupUserSessionBeanLocal().userLogin(email, password);
-            System.out.println("********** TagResource.retrieveAllTags(): Staff " + user.getEmail() + " login remotely via web service");
             List<Tag> tags = sessionBeanLookup.lookupTagSessionBeanLocal().retrieveAllTags();
             for (Tag t: tags) {
                 t.getListings().clear();
             }
              return Response.status(Status.OK).entity(new TagRetrieveAllRsp(tags)).build();
-        } catch (InvalidLoginCredentialException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();

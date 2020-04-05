@@ -2,9 +2,12 @@ package ejb.session.stateless;
 
 import entity.Cart;
 import entity.Customer;
+import entity.Seller;
 import entity.User;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,6 +20,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewCartException;
 import util.exception.DeleteUserException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
@@ -32,6 +36,9 @@ import util.security.CryptographicHelper;
 @Stateless
 @Local(UserSessionBeanLocal.class)
 public class UserSessionBean implements UserSessionBeanLocal {
+
+    @EJB(name = "CartSessionBeanLocal")
+    private CartSessionBeanLocal cartSessionBeanLocal;
 
    @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
@@ -51,8 +58,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             User user = retrieveUserByEmail(email);            
             String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + user.getSalt()));
             
-            if(user.getPassword().equals(passwordHash)){
-                //user.getSaleTransactionEntities().size();                
+            if(user.getPassword().equals(passwordHash)){            
                 return user;
             }
             else {
@@ -72,8 +78,13 @@ public class UserSessionBean implements UserSessionBeanLocal {
                 em.persist(newUser);
                 if (newUser instanceof Customer) {
                     Cart cart = new Cart();
+
+                    
                     ((Customer) newUser).setCart(cart);
                     cart.setCustomer((Customer) newUser);
+                    
+                    em.persist(cart);
+
                 }
                 em.flush();
                 return newUser.getUserId();
