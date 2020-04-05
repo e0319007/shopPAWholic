@@ -1,9 +1,5 @@
 package jsf.managedBean;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -30,6 +26,7 @@ public class FileUploadView {
     }
 
     public void fileUploadListener(FileUploadEvent e) {
+        System.out.println("********* fileUploadListener");
         // Get uploaded file from the FileUploadEvent
         this.file = e.getFile();
         // Print out the information of the file

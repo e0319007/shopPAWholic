@@ -169,7 +169,7 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
 
-//            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
 
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
@@ -182,15 +182,15 @@ public class DataInitSessionBean {
             Review review = new Review("Good Product", 5, date, new ArrayList<>());
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
-            
-            
-            
+
 
     
         } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
+        } catch (CreateNewOrderException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 

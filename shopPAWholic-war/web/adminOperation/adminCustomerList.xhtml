@@ -10,31 +10,31 @@
 
     <ui:define name="content">
         <div>
-            <ez:Breadcrumb pageName="userList"/>
-            <h:form id="formAllUsers">
+            <ez:Breadcrumb pageName="customerList"/>
+            <h:form id="formAllCustomers">
                 <p:messages id="messages" redisplay="false" closable="true" />
-                <p:dataTable id="dataTableAllUsers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.userList}" var="user" rowKey="#{user.userId}" rowIndexVar="row"
-                             filteredValue="#{userManagementManagedBean.filteredUserList}"
+                <p:dataTable id="dataTableAllCustomers" widgetVar="dataTableAllCustomers" value="#{userManagementManagedBean.customerList}" var="customer" rowKey="#{customer.userId}" rowIndexVar="row"
+                             filteredValue="#{userManagementManagedBean.filteredCustomerList}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
                     <f:facet name="header">
                         <p:outputPanel style="text-align: right;">
                             <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllUsers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllCustomers').filter()" style="width:300px" placeholder="Enter keyword"/>
                         </p:outputPanel>
                     </f:facet>
 
-                    <p:column headerText="User Id" sortBy="#{user.userId}" filterBy="#{user.userId}" filterMatchMode="contains" style="width: 100px;">
-                        <h:outputText value="#{user.userId}" />
+                    <p:column headerText="Customer Id" sortBy="#{customer.userId}" filterBy="#{customer.userId}" filterMatchMode="contains" style="width: 150px;">
+                        <h:outputText value="#{customer.userId}" />
                     </p:column>
 
-                    <p:column headerText="Name" sortBy="#{user.name}" filterBy="#{user.name}" filterMatchMode="contains">
-                        <h:outputText value="#{user.name}" />
+                    <p:column headerText="Name" sortBy="#{customer.name}" filterBy="#{customer.name}" filterMatchMode="contains">
+                        <h:outputText value="#{customer.name}" />
                     </p:column>
 
                     <p:column headerText="Action" >
-                        <p:commandButton update="formViewUsers" oncomplete="PF('dialogViewUser').show()" icon="pi pi-user">
-                            <f:setPropertyActionListener value="#{user}" target="#{userManagementManagedBean.viewUserManagedBean.userToView}" />
+                        <p:commandButton update="formViewCustomer" oncomplete="PF('dialogViewCustomer').show()" icon="pi pi-user">
+                            <f:setPropertyActionListener value="#{customer}" target="#{userManagementManagedBean.viewUserManagedBean.customerToView}" />
                         </p:commandButton>
                     </p:column>
 
@@ -42,15 +42,15 @@
 
             </h:form>
 
-            <h:form id="formViewUsers">
-                <p:dialog id="dialogViewUser" widgetVar="dialogViewUser" header="View User" closable="true">
+            <h:form id="formViewCustomer">
+                <p:dialog id="dialogViewCustomer" widgetVar="dialogViewCustomer" header="View Customer" closable="true">
                     <p:panelGrid>
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="User ID: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.userToView.userId}" />
+                                <h:outputText value="#{viewUserManagedBean.customerToView.userId}" />
                             </p:column>
                         </p:row>
 
@@ -59,7 +59,7 @@
                                 <h:outputLabel value="Name: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.userToView.name}" />
+                                <h:outputText value="#{viewUserManagedBean.customerToView.name}" />
                             </p:column>
                         </p:row>
 
@@ -68,7 +68,7 @@
                                 <h:outputLabel value="Email: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.userToView.email}" />
+                                <h:outputText value="#{viewUserManagedBean.customerToView.email}" />
                             </p:column>
                         </p:row>
 
@@ -77,7 +77,7 @@
                                 <h:outputLabel value="Contact Number: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.userToView.contactNumber}" />
+                                <h:outputText value="#{viewUserManagedBean.customerToView.contactNumber}" />
                             </p:column>
                         </p:row>
 
@@ -86,7 +86,7 @@
                                 <h:outputLabel value="Flagged: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.userToView.isFlag}" />
+                                <h:outputText value="#{viewUserManagedBean.customerToView.isFlag}" />
                             </p:column>
                         </p:row>
                     </p:panelGrid>
@@ -94,6 +94,6 @@
             </h:form>
         </div>
     </ui:define>
- </ui:composition>
+</ui:composition>
 
 

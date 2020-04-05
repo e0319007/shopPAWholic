@@ -68,13 +68,16 @@ public class SecurityFilter implements Filter {
     public Boolean checkAccessRight(String path, Admin currentAdmin, User currentUser) {
         if (currentAdmin instanceof Admin) {
             if (path.equals("/adminOperation/adminFilterListingsByCategory.xhtml")
+                    || path.equals("/adminOperation/adminCategoryList.xhtml")
+                    || path.equals("/adminOperation/adminCustomerList.xhtml")
+                    || path.equals("/adminOperation/adminFilterListingsByCategory.xhtml")
                     || path.equals("/adminOperation/adminFilterListingsByTags.xhtml")
                     || path.equals("/adminOperation/adminHomepage.xhtml")
                     || path.equals("/adminOperation/adminListingList.xhtml")
                     || path.equals("/adminOperation/adminSearchListingsByName.xhtml")
-                    || path.equals("/adminOperation/adminUserList.xhtml")
-                    || path.equals("/adminOperation/adminCategoryList.xhtml")
+                    || path.equals("/adminOperation/adminSellerList.xhtml")
                     || path.equals("/adminOperation/adminTagList.xhtml")
+                    || path.equals("/adminOperation/adminUserList.xhtml")
                     ) {
                 return true;
             } else {
