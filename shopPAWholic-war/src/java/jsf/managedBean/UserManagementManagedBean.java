@@ -37,17 +37,26 @@ public class UserManagementManagedBean implements Serializable {
     private List<User> filteredUserList;
 
     private List<Customer> customerList;
+    private List<Customer> filteredCustomerList;
+    
     private List<Seller> sellerList;
+    private List<Seller> filteredSellerList;
 
     private User selectedUserToView;
-
+    private Customer selectedCustomerToView;
+    private Seller selectedSellerrToView;
+    
+    private User userToView;
+    private Customer customerToView;
+    private Seller sellerToView;
+    
     public UserManagementManagedBean() {
     }
 
     @PostConstruct
     public void postConstruct() {
         setUserList(userSessionBeanLocal.retrieveAllUsers());
-        setCustomerList(customerSessionBeanLocal.retrieveAllCustomer());
+        setCustomerList(customerSessionBeanLocal.retrieveAllCustomers());
         setSellerList(sellerSessionBeanLocal.retrieveAllSellers());
     }
 
@@ -103,6 +112,62 @@ public class UserManagementManagedBean implements Serializable {
 
     public void setViewUserManagedBean(ViewUserManagedBean viewUserManagedBean) {
         this.viewUserManagedBean = viewUserManagedBean;
+    }
+
+    public Customer getSelectedCustomerToView() {
+        return selectedCustomerToView;
+    }
+
+    public Seller getSelectedSellerrToView() {
+        return selectedSellerrToView;
+    }
+
+    public void setSelectedCustomerToView(Customer selectedCustomerToView) {
+        this.selectedCustomerToView = selectedCustomerToView;
+    }
+
+    public void setSelectedSellerrToView(Seller selectedSellerrToView) {
+        this.selectedSellerrToView = selectedSellerrToView;
+    }
+
+    public List<Customer> getFilteredCustomerList() {
+        return filteredCustomerList;
+    }
+
+    public List<Seller> getFilteredSellerList() {
+        return filteredSellerList;
+    }
+
+    public void setFilteredCustomerList(List<Customer> filteredCustomerList) {
+        this.filteredCustomerList = filteredCustomerList;
+    }
+
+    public void setFilteredSellerList(List<Seller> filteredSellerList) {
+        this.filteredSellerList = filteredSellerList;
+    }
+    
+    public User getUserToView() {
+        return userToView;
+    }
+
+    public void setUserToView(User userToView) {
+        this.userToView = userToView;
+    }
+
+    public Customer getCustomerToView() {
+        return customerToView;
+    }
+
+    public Seller getSellerToView() {
+        return sellerToView;
+    }
+
+    public void setCustomerToView(Customer customerToView) {
+        this.customerToView = customerToView;
+    }
+
+    public void setSellerToView(Seller sellerToView) {
+        this.sellerToView = sellerToView;
     }
 
 }

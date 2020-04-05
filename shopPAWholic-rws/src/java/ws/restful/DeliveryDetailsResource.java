@@ -49,7 +49,7 @@ public class DeliveryDetailsResource {
     }
     
     //retrieve and get
-    @Path("retrieveDeliveryDetail/{deliverDetailId}")
+    @Path("retrieveDeliveryDetail/{deliveryDetailId}")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,8 +59,9 @@ public class DeliveryDetailsResource {
         try {
             User user = userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** DeliveryDetailsResource.retrieveDeliveryDetailByOrderId(): user " + user.getEmail()+ " login remotely via web service");
+            System.out.println("Finding delivery detail id: " + deliveryDetailId);
             DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.retrieveDeliveryDetailById(deliveryDetailId);
-            
+            System.out.println(deliveryDetail);
             return Response.status(Response.Status.OK).entity(deliveryDetail).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

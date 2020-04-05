@@ -6,6 +6,7 @@ import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
@@ -15,6 +16,7 @@ import entity.Customer;
 import entity.DeliveryDetail;
 import entity.Listing;
 import entity.OrderEntity;
+import entity.Review;
 import entity.Seller;
 import entity.Tag;
 import java.math.BigDecimal;
@@ -38,8 +40,10 @@ import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewListingException;
 import util.exception.CreateNewOrderException;
+import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
 import util.exception.InputDataValidationException;
+import util.exception.ListingNotFoundException;
 import util.exception.ListingSkuCodeExistException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -48,6 +52,9 @@ import util.exception.UserUsernameExistException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "ReviewSessionBeanLocal")
+    private ReviewSessionBeanLocal reviewSessionBeanLocal;
 
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
@@ -97,10 +104,11 @@ public class DataInitSessionBean {
             Category categoryX = categorySessionBeanLocal.createNewCategory(new Category("Category X", "Category X"), categoryPetToy.getCategoryId());
             Category categoryY = categorySessionBeanLocal.createNewCategory(new Category("Category Y", "Category Y"), categoryPetToy.getCategoryId());
             Category categoryZ = categorySessionBeanLocal.createNewCategory(new Category("Category Z", "Category Z"), categoryPetToy.getCategoryId());
+            System.out.println("******************tag*****************");
             
             Tag tagPopular = tagSessionBeanLocal.createNewTag(new Tag("popular"));
             Tag tagDiscount = tagSessionBeanLocal.createNewTag(new Tag("discount"));
-            
+            System.out.println("******************tag in*****************");
             List<Long> tagIdsPopular = new ArrayList<>();
             tagIdsPopular.add(tagPopular.getTagId());
             
@@ -115,7 +123,7 @@ public class DataInitSessionBean {
             
            // List<String> pictures = new ArrayList<>();
             //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
-            
+            System.out.println("******************seller*****************");
             Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", true, 0);
             Customer customer = new Customer("Customer One", "customerOne@email.com", "91234567", "password");
             userSessionBeanLocal.createNewUser(customer);
@@ -125,7 +133,7 @@ public class DataInitSessionBean {
 
             Date date = new Date(System.currentTimeMillis()); 
 
-
+            System.out.println("******************listing*****************");
             listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"),  10, date), categoryA.getCategoryId(), tagIdsPopular, seller.getUserId() );
             listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"),  20, date), categoryA.getCategoryId(), tagIdsDiscount, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"),  30, date), categoryA.getCategoryId(), tagIdsPopularDiscount, seller.getUserId());
@@ -161,8 +169,7 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
 
-//            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
-
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
 
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
@@ -170,14 +177,20 @@ public class DataInitSessionBean {
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
 
+            System.out.println("initialise review");
+            long listingIDtoPassIn = 1;
+            Review review = new Review("Good Product", 5, date, new ArrayList<>());
+            System.out.println("calling review");
+            reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
 
-   
 
     
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
+        } catch (CreateNewOrderException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 
