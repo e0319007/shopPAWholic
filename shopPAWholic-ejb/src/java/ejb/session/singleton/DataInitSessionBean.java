@@ -6,6 +6,7 @@ import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
+import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
@@ -15,6 +16,7 @@ import entity.Customer;
 import entity.DeliveryDetail;
 import entity.Listing;
 import entity.OrderEntity;
+import entity.Review;
 import entity.Seller;
 import entity.Tag;
 import java.math.BigDecimal;
@@ -38,6 +40,7 @@ import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewListingException;
 import util.exception.CreateNewOrderException;
+import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingSkuCodeExistException;
@@ -48,6 +51,9 @@ import util.exception.UserUsernameExistException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "ReviewSessionBeanLocal")
+    private ReviewSessionBeanLocal reviewSessionBeanLocal;
 
     @EJB(name = "DeliveryDetailSessionBeanLocal")
     private DeliveryDetailSessionBeanLocal deliveryDetailSessionBeanLocal;
@@ -161,7 +167,7 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
 
-//            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
 
 
             Advertisement advertisement1;
@@ -169,15 +175,22 @@ public class DataInitSessionBean {
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
-
-
-   
+            
+            System.out.println("initialise review");
+            long listingIDtoPassIn = 1;
+            Review review = new Review("Good Product", 5, date, new ArrayList<>());
+            System.out.println("calling review");
+            reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
 
     
         } catch (AdminUsernameExistException | ListingSkuCodeExistException  | CreateNewDeliveryDetailException |  CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
+        } catch (CreateNewOrderException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CreateNewReviewException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
 

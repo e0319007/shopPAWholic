@@ -1,5 +1,7 @@
 package ejb.session.stateless;
 
+import entity.Cart;
+import entity.Customer;
 import entity.User;
 import java.util.List;
 import java.util.Set;
@@ -68,6 +70,11 @@ public class UserSessionBean implements UserSessionBeanLocal {
             Set<ConstraintViolation<User>>constraintViolations = validator.validate(newUser);
             if(constraintViolations.isEmpty()) {
                 em.persist(newUser);
+                if (newUser instanceof Customer) {
+                    Cart cart = new Cart();
+                    ((Customer) newUser).setCart(cart);
+                    cart.setCustomer((Customer) newUser);
+                }
                 em.flush();
                 return newUser.getUserId();
             } else {
