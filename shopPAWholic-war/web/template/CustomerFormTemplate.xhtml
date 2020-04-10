@@ -24,6 +24,10 @@
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>shopPAWholic</title>
     </h:head>
+<!--    <script src="../resources/vendor/jquery/jquery.min.js"></script>
+    <script src="../resources/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../resources/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../resources/script/adminScript.js"></script>-->
 
     <h:body>
         <p:growl id="growl" sticky="true" showDetail="true" life="3000" />   
@@ -53,7 +57,7 @@
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <h:form>
-                                                    <p:commandLink value="Profile" action="sellerProfile?faces-redirect=true"></p:commandLink>
+                                                    <p:commandLink value="Profile" action="customerProfile?faces-redirect=true"></p:commandLink>
                                                 </h:form>
                                             </li>
                                             <li>
@@ -64,9 +68,7 @@
                                         </ul>
                                     </li>
                                     <li class="dropdown">
-                                        <h:form>
-                                            <p:commandButton value="Sell" action="sellerSellListing?faces-redirect=true" ></p:commandButton>
-                                        </h:form>
+                                        
                                     </li>
                                     <li>
                                     </li> 
@@ -77,7 +79,7 @@
                     <!-- END NAVBAR -->
                     <nav class="navbar navbar-default-below">
                         <ul class="mainMenuBar">
-                            <li class="menuBarGroup"><a href="#" class="mainMenuLink">Products</a></li>
+                            <li class="menuBarGroup"><a href="#" class="mainMenuLink">Listings</a></li>
                             <li class="menuBarGroup"><a hred="#" class="mainMenuLink">Events</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Advertisement</a></li>
                             <li class="menuBarGroup"><a href="#" class="mainMenuLink">Forums</a></li>
@@ -112,7 +114,7 @@
 
             <div id="bottom">
                 <ui:insert name="bottom">
-                    bottom
+                    
                     <!--footer-->
                 </ui:insert>
             </div>

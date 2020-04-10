@@ -30,10 +30,9 @@ public class Review implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     
     private Long reviewId;
-    @Size(min = 10, max = 250, message = "Description must be between 10 and 200 characters")
+    @Size(min = 10, max = 250, message = "Description must be between 10 and 250 characters")
     private String description;
     @NotNull
-    @Size(max = 5, min = 1)
     private int rating;
     @NotNull
     private Date reviewDate;
