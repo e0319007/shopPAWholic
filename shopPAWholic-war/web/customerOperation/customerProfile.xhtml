@@ -29,7 +29,7 @@
                                 <p:outputLabel for="name" value="Name: "/>
                             </p:column>
                             <p:column>
-                                <p:outputLabel id="name" value="#{userManagementManagedBean.selectedCustomerToView.name}"/>
+                                <p:outputLabel id="name" value="#{userManagementManagedBean.selectedUserToView.name}"/>
                             </p:column>
                         </p:row>
                         
@@ -81,7 +81,7 @@
                             <p:outputLabel for="name" value="Name: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="name" value="#{userManagementManagedBean.selectedCustomerToUpdate.name}" placeholder="eileen" required="true" requiredMessage="Name is required"/> 
+                            <p:inputText id="name" value="#{userManagementManagedBean.selectedCustomerToUpdate.name}" required="true" requiredMessage="Name is required"/> 
                         </p:column>
                         <p:column>
                             <p:message for="name"/>
@@ -93,7 +93,7 @@
                             <p:outputLabel for="contactNumber" value="Contact Number: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="contactNumber" value="#{userManagementManagedBean.selectedCustomerToUpdate.contactNumber}" placeholder="90084077" required="true" requiredMessage="Contact number is required"/> 
+                            <p:inputText id="contactNumber" value="#{userManagementManagedBean.selectedCustomerToUpdate.contactNumber}" required="true" requiredMessage="Contact number is required"/> 
                         </p:column>
                         <p:column>
                             <p:message for="contactNumber"/>
@@ -101,7 +101,7 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton style="color: black; background-color: orange;" value="Update Profile" update="@form formCustomerProfile" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" />
+                            <p:commandButton style="color: black; background-color: orange;" value="Update Profile" update="@form formCustomerProfile" actionListener="#{userManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateProfile').show();" />
                         </p:column>
                     </p:row>
                              
