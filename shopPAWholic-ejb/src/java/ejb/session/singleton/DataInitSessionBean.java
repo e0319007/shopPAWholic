@@ -95,7 +95,7 @@ public class DataInitSessionBean {
 
     private void initializeData() {
         try {
-            adminSessionBeanLocal.createNewAdmin(new Admin("manager", "password"));
+            adminSessionBeanLocal.createNewAdmin(new Admin("admin", "password"));
             Category categoryPetFood = categorySessionBeanLocal.createNewCategory(new Category("Pet Food", "Pet Food"), null);
             Category categoryPetToy = categorySessionBeanLocal.createNewCategory(new Category("Pet Toy", "Pet Toy"), null);
             Category categoryA = categorySessionBeanLocal.createNewCategory(new Category("Category A", "Category A"), categoryPetFood.getCategoryId());
@@ -124,8 +124,8 @@ public class DataInitSessionBean {
            // List<String> pictures = new ArrayList<>();
             //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
             System.out.println("******************seller*****************");
-            Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", true, 0);
-            Customer customer = new Customer("Customer One", "customerOne@email.com", "91234567", "password");
+            Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", new Date(), true, 0);
+            Customer customer = new Customer("Customer One", "customerOne@email.com", "91234567", "password", new Date());
             userSessionBeanLocal.createNewUser(customer);
             userSessionBeanLocal.createNewUser(seller);
             em.flush();
