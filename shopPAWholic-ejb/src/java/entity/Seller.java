@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -38,8 +39,8 @@ public class Seller extends User implements Serializable {
         events = new ArrayList<>();
     }
 
-    public Seller(String name, String email, String contactNumber, String password, boolean verified, double totalRating ) {
-        super(name, email, contactNumber, password);
+    public Seller(String name, String email, String contactNumber, String password, Date accCreatedDate, boolean verified, double totalRating ) {
+        super(name, email, contactNumber, password, accCreatedDate);
         this.verified = verified;
         this.totalRating = totalRating;
     }

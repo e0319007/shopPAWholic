@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,41 +9,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import util.security.CryptographicHelper;
 
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 
-public abstract class User implements Serializable{
+public abstract class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-    
+
     @NotNull
     @Size(max = 32)
     private String name;
-    
+
     @Email(message = "Email should be valid")
     @NotNull
     @Column(nullable = false, unique = true, length = 64)
-    @Size(max=64)
+    @Size(max = 64)
     private String email;
-    
+
     private String contactNumber;
-    
+
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String password;
-    
+
     @Column(columnDefinition = "CHAR(32) NOT NULL")
     @NotNull
     private String salt;
-    
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date accCreatedDate;
+
     @NotNull
     private boolean isFlag;
 
@@ -51,13 +58,13 @@ public abstract class User implements Serializable{
         isFlag = false;
     }
 
-    public User(String name, String email, String contactNumber, String password) {
+    public User(String name, String email, String contactNumber, String password, Date accCreatedDate) {
         this();
         this.name = name;
         this.email = email;
         this.contactNumber = contactNumber;
         setPassword(password);
-
+        this.accCreatedDate = accCreatedDate;
     }
 
     public String getName() {
@@ -67,7 +74,7 @@ public abstract class User implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public Long getUserId() {
         return userId;
     }
@@ -101,11 +108,12 @@ public abstract class User implements Serializable{
     }
 
     public void setPassword(String password) {
-        if(password != null) {
+        if (password != null) {
             this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
         } else {
             this.password = null;
         }
+
     }
 
     public void setSalt(String salt) {
@@ -114,10 +122,6 @@ public abstract class User implements Serializable{
 
     public boolean isIsFlag() {
         return isFlag;
-    }
-
-    public void setIsFlag(boolean isFlag) {
-        this.isFlag = isFlag;
     }
 
     @Override
@@ -144,5 +148,12 @@ public abstract class User implements Serializable{
     public String toString() {
         return "entity.User[ id=" + userId + " ]";
     }
-    
+
+    public Date getAccCreatedDate() {
+        return accCreatedDate;
+    }
+
+    public void setAccCreatedDate(Date accCreatedDate) {
+        this.accCreatedDate = accCreatedDate;
+    }
 }
