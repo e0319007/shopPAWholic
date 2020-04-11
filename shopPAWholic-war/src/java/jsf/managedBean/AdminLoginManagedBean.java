@@ -3,20 +3,13 @@ package jsf.managedBean;
 import ejb.session.stateless.AdminSessionBeanLocal;
 import entity.Admin;
 import java.io.IOException;
-import java.util.Properties;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.URLName;
 import javax.servlet.http.HttpSession;
 import util.exception.InvalidLoginCredentialException;
 
@@ -51,7 +44,7 @@ public class AdminLoginManagedBean {
     public void logout(ActionEvent event) throws IOException {
         ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now loggeed out.", null));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now logged out.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 
@@ -123,7 +116,6 @@ public class AdminLoginManagedBean {
 //            e.printStackTrace();
 //        }
 //    }
-
     public String getUsername() {
         return username;
     }
@@ -138,5 +130,11 @@ public class AdminLoginManagedBean {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void authorized(ActionEvent event) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You need to login.", null));
+        FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
 }

@@ -9,18 +9,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-        <!-- VENDOR CSS -->
-        <link rel="stylesheet" href="../resources/vendor/bootstrap/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="../resources/vendor/font-awesome/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="../resources/vendor/linearicons/style.css"/>
-        <link rel="stylesheet" href="../resources/vendor/chartist/css/chartist-custom.css"/>
         <!-- MAIN CSS -->
         <link rel="stylesheet" href="../resources/css/customerLayout.css"/>
-        <!-- GOOGLE FONTS -->
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"/>
-        <!-- ICONS -->
-        <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png"/>
-        <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon.png"/>
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>shopPAWholic</title>
     </h:head>
@@ -32,60 +22,30 @@
                 <ui:insert name="top">
                     <h:form>  
                         <p:menubar>
-                            <p:submenu label="File" icon="pi pi-file">
-                                <p:submenu label="New" icon="pi pi-briefcase">
-                                    <p:menuitem value="Project" url="#" />
-                                    <p:menuitem value="Other" url="#" />
-                                </p:submenu>
-                                <p:menuitem value="Open" url="#" />
-                                <p:separator />
-                                <p:menuitem value="Quit" url="#" />
-                            </p:submenu>
-
-                            <p:submenu label="Edit" icon="pi pi-pencil">
-                                <p:menuitem value="Undo" url="#" icon="pi pi-angle-double-left" />
-                                <p:menuitem value="Redo" url="#" icon="pi pi-angle-double-right" />
-                            </p:submenu>
-
-                            <p:submenu label="Help" icon="pi pi-question">
-                                <p:menuitem value="Contents" url="#" />
-                                <p:submenu label="Search" icon="pi pi-search">
-                                    <p:submenu label="Text">
-                                        <p:menuitem value="Workspace" url="#" />
-                                    </p:submenu>
-                                    <p:menuitem value="File" url="#" />
-                                </p:submenu>
-                            </p:submenu>
-
-                            <p:submenu label="Actions" icon="pi pi-cog">
-                                <p:submenu label="Ajax" icon="pi pi-refresh">
-                                    <p:menuitem value="Save" action="#{menuView.save}" icon="pi pi-save" update="messages"/>
-                                    <p:menuitem value="Update" action="#{menuView.update}" icon="pi pi-refresh" update="messages"/>
-                                </p:submenu>
-                                <p:submenu label="Non-Ajax" icon="pi pi-clone">
-                                    <p:menuitem value="Delete" action="#{menuView.delete}" icon="pi pi-times" update="messages" ajax="false"/>
-                                </p:submenu>
-                            </p:submenu>
-
-                            <p:menuitem value="Quit" url="http://www.primefaces.org" icon="pi pi-times" />
+                            <p:menuitem><h:link outcome="../customerOperation/customerHomepage.xhtml"><h:graphicImage value="../resources/image/shopPAWholic.png"/></h:link></p:menuitem>
+                            <p:menuitem value="Listings"  url="../customerOperation/customerListingList.xhtml" icon="pi pi-file"/>
+                            <p:menuitem value="Events" url="../customerOperation/customerEventpage.xhtml" icon="pi pi-calendar"/>
+                            <p:menuitem value="Advertisement" url="../customerOperation/customerAdvertisementpage.xhtml" icon="pi pi-bookmark"/>
+                            <p:menuitem value="Forums" url="../customerOperation/customerForumpage.xhtml" icon="pi pi-envelope"/>
 
                             <f:facet name="options">
                                 <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
-                                <p:commandButton type="button" value="Logout" icon="pi pi-home" />
+                                <p:menuButton value="#{sessionScope.currentUser.name}">
+                                    <p:menuitem value="Profile" url="../customerOperation/customerProfile.xhtml" icon="pi pi-user-plus"/>
+                                    <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
+                                </p:menuButton>
                             </f:facet>
                         </p:menubar>
                     </h:form>
-
-                    <!--advertisement-->
-                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1440" panelHeight="450"> 
-                        <p:graphicImage name="image/advertisementDummy/#{image}" />
-                    </p:galleria>
-
                 </ui:insert>
             </div>
 
             <div id="content" class="center_content">
                 <ui:insert name="content">
+                    <!--advertisement-->
+                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1440" panelHeight="450"> 
+                        <p:graphicImage name="image/advertisementDummy/#{image}" />
+                    </p:galleria>
                     <h:form id="form">
                         <!--based on time-->
                         <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" layout="grid"

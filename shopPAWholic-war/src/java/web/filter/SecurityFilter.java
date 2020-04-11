@@ -84,7 +84,8 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (currentUser instanceof Customer) {
-            if (path.equals("/customerOperation/customerEventpage.xhtml")
+            if (path.equals("/customerOperation/customerEventpage.xhtml")                    
+                    || path.equals("/customerOperation/customerAdvertisementpage.xhtml")
                     || path.equals("/customerOperation/customerForumpage.xhtml")
                     || path.equals("/customerOperation/customerHomepage.xhtml")    
                     || path.equals("/customerOperation/customerProfile.xhtml")
@@ -114,7 +115,7 @@ public class SecurityFilter implements Filter {
     public Boolean excludeLoginCheck(String path) {
         if (path.equals("/index.xhtml")
                 || path.startsWith("/javax.faces.resource")
-                || path.matches(".*(css|jpg|png|js|map)")) {
+                || path.matches(".*(css|jpg|png)")) {
             return true;
         } else {
             return false;
