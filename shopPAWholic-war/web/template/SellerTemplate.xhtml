@@ -18,30 +18,31 @@
     <h:body>
         <p:growl id="messages" showDetail="true" life="1000" />  
         <div id="wrapper">
-            <div id="top" class="top">
-                <ui:insert name="top">
-                    <h:form>  
-                        <p:menubar>
-                            <p:menuitem><h:link outcome="../customerOperation/customerHomepage.xhtml"><h:graphicImage value="../resources/image/shopPAWholic.png"/></h:link></p:menuitem>
+            <ui:insert name="top">
+                <h:form>  
+                    <p:menubar>
+                        <p:menuitem><h:link outcome="../customerOperation/customerHomepage.xhtml"><h:graphicImage value="../resources/image/shopPAWholic.png"/></h:link></p:menuitem>
 
-                            <f:facet name="options">
-                                <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
-                                <p:menuButton value="#{sessionScope.currentUser.name}">
-                                    <p:menuitem value="Sell" url="../sellerOperation/sellerSellListing.xhtml" icon="pi pi-shopping-cart"/>
-                                    <p:menuitem value="Events" url="#" icon="pi pi-calendar"></p:menuitem>
-                                    <p:menuitem value="Advertisement" url="#" icon="pi pi-bookmark"/>
-                                    <p:menuitem value="Profile" url="../sellerOperation/sellerProfile.xhtml" icon="pi pi-user-plus"/>
-                                    <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
-                                </p:menuButton>
-                            </f:facet>
-                        </p:menubar>
-                    </h:form>
+                        <f:facet name="options">
+                            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                            <p:menuButton value="#{sessionScope.currentUser.name}">
+                                <p:menuitem value="Sell" url="../sellerOperation/sellerSellListing.xhtml" icon="pi pi-shopping-cart"/>
+                                <p:menuitem value="Events" url="#" icon="pi pi-calendar"></p:menuitem>
+                                <p:menuitem value="Advertisement" url="#" icon="pi pi-bookmark"/>
+                                <p:menuitem value="Profile" url="../sellerOperation/sellerProfile.xhtml" icon="pi pi-user-plus"/>
+                                <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
+                            </p:menuButton>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </ui:insert>
+
+            <div id="content">
+                <ui:insert name="content">
+
                 </ui:insert>
-            </div>
-
-            <div id="content" class="center_content">
-                Dashboard
-                viewers 
+                <!--                Dashboard
+                                viewers -->
             </div>
 
             <div id="bottom">
