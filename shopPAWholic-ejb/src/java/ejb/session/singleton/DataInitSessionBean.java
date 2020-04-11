@@ -82,13 +82,10 @@ public class DataInitSessionBean {
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
-    
-    
-    
 
     @PostConstruct
     public void postConstruct() {
-        if(em.find(Admin.class, 1l) == null){
+        if (em.find(Admin.class, 1l) == null) {
             initializeData();
         }
     }
@@ -104,62 +101,100 @@ public class DataInitSessionBean {
             Category categoryX = categorySessionBeanLocal.createNewCategory(new Category("Category X", "Category X"), categoryPetToy.getCategoryId());
             Category categoryY = categorySessionBeanLocal.createNewCategory(new Category("Category Y", "Category Y"), categoryPetToy.getCategoryId());
             Category categoryZ = categorySessionBeanLocal.createNewCategory(new Category("Category Z", "Category Z"), categoryPetToy.getCategoryId());
-            System.out.println("******************tag*****************");
-            
+
             Tag tagPopular = tagSessionBeanLocal.createNewTag(new Tag("popular"));
             Tag tagDiscount = tagSessionBeanLocal.createNewTag(new Tag("discount"));
-            System.out.println("******************tag in*****************");
             List<Long> tagIdsPopular = new ArrayList<>();
             tagIdsPopular.add(tagPopular.getTagId());
-            
+
             List<Long> tagIdsDiscount = new ArrayList<>();
             tagIdsDiscount.add(tagDiscount.getTagId());
-            
+
             List<Long> tagIdsPopularDiscount = new ArrayList<>();
             tagIdsPopularDiscount.add(tagPopular.getTagId());
             tagIdsPopularDiscount.add(tagDiscount.getTagId());
 
             List<Long> tagIdsEmpty = new ArrayList<>();
-            
-           // List<String> pictures = new ArrayList<>();
+
+            // List<String> pictures = new ArrayList<>();
             //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
-            System.out.println("******************seller*****************");
-            Seller seller = new Seller("Seller One", "sellerOne@email.com", "98765432", "password", new Date(), true, 0);
-            Customer customer = new Customer("Customer One", "customerOne@email.com", "91234567", "password", new Date());
-            userSessionBeanLocal.createNewUser(customer);
+            Seller seller = new Seller("Seller One", "sellerOne@email.com", "97652379", "password", new Date(), true, 0);
+            Seller seller1 = new Seller("Sam Loves Dog", "samlovedog@email.com", "96541149", "samlovedog", new Date(120, 2, 20), true, 0);
+            Seller seller2 = new Seller("Pet Lover Center", "petlovercenter@email.com", "61264625", "petlover", new Date(120, 0, 2), true, 0);
+            Seller seller3 = new Seller("pawPAWpaw", "p3@email.com", "94158293", "pawpawpaw", new Date(120, 1, 22), true, 0);
+            Seller seller4 = new Seller("Pets Unlimited", "petsunlimited@email.com", "67906027", "petsunlimited", new Date(120, 0, 6), true, 0);
+            Seller seller5 = new Seller("Happy Tails Pets", "happytailspets@email.com", "92115371", "happytails", new Date(120, 2, 3), true, 0);
+            Seller seller6 = new Seller("We Love Pets", "welovepets@email.com", "64622592", "welovepets", new Date(120, 2, 5), true, 0);
+            Seller seller7 = new Seller("The Pet Shop", "thepetshop@email.com", "83532282", "thepetshop", new Date(120, 1, 24), true, 0);
+            Seller seller8 = new Seller("Bow Meow", "bowmeow@email.com", "97818413", "bowmeow", new Date(120, 2, 12), true, 0);
+            Seller seller9 = new Seller("Puppy Love", "puppylove@email.com", "63788800", "puppylove", new Date(120, 1, 13), true, 0);
+            Seller seller10 = new Seller("Furry Cute", "furrycute@email.com", "64188899", "furrycute", new Date(120, 0, 22), true, 0);
+
+            Customer customer = new Customer("Customer One", "customerOne@email.com", "90657688", "password", new Date());
+            Customer customer1 = new Customer("Serene Tan", "serenetan@email.com", "99696055", "p123@serene", new Date(120, 2, 22));
+            Customer customer2 = new Customer("Kenny Singh", "kennysingh@email.com", "91234567", "password", new Date(120, 1, 19));
+            Customer customer3 = new Customer("Alysha Choo", "alyshachoo90@email.com", "91234567", "password", new Date(120, 0, 12));
+            Customer customer4 = new Customer("Demond Aw", "demondaw@email.com", "91234567", "password", new Date(120, 0, 16));
+            Customer customer5 = new Customer("Beatrice Eng", "beaeng97@email.com", "91234567", "password", new Date(120, 3, 2));
+            Customer customer6 = new Customer("Claudia Zhang", "claudiaz@email.com", "91234567", "password", new Date(120, 0, 27));
+            Customer customer7 = new Customer("Timothy Leong", "timleong@email.com", "91234567", "password", new Date(120, 2, 23));
+            Customer customer8 = new Customer("Fatin Tan", "fatintan@email.com", "91234567", "password", new Date(120, 1, 17));
+            Customer customer9 = new Customer("Dave Kang", "dave_kang@email.com", "91234567", "password", new Date(120, 1, 19));
+            Customer customer10 = new Customer("Kimberly Wee", "kimwee99@email.com", "91234567", "password", new Date(120, 2, 18));
+
             userSessionBeanLocal.createNewUser(seller);
+            userSessionBeanLocal.createNewUser(seller1);
+            userSessionBeanLocal.createNewUser(seller2);
+            userSessionBeanLocal.createNewUser(seller3);
+            userSessionBeanLocal.createNewUser(seller4);
+            userSessionBeanLocal.createNewUser(seller5);
+            userSessionBeanLocal.createNewUser(seller6);
+            userSessionBeanLocal.createNewUser(seller7);
+            userSessionBeanLocal.createNewUser(seller8);
+            userSessionBeanLocal.createNewUser(seller9);
+            userSessionBeanLocal.createNewUser(seller10);
+
+            userSessionBeanLocal.createNewUser(customer);
+            userSessionBeanLocal.createNewUser(customer1);
+            userSessionBeanLocal.createNewUser(customer2);
+            userSessionBeanLocal.createNewUser(customer3);
+            userSessionBeanLocal.createNewUser(customer4);
+            userSessionBeanLocal.createNewUser(customer5);
+            userSessionBeanLocal.createNewUser(customer6);
+            userSessionBeanLocal.createNewUser(customer7);
+            userSessionBeanLocal.createNewUser(customer8);
+            userSessionBeanLocal.createNewUser(customer9);
+            userSessionBeanLocal.createNewUser(customer10);
+
             em.flush();
-   
 
-            Date date = new Date(System.currentTimeMillis()); 
+            Date date = new Date(System.currentTimeMillis());
 
-            System.out.println("******************listing*****************");
-            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"),  10, date), categoryA.getCategoryId(), tagIdsPopular, seller.getUserId() );
-            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"),  20, date), categoryA.getCategoryId(), tagIdsDiscount, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"),  30, date), categoryA.getCategoryId(), tagIdsPopularDiscount, seller.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"), 10, date), categoryA.getCategoryId(), tagIdsPopular, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"), 20, date), categoryA.getCategoryId(), tagIdsDiscount, seller2.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"), 30, date), categoryA.getCategoryId(), tagIdsPopularDiscount, seller3.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"),  10, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"),  20, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"),  30, date), categoryB.getCategoryId(), tagIdsEmpty, seller.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"), 10, date), categoryB.getCategoryId(), tagIdsEmpty, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"), 20, date), categoryB.getCategoryId(), tagIdsEmpty, seller5.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"), 30, date), categoryB.getCategoryId(), tagIdsEmpty, seller4.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"),  10, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"),  20, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"),  30, date), categoryC.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            
-            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Listing X1", "Listing X1", new BigDecimal("10.00"),  10, date), categoryX.getCategoryId(), tagIdsPopular, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"),  20, date), categoryX.getCategoryId(), tagIdsDiscount, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"),  30, date), categoryX.getCategoryId(), tagIdsPopularDiscount, seller.getUserId());
-            
+            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"), 10, date), categoryC.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"), 20, date), categoryC.getCategoryId(), tagIdsEmpty, seller6.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"), 30, date), categoryC.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"),  10, date), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"),  20, date), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"),  30, date), categoryY.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            
-            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"),  10, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Listing X1", "Listing X1", new BigDecimal("10.00"), 10, date), categoryX.getCategoryId(), tagIdsPopular, seller5.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"), 20, date), categoryX.getCategoryId(), tagIdsDiscount, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"), 30, date), categoryX.getCategoryId(), tagIdsPopularDiscount, seller6.getUserId());
 
-            DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
+            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"), 10, date), categoryY.getCategoryId(), tagIdsEmpty, seller2.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"), 20, date), categoryY.getCategoryId(), tagIdsEmpty, seller3.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"), 30, date), categoryY.getCategoryId(), tagIdsEmpty, seller7.getUserId());
+
+            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), 10, date), categoryZ.getCategoryId(), tagIdsEmpty, seller7.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"), 20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller6.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"), 30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+
+            DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date, DeliveryMethod.QXPRESS);
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
             System.out.println("New Order has price of: " + order.getTotalPrice());
@@ -168,14 +203,13 @@ public class DataInitSessionBean {
             listings.add(em.find(Listing.class, 1l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
-
-            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
 
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-            advertisement1 = new Advertisement("Advertisement One", new Date(2020, 3, 1), new Date(2020, 4, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-            advertisementSessionBean.createNewAdvertisement(advertisement1, seller.getUserId(), "4444 5555 6666 7777");
+            advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            advertisementSessionBean.createNewAdvertisement(advertisement1, seller7.getUserId(), "4444 5555 6666 7777");
 
             System.out.println("initialise review");
             long listingIDtoPassIn = 1;
@@ -183,15 +217,13 @@ public class DataInitSessionBean {
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
 
-
-    
         } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
         } catch (CreateNewOrderException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
     }
 
     public void persist(Object object) {
