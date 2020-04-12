@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     }
     {
       title: 'View Orders',
-      url: '/viewAllOrders',
+      url: '/viewOrders',
       icon: ''
     },
     {
