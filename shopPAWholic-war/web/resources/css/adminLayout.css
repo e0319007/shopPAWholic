@@ -1,3 +1,32 @@
+
+.navbar-btn {
+    float: left;
+    padding: 16px 0; }
+.navbar-btn button {
+    font-size: 24px;
+    padding: 4px 8px;
+    line-height: .7;
+    border: none;
+    background: none;
+    outline: none; }
+@media screen and (max-width: 640px) {
+    .navbar-btn {
+        padding-left: 0; } }
+
+.navbar-btn-right {
+    float: right; }
+
+body, html{
+    height: 100%;
+}
+
 body{
-    background-image: url(../image/background.jpeg);
+    background-image: url(../image/background.jpg); 
+    height: 100%;
+     background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 15px;
+    color: #676a6d; 
 }
