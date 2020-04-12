@@ -12,7 +12,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 export class AppComponent implements OnInit {
   public selectedIndex = 0;
   public appPages = [
-    {
+   {
+     title: 'Home',
+     url: '/home',
+     icon: 'home'
+   },
+   {
       title: 'View All Listings',
       url: '/viewAllListings',
       icon: 'arrow-forward'
@@ -21,7 +26,7 @@ export class AppComponent implements OnInit {
       title: 'Create New Listing',
       url: '/createNewListing',
       icon: ''
-    }
+    },
     {
       title: 'View Orders',
       url: '/viewOrders',
