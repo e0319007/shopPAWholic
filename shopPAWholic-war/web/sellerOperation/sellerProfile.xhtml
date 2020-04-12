@@ -1,37 +1,38 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="../template/SellerFormTemplate.xhtml"
+                template="../template/SellerTemplate.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
-        <!--display picture-->
-        <div style="display: flex; ">
-            <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
-                <br></br>
-                <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
-                <br></br>
-                <br></br>
-                <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
-            </p:panel>
+            <!--display picture-->
+            <div style="display: flex; ">
+                <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
+                    <br></br>
+                    <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
+                    <br></br>
+                    <br></br>
+                    <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+                </p:panel>
 
-            <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
-                
-                <p:tab title="Listing">
-                    <!--display listing owned by this username-->
-                    <f:facet name="actions">
-                        <p:button value="Edit Profile"/>
-                    </f:facet>
-                </p:tab>
-                <p:tab title="Reviews">
-                    <!--display review owned by this username-->
-                    
-                    <f:facet name="actions">
-                        <p:button value="Edit Profile"/>
-                    </f:facet>
-                </p:tab>
-            </p:tabView>
-        </div>
+                <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
+
+                    <p:tab title="Listing">
+                        <!--display listing owned by this username-->
+                        <f:facet name="actions">
+                            <p:button value="Edit Profile"/>
+                        </f:facet>
+                    </p:tab>
+                    <p:tab title="Reviews">
+                        <!--display review owned by this username-->
+
+                        <f:facet name="actions">
+                            <p:button value="Edit Profile"/>
+                        </f:facet>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
     </ui:define>
 </ui:composition>
