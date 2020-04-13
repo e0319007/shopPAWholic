@@ -7,13 +7,13 @@ import { OrderEntity } from './order-entity';
 export class BillingDetail {
     billingDetailId: number;
     creditCardDetail: string;
-    billingDate: string;
+    billingDate: Date;
     customer: Customer;
-    seller: Seller;
-    advertisement: Advertisement;
-    order: OrderEntity
+    seller: Seller;  
     
-    constructor(billingDetailId?: number, creditCardDetail?: string, billingDate ?: string,) {
-
+    constructor(billingDetailId?: number, creditCardDetail?: string, billingDate ?: Date,) {
+        this.billingDetailId = billingDetailId;
+        this.creditCardDetail = creditCardDetail;
+        this.billingDate = billingDate;
     }
 }
