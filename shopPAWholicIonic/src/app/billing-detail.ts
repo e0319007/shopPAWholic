@@ -13,9 +13,7 @@ export class BillingDetail {
     advertisement: Advertisement;
     order: OrderEntity
     
-    constructor(billingDetailId?: number, creditCardDetail?: string,
-                billingDate ?: string, customer?: Customer, seller?: Seller,
-                advertisement?: Advertisement, order?: OrderEntity) {
+    constructor(billingDetailId?: number, creditCardDetail?: string, billingDate ?: string,) {
 
     }
 }
