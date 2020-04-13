@@ -35,7 +35,7 @@ export class OrderEntityService {
       "email": this.utilityService.getEmail(),
       "password": this.utilityService.getPassword(),
     } 
-    return this.httpclient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions);
+    return this.httpclient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions).pipe(catchError(this.handleError));
   }
 
   changeOrderStatusByCustomer(order: OrderEntity): Observable<any> {
@@ -44,7 +44,7 @@ export class OrderEntityService {
       "email": this.utilityService.getEmail(),
       "password": this.utilityService.getPassword(),
     }
-    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions);
+    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
   } 
 
   changeOrderStatusBySeller(order: OrderEntity): Observable<any> {
@@ -53,7 +53,7 @@ export class OrderEntityService {
       "email": this.utilityService.getEmail(),
       "password": this.utilityService.getPassword(),
     }
-    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions);
+    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
   } 
 
   private handleError(error: HttpErrorResponse) {
