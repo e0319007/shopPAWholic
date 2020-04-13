@@ -33,7 +33,6 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.enumeration.DeliveryMethod;
-import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.CreateNewCategoryException;
@@ -43,7 +42,6 @@ import util.exception.CreateNewOrderException;
 import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
 import util.exception.InputDataValidationException;
-import util.exception.ListingNotFoundException;
 import util.exception.ListingSkuCodeExistException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -118,17 +116,27 @@ public class DataInitSessionBean {
 
             // List<String> pictures = new ArrayList<>();
             //pictures.add("https://i.ibb.co/Hp2htdG/shop-PAWholic.png");
-            Seller seller = new Seller("Seller One", "sellerOne@email.com", "97652379", "password", new Date(), true, 0);
-            Seller seller1 = new Seller("Sam Loves Dog", "samlovedog@email.com", "96541149", "samlovedog", new Date(120, 2, 20), true, 0);
-            Seller seller2 = new Seller("Pet Lover Center", "petlovercenter@email.com", "61264625", "petlover", new Date(120, 0, 2), true, 0);
-            Seller seller3 = new Seller("pawPAWpaw", "p3@email.com", "94158293", "pawpawpaw", new Date(120, 1, 22), true, 0);
-            Seller seller4 = new Seller("Pets Unlimited", "petsunlimited@email.com", "67906027", "petsunlimited", new Date(120, 0, 6), true, 0);
-            Seller seller5 = new Seller("Happy Tails Pets", "happytailspets@email.com", "92115371", "happytails", new Date(120, 2, 3), true, 0);
-            Seller seller6 = new Seller("We Love Pets", "welovepets@email.com", "64622592", "welovepets", new Date(120, 2, 5), true, 0);
-            Seller seller7 = new Seller("The Pet Shop", "thepetshop@email.com", "83532282", "thepetshop", new Date(120, 1, 24), true, 0);
-            Seller seller8 = new Seller("Bow Meow", "bowmeow@email.com", "97818413", "bowmeow", new Date(120, 2, 12), true, 0);
-            Seller seller9 = new Seller("Puppy Love", "puppylove@email.com", "63788800", "puppylove", new Date(120, 1, 13), true, 0);
-            Seller seller10 = new Seller("Furry Cute", "furrycute@email.com", "64188899", "furrycute", new Date(120, 0, 22), true, 0);
+            Seller seller = new Seller("Seller One", "sellerOne@email.com", "97652379", "password", new Date(), false, 0);
+            Seller seller1 = new Seller("Sam Loves Dog", "samlovedog@email.com", "96541149", "samlovedog", new Date(120, 2, 20), false, 0);
+            Seller seller2 = new Seller("Pet Lover Center", "petlovercenter@email.com", "61264625", "petlover", new Date(120, 0, 2), false, 0);
+            Seller seller3 = new Seller("pawPAWpaw", "p3@email.com", "94158293", "pawpawpaw", new Date(120, 1, 22), false, 0);
+            Seller seller4 = new Seller("Pets Unlimited", "petsunlimited@email.com", "67906027", "petsunlimited", new Date(120, 0, 6), false, 0);
+            Seller seller5 = new Seller("Happy Tails Pets", "happytailspets@email.com", "92115371", "happytails", new Date(120, 2, 3), false, 0);
+            Seller seller6 = new Seller("We Love Pets", "welovepets@email.com", "64622592", "welovepets", new Date(120, 2, 5), false, 0);
+            Seller seller7 = new Seller("The Pet Shop", "thepetshop@email.com", "83532282", "thepetshop", new Date(120, 1, 24), false, 0);
+            Seller seller8 = new Seller("Bow Meow", "bowmeow@email.com", "97818413", "bowmeow", new Date(120, 2, 12), false, 0);
+            Seller seller9 = new Seller("Puppy Love", "puppylove@email.com", "63788800", "puppylove", new Date(120, 1, 13), false, 0);
+            Seller seller10 = new Seller("Furry Cute", "furrycute@email.com", "64188899", "furrycute", new Date(120, 0, 22), false, 0);
+            Seller seller11 = new Seller("Furry Wheel", "furrywheel@email.com", "61713887", "furrywheel", new Date(119, 11, 22), false, 0);
+            Seller seller12 = new Seller("Happy Paws", "haoppyPawse@email.com", "85291432", "happypaw", new Date(119, 10, 22), false, 0);
+            Seller seller13 = new Seller("Pets Love", "petslove@email.com", "91506502", "welove2016pets", new Date(119, 7, 22), false, 0);
+            Seller seller14 = new Seller("Pets' Station", "petsstation@email.com", "61480093", "pets2019station", new Date(119, 6, 12), false, 0);
+            Seller seller15 = new Seller("Superpets", "superp3ts@email.com", "94601631", "superP3TS", new Date(119, 0, 14), false, 0);
+            Seller seller16 = new Seller("All 4 Pets", "all4pets@email.com", "90760582", "All4Pets", new Date(119, 1, 14), false, 0);
+            Seller seller17 = new Seller("Dunk N' Dogs", "dnd@email.com", "67163148", "DnD2020", new Date(119, 7, 3), false, 0);
+            Seller seller18 = new Seller("Furbaby", "furbaby@email.com", "61862980", "furbabyyy", new Date(119, 5, 5), false, 0);
+            Seller seller19 = new Seller("ZooKeeper", "zookeeper@email.com", "91482340", "z00keeper_pwd", new Date(119, 8, 14), false, 0);
+            Seller seller20 = new Seller("City Dog", "cityDogs@email.com", "99330096", "cityDOG", new Date(119, 0, 28), false, 0);
 
             Customer customer = new Customer("Customer One", "customerOne@email.com", "90657688", "password", new Date());
             Customer customer1 = new Customer("Serene Tan", "serenetan@email.com", "99696055", "p123@serene", new Date(120, 2, 22));
@@ -153,6 +161,16 @@ public class DataInitSessionBean {
             userSessionBeanLocal.createNewUser(seller8);
             userSessionBeanLocal.createNewUser(seller9);
             userSessionBeanLocal.createNewUser(seller10);
+            userSessionBeanLocal.createNewUser(seller11);
+            userSessionBeanLocal.createNewUser(seller12);
+            userSessionBeanLocal.createNewUser(seller13);
+            userSessionBeanLocal.createNewUser(seller14);
+            userSessionBeanLocal.createNewUser(seller15);
+            userSessionBeanLocal.createNewUser(seller16);
+            userSessionBeanLocal.createNewUser(seller17);
+            userSessionBeanLocal.createNewUser(seller18);
+            userSessionBeanLocal.createNewUser(seller19);
+            userSessionBeanLocal.createNewUser(seller20);
 
             userSessionBeanLocal.createNewUser(customer);
             userSessionBeanLocal.createNewUser(customer1);
@@ -227,10 +245,6 @@ public class DataInitSessionBean {
     }
 
     public void persist(Object object) {
-        em.persist(object);
-    }
-
-    public void persist1(Object object) {
         em.persist(object);
     }
 

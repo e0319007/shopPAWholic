@@ -1,13 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.Seller;
 import entity.User;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -23,10 +22,6 @@ import util.exception.InputDataValidationException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
 
-/**
- *
- * @author yeeqinghew
- */
 @Stateless
 @Local(SellerSessionBeanLocal.class)
 public class SellerSessionBean implements SellerSessionBeanLocal {
@@ -65,12 +60,26 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
             }
         }
     }
-
     
     @Override
     public List<Seller> retrieveAllSellers(){
         Query query = em.createQuery("SELECT s FROM Seller s");
         return query.getResultList();
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfSellersForTheYear() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> userPerMonth = new HashMap<>();
+        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for (int i = 0; i < months.size(); i++) {
+            query = em.createQuery("SELECT s FROM Seller s WHERE EXTRACT(YEAR(s.accCreatedDate)) = :inYear AND EXTRACT(MONTH(s.accCreatedDate)) = :inMonth ");
+            query.setParameter("inYear", year);
+            query.setParameter("inMonth", i+1);
+            userPerMonth.put(months.get(i), (query.getResultList()).size());
+        }
+        return userPerMonth;
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Seller>> constraintViolations) {

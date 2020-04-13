@@ -11,11 +11,18 @@
     <ui:define name="content">
         <div>
             <ez:Breadcrumb pageName="userList"/>
+            <!--data analytics of users-->
+            
+            <h:form id="formJasperReport">
+                <p:panel header="">
+                    <p:commandButton value="Generate" actionListener="#{jasperReportManagedBean.generateReport}" ajax="false"/>
+                </p:panel>
+            </h:form>
             <h:form id="formAllUsers">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 <p:dataTable id="dataTableAllUsers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.userList}" var="user" rowKey="#{user.userId}" rowIndexVar="row"
                              filteredValue="#{userManagementManagedBean.filteredUserList}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
 
                     <f:facet name="header">
                         <p:outputPanel style="text-align: right;">
@@ -94,6 +101,6 @@
             </h:form>
         </div>
     </ui:define>
- </ui:composition>
+</ui:composition>
 
 
