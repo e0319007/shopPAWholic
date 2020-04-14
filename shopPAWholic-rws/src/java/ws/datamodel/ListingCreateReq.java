@@ -7,6 +7,7 @@ package ws.datamodel;
 
 import java.util.List;
 import entity.Listing;
+import java.util.Date;
 
 /**
  *
@@ -19,16 +20,18 @@ public class ListingCreateReq {
     private Listing listing;
     private Long categoryId;
     private List<Long> tagIds;
+    private Date listingDate;
 
     public ListingCreateReq() {
     }
 
-    public ListingCreateReq(String email, String password, Listing listing, Long categoryId, List<Long> tagIds) {
+    public ListingCreateReq(String email, String password, Listing listing, Long categoryId, List<Long> tagIds, Date listingDate) {
         this.email = email;
         this.password = password;
         this.listing = listing;
         this.categoryId = categoryId;
         this.tagIds = tagIds;
+        this.listingDate = listingDate;
     }
 
     public String getEmail() {
@@ -69,6 +72,14 @@ public class ListingCreateReq {
 
     public void setTagIds(List<Long> tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public Date getListingDate() {
+        return listingDate;
+    }
+
+    public void setListingDate(Date listingDate) {
+        this.listingDate = listingDate;
     }
     
     

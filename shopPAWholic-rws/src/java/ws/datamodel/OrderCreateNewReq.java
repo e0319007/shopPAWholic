@@ -19,18 +19,16 @@ public class OrderCreateNewReq {
     private Long deliveryDetailId;
     private String ccNum;
     private OrderEntity orderEntity;
-    private String customerEmail;
     private Seller seller;
     private List<Listing> listings;
     private String email;
     private String password;
     
     
-    public OrderCreateNewReq(Long deliveryDetailId, String ccNum, OrderEntity orderEntity, String customerEmail, Seller seller, List<Listing> listings, String email, String password) {
+    public OrderCreateNewReq(Long deliveryDetailId, String ccNum, OrderEntity orderEntity, Seller seller, List<Listing> listings, String email, String password) {
         this.deliveryDetailId = deliveryDetailId;
         this.ccNum = ccNum;
         this.orderEntity = orderEntity;
-        this.customerEmail = customerEmail;
         this.seller = seller;
         this.listings = listings;
         this.email = email;
@@ -70,14 +68,6 @@ public class OrderCreateNewReq {
 
     public void setOrderEntity(OrderEntity orderEntity) {
         this.orderEntity = orderEntity;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
     }
 
     public Seller getSeller() {
