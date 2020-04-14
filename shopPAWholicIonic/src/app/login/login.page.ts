@@ -8,7 +8,6 @@ import { UserService } from '../user.service';
 import { User } from '../user';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +27,6 @@ export class LoginPage implements OnInit {
     }
 
   ngOnInit() {
-    //do i need to get all the if customer then get all the relationships
   }
 
   clear()	{

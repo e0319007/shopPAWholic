@@ -20,6 +20,8 @@ export class ReviewService {
     this.baseUrl = utilityService.getRootPath() + 'Review';
   }
 
+  //retrieveReviewByListingId
+
   createReview(review: Review, reviewDate: Date, listingId: number){
     let createReviewReq = {
       "review": review,
