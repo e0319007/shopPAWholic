@@ -1,0 +1,25 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>View All Listings</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-content>
+      <ion-card-title>View All Listings</ion-card-title>
+    </ion-content>
+    <ion-card-content>
+      <ion-list>
+        <ion-button expand="full" *ngFor="let listing of listings" (click) = "viewProductDetails($event, listing)">
+           {{listing.name}} - {{listing.price}}
+        </ion-button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
