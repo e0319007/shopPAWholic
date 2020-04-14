@@ -5,6 +5,7 @@
  */
 package ws.datamodel;
 import entity.Advertisement;
+import java.util.Date;
 
 /**
  *
@@ -16,16 +17,20 @@ public class AdvertisementCreateNewReq {
     private String email;
     private String password;
     private String ccNum;
+    private Date startDate;
+    private Date endDate;
     
 
     public AdvertisementCreateNewReq() {
     }
 
-    public AdvertisementCreateNewReq(Advertisement advertisement, String email, String password, String ccNum) {
+    public AdvertisementCreateNewReq(Advertisement advertisement, String email, String password, String ccNum, Date startDate, Date endDate) {
         this.advertisement = advertisement;
         this.email = email;
         this.password = password;
         this.ccNum = ccNum;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
     
     public String getEmail() {
@@ -58,5 +63,33 @@ public class AdvertisementCreateNewReq {
 
     public void setCcNum(String ccNum) {
         this.ccNum = ccNum;
+    }
+
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }
