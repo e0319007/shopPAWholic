@@ -39,12 +39,14 @@ export class AdvertisementService {
       return this.httpClient.put<any>(this.baseUrl, advertisementCreateReq, httpOptions). pipe(catchError(this.handleError));
   }
 
-  updateAdvertisement(advertisement: Advertisement, ccNum: string): Observable<any> {
+  updateAdvertisement(advertisement: Advertisement, ccNum: string, startDate: Date, endDate: Date): Observable<any> {
     let advertisementUpdateReq = {
+       "advertisement": advertisement,
         "email": this.utilityService.getEmail,
         "password": this.utilityService.getPassword,
-        "advertisement": advertisement,
         "ccNum" : ccNum,
+        "startDate": startDate,
+        "endDate": endDate,
     }
     return this.httpClient.put<any>(this.baseUrl, advertisementUpdateReq, httpOptions). pipe(catchError(this.handleError));
 }
