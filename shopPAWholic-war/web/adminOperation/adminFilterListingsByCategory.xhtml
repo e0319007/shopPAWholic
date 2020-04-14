@@ -4,11 +4,13 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
         <div>
-            <h1 style="color:#0063dc; font-weight: bold;">Filter Listings By Category</h1>
+            <h1></h1>
+            <ez:Breadcrumb pageName="filterListingsByCategory"/>
             <h:form id="formMain">
                 <p:layout>
                     <p:layoutUnit position="east" resizable="true">
@@ -22,7 +24,7 @@
 
                     <p:layoutUnit position="center">
                         <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{filterListingsByCategoryManagedBean.listings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
-                                     rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+                                     rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
                             <p:column headerText="SKU Code" sortBy="#{listing.skuCode}">
                                 <h:outputText value="#{listing.skuCode}"/>
                             </p:column>
@@ -50,7 +52,7 @@
                             </p:column>
 
                             <p:column headerText="Action">
-                                <p:commandButton update="formViewListing" oncomplete="PF('dialogViewListing').show()" icon="ui-icon-document" title="View">
+                                <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="ui-icon-document" title="View">
                                     <f:setPropertyActionListener value="#{listing}" target="#{filterListingsByCategoryManagedBean.viewListingManagedBean.listingToView}"/>
                                 </p:commandButton>
                             </p:column>
@@ -59,146 +61,9 @@
                     </p:layoutUnit>
                 </p:layout>
             </h:form>
-
-            <h:form id="formViewListing">
-                <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
-                    <p:panelGrid> 
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="listingId" value="Listing ID: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="listingId" value="#{listingManagementManagedBean.selectedListingToView.listingId}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="name" value="Name: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="name" value="#{listingManagementManagedBean.selectedListingToView.name}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="description" value="Description: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="description" value="#{listingManagementManagedBean.selectedListingToView.description}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="unitPrice" value="Unit Price: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="unitPrice" value="#{listingManagementManagedBean.selectedListingToView.unitPrice}" /> 
-                                <!--<f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>-->
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="category" value="Category: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="category" value="#{listingManagementManagedBean.selectedListingToView.category}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="tag" value="Tag(s): "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <p:dataList id="tag" value="#{listingManagementManagedBean.selectedListingToView.tags}" var="tag" type="unordered">
-                                    #{tag.name}
-                                </p:dataList>
-                            </p:column> 
-                        </p:row>
-
-                    </p:panelGrid>
-                </p:dialog>
-            </h:form>
-            <h:form id="formViewListing"> 
-
-                <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
-                    <p:panelGrid> 
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="listingId" value="Listing ID: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="listingId" value="#{listingManagementManagedBean.selectedListingToView.listingId}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="name" value="Name: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="name" value="#{listingManagementManagedBean.selectedListingToView.name}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="description" value="Description: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="description" value="#{listingManagementManagedBean.selectedListingToView.description}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="unitPrice" value="Unit Price: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="unitPrice" value="#{listingManagementManagedBean.selectedListingToView.unitPrice}" /> 
-                                <!--<f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>-->
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="category" value="Category: "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <h:outputText id="category" value="#{listingManagementManagedBean.selectedListingToView.category}" /> 
-                            </p:column> 
-                        </p:row>
-
-                        <p:row> 
-                            <p:column> 
-                                <p:outputLabel for="tag" value="Tag(s): "/> 
-                            </p:column> 
-
-                            <p:column> 
-                                <p:dataList id="tag" value="#{listingManagementManagedBean.selectedListingToView.tags}" var="tag" type="unordered">
-                                    #{tag.name}
-                                </p:dataList>
-                            </p:column> 
-                        </p:row>
-
-                    </p:panelGrid>
-                </p:dialog>
-            </h:form>
+            <ez:ViewListing id="ccViewListing"/>
+           
+            
         </div>
     </ui:define>
 </ui:composition>

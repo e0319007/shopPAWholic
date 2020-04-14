@@ -10,13 +10,13 @@
 
     <ui:define name="content">
         <div>
+            <h1></h1>
             <ez:Breadcrumb pageName="sellerList"/>
             <h:form id="formAllSellers">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 <p:dataTable id="dataTableAllSellers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.sellerList}" var="seller" rowKey="#{seller.userId}" rowIndexVar="row"
                              filteredValue="#{userManagementManagedBean.filteredSellerList}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
-
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
                     <f:facet name="header">
                         <p:outputPanel style="text-align: right;">
                             <h:outputText value="Search all fields:" />
@@ -31,7 +31,7 @@
                     <p:column headerText="Name" sortBy="#{seller.name}" filterBy="#{seller.name}" filterMatchMode="contains">
                         <h:outputText value="#{seller.name}" />
                     </p:column>
-                    
+
                     <p:column headerText="Verified" sortBy="#{seller.verified}" filterBy="#{seller.verified}" filterMatchMode="contains">
                         <h:outputText value="#{seller.verified}" />
                     </p:column>
@@ -98,6 +98,6 @@
             </h:form>
         </div>
     </ui:define>
- </ui:composition>
+</ui:composition>
 
 

@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -9,30 +10,13 @@
 
     <ui:define name="content">
         <div>
-            <h1 style="color:#0063dc; font-weight: bold;">Listing Management</h1>
+            <h1></h1>
             <ez:Breadcrumb pageName="listingList"/>
-
-            <!--admin no need to create listing
-            <h:form>
-            
-                <p:menubar>
-    
-                    <p:submenu label="Sell">
-                        <p:menuitem value="Create New Listing" onclick="PF('dialogCreateNewListing').show()" icon="fa fa-plus" />
-                    </p:submenu>                                        
-    
-                </p:menubar>
-                <br/>
-    
-            </h:form> -->
-
-
-            <!-- table of listings --> 
             <h:form id="formAllListings">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.listings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
                              filteredValue="#{listingManagementManagedBean.filteredListings}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,30">
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
 
                     <f:facet name="header">
                         <p:outputPanel style="text-align: right; color: #045491">
@@ -41,33 +25,33 @@
                         </p:outputPanel>
                     </f:facet> 
 
-                    <p:column style="background-color: steelblue" headerText="SKU Code" sortBy="#{listing.skuCode}" filterBy="#{listing.skuCode}" filterMatchMode="contains">
+                    <p:column headerText="SKU Code" sortBy="#{listing.skuCode}" filterBy="#{listing.skuCode}" filterMatchMode="contains">
                         <h:outputText value="#{listing.skuCode}" />
                     </p:column>
 
-                    <p:column style="background-color: steelblue" headerText="Listing ID" sortBy="#{listing.listingId}" filterBy="#{listing.listingId}" filterMatchMode="contains">
+                    <p:column headerText="Listing ID" sortBy="#{listing.listingId}" filterBy="#{listing.listingId}" filterMatchMode="contains">
                         <h:outputText value="#{listing.listingId}" />
                     </p:column>                            
 
-                    <p:column style="background-color: steelblue" headerText="Name" sortBy="#{listing.name}" filterBy="#{listing.name}" filterMatchMode="contains">
+                    <p:column  headerText="Name" sortBy="#{listing.name}" filterBy="#{listing.name}" filterMatchMode="contains">
                         <h:outputText value="#{listing.name}" />
                     </p:column>
 
 
 
-                    <p:column style="background-color: steelblue" headerText="Description" sortBy="#{listing.description}" filterBy="#{listing.description}" filterMatchMode="contains">
+                    <p:column headerText="Description" sortBy="#{listing.description}" filterBy="#{listing.description}" filterMatchMode="contains">
                         <h:outputText value="#{listing.description}" />
                     </p:column>
 
 
 
-                    <p:column headerText="Unit Price" sortBy="#{listing.unitPrice}" filterBy="#{listing.unitPrice}" filterMatchMode="contains" style="text-align: right; background-color: steelblue">
+                    <p:column headerText="Unit Price" sortBy="#{listing.unitPrice}" filterBy="#{listing.unitPrice}" filterMatchMode="contains" style="text-align: right;">
                         <h:outputText value="#{listing.unitPrice}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
                         </h:outputText>
                     </p:column>
 
-                    <p:column style="background-color: steelblue" headerText="Category" sortBy="#{listing.category.name}" filterBy="#{listing.category.name}" filterMatchMode="exact">
+                    <p:column headerText="Category" sortBy="#{listing.category.name}" filterBy="#{listing.category.name}" filterMatchMode="exact">
                         <f:facet name="filter">
                             <p:selectOneMenu id="selCategory" onchange="PF('dataTableAllListings').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
@@ -77,7 +61,7 @@
                         <h:outputText value="#{listing.category.name}" />
                     </p:column>
 
-                    <p:column style="background-color: steelblue" headerText="Action" >
+                    <p:column headerText="Action" >
                         <p:commandButton update="formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-file" title="View">
                             <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToView}" />
                         </p:commandButton>
@@ -97,11 +81,8 @@
                 </p:confirmDialog>
             </h:form> 
 
-            
-
             <!--<ez:ViewListing id="ccViewListing" />-->
             <h:form id="formViewListing"> 
-
                 <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
                     <p:panelGrid> 
                         <p:row> 
@@ -177,7 +158,7 @@
                     <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="Listing ID: " style="font-weight: bold; color: steelblue;"/>
+                                <h:outputLabel value="Listing ID: " style="font-weight: bold;"/>
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.listingId}" />
@@ -189,7 +170,7 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="SKU Code: " style="font-weight: bold; color: steelblue;"/>
+                                <h:outputLabel value="SKU Code: " style="font-weight: bold; "/>
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.skuCode}" />
@@ -201,7 +182,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="name" value="Name: " style="font-weight: bold; color: steelblue;"/>
+                                <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
                             </p:column>
                             <p:column>
                                 <p:inputText id="name" value="#{listingManagementManagedBean.selectedListingToUpdate.name}" placeholder="Listing 1" required="true" requiredMessage="Name is required" />
@@ -213,7 +194,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="description" value="Description: " style="font-weight: bold; color: steelblue;"/>
+                                <p:outputLabel for="description" value="Description: " style="font-weight: bold; "/>
                             </p:column>
                             <p:column>
                                 <p:inputText id="description" value="#{listingManagementManagedBean.selectedListingToUpdate.description}" placeholder="Listing 1" required="true" requiredMessage="Description is required" />
@@ -227,7 +208,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="unitPrice" value="Unit Price: " style="font-weight: bold; color: steelblue;"/>
+                                <p:outputLabel for="unitPrice" value="Unit Price: " style="font-weight: bold;"/>
                             </p:column>
                             <p:column>
                                 <p:inputText id="unitPrice" value="#{listingManagementManagedBean.selectedListingToUpdate.unitPrice}" placeholder="10.00" required="true" requiredMessage="Unit Price is required" />
@@ -239,7 +220,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold; color: steelblue;" />
+                                <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdUpdate}">
@@ -254,7 +235,7 @@
 
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold; color: steelblue;" />
+                                <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold; " />
                             </p:column>
                             <p:column>
                                 <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
@@ -274,7 +255,6 @@
                     </p:panelGrid>
                 </p:dialog>
             </h:form> 
-
         </div>
     </ui:define>
 </ui:composition>

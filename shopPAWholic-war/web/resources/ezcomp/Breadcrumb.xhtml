@@ -13,15 +13,16 @@
         <h:form id="formMain">
             <p:breadCrumb >
                 <p:menuitem icon="fa fa-home" url="#{application.contextPath}/adminOperation/adminHomepage.xhtml" />
-                <p:menuitem value="System Administration" rendered="#{cc.attrs.pageName == 'categoryManagement' ||
-                                                                      cc.attrs.pageName == 'filterListingsByCategory' ||                                                                        
-                                                                      cc.attrs.pageName == 'filterListingsByTag' ||                                                                        
-                                                                      cc.attrs.pageName == 'listingList' ||
-                                                                      cc.attrs.pageName == 'searchListingByName' ||
-                                                                      cc.attrs.pageName == 'tagList' ||
-                                                                      cc.attrs.pageName == 'userList' ||
-                                                                      cc.attrs.pageName == 'customerList' ||
-                                                                      cc.attrs.pageName == 'sellerList'
+                <p:menuitem value="Admin" rendered="#{cc.attrs.pageName == 'categoryManagement' ||
+                                                      cc.attrs.pageName == 'filterListingsByCategory' ||                                                                        
+                                                      cc.attrs.pageName == 'filterListingsByTag' ||                                                                        
+                                                      cc.attrs.pageName == 'listingList' ||
+                                                      cc.attrs.pageName == 'searchListingByName' ||
+                                                      cc.attrs.pageName == 'tagList' ||
+                                                      cc.attrs.pageName == 'userList' ||
+                                                      cc.attrs.pageName == 'categoryList' ||
+                                                      cc.attrs.pageName == 'customerList' ||
+                                                      cc.attrs.pageName == 'sellerList'
                                                                     }" />
 
                 <p:menuitem value="Category" url="#{application.contextPath}/adminOperation/adminCategoryList.xhtml" rendered="#{cc.attrs.pageName == 'categoryManagement'}" />
@@ -31,8 +32,9 @@
                 <p:menuitem value="Search Listing by Name" url="#{application.contextPath}/adminOperation/adminSearchListingByName.xhtml" rendered="#{cc.attrs.pageName == 'searchListingByName'}" />                        
                 <p:menuitem value="Tag" url="#{application.contextPath}/adminOperation/adminTagList.xhtml" rendered="#{cc.attrs.pageName == 'tagList'}" />
                 <p:menuitem value="User List" url="#{application.contextPath}/adminOperation/adminUserList.xhtml" rendered="#{cc.attrs.pageName == 'userList'}" />
+                <p:menuitem value="Category List" url="#{application.contextPath}/adminOperation/adminCategoryList.xhtml" rendered="#{cc.attrs.pageName == 'categoryList'}" />
                 <p:menuitem value="Customer List" url="#{application.contextPath}/adminOperation/adminCustomerList.xhtml" rendered="#{cc.attrs.pageName == 'customerList'}" />
-                <p:menuitem value="User List" url="#{application.contextPath}/adminOperation/adminSellerList.xhtml" rendered="#{cc.attrs.pageName == 'sellerList'}" />
+                <p:menuitem value="Seller List" url="#{application.contextPath}/adminOperation/adminSellerList.xhtml" rendered="#{cc.attrs.pageName == 'sellerList'}" />
 
             </p:breadCrumb>
         </h:form>
