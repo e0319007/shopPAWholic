@@ -33,28 +33,21 @@ public class EventSessionBean implements EventSessionBeanLocal {
     @Override
     public Event createNewEvent(Event event, Long sellerId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException {
         Set<ConstraintViolation<Event>> constraintViolations = validator.validate(event);
-        System.out.println("******************************** violations");
+        if (constraintViolations.isEmpty()) {
+            try {
+                Seller seller = em.find(Seller.class, sellerId);
+                event.setSeller(seller);
+                seller.getEvents().add(event);
+                em.persist(event);
+                em.flush();
 
-            if (constraintViolations.isEmpty()) {
-                try {
-                    Seller seller = em.find(Seller.class, sellerId);
-                    System.out.println("************************************ "+seller);
-                    event.setSeller(seller);
-                    seller.getEvents().add(event);
-                    System.out.println("************************************ " + event);
-                    em.persist(event);
-                    em.flush();
-
-                    return event;
-                } catch (Exception ex) {
-                    throw new CreateNewEventException("An unexpected error has occurred: " + ex.getMessage());
-                }
-            } else {
-                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+                return event;
+            } catch (Exception ex) {
+                throw new CreateNewEventException("An unexpected error has occurred: " + ex.getMessage());
             }
-//        else {
-//            throw new EventNameExistsException("Event title of name \"" + event.getEventName() + "\" exists already. Please try another title.");
-//        }
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+        }
     }
 
     @Override
