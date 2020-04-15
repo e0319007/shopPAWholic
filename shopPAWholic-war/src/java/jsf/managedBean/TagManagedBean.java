@@ -49,9 +49,6 @@ public class TagManagedBean implements Serializable {
 
     private Tag tagToUpdate;
 
-    /**
-     * Creates a new instance of TagManagedBean
-     */
     public TagManagedBean() {
         newTag = new Tag();
     }
@@ -63,11 +60,11 @@ public class TagManagedBean implements Serializable {
 
     public void createNewTag(ActionEvent event) {
         try {
-            Tag tag = tagSessionBeanLocal.createNewTag(getNewTag());
+            Tag tag = tagSessionBeanLocal.createNewTag(newTag);
             tags.add(tag);
 
-            setNewTag(new Tag());
-
+            newTag = new Tag();
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category " + tag.getName() + " created successfully", null));
         } catch (InputDataValidationException | CreateNewTagException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new category: " + ex.getMessage(), null));
@@ -76,7 +73,6 @@ public class TagManagedBean implements Serializable {
     
     public void updateTag(ActionEvent event) throws UpdateTagException {
         try {
-
             tagSessionBeanLocal.updateTag(tagToUpdate);
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while editing tag: " + ex.getMessage(), null));
@@ -86,67 +82,46 @@ public class TagManagedBean implements Serializable {
     }
 
     public void deleteTag(ActionEvent event) throws DeleteTagException {
-        Tag tagToDelete = (Tag) event.getComponent().getAttributes().get("TagToDelete");
         try {
+            Tag tagToDelete = (Tag) event.getComponent().getAttributes().get("tagToDelete");
             tagSessionBeanLocal.deleteTag(tagToDelete.getTagId());
             tags.remove(tagToDelete);
-        } catch (TagNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tag with given ID is not found", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully.", null));
+        } catch (TagNotFoundException | DeleteTagException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured while deleting tag: " + ex.getMessage(), null));
+        } catch (Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occured: " + ex.getMessage(),null));
         }
     }
 
-    /**
-     * @return the tags
-     */
     public List<Tag> getTags() {
         return tags;
     }
 
-    /**
-     * @param tags the tags to set
-     */
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
-    /**
-     * @return the tagId
-     */
     public Long getTagId() {
         return tagId;
     }
 
-    /**
-     * @param tagId the tagId to set
-     */
     public void setTagId(Long tagId) {
         this.tagId = tagId;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the tagToUpdate
-     */
     public Tag getTagToUpdate() {
         return tagToUpdate;
     }
 
-    /**
-     * @param tagToUpdate the tagToUpdate to set
-     */
     public void setTagToUpdate(Tag tagToUpdate) {
         this.tagToUpdate = tagToUpdate;
     }

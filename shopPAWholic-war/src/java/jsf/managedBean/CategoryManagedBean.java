@@ -90,11 +90,14 @@ public class CategoryManagedBean implements Serializable {
 
     public void deleteCategory(ActionEvent event) throws DeleteCategoryException {
         try {
-            Category categoryToDelete = (Category) event.getComponent().getAttributes().get("CategoryToDelete");
+            Category categoryToDelete = (Category) event.getComponent().getAttributes().get("categoryToDelete");
             categorySessionBeanLocal.deleteCategory(categoryToDelete.getCategoryId());
             categories.remove(categoryToDelete);
-        } catch (CategoryNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with given ID is not found", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category deleted successfully.", null));
+        } catch (CategoryNotFoundException | DeleteCategoryException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured while deleting product: " + ex.getMessage(), null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occured: " + ex.getMessage(), null));
         }
     }
 
@@ -125,7 +128,7 @@ public class CategoryManagedBean implements Serializable {
     public Long getParentCategoryId() {
         return parentCategoryId;
     }
-    
+
     public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
