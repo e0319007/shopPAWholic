@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import util.exception.CreateNewTagException;
 import util.exception.DeleteTagException;
 import util.exception.InputDataValidationException;
@@ -30,13 +31,7 @@ import util.exception.UpdateTagException;
 @ViewScoped
 public class TagManagedBean implements Serializable {
 
-    public Tag getNewTag() {
-        return newTag;
-    }
-
-    public void setNewTag(Tag newTag) {
-        this.newTag = newTag;
-    }
+    
 
     @EJB(name = "TagSessionBeanLocal")
     private TagSessionBeanLocal tagSessionBeanLocal;
@@ -46,8 +41,13 @@ public class TagManagedBean implements Serializable {
     private Tag newTag;
     private Long tagId;
     private String name;
+    
+
 
     private Tag tagToUpdate;
+    
+    @Inject
+    private ViewAllTagsManagedBean viewAllTagsManagedBean;
 
     /**
      * Creates a new instance of TagManagedBean
@@ -149,6 +149,29 @@ public class TagManagedBean implements Serializable {
      */
     public void setTagToUpdate(Tag tagToUpdate) {
         this.tagToUpdate = tagToUpdate;
+    }
+
+    
+    public Tag getNewTag() {
+        return newTag;
+    }
+
+    public void setNewTag(Tag newTag) {
+        this.newTag = newTag;
+    }
+
+    /**
+     * @return the viewAllTagsManagedBean
+     */
+    public ViewAllTagsManagedBean getViewAllTagsManagedBean() {
+        return viewAllTagsManagedBean;
+    }
+
+    /**
+     * @param viewAllTagsManagedBean the viewAllTagsManagedBean to set
+     */
+    public void setViewAllTagsManagedBean(ViewAllTagsManagedBean viewAllTagsManagedBean) {
+        this.viewAllTagsManagedBean = viewAllTagsManagedBean;
     }
 
 }

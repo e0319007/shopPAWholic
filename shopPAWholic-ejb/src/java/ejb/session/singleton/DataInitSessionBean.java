@@ -4,6 +4,7 @@ import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.CategorySessionBeanLocal;
 import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
+import ejb.session.stateless.EventSessionBeanLocal;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
@@ -14,6 +15,7 @@ import entity.Advertisement;
 import entity.Category;
 import entity.Customer;
 import entity.DeliveryDetail;
+import entity.Event;
 import entity.Listing;
 import entity.OrderEntity;
 import entity.Review;
@@ -33,17 +35,17 @@ import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.enumeration.DeliveryMethod;
-import util.exception.AdminNotFoundException;
 import util.exception.AdminUsernameExistException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewDeliveryDetailException;
+import util.exception.CreateNewEventException;
 import util.exception.CreateNewListingException;
 import util.exception.CreateNewOrderException;
 import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
+import util.exception.EventNameExistsException;
 import util.exception.InputDataValidationException;
-import util.exception.ListingNotFoundException;
 import util.exception.ListingSkuCodeExistException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
@@ -52,6 +54,9 @@ import util.exception.UserUsernameExistException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "EventSessionBeanLocal")
+    private EventSessionBeanLocal eventSessionBeanLocal;
 
     @EJB(name = "ReviewSessionBeanLocal")
     private ReviewSessionBeanLocal reviewSessionBeanLocal;
@@ -88,6 +93,8 @@ public class DataInitSessionBean {
         if (em.find(Admin.class, 1l) == null) {
             initializeData();
         }
+       
+        
     }
 
     private void initializeData() {
@@ -203,27 +210,36 @@ public class DataInitSessionBean {
             listings.add(em.find(Listing.class, 1l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
-            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
 
-            Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-            advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Advertisement advertisement2 = new Advertisement("Advertisement Two", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller7.getUserId(), "4444 5555 6666 7777");
+            advertisementSessionBean.createNewAdvertisement(advertisement2, seller8.getUserId(), "4444 5555 6666 8888");
 
             System.out.println("initialise review");
             long listingIDtoPassIn = 1;
             Review review = new Review("Good Product", 5, date, new ArrayList<>());
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
-
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
+            
+            List<String> eventPictures = new ArrayList<>();
+            eventPictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bedok Reservoir", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            eventSessionBeanLocal.createNewEvent(event1, seller7.getUserId());
+            eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
+            
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException 
+                |CreateNewEventException | EventNameExistsException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
-        } catch (CreateNewOrderException ex) {
-            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } //catch (CreateNewOrderException ex) {
+            //Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        //}
     }
 
     public void persist(Object object) {

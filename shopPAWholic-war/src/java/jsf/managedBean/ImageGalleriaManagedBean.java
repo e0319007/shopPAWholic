@@ -21,7 +21,7 @@ public class ImageGalleriaManagedBean {
     public void init() {
         images = new ArrayList<String>();
         for (int i = 1; i <= 3; i++) {
-            images.add("nature" + i + ".jpg");
+            images.add("petAdvertisement" + i + ".jpg");
         }
     }
 

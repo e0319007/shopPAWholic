@@ -101,7 +101,9 @@ public class SecurityFilter implements Filter {
                     || path.equals("/sellerOperation/sellerHomepage.xhtml")
                     || path.equals("/sellerOperation/sellerOperation.xhtml")
                     || path.equals("/sellerOperation/sellerProfile.xhtml")
-                    || path.equals("/sellerOperation/sellerSellListing.xhtml")) {
+                    || path.equals("/sellerOperation/sellerSellListing.xhtml")
+                    || path.equals("/sellerOperation/sellerEvent.xhtml")
+                    || path.equals("/sellerOperation/sellerAdvertisement.xhtml")) {
                 return true;
             } else {
                 return false;
