@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.Category;
@@ -23,10 +18,6 @@ import util.exception.DeleteCategoryException;
 import util.exception.InputDataValidationException;
 import util.exception.UpdateCategoryException;
 
-/**
- *
- * @author EileenLeong
- */
 @Stateless
 public class CategorySessionBean implements CategorySessionBeanLocal {
 
@@ -182,10 +173,9 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     @Override
     public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteCategoryException {
         Category categoryToDelete = retrieveCategoryByCategoryId(categoryId);
-
+        System.out.println(categoryToDelete);
         if (!categoryToDelete.getSubCategories().isEmpty()) {
             throw new DeleteCategoryException("Category Id " + categoryId + " is associated with existing sub-categories and cannot be deleted!");
-
         } else if (!categoryToDelete.getListings().isEmpty()) {
             throw new DeleteCategoryException("Category Id " + categoryId + " is associated with existing listings and cannot be deleted!");
         } else {
