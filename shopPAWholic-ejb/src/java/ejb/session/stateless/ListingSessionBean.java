@@ -12,7 +12,6 @@ import entity.Tag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
@@ -207,10 +206,10 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             return listings;
         } else {
             if (condition.equals("OR")) {
-                Query query = em.createQuery("SELECT DISTINCT l FROM Listing l IN (l.tags) t WHERE t.tagId IN :inTagIds ORDER BY l.skuCode ASC");
+                Query query = em.createQuery("SELECT DISTINCT l FROM Listing l, IN (l.tags) t WHERE t.tagId IN :inTagIds ORDER BY l.skuCode ASC");
                 query.setParameter("inTagIds", tagIds);
                 listings = query.getResultList();
-            } else {
+            } else { //AND condition
                 String selectClause = "SELECT l FROM Listing l"; 
                 String whereClause = "";
                 Boolean firstTag = true;

@@ -6,7 +6,9 @@
 package ejb.session.stateless;
 
 import entity.User;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 import util.exception.DeleteUserException;
 import util.exception.InputDataValidationException;
@@ -30,8 +32,12 @@ public interface UserSessionBeanLocal {
 
     public List<User> retrieveAllUsers();
 
+    public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear();
+
+    public Map<Date, Integer> retrieveTotalNumberOfUsersForDay();
+            
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
 
     public User retrieveUserByEmail(String email) throws UserNotFoundException;
-    
+
 }

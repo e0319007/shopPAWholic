@@ -41,9 +41,6 @@ public class CategoryManagedBean implements Serializable {
 
     private Category categoryToUpdate;
 
-    /**
-     * Creates a new instance of CategoryManagedBean
-     */
     public CategoryManagedBean() {
         newCategory = new Category();
     }
@@ -69,6 +66,7 @@ public class CategoryManagedBean implements Serializable {
     }*/
     public void createNewCategory(ActionEvent event) {
         try {
+            System.out.println("################ i am in category;");
             Category category = categorySessionBeanLocal.createNewCategory(newCategory, parentCategoryId);
             categories.add(newCategory);
 
@@ -100,58 +98,34 @@ public class CategoryManagedBean implements Serializable {
         }
     }
 
-    /**
-     * @return the categories
-     */
     public List<Category> getCategories() {
         return categories;
     }
 
-    /**
-     * @param categories the categories to set
-     */
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the parentCategoryId
-     */
     public Long getParentCategoryId() {
         return parentCategoryId;
     }
-
-    /**
-     * @param parentCategoryId the parentCategoryId to set
-     */
+    
     public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }

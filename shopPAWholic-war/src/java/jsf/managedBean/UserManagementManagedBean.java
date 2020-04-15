@@ -41,22 +41,21 @@ public class UserManagementManagedBean implements Serializable {
 
     private List<Customer> customerList;
     private List<Customer> filteredCustomerList;
-    
+
     private List<Seller> sellerList;
     private List<Seller> filteredSellerList;
 
     private User selectedUserToView;
     private Customer selectedCustomerToView;
     private Seller selectedSellerrToView;
-    
+
     private User userToView;
     private Customer customerToView;
     private Seller sellerToView;
-    
-    private Customer selectedCustomerToUpdate; 
+
+    private Customer selectedCustomerToUpdate;
     private Long customerIdUpdate;
-   
-    
+
     public UserManagementManagedBean() {
     }
 
@@ -72,17 +71,17 @@ public class UserManagementManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("userIdToView", userIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("adminViewUserDetails.xhtml");
     }
-    
+
     public void updateCustomer(ActionEvent event) throws InputDataValidationException {
-        
+
         try {
             customerSessionBeanLocal.updateCustomer(selectedCustomerToUpdate);
-            
-    } catch (CustomerNotFoundException ex){
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
+
+        } catch (CustomerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
+        }
     }
- }
-    
+
     public List<Customer> getCustomerList() {
         return customerList;
     }
@@ -162,7 +161,7 @@ public class UserManagementManagedBean implements Serializable {
     public void setFilteredSellerList(List<Seller> filteredSellerList) {
         this.filteredSellerList = filteredSellerList;
     }
-    
+
     public User getUserToView() {
         return userToView;
     }
@@ -187,30 +186,18 @@ public class UserManagementManagedBean implements Serializable {
         this.sellerToView = sellerToView;
     }
 
-    /**
-     * @return the selectedCustomerToUpdate
-     */
     public Customer getSelectedCustomerToUpdate() {
         return selectedCustomerToUpdate;
     }
 
-    /**
-     * @param selectedCustomerToUpdate the selectedCustomerToUpdate to set
-     */
     public void setSelectedCustomerToUpdate(Customer selectedCustomerToUpdate) {
         this.selectedCustomerToUpdate = selectedCustomerToUpdate;
     }
 
-    /**
-     * @return the customerIdUpdate
-     */
     public Long getCustomerIdUpdate() {
         return customerIdUpdate;
     }
 
-    /**
-     * @param customerIdUpdate the customerIdUpdate to set
-     */
     public void setCustomerIdUpdate(Long customerIdUpdate) {
         this.customerIdUpdate = customerIdUpdate;
     }

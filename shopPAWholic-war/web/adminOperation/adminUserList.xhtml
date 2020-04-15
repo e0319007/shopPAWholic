@@ -10,14 +10,52 @@
 
     <ui:define name="content">
         <div>
+            <h1></h1>
             <ez:Breadcrumb pageName="userList"/>
+            <!--data analytics of users-->
+
+            <!--            <f:facet name="{Exporters}">
+                            <div style="float:right;padding-top: 5px;">
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/excel.png" width="24"/>
+                                    <p:dataExporter type="xls" target="tbl" fileName="cars" />
+                                </h:commandLink>
+            
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/xlsx.png" width="24"/>
+                                    <p:dataExporter type="xlsxstream" target="tbl" fileName="cars" />
+                                </h:commandLink>
+            
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/pdf.png" width="24"/>
+                                    <p:dataExporter type="pdf" target="tbl" fileName="cars"/>
+                                </h:commandLink>
+            
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/csv.png" width="24"/>
+                                    <p:dataExporter type="csv" target="tbl" fileName="cars" />
+                                </h:commandLink>
+            
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/xml.png" width="24"/>
+                                    <p:dataExporter type="xml" target="tbl" fileName="cars" />
+                                </h:commandLink>
+            
+                                <h:commandLink>
+                                    <p:graphicImage name="/demo/images/keyboardpencil.png" width="24"/>
+                                    <p:dataExporter type="text" target="tbl" fileName="cars" exporter="#{dataExporterView.textExporter}"/>
+                                </h:commandLink>                        
+                            </div>
+                        </f:facet>-->
+
             <h:form id="formAllUsers">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 <p:dataTable id="dataTableAllUsers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.userList}" var="user" rowKey="#{user.userId}" rowIndexVar="row"
                              filteredValue="#{userManagementManagedBean.filteredUserList}"
-                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
 
                     <f:facet name="header">
+                        <p:commandButton style="float: left;" value="Generate" actionListener="#{jasperReportManagedBean.generateReport}" ajax="false"/>
                         <p:outputPanel style="text-align: right;">
                             <h:outputText value="Search all fields:" />
                             <p:inputText id="globalFilter" onkeyup="PF('dataTableAllUsers').filter()" style="width:300px" placeholder="Enter keyword"/>
@@ -94,6 +132,6 @@
             </h:form>
         </div>
     </ui:define>
- </ui:composition>
+</ui:composition>
 
 
