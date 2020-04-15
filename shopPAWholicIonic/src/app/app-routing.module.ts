@@ -13,6 +13,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },   {
+<<<<<<< HEAD
     path: 'view-billing-detail',
     loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
   },
@@ -28,6 +29,16 @@ const routes: Routes = [
     path: 'view-listing-details',
     loadChildren: () => import('./view-listing-details/view-listing-details.module').then( m => m.ViewListingDetailsPageModule)
   },
+=======
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },
+
+>>>>>>> origin/joanna2
  
  
 ];

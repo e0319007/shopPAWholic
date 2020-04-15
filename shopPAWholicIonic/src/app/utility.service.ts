@@ -34,8 +34,13 @@ export class UtilityService {
     }
   }
 
+<<<<<<< HEAD
   setIsLogin() : void {
     sessionStorage.isLogin = true;
+=======
+  setIsLogin(isLogin : boolean) : void {
+    sessionStorage.isLogin = isLogin;
+>>>>>>> origin/joanna2
   }
 
   getCurrentUser() : User {
@@ -71,11 +76,27 @@ export class UtilityService {
     }
   }
 
+<<<<<<< HEAD
+=======
+  isSeller(): boolean {
+    let currentUser = this.getCurrentUser();
+    if (currentUser instanceof Seller) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+>>>>>>> origin/joanna2
   checkAccessRight(path) : boolean {
     console.log("***************PATH: " + path);
     if(this.getIsLogin()) {
       let user: User;
+<<<<<<< HEAD
       user = this.getCurrentUser;
+=======
+      user = this.getCurrentUser();
+>>>>>>> origin/joanna2
       if(user instanceof Customer) {
         //if condition for paths
         return true;
@@ -86,4 +107,8 @@ export class UtilityService {
     } 
   }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/joanna2

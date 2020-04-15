@@ -104,7 +104,7 @@ public class Listing implements Serializable {
         //this.quantityOnHand = quantityOnHand;
         this.unitPrice = unitPrice;
        // this.pictures = pictures;
-        this.quantityOnHand = quantityOnHand;
+        this.quantityOnHand = quantityAtHand;
         this.listDate = listDate;
         
     }

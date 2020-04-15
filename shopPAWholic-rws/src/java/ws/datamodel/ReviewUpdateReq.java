@@ -6,6 +6,7 @@
 package ws.datamodel;
 
 import entity.Review;
+import java.util.Date;
 
 /**
  *
@@ -17,15 +18,17 @@ public class ReviewUpdateReq {
     private Long listingId;
     private String email;
     private String password;
+    private Date reviewDate;
 
     public ReviewUpdateReq() {
     }
 
-    public ReviewUpdateReq(Review review, Long listingId, String email, String password) {
+    public ReviewUpdateReq(Review review, Long listingId, String email, String password, Date reviewDate) {
         this.review = review;
         this.listingId = listingId;
         this.email = email;
         this.password = password;
+        this.reviewDate = reviewDate;
     }
 
     /**
@@ -82,6 +85,20 @@ public class ReviewUpdateReq {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the reviewDate
+     */
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    /**
+     * @param reviewDate the reviewDate to set
+     */
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
     }
     
     
