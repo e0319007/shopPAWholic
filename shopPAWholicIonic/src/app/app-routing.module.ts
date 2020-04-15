@@ -14,6 +14,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },   {
 <<<<<<< HEAD
+<<<<<<< HEAD
     path: 'view-billing-detail',
     loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
   },
@@ -30,6 +31,8 @@ const routes: Routes = [
     loadChildren: () => import('./view-listing-details/view-listing-details.module').then( m => m.ViewListingDetailsPageModule)
   },
 =======
+=======
+>>>>>>> origin/joanna2
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
@@ -38,6 +41,9 @@ const routes: Routes = [
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
 
+<<<<<<< HEAD
+>>>>>>> origin/joanna2
+=======
 >>>>>>> origin/joanna2
  
  
