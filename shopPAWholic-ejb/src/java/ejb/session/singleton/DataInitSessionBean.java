@@ -93,8 +93,7 @@ public class DataInitSessionBean {
         if (em.find(Admin.class, 1l) == null) {
             initializeData();
         }
-       
-        
+
     }
 
     private void initializeData() {
@@ -231,7 +230,6 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
             //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
-
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
@@ -244,21 +242,27 @@ public class DataInitSessionBean {
             Review review = new Review("Good Product", 5, date, new ArrayList<>());
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
-            
+
+            System.out.println("******  I AM IN *******");
             List<String> eventPictures = new ArrayList<>();
+            System.out.println("******  I AM IN *******");
             eventPictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            System.out.println("******  I AM IN *******");
             Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bedok Reservoir", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            System.out.println("******  I AM IN *******");
             Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event1, seller7.getUserId());
+            System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
-            
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException 
-                |CreateNewEventException | EventNameExistsException ex) {
+
+        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
+                | CreateNewEventException | EventNameExistsException ex) {
 //CreateNewOrderException
 
             ex.printStackTrace();
         } //catch (CreateNewOrderException ex) {
-            //Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        //Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         //}
     }
 
