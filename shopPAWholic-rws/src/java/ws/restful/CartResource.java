@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import util.exception.CartNotFoundException;
 import util.exception.InvalidLoginCredentialException;
+import ws.datamodel.CartRerieveByIdRsp;
 import ws.datamodel.CartUpdateReq;
 import ws.datamodel.ErrorRsp;
 
@@ -53,7 +54,7 @@ public class CartResource { //cart transactions will be managed by service
             System.out.println("********** CartResource.retrieveCartByCustomerId(): Customer " + customer.getEmail()+ " login remotely via web service");
             Cart cart = cartSessionBean.getCartByCustomerId(customer.getUserId());
             cart.getCustomer().setCart(null);
-            return Response.status(Response.Status.OK).entity(cart).build();
+            return Response.status(Response.Status.OK).entity(new CartRerieveByIdRsp(cart)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build(); 
