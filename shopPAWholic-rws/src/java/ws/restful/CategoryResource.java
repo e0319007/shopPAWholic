@@ -90,4 +90,38 @@ public class CategoryResource
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
     }
+    
+    @Path("retrieveAllLeafCategories")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAllLeafCategories(@QueryParam("email") String email, 
+                                        @QueryParam("password") String password) {
+        try
+        {
+            Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
+            System.out.println("********** CategoryResource.retrieveAllLeafCategories(): seller " + seller.getEmail()+ " login remotely via web service");
+
+            List<Category> categoryEntities = categorySessionBeanLocal.retrieveAllLeafCategories();
+            
+            for(Category category:categoryEntities) {
+                if(category.getParentCategory()!= null) {
+                    category.getParentCategory().getSubCategories().clear();
+                }
+                category.getSubCategories().clear();
+                category.getListings().clear();
+                System.out.println(category.getDescription());
+            }
+            return Response.status(Status.OK).entity(new CategoriesRetrieveAllRsp(categoryEntities)).build();
+        }
+        catch(InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+        catch(Exception ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
 }

@@ -33,9 +33,11 @@ import util.exception.ListingNotFoundException;
 import util.exception.UpdateListingException;
 import ws.datamodel.ListingCreateReq;
 import ws.datamodel.ErrorRsp;
+import ws.datamodel.ListingCreateNewRsp;
 import ws.datamodel.ListingRetrieveDetailRsp;
 import ws.datamodel.ListingUpdateReq;
 import ws.datamodel.ListingsRetrieveAllRsp;
+import java.util.Date;
 
 /**
  *
@@ -172,9 +174,10 @@ public class ListingResource {
         if(createListingReq != null) {
             try {
                 Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword(), "createListing");
+                createListingReq.getListing().setListDate(new Date());
                 Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds(), seller.getUserId());
                 
-                return Response.status(Response.Status.OK).entity(listing.getListingId()).build();
+                return Response.status(Response.Status.OK).entity(new ListingCreateNewRsp(listing.getListingId())).build();
             }
             catch(InvalidLoginCredentialException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
