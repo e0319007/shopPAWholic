@@ -3,13 +3,23 @@ package jsf.managedBean;
 import ejb.session.stateless.AdminSessionBeanLocal;
 import entity.Admin;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.mail.Folder;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Store;
 import javax.servlet.http.HttpSession;
 import util.exception.InvalidLoginCredentialException;
 
@@ -49,73 +59,46 @@ public class AdminLoginManagedBean {
     }
 
 //    public void getEmailNumber() throws NoSuchProviderException, MessagingException {
+//        final Properties props = new Properties();
+//       props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//        props.setProperty("mail.pop3.socketFactory.fallback", "false");
+//        props.setProperty( "mail.pop3.host", "pop.gmail.com" );
+//        props.setProperty( "mail.pop3.user", "shoppawholic");
+//        props.setProperty( "mail.pop3.password", "shoppawholic2020");
+//        props.setProperty( "mail.pop3.ssl.enable", "true");
+//        props.setProperty( "mail.pop3.port", "995" );
+//        props.setProperty( "mail.pop3.auth", "true" );      
+//        props.setProperty("mail.pop3.starttls.enable", "true"); 
+//       /* props.setProperty( "mail.pop3.starttls.enable", "true" );
+//        props.setProperty( "mail.pop3.starttls.required", "true" );*/
 //
-////        URLName url = new URLName("imaps", "imap.gmail.com", 993, "INBOX", "shoppawholic@gmail.com", "shoppawholic2020");
-////        Properties props = null;
-////        try {
-////            props = System.getProperties();
-////        } catch (SecurityException sex) {
-////            props = new Properties();
-////        }
-////        Session session = Session.getDefaultInstance(props, null);
-////        Store store = session.getStore(url);
-////        store.connect();
-////        Folder folder = store.getFolder(url);
-////        folder.open(Folder.READ_ONLY);
-////
-////        Message[] messages = folder.getMessages();
-////        System.out.println("messages.length---" + messages.length);
+//        Session session  = Session.getInstance(props);
+//        session.setDebug(true);
 //
-//        try {
+//        Store store = session.getStore("pop3");
+//        store.connect("shoppawholic", "shoppawholic2020");         
+//        Folder folder = store.getDefaultFolder();
+//        folder.open(Folder.READ_ONLY);
+//        Message message[] = folder.getMessages();
+//        for ( int i = 0; i < message.length; i++ )
+//        {
+//          Message m = message[i];
+//              System.out.println( "-------------------------\nNachricht: " + i );
+//              System.out.println( "From: " + Arrays.toString(m.getFrom()) );
+//              System.out.println( "Topic: " + m.getSubject() );   
 //
-//            //create properties field
-//            Properties properties = new Properties();
 //
-//            properties.put("mail.host", "pop.gmail.com");
-//            properties.put("mail.pop3.port", "995");
-//            properties.put("mail.pop3.auth", "true");
-//            properties.put("mail.store.protocol", "pop3s");
-//            
-////            properties.put("mail.smtp.ssl.trust", "pop.gmail.com");
-////            properties.put("mail.pop3.starttls.enable", "true");
-//
-//            Session emailSession = Session.getDefaultInstance(properties, null);
-//            System.out.println("******** emailSession" + emailSession);
-//            //create the POP3 store object and connect with the pop server
-//            Store store = emailSession.getStore();
-//
-//            store.connect("shoppawholic@gmail.com", "shoppawholic2020");
-//            System.out.println("********* store" + store);
-//            //create the folder object and open it
-//            Folder emailFolder = store.getFolder("INBOX");
-//            emailFolder.open(Folder.READ_ONLY);
-//
-//            // retrieve the messages from the folder in an array and print it
-//            Message[] messages = emailFolder.getMessages();
-//            System.out.println("messages.length---" + messages.length);
-//
-//            for (int i = 0, n = messages.length; i < n; i++) {
-//                Message message = messages[i];
-//                System.out.println("---------------------------------");
-//                System.out.println("Email Number " + (i + 1));
-//                System.out.println("Subject: " + message.getSubject());
-//                System.out.println("From: " + message.getFrom()[0]);
-//                System.out.println("Text: " + message.getContent().toString());
-//
-//            }
-//
-//            //close the store and folder objects
-//            emailFolder.close(false);
-//            store.close();
-//
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
+//          if ( m.isMimeType("text/plain") )
+//            try {
+//                System.out.println( m.getContent() );
+//          } catch (IOException ex) {
+//              Logger.getLogger(AdminLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+//          }
 //        }
+//        folder.close( false );
+//        store.close();
 //    }
+
     public String getUsername() {
         return username;
     }
