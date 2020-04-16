@@ -47,19 +47,25 @@ export class UtilityService {
   }
 
   getEmail(): string {
+    this.setEmail("dummy");
     return sessionStorage.email;
   }
 
   setEmail(email: string) {
-    sessionStorage.email = email;
+     let e: string = "sellerOne@email.com";
+     sessionStorage.email = e;
+    //sessionStorage.email = email;
   }
 
   getPassword(): string {
+    this.setPassword("dummy");
     return sessionStorage.password;
   }
 
   setPassword(password: string) {
-    sessionStorage.password = password;
+    let p: string = "password";
+    sessionStorage.password = p;
+    //sessionStorage.password = password;
   }
 
   isCustomer(): boolean {

@@ -21,7 +21,7 @@ export class CategoryService {
 
   retrieveAllCategories(): Observable<any> {
     return this.httpClient.get<any>(this.baseUrl + "/retrieveAllCategories?email=" + 
-    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword).pipe(
+    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
       catchError(this.handleError)
     );
   }

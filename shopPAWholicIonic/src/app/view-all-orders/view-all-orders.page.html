@@ -1,9 +1,19 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>ViewAllOrders</ion-title>
+    <ion-title>My Orders</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let order of orders" (click) = "viewOrderDetails($event, order)">
+          ID: {{order.id}} 
+          Date: {{order.orderDate}}
+          Price: {{order.totalPrice}}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

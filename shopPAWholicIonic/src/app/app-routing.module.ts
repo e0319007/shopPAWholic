@@ -12,21 +12,22 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },   {
+  },   
+  {
     path: 'view-billing-detail',
     loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
   },
   {
-    path: 'view-all-orders',
-    loadChildren: () => import('./view-all-orders/view-all-orders.module').then( m => m.ViewAllOrdersPageModule)
+    path:'viewAllOrders', loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
+  },
+  { 
+    path: 'viewAllListings', loadChildren: './view-all-listings/view-all-listings.module#ViewAllListingsPageModule', canActivate: [AuthGuard] 
   },
   {
-    path: 'view-all-listings',
-    loadChildren: () => import('./view-all-listings/view-all-listings.module').then( m => m.ViewAllListingsPageModule)
+    path: 'viewListingDetails/:listingId', loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard]
   },
   {
-    path: 'view-listing-details',
-    loadChildren: () => import('./view-listing-details/view-listing-details.module').then( m => m.ViewListingDetailsPageModule)
+    path: 'viewListingDetails', loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard] 
   },
  
  

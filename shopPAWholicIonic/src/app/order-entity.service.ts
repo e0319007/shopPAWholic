@@ -18,11 +18,17 @@ export class OrderEntityService {
 
   baseUrl: string;
   constructor(private httpclient: HttpClient, private utilityService: UtilityService) {
-    this.baseUrl = utilityService.getRootPath + 'OrderEntity';
+    this.baseUrl = utilityService.getRootPath() + 'Order';
   }
 
   retrieveAllOrderByUser():Observable<any> {
-    return this.httpclient.get<any>(this.baseUrl).pipe(catchError(this.handleError))
+    let email: string = this.utilityService.getEmail();
+    console.log("retrieving in service with email: " + email)
+    let url: string = this.baseUrl + "?email=" + this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword();
+    console.log(url);
+    return this.httpclient.get<any>(url).pipe(
+      catchError(this.handleError)
+      );
   }
 
   createNewOrder(order: OrderEntity, deliveryDetailId: number, ccNum: string, seller: Seller, listings: Listing[]): Observable<any> {
@@ -44,7 +50,7 @@ export class OrderEntityService {
       "email": this.utilityService.getEmail(),
       "password": this.utilityService.getPassword(),
     }
-    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
+    return this.httpclient.post<any>(this.baseUrl + "/changeOrderStatusByCustomer", orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
   } 
 
   changeOrderStatusBySeller(order: OrderEntity): Observable<any> {
@@ -53,7 +59,7 @@ export class OrderEntityService {
       "email": this.utilityService.getEmail(),
       "password": this.utilityService.getPassword(),
     }
-    return this.httpclient.post<any>(this.baseUrl, orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
+    return this.httpclient.post<any>(this.baseUrl + "/changeOrderStatusBySeller", orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
   } 
 
   private handleError(error: HttpErrorResponse) {

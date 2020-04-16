@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'View Orders',
-      url: '/viewOrders',
+      url: '/viewAllOrders',
       icon: ''
     },
     {

@@ -16,8 +16,8 @@
     </ion-content>
     <ion-card-content>
       <ion-list>
-        <ion-button expand="full" *ngFor="let listing of listings" (click) = "viewProductDetails($event, listing)">
-           {{listing.name}} - {{listing.price}}
+        <ion-button expand="full" *ngFor="let listing of listings" (click) = "viewListingDetails($event, listing)">
+           {{listing.name}} - {{listing.unitPrice}}
         </ion-button>
       </ion-list>
     </ion-card-content>

@@ -26,13 +26,18 @@ export class ViewListingDetailsPage implements OnInit {
 
   ngOnInit() {
     this.listingId = parseInt(this.activeRoute.snapshot.paramMap.get('listingId'));
+    console.log("called view listing method with listing id: " + this.listingId);
     this.refreshListing();
+
   }
 
   refreshListing() {
+    console.log("****IN REFRESH")
     this.listingService.retrieveListingById(this.listingId).subscribe(
       response => {
+        console.log("******** refreshed listing and got back response with listing name: " );
         this.listingToView = response.listing;
+        console.log(this.listingToView == null);
       },
       error => {
         this.retrieveListingError = true;
@@ -41,6 +46,11 @@ export class ViewListingDetailsPage implements OnInit {
     );
   }
 
+  ionViewWillEnter() 
+	{
+		this.refreshListing();
+	}
+	
   updateListing() {
     this.router.navigate(["/updateListing" + this.listingId]);
   }
