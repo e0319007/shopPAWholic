@@ -133,6 +133,7 @@ public class ListingManagementManagedBean implements Serializable {
             newListing = new Listing();
             categoryIdNew = null;
             tagIdsNew = null;
+           
             //setNewListing(new Listing());
             //setCategoryIdNew(null);
             //setTagIdsNew(null); 
