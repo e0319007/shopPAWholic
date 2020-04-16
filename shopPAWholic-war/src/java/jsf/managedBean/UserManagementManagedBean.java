@@ -49,6 +49,10 @@ public class UserManagementManagedBean implements Serializable {
     private Customer selectedCustomerToView;
     private Seller selectedSellerrToView;
 
+    private User currentUser;
+    private Customer currentCustomer;
+    private Seller currentSeller;
+    
     private User userToView;
     private Customer customerToView;
     private Seller sellerToView;
@@ -57,6 +61,14 @@ public class UserManagementManagedBean implements Serializable {
     private Long customerIdUpdate;
 
     public UserManagementManagedBean() {
+        currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        if (currentUser instanceof Customer){
+            currentCustomer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        } else {
+            currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        }
+        System.out.println("''''''''''''''''''''''''''''''''''''' current Customer: "+currentCustomer);
+        
     }
 
     @PostConstruct
@@ -200,6 +212,31 @@ public class UserManagementManagedBean implements Serializable {
 
     public void setCustomerIdUpdate(Long customerIdUpdate) {
         this.customerIdUpdate = customerIdUpdate;
+    }
+
+    
+    public User getCurrentUser(){
+        return currentUser;
+    }
+    
+    public void setCurrentUser(){
+        this.currentUser = currentUser;
+    }
+    
+    public Customer getCurrentCustomer() {
+        return currentCustomer;
+    }
+
+    public Seller getCurrentSeller() {
+        return currentSeller;
+    }
+
+    public void setCurrentCustomer(Customer currentCustomer) {
+        this.currentCustomer = currentCustomer;
+    }
+
+    public void setCurrentSeller(Seller currentSeller) {
+        this.currentSeller = currentSeller;
     }
 
 }
