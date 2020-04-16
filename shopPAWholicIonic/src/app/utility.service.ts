@@ -5,6 +5,7 @@ import { User } from './user';
 import { Customer } from './customer';
 import { Seller } from './seller';
 
+
 @Injectable({
   providedIn: 'root'
 })

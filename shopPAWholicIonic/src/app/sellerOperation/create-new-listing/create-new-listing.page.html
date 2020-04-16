@@ -1,0 +1,134 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Create Listing</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div *ngIf="resultSuccess == true" style="color:blue;">
+        {{message}}
+      </div>
+      <div *ngIf="resultError == true" style="color:red;">
+        {{message}}
+      </div>
+
+      <form #createListingForm="ngForm" (ngSubmit) = create(createListingForm)>
+        <div style="color: red;">
+          
+          <div *ngIf="skuCode.invalid && (skuCode.dirty || skuCode.touched || submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              SKU Code is required.
+            </div>
+          </div>
+
+          <div *ngIf="name.invalid && (name.dirty || name.touched || name.submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              Name is required
+            </div>
+          </div>
+
+          <div *ngIf="description.invalid && (description.dirty || description.touched || description.submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              Description is required
+            </div>
+          </div>
+
+          <div *ngIf="quantityOnHand.invalid && (quantityOnHand.dirty || quantityOnHand.touched || quantityOnHand.submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              Quantity on hand is required
+            </div>
+          </div>
+
+          <div *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched || unitPrice.submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              Unit price is required
+            </div>
+          </div>
+
+          <div *ngIf="category.invalid && (category.dirty || category.touched || category.submitted)" class="errorText">
+            <div *ngIf="name.errors.required">
+              Category is required
+            </div>
+          </div>
+      
+        </div>
+
+        <ion-list>
+
+          <ion-item>
+            <ion-label>
+              SKU Code
+            </ion-label>
+            <ion-input type="text" id="skuCode" name="skuCode" [(ngModel)]="newListing.skuCode" required="true" #skuCode="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Name
+            </ion-label>
+            <ion-input type="text" id="name" name="name" [(ngModel)]="newListing.name" required="true" #name="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Description
+            </ion-label>
+            <ion-input type="text" id="description" name="description" required="true" [(ngModel)]="newListing.description" #description="ngModel"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>
+              Quantity On Hand
+            </ion-label>
+            <ion-input type="text" id="quantityOnHand" name="quantityOnHand" required="true" [(ngModel)]="newListing.quantityOnHand" #quantityOnHand="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Unit Price
+            </ion-label>
+            <ion-input type="text" id="unitPrice" name="unitPrice" required="true" [(ngModel)]="newListing.unitPrice" #unitPrice="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Category
+            </ion-label>
+            <ion-select placeholder="Select One" id="category" name="category" #category="ngModel" [(ngModel)]="categoryId" required="true">
+              <ion-select-option *ngFor="let category of categories" value="{{category.categoryId}}">{{category.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Tags
+            </ion-label>
+            <ion-select placeholder="Select Many" id="tag" name="tag" [(ngModel)]="tagIds" multiple=true>
+              <ion-select-option *ngFor="let tag of tags" value={{tag.tagId}}>{{tag.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-button click="clear()">
+              Clear
+            </ion-button>
+            <ion-button type="submit" ion-button block>
+              Create
+            </ion-button>
+          </ion-item>
+
+        </ion-list>
+      
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

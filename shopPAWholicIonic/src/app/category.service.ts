@@ -26,6 +26,13 @@ export class CategoryService {
     );
   }
 
+  retrieveAllLeafCategories(): Observable<any> {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveAllLeafCategories?email=" + 
+    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {

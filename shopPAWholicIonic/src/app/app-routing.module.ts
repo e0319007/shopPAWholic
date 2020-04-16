@@ -18,17 +18,38 @@ const routes: Routes = [
     loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
   },
   {
-    path:'viewAllOrders', loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
+    path:'viewAllOrders', 
+    loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
   },
   { 
-    path: 'viewAllListings', loadChildren: './view-all-listings/view-all-listings.module#ViewAllListingsPageModule', canActivate: [AuthGuard] 
+    path: 'viewAllListings', 
+    loadChildren: './view-all-listings/view-all-listings.module#ViewAllListingsPageModule', canActivate: [AuthGuard] 
   },
   {
-    path: 'viewListingDetails/:listingId', loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard]
+    path: 'viewListingDetails/:listingId', 
+    loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard]
   },
   {
-    path: 'viewListingDetails', loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard] 
+    path: 'viewListingDetails', 
+    loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard] 
   },
+  {
+    path: 'delete-listing',
+    loadChildren: () => import('./sellerOperation/delete-listing/delete-listing.module').then( m => m.DeleteListingPageModule)
+  },
+  {
+    path: 'update-listing',
+    loadChildren: () => import('./sellerOperation/update-listing/update-listing.module').then( m => m.UpdateListingPageModule)
+  },
+  {
+    path: 'createNewListing',
+    loadChildren:'./sellerOperation/create-new-listing/create-new-listing.module#CreateNewListingPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'view-cart',
+    loadChildren: () => import('./customerOperation/view-cart/view-cart.module').then( m => m.ViewCartPageModule)
+  },
+
  
  
 ];
