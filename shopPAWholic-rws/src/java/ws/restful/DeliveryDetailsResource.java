@@ -26,8 +26,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.exception.CreateNewDeliveryDetailException;
 import util.exception.DeliveryDetailNotFoundException;
+import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
+import ws.datamodel.DeliveryDetailCreateNewReq;
+import ws.datamodel.DeliveryDetailCreateNewRsp;
+import ws.datamodel.DeliveryDetailRetrieveByOrderIdRsp;
+import ws.datamodel.DeliveryDetailUpdateReq;
 import ws.datamodel.ErrorRsp;
 /**
  *
@@ -48,6 +54,49 @@ public class DeliveryDetailsResource {
         userSessionBeanLocal = sessionBeanLookup.lookupUserSessionBeanLocal();
     }
     
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createDeliveryDetail(DeliveryDetailCreateNewReq deliveryDetailCreateNewReq) {
+        try {
+            User user = userSessionBeanLocal.userLogin(deliveryDetailCreateNewReq.getEmail(), deliveryDetailCreateNewReq.getPassword());
+            System.out.println("********** DeliveryDetailsResource.retrieveDeliveryDetailByOrderId(): user " + user.getEmail()+ " login remotely via web service");
+            DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.createNewDeliveryDetail(deliveryDetailCreateNewReq.getDeliveryDetail());
+            return Response.status(Response.Status.OK).entity(new DeliveryDetailCreateNewRsp(deliveryDetail)).build();
+        } catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        } catch (CreateNewDeliveryDetailException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        } catch (InputDataValidationException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateDeliveryDetail(DeliveryDetailUpdateReq deliveryDetailUpdateReq) {
+        try {
+            User user = userSessionBeanLocal.userLogin(deliveryDetailUpdateReq.getEmail(), deliveryDetailUpdateReq.getPassword());
+            System.out.println("********** DeliveryDetailsResource.updateDeliveryDetail(): user " + user.getEmail()+ " login remotely via web service");
+            
+            deliveryDetailUpdateReq.getDeliveryDetail().getStatusLists().add(deliveryDetailUpdateReq.getStatusToAdd());
+            deliveryDetailSessionBeanLocal.updateDeliveryDetail(deliveryDetailUpdateReq.getDeliveryDetail());
+            
+            System.out.println("delivery status list: " + deliveryDetailUpdateReq.getDeliveryDetail().getStatusLists());
+            return Response.status(Response.Status.OK).build();
+        } catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        } catch (InputDataValidationException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+    }
+    
     //retrieve and get
     @Path("retrieveDeliveryDetail/{deliveryDetailId}")
     @GET
@@ -60,9 +109,10 @@ public class DeliveryDetailsResource {
             User user = userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** DeliveryDetailsResource.retrieveDeliveryDetailByOrderId(): user " + user.getEmail()+ " login remotely via web service");
             System.out.println("Finding delivery detail id: " + deliveryDetailId);
-            DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.retrieveDeliveryDetailById(deliveryDetailId);
+            DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.retrieveDeliveryDetailByOrderId(deliveryDetailId);
+            System.out.println("Retrieved delivery detail with status list length: " + deliveryDetail.getStatusLists());
             System.out.println(deliveryDetail);
-            return Response.status(Response.Status.OK).entity(deliveryDetail).build();
+            return Response.status(Response.Status.OK).entity(new DeliveryDetailRetrieveByOrderIdRsp(deliveryDetail)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();

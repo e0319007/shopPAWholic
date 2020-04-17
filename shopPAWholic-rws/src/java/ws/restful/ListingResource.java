@@ -210,7 +210,7 @@ public class ListingResource {
                 Seller seller = getSellerInstance(listingUpdateReq.getEmail(), listingUpdateReq.getPassword(), "updateListing");
                 
                 listingSessionBeanLocal.updateListing(listingUpdateReq.getListing(), listingUpdateReq.getCategoryId(), listingUpdateReq.getTagIds());
-                
+                System.out.println("********** qty on hand : " + listingUpdateReq.getListing().getQuantityOnHand());
                 return Response.status(Response.Status.OK).build();
             }
             catch(InvalidLoginCredentialException ex) {

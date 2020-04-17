@@ -3,28 +3,38 @@ import { OrderEntity } from '../order-entity';
 import { OrderEntityService } from '../order-entity.service';
 import { Router } from '@angular/router';
 import { UtilityService } from '../utility.service';
+import { DatePipe } from '@angular/common';
+import { OrderDisplay } from '../order-display';
 
 @Component({
   selector: 'app-view-all-orders',
   templateUrl: './view-all-orders.page.html',
   styleUrls: ['./view-all-orders.page.scss'],
+  providers: [DatePipe],
 })
 export class ViewAllOrdersPage implements OnInit {
 
-  constructor(private orderService: OrderEntityService, private router: Router, private utilityService: UtilityService) { }
+  constructor(private orderService: OrderEntityService, 
+              private router: Router, 
+              private utilityService: UtilityService,
+              private datePipe: DatePipe) { }
 
   orders: OrderEntity[];
+  ordersDisplay: OrderDisplay[] = new Array();
+
   
   ngOnInit() {
-    this.refreshOrders;
+    console.log("ng on init**********");
+    this.refreshOrders();
   }
 
   viewOrderDetails(event, order)
 	{
-		this.router.navigate(["viewOrderDetail/" + order.orderId]);
+		this.router.navigate(["viewOrderDetails/" + order.orderId]);
   }
   
   ionViewWillEnter() {
+    console.log("ion view will enter ***********")
     this.refreshOrders();
   }
 
@@ -32,14 +42,18 @@ export class ViewAllOrdersPage implements OnInit {
     console.log("refreshing orders")
     this.orderService.retrieveAllOrderByUser().subscribe(
       response => {
-        console.log("getting orders with size: " );
-
         this.orders = response.orders;
+        console.log("getting orders with size: " + this.orders.length);
+       // for (let order of this.orders) {
+       //   let dateString: string = order.orderDate.toUTCString();
+       //   this.ordersDisplay.push(new OrderDisplay(order, dateString));
+      //}
       },
       error => {
         console.log('********** ViewAllOrdersPage.ts: ' + error)
       }
-    )
+    );
   }
+  
 
 }

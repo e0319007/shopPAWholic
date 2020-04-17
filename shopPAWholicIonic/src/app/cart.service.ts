@@ -6,6 +6,8 @@ import { catchError } from 'rxjs/operators';
 import { Cart } from './cart';
 import { Listing } from './listing';
 import { CartItem } from './cart-item';
+import { DeliveryDetail } from './delivery-detail';
+import { OrderEntity } from './order-entity';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -23,84 +25,67 @@ export class CartService {
   }
 
   getCartItems(): CartItem {
-    return JSON.parse(sessionStorage.cartItems);
+    return JSON.parse(sessionStorage.getItem('cartItems'));
   }
 
-  addListingToCart(cartItem: CartItem) {
-    let cartItems: CartItem[] = JSON.parse(sessionStorage.cartItems);
-    let exist: boolean = false;
-    for (var i = 0; i < cartItems.length; i++) {
-      if(cartItems[i].listing.name == cartItem.listing.name) {
-        cartItems[i].quantity + cartItem.quantity;
-        exist = true;
-        break;
-      }
-    }
-    if (!exist) {
-      cartItems.push(cartItem);
-    }
-    sessionStorage.cartItems = JSON.stringify(cartItems);
-  }
-
-  removeListingFromCart(cartItem: CartItem) {
-    let cartItems: CartItem[] = JSON.parse(sessionStorage.cartItems);
-    let quantityLeft: number;
-    let itemChanged: CartItem;
-
-    for (var i = 0; i < cartItems.length; i++) {
-      if(cartItems[i].listing.name == cartItem.listing.name) {
-        cartItem[i].quantity = cartItem[i].quantity - cartItem.quantity;
-        quantityLeft = cartItem[i].quantity;
-        itemChanged = cartItem[i];
-        break;
-      }
-    }
-    if(quantityLeft == 0) {
-      cartItems = cartItems.filter(obj => obj !== itemChanged);
-    }
-
-    sessionStorage.cartItems = JSON.stringify(cartItems);
-  }
 
   initialiseCart() {
     let cart: Cart = new Cart();
+    console.log("initialising cart")
     this.retrieveCartByCustomerId().subscribe(
       response => {
         cart = response.cart;
+        console.log("initialised cart*****")
+        sessionStorage.cartId = cart.cartId;
+        let cartItems: CartItem[] = new Array();
+        let exist: boolean = false;
+        for(var i = 0; i < cart.listings.length; i++) {
+          for(var j = 0; j < cartItems.length; j++) {
+            if(cart.listings[i] == cartItems[j].listing) {
+              cartItems[j].quantity = cartItems[j].quantity + 1; 
+              exist = true;
+            }
+          }
+          if (!exist) {
+            cartItems.push(new CartItem(cart.listings[i], 1));
+          }
+        }
+        sessionStorage.setItem ('originalCart', JSON.stringify(cart));
+        sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+        console.log('===========')
+        
       },
       error => {
-        console.log("unable to retrieve cart...")
+        console.log("unable to retrieve cart...: " + error)
       }
     )
-    sessionStorage.cartId = cart.cartId;
-    let cartItems: CartItem[] = new Array();
-    let exist: boolean = false;
-    for(var i = 0; i < cart.listings.length; i++) {
-      for(var j = 0; j < cartItems.length; j++) {
-        if(cart.listings[i] == cartItems[j].listing) {
-          cartItems[j].quantity = cartItems[j].quantity + 1; 
-          exist = true;
-        }
-      }
-      if (!exist) {
-        cartItems.push(new CartItem(cart.listings[i], 1));
-      }
-    }
-    sessionStorage.originalCart = JSON.stringify(cart);
-    sessionStorage.cartItems = JSON.stringify(cartItems);
+    
   }
 
   retrieveCartByCustomerId(): Observable<any> {
+    console.log("retrieving shopping cart")
    return this.httpClient.get<any>(this.baseUrl + "/retrieveCart?email=" + 
-   this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword).pipe(
+   this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
      catchError(this.handleError)
    );
  }
   
+ createOrder(deliveryDetail: DeliveryDetail, ccNum: string, orderEntity: OrderEntity, listings: Listing[]) {
+  let orderCreateNewReq = {
+    "deliveryDetailId": deliveryDetail.deliveryDetailId,
+    "ccNum": ccNum ,
+    "orderEntity": orderEntity,
+    "listings": listings,
+    "seller": listings[0].seller,
+    "email": this.utilityService.getEmail(),
+    "password": this.utilityService.getPassword(), 
+  }
+  return this.httpClient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions).pipe(catchError(this.handleError));
+ }
+
  saveCartToDatabase(): Observable<any> {
-   
    let listings: Listing[] = new Array();
-   let cartItems: CartItem[] = JSON.parse(sessionStorage.cartItems);
+   let cartItems: CartItem[] = JSON.parse(sessionStorage.getItem('cartItems'));
    for (var i = 0; i < cartItems.length; i++) {
      for (var j = 0; j < cartItems[i].quantity; i++) {
       listings.push(cartItems[i].listing);
@@ -112,7 +97,7 @@ export class CartService {
      totalPrice += l.unitPrice;
    }
 
-   let cart: Cart = sessionStorage.originalCart;
+   let cart: Cart = JSON.parse(sessionStorage.getItem('originalCart'));
    cart.listings = listings;
    cart.totalPrice = totalPrice;
    cart.totalQuantity = listings.length;

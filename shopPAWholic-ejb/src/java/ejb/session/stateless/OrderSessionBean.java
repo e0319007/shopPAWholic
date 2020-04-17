@@ -91,9 +91,12 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 //                    em.persist(listings);
 //                }
 //              
+                
                 for (Listing l : listings) {
+                    newOrder.getListings().add(l);
                     l.setQuantityOnHand(l.getQuantityOnHand() - 1);
                 }
+                System.out.println(newOrder.getListings());
                 em.persist(newOrder);
                 em.flush();
                 
@@ -144,6 +147,11 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     }
     
     @Override
+    public void updateDeliveryStatusOfOrder(OrderEntity order) {
+        em.merge(order);
+    }
+    
+    @Override
     public String changeOrderStatus(OrderStatus os, Long orderId) {
         try {
             OrderEntity order = getOrderById(orderId);
@@ -153,9 +161,9 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
             Logger.getLogger(OrderSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         if(os.equals(OrderStatus.PAID)) return "Order is Paid";
-            else if(os.equals(OrderStatus.REFUND)) return "Order is Refunded";
+            else if(os.equals(OrderStatus.REFUNDED)) return "Order is Refunded";
             else if(os.equals(OrderStatus.LOST)) return "Order is Lost";
-            else if(os.equals(OrderStatus.SHIPPED)) return "Order is Shipped";
+            else if(os.equals(OrderStatus.DELIVERED)) return "Order is Delivered";
             else return "Order is Completed";
     }
 

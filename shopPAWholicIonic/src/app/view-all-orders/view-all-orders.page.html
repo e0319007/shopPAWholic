@@ -13,10 +13,11 @@
   <ion-card>
     <ion-card-content>
       <ion-list>
-        <ion-item *ngFor="let order of orders" (click) = "viewOrderDetails($event, order)">
-          ID: {{order.id}} 
-          Date: {{order.orderDate}}
-          Price: {{order.totalPrice}}
+        <ion-item *ngFor="let order of orders"  (click) = "viewOrderDetails($event, order)">
+          ID: {{order.orderId}} <br />
+          Date: {{order.orderDate.toLocaleString()}} <br />
+          Total Price: {{order.totalPrice}} <br />
+          Status: {{order.orderStatus}} <br />
         </ion-item>
       </ion-list>
     </ion-card-content>

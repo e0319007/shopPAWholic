@@ -39,6 +39,7 @@ import ws.datamodel.ErrorRsp;
 import ws.datamodel.OrderCreateNewRsp;
 import ws.datamodel.OrderRetrieveAllRsp;
 import ws.datamodel.OrderUpdateOrderReq;
+import java.util.Date;
 /**
  *
  * @author shizhan
@@ -70,8 +71,10 @@ public class OrderEntityResource {
             try {
                 User user = getUser(orderCreateNewReq.getEmail(), orderCreateNewReq.getPassword(), "OrderEntityResource.createNewOrder()");
                 if (user instanceof Customer == false) throw new InvalidLoginCredentialException();
+                orderCreateNewReq.getOrderEntity().setOrderDate(new Date());
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(orderCreateNewReq.getOrderEntity(), orderCreateNewReq.getDeliveryDetailId(), 
-                        orderCreateNewReq.getCcNum(), user.getUserId(), orderCreateNewReq.getListings(), orderCreateNewReq.getSeller().getUserId());
+                                                                                orderCreateNewReq.getCcNum(), user.getUserId(), orderCreateNewReq.getListings(), 
+                                                                                orderCreateNewReq.getSeller().getUserId());
                 
                 return Response.status(Response.Status.OK).entity(new OrderCreateNewRsp(orderEntity.getOrderId())).build();
             } catch (InvalidLoginCredentialException ex) {
@@ -106,6 +109,7 @@ public class OrderEntityResource {
             if (user instanceof Customer) orders = orderSessionBeanLocal.retrieveOrderByCustomerId(user.getUserId());
             else orders = orderSessionBeanLocal.retrieveOrderBySellerId(user.getUserId());
             System.out.println("***************** ORDERS SIZE: " + orders.size());
+            System.out.println("***************** LISTING SIZE: " + orders.get(0).getListings());
             for(OrderEntity o:orders) {
                 o.getCustomer().getOrders().clear();
                 o.getSeller().getOrders().clear();
@@ -174,11 +178,29 @@ public class OrderEntityResource {
             else throw new InvalidLoginCredentialException();
             return Response.status(Status.OK).entity(orderUpdateOrderReq.getOrder().getOrderId()).build();
         } catch (InvalidLoginCredentialException ex) {
-                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-                return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+           return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         } catch(Exception ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @POST
+    @Path("updateDeliveryStatusOfOrder")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateOrder(OrderUpdateOrderReq orderUpdateOrderReq) {
+        try {
+            User user = getUser(orderUpdateOrderReq.getEmail(), orderUpdateOrderReq.getPassword(), "OrderEntityResource.changeOrderStatusBySeller()");
+            if (user instanceof Seller)
+                orderSessionBeanLocal.updateDeliveryStatusOfOrder(orderUpdateOrderReq.getOrder());
+            else throw new InvalidLoginCredentialException();
+            System.out.println("Status list" + orderUpdateOrderReq.getOrder().getDeliveryDetail().getStatusLists());
+            return Response.status(Status.OK).entity(orderUpdateOrderReq.getOrder().getOrderId()).build();
+        } catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            return Response.status(Status.UNAUTHORIZED).entity(errorRsp).build();
         }
     }
     

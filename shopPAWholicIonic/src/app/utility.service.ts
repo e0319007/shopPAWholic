@@ -70,19 +70,20 @@ export class UtilityService {
   }
 
   isCustomer(): boolean {
-    let currentUser = this.getCurrentUser(); 
+    return false;
+   /**  let currentUser = this.getCurrentUser(); 
     if (currentUser instanceof Customer) {
       return true;
     } else {
       return false;
-    }
+    } */
   }
 
   checkAccessRight(path) : boolean {
     console.log("***************PATH: " + path);
     if(this.getIsLogin()) {
       let user: User;
-      user = this.getCurrentUser;
+      user = this.getCurrentUser();
       if(user instanceof Customer) {
         //if condition for paths
         return true;

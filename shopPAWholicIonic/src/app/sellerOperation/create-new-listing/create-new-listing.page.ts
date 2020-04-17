@@ -102,5 +102,8 @@ export class CreateNewListingPage implements OnInit {
     this.submitted = false;
   }
 
+  addTag() {
+    this.router.navigate(["/sellerOperation/createNewTag"]);
+  }
 
 }

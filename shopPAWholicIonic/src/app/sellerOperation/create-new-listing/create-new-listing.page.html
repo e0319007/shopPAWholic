@@ -23,7 +23,7 @@
         <div style="color: red;">
           
           <div *ngIf="skuCode.invalid && (skuCode.dirty || skuCode.touched || submitted)" class="errorText">
-            <div *ngIf="name.errors.required">
+            <div *ngIf="skuCode.errors.required">
               SKU Code is required.
             </div>
           </div>
@@ -35,25 +35,25 @@
           </div>
 
           <div *ngIf="description.invalid && (description.dirty || description.touched || description.submitted)" class="errorText">
-            <div *ngIf="name.errors.required">
+            <div *ngIf="description.errors.required">
               Description is required
             </div>
           </div>
 
           <div *ngIf="quantityOnHand.invalid && (quantityOnHand.dirty || quantityOnHand.touched || quantityOnHand.submitted)" class="errorText">
-            <div *ngIf="name.errors.required">
+            <div *ngIf="quantityOnHand.errors.required">
               Quantity on hand is required
             </div>
           </div>
 
           <div *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched || unitPrice.submitted)" class="errorText">
-            <div *ngIf="name.errors.required">
+            <div *ngIf="unitPrice.errors.required">
               Unit price is required
             </div>
           </div>
 
           <div *ngIf="category.invalid && (category.dirty || category.touched || category.submitted)" class="errorText">
-            <div *ngIf="name.errors.required">
+            <div *ngIf="category.errors.required">
               Category is required
             </div>
           </div>
@@ -113,19 +113,18 @@
             <ion-select placeholder="Select Many" id="tag" name="tag" [(ngModel)]="tagIds" multiple=true>
               <ion-select-option *ngFor="let tag of tags" value={{tag.tagId}}>{{tag.name}}</ion-select-option>
             </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-button click="clear()">
-              Clear
-            </ion-button>
-            <ion-button type="submit" ion-button block>
-              Create
-            </ion-button>
-          </ion-item>
-
+          </ion-item>  
+          <ion-button (click)="addTag()" expand="block" fill="clear" shape="round">
+            add tag
+          </ion-button>
         </ion-list>
+        <ion-button (click)="clear()" expand="block"style="float:left" fill="clear" shape="round">
+          Clear
+        </ion-button>
       
+        <ion-button type="submit" expand="block"style="float:right" fill="clear" shape="round">
+          Create
+        </ion-button>
 
       </form>
 

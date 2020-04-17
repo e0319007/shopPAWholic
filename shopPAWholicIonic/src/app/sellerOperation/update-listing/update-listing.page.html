@@ -1,9 +1,115 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>UpdateListing</ion-title>
-  </ion-toolbar>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Update Listing</ion-title>
+	</ion-toolbar>
+  
 </ion-header>
 
 <ion-content>
+  <ion-card-content>
+    <div *ngIf="retrieveListingError == true" style="color:red;">
+      Listing ID {{listingId}} does not exist!
+    </div>
+    <div *ngIf="resultSuccess == true" style="color:blue;">
+      {{message}}
+    </div>
+    <div *ngIf="resultError == true" style="color:red">
+      {{message}}
+    </div>
 
+    <form *ngIf="retrieveListingError == false && listingToUpdate != null" #updateListingForm="ngForm" (ngSubmit)="update(updateListingForm)">
+      <div style="color:red">
+        <div *ngIf="name.invalid && (name.dirty || name.touched || submitted)" class="errorText">
+					<div *ngIf="name.errors.required">
+						Name is required.
+					</div>
+        </div>
+        
+        <div *ngIf="description.invalid && (description.dirty || description.touched || submitted)" class="errorText">
+					<div *ngIf="description.errors.required">
+						Description is required.
+					</div>
+        </div>
+        
+        <div *ngIf="quantityOnHand.invalid && (quantityOnHand.dirty || quantityOnHand.touched || submitted)" class="errorText">
+					<div *ngIf="quantityOnHand.errors.required">
+						Quantity on hand is required.
+					</div>
+        </div>
+        
+        <div *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched || submitted)" class="errorText">
+					<div *ngIf="unitPrice.errors.required">
+						Name is required.
+					</div>
+        </div>
+
+        <div *ngIf="category.invalid && (category.dirty || category.touched || submitted)" class="errorText">
+					<div *ngIf="category.errors.required">
+						Category is required.
+					</div>
+        </div>
+
+      </div>
+
+      <ion-list>
+        <ion-label>Listing ID: </ion-label>
+        {{listingToUpdate.listingId}}
+      </ion-list>
+
+      <ion-list>
+        <ion-label>SKU Code: </ion-label>
+        {{listingToUpdate.skuCode}}
+      </ion-list>
+
+      <ion-item>
+        <ion-label><b>Name</b></ion-label>
+        <ion-input type="text" id="name" name="name" [(ngModel)]="listingToUpdate.name" required="true" #name="ngModel"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Description</b></ion-label>
+        <ion-input type="text" id="description" name="description" [(ngModel)]="listingToUpdate.description" required="true" #description="ngModel"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Price</b></ion-label>
+        <ion-input type="text" id="unitPrice" name="unitPrice" [(ngModel)]="listingToUpdate.unitPrice" required="true" #unitPrice="ngModel"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Quantity On Hand</b></ion-label>
+        <ion-input type="text" id="quantityOnHand" name="quantityOnHand" [(ngModel)]="listingToUpdate.quantityOnHand" required="true" #quantityOnHand="ngModel"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label><b>Category</b></ion-label>
+        <ion-select placeholder="Select One" id="category" name="category" #category="ngModel" [(ngModel)]="categoryId" required="true">
+          <ion-select-option *ngFor="let category of categories" value="{{category.categoryId}}">{{category.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label><b>Tags</b></ion-label>
+        <ion-select placeholder="Select Many" id="tag" name="tag" [(ngModel)]="tagIds" multiple="true">
+          <ion-select-option *ngFor="let tag of tags" value="{{tag.tagId}}">{{tag.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button type="submit" style="float:right" fill="clear" shape="round">
+        Update
+      </ion-button>
+    
+
+    </form>
+  </ion-card-content>
 </ion-content>
+
+<ion-footer>
+  <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+    Back
+  </ion-button>
+</ion-footer>

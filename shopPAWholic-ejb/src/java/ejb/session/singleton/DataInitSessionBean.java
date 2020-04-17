@@ -11,6 +11,7 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
 import entity.Advertisement;
+import entity.Cart;
 import entity.Category;
 import entity.Customer;
 import entity.DeliveryDetail;
@@ -158,7 +159,7 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"),  10, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"),  20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"),  30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller.getUserId());
-
+            
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date , DeliveryMethod.QXPRESS);
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
@@ -166,11 +167,13 @@ public class DataInitSessionBean {
             System.out.println("New Order has date of: " + order.getOrderDate());
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 12l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
-
-            orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
-
+            OrderEntity orderreturned = orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());           
+            System.out.println("HAS LISTINGS: " + orderreturned.getListings());
+            
             Advertisement advertisement1;
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
@@ -183,7 +186,15 @@ public class DataInitSessionBean {
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
 
-
+            Cart c = em.find(Cart.class, 1l);
+            List<Listing> listingsToAddToCart = new ArrayList<>();
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 2l));
+            System.out.println(listingsToAddToCart);
+            c.setListings(listingsToAddToCart);
+            c.setTotalPrice(new BigDecimal(40));
+            c.setTotalQuantity(3);
     
         } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException ex) {
 //CreateNewOrderException

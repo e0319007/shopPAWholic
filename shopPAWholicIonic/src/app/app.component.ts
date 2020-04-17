@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'Create New Listing',
-      url: '/createNewListing',
+      url: 'sellerOperation/createNewListing',
       icon: ''
     },
     {
@@ -33,8 +33,8 @@ export class AppComponent implements OnInit {
       icon: ''
     },
     {
-      title: 'Shopping Cart',
-      url: '/viewShoppingCart',
+      title: 'Cart',
+      url: '/customerOperation/viewCart',
       icon: ''
     },
     {

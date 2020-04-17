@@ -1,7 +1,12 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>View Listing Details</ion-title>
-  </ion-toolbar>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>View Details</ion-title>
+	</ion-toolbar>
+  
 </ion-header>
 
 <ion-content>
@@ -9,6 +14,13 @@
     <ion-card-content>
       <div *ngIf="retrieveListingError == true" style="color: red">
         Listing ID {{listingId}} does not exist!
+      </div>
+
+      <div *ngIf="errorQuantityToAddExceeded != null" style="color: red">
+        {{errorQuantityToAddExceeded}}
+      </div>
+      <div *ngIf="addMessage != null" style="color: blue">
+        {{addMessage}}
       </div>
       
       <ion-list *ngIf="retrieveListingError == false && listingToView != null">
@@ -18,27 +30,32 @@
         </ion-item>
 
         <ion-item> 
-          <ion-label> Name </ion-label>
+          <ion-label> Name: </ion-label>
             {{listingToView.name}}
         </ion-item>
 
         <ion-item> 
-          <ion-label> Description </ion-label>
+          <ion-label> Description: </ion-label>
             {{listingToView.description}}
         </ion-item>
 
         <ion-item> 
-          <ion-label> Price </ion-label>
+          <ion-label> Price: </ion-label>
             $ {{listingToView.unitPrice}}
         </ion-item>
 
+        <ion-item> 
+          <ion-label> Quantity On Hand: </ion-label>
+           {{listingToView.quantityOnHand}}
+        </ion-item>
+
         <ion-item>
-          <ion-label> Category </ion-label>
+          <ion-label> Category: </ion-label>
             {{listingToView.category.name}}
         </ion-item>
 
         <ion-item> 
-          <ion-label> Tag </ion-label>
+          <ion-label> Tag: </ion-label>
             <ul>
               <li *ngFor="let tag of listingToView.tags">{{tag.name}}</li>
             </ul>
@@ -47,4 +64,36 @@
 
     </ion-card-content>
   </ion-card>
+  <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == false">
+		<ion-button (click)="updateListing()"  expand="block"style="float:left" fill="clear" shape="round">
+			<ion-icon slot="start" name="create"></ion-icon>
+			Update
+		</ion-button>
+		<ion-button (click)="deleteListing()" style="float:right" expand="block" fill="clear" shape="round">
+			<ion-icon slot="start" name="trash"></ion-icon>
+			Delete
+    </ion-button>
+  </ion-toolbar>
+  
+  <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == true">
+   
+    <ion-button color="primary" (click)="changeQty(-1)">
+      -
+    </ion-button>
+      <b>&ensp;{{quantityToAddToCart}}&ensp;</b>
+    <ion-button color="primary" (click)="changeQty(1)">
+        +
+    </ion-button>
+  
+		<ion-button (click)="addToCart()" style="float:right">
+			<ion-icon slot="start" name="create"></ion-icon>
+			Add To Cart
+		</ion-button>
+  </ion-toolbar>
+  
 </ion-content>
+<ion-footer>
+  <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+    Back
+  </ion-button>
+</ion-footer>

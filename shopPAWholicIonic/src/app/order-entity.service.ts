@@ -62,6 +62,16 @@ export class OrderEntityService {
     return this.httpclient.post<any>(this.baseUrl + "/changeOrderStatusBySeller", orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
   } 
 
+  updateOrderDeliveryStatus(order: OrderEntity): Observable<any> {
+    let orderUpdateOrderReq = {
+      "order": order,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
+    }
+    console.log("***in orderservice: delivery status: " + order.deliveryDetail.statusLists )
+    return this.httpclient.post<any>(this.baseUrl + "/updateDeliveryStatusOfOrder", orderUpdateOrderReq, httpOptions).pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage: string;
     if (error.error instanceof ErrorEvent) {

@@ -279,6 +279,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                     listingToUpdate.setName(listing.getName());
                     listingToUpdate.setDescription(listing.getDescription());
                     listingToUpdate.setUnitPrice(listing.getUnitPrice());
+                    listingToUpdate.setQuantityOnHand(listing.getQuantityOnHand());
                 } else {
                     throw new UpdateListingException("Sku code of listing record to be updated does not match existing record!");
                     

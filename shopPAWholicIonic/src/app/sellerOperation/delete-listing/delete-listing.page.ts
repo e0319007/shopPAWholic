@@ -13,7 +13,11 @@ export class DeleteListingPage implements OnInit {
 
   constructor(private listingService: ListingService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) { }
+              private router: Router)
+  {
+    this.error = false;
+		this.resultSuccess = false;
+  }
 
   listingId: number;
   listingToDelete: Listing;
@@ -23,6 +27,7 @@ export class DeleteListingPage implements OnInit {
 
   ngOnInit() {
     this.listingId = parseInt(this.activatedRoute.snapshot.paramMap.get('listingId'));
+    console.log("Listing to delete with id: " + this.listingId);
     this.listingService.retrieveListingById(this.listingId).subscribe(
       response => {
         this.listingToDelete = response.listing;
@@ -32,10 +37,13 @@ export class DeleteListingPage implements OnInit {
         this.errorMessage = error;
         console.log("*****DeleteListingComponent.ts" + error);
       }
-    )
+    );
+    console.log("error: " + this.error );
+    console.log("listing==null?" + this.listingToDelete == null );
+    console.log("resultSuccess?" + this.resultSuccess)
   }
 
-  deleteProduct() {
+  deleteListing() {
     this.listingService.deleteListing(this.listingId).subscribe(
       response => {
         this.resultSuccess = true;
@@ -46,6 +54,22 @@ export class DeleteListingPage implements OnInit {
       }
     )
   }
+
+  backViewAll() {
+    this.router.navigate(["/viewAllListings"]);
+  }
+
+  back()
+	{
+		if(this.resultSuccess)
+		{
+			this.router.navigate(["/viewAllListings"]);
+		}
+		else
+		{
+			this.router.navigate(["/viewListingDetails/" + this.listingToDelete.listingId]);
+		}
+	}
 }
 
 

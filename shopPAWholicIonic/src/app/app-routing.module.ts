@@ -14,10 +14,6 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },   
   {
-    path: 'view-billing-detail',
-    loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
-  },
-  {
     path:'viewAllOrders', 
     loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
   },
@@ -34,23 +30,47 @@ const routes: Routes = [
     loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard] 
   },
   {
-    path: 'delete-listing',
-    loadChildren: () => import('./sellerOperation/delete-listing/delete-listing.module').then( m => m.DeleteListingPageModule)
+    path: 'sellerOperation/deleteListing/:listingId',
+    loadChildren: './sellerOperation/delete-listing/delete-listing.module#DeleteListingPageModule',canActivate: [AuthGuard]
   },
   {
-    path: 'update-listing',
-    loadChildren: () => import('./sellerOperation/update-listing/update-listing.module').then( m => m.UpdateListingPageModule)
+    path: 'sellerOperation/updateListing/:listingId',
+    loadChildren: './sellerOperation/update-listing/update-listing.module#UpdateListingPageModule', canActivate: [AuthGuard]
   },
   {
-    path: 'createNewListing',
+    path: 'sellerOperation/createNewListing',
     loadChildren:'./sellerOperation/create-new-listing/create-new-listing.module#CreateNewListingPageModule', canActivate:[AuthGuard]
   },
   {
-    path: 'view-cart',
-    loadChildren: () => import('./customerOperation/view-cart/view-cart.module').then( m => m.ViewCartPageModule)
+    path: 'customerOperation/viewCart',
+    loadChildren: './customerOperation/view-cart/view-cart.module#ViewCartPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'customerOperation/checkOutPage',
+    loadChildren: './customerOperation/check-out/check-out.module#CheckOutPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewOrderDetails/:orderId',
+    loadChildren: './view-order-details/view-order-details.module#ViewOrderDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewDeliveryDetails/:orderId',
+    loadChildren:'./view-delivery-details/view-delivery-details.module#ViewDeliveryDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewBillingDetails/:orderId',
+    loadChildren: './customerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/changeOrderStatus/:orderId',
+    loadChildren: './sellerOperation/change-order-status/change-order-status.module#ChangeOrderStatusPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/createNewTag',
+    loadChildren: './sellerOperation/create-new-tag/create-new-tag.module#CreateNewTagPageModule', canActivate:[AuthGuard]
   },
 
- 
+
  
 ];
 
