@@ -1,15 +1,4 @@
 export class User {
-<<<<<<< HEAD
-    userId: number;
-    email: string;
-    password: string;
-    
-
-    constructor(userId: number, email?: string, password?: string) {
-        this.email = email;
-        this.password = password;
-    }
-=======
 
     userId: number;
     name: string;
@@ -27,5 +16,4 @@ export class User {
             this.password = password;
     }
 
->>>>>>> master
 }
