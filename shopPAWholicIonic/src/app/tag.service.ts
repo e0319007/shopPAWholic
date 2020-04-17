@@ -29,8 +29,8 @@ export class TagService {
   createNewTag(tag: Tag) {
     let tagCreateNewReq = {
       "tag": tag,
-      "email": this.utilityService.getEmail,
-      "password": this.utilityService.getPassword 
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
     }
 
     return this.httpClient.put<any>(this.baseUrl, tagCreateNewReq, httpOptions).pipe(catchError(this.handleError));

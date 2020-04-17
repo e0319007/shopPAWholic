@@ -38,6 +38,17 @@ export class CreateNewListingPage implements OnInit {
     this.resultSuccess = false;
   }
 
+  ionViewWillEnter(){
+    this.tagService.retrieveAllTags().subscribe(
+      response => {
+        this.tags = response.tags;
+      },
+      error => {
+        console.log("Retrieve Tags in CreateNewListingPage: " + error);
+      }
+    )
+  }
+
   ngOnInit() {
     this.categoryService.retrieveAllLeafCategories().subscribe(
       response => {
