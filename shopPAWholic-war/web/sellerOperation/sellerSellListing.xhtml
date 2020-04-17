@@ -21,7 +21,7 @@
 
         </h:form>
 
-        <h:form id="formMain">
+        <h:form id="formCreateNewListing">
             <p:panel header="What are you listing today?" style="width: 800px;">
 
                 <p:messages id="messagesCreateNewListing" redisplay="false" />
@@ -68,7 +68,7 @@
                             <p:outputLabel for="price" value="Price:" style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" required="true"/>
+                            <p:inputText id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" required="true" requiredMessage="Price is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>
@@ -120,7 +120,7 @@
                     <p:row>
                         <p:column colspan="3">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton type="submit" value="List now" update="@form" process="@form" actionListener="#{listingManagementManagedBean.createNewListing}"/>
+                            <p:commandButton id="createNewListing" value="List now" update="@form" actionListener="#{listingManagementManagedBean.createNewListing}"/>
                         </p:column>
                     </p:row>     
                 </p:panelGrid>   

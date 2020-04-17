@@ -66,7 +66,7 @@
                   
                     <f:facet name="actions">
                         <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
-                            <f:setPropertyActionListener value="#{customer}" target="#{userManagementManagedBean.selectedCustomerToUpdate}" />
+                            <f:setPropertyActionListener value="#{currentCustomer}" target="#{userManagementManagedBean.selectedCustomerToUpdate}" />
                         </p:commandButton>
                     </f:facet>
                 </p:tab>
