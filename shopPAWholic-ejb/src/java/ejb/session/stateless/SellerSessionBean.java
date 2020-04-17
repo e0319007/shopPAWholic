@@ -1,17 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.Seller;
-import entity.User;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -20,13 +20,10 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.InputDataValidationException;
+import util.exception.SellerNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.UserUsernameExistException;
 
-/**
- *
- * @author yeeqinghew
- */
 @Stateless
 @Local(SellerSessionBeanLocal.class)
 public class SellerSessionBean implements SellerSessionBeanLocal {
@@ -65,12 +62,63 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
             }
         }
     }
-
+    @Override
+    public void updateSeller(Seller seller) throws SellerNotFoundException, InputDataValidationException {
+        if(seller != null && seller.getUserId() !=null) {
+            Set<ConstraintViolation<Seller>>constraintViolations = validator.validate(seller); 
+            if(constraintViolations.isEmpty()) {
+                Seller sellerToUpdate = retrieveSellerById(seller.getUserId()); 
+                if(sellerToUpdate.getEmail().equals(seller.getEmail())) {
+                    sellerToUpdate.setName(seller.getName());
+                    sellerToUpdate.setContactNumber(seller.getContactNumber());
+                    sellerToUpdate.setPassword(seller.getPassword());
+                } else {
+                    throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+                }
+            } else {
+                throw new SellerNotFoundException("Seller ID not provided for seller to be updated");
+            }
+        }
+    }
+    @Override
+    public Seller retrieveSellerByUsername(String username) throws SellerNotFoundException {
+        Query query = em.createQuery("SELECT s FROM Seller s WHERE s.username = :inUsername");
+        query.setParameter("inUsername", username);
+        try {
+            return (Seller)query.getSingleResult();
+        } catch (NoResultException | NonUniqueResultException ex) {
+            throw new SellerNotFoundException("Seller Username " + username + " does not exist!");
+        }
+    }
+    @Override
+    public Seller retrieveSellerById(Long sellerId) throws SellerNotFoundException {
+        Seller seller = em.find(Seller.class, sellerId);
+        if(seller != null) {
+            return seller;
+        } else {
+            throw new SellerNotFoundException("Seller ID " + sellerId + " does not exist!");
+        }
+    }
     
     @Override
     public List<Seller> retrieveAllSellers(){
         Query query = em.createQuery("SELECT s FROM Seller s");
         return query.getResultList();
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfSellersForTheYear() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> userPerMonth = new HashMap<>();
+        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for (int i = 0; i < months.size(); i++) {
+            query = em.createQuery("SELECT s FROM Seller s WHERE EXTRACT(YEAR(s.accCreatedDate)) = :inYear AND EXTRACT(MONTH(s.accCreatedDate)) = :inMonth ");
+            query.setParameter("inYear", year);
+            query.setParameter("inMonth", i+1);
+            userPerMonth.put(months.get(i), (query.getResultList()).size());
+        }
+        return userPerMonth;
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Seller>> constraintViolations) {

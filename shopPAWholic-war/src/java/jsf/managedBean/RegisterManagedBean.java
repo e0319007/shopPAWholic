@@ -6,6 +6,8 @@ import entity.Customer;
 import entity.Seller;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -33,6 +35,7 @@ public class RegisterManagedBean implements Serializable {
     private String email;
     private String password;
     private String contactNumber;
+    private Date currentDateTime;
 
     public RegisterManagedBean() {
     }
@@ -44,7 +47,9 @@ public class RegisterManagedBean implements Serializable {
 
     public void createNewUser(ActionEvent event) throws UserUsernameExistException, UnknownPersistenceException, InputDataValidationException, IOException {
         if (role.equals("Customer")) {
-            customerSessionBeanLocal.createNewCustomer(new Customer(name, email, contactNumber, password));
+            currentDateTime = new Date();
+            System.out.println("*********************************" + currentDateTime);
+            customerSessionBeanLocal.createNewCustomer(new Customer(name, email, contactNumber, password, currentDateTime));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             if (sendEmail(event) == true) {
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -55,7 +60,9 @@ public class RegisterManagedBean implements Serializable {
             }
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         } else if (role.equals("Seller")) {
-            sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, false, 5));
+            currentDateTime = new Date();            
+            System.out.println("*********************************" + currentDateTime);
+            sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, currentDateTime, false, 5));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             if (sendEmail(event)) {
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);

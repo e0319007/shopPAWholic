@@ -84,12 +84,14 @@ public class SecurityFilter implements Filter {
                 return false;
             }
         } else if (currentUser instanceof Customer) {
-            if (path.equals("/customerOperation/customerEventpage.xhtml")
+            if (path.equals("/customerOperation/customerEventpage.xhtml")                    
+                    || path.equals("/customerOperation/customerAdvertisementpage.xhtml")
                     || path.equals("/customerOperation/customerForumpage.xhtml")
-                    || path.equals("/customerOperation/customerHomepage.xhtml")
-                    || path.equals("/customerOperation/customerOperation.xhtml")
-                    || path.equals("/customerOperation/customerFilterListingsByTags.xhtml")
-                    || path.equals("/customerOperation/customerProduct.xhtml")) {
+                    || path.equals("/customerOperation/customerHomepage.xhtml")    
+                    || path.equals("/customerOperation/customerProfile.xhtml")
+                    || path.equals("/customerOperation/customerListingList.xhtml")
+                    || path.equals("/customerOperation/customerEditProfile.xhtml")
+                    || path.equals("/customerOperation/customerEventpage.xhtml")) {
                 return true;
             } else {
                 return false;
@@ -99,7 +101,9 @@ public class SecurityFilter implements Filter {
                     || path.equals("/sellerOperation/sellerHomepage.xhtml")
                     || path.equals("/sellerOperation/sellerOperation.xhtml")
                     || path.equals("/sellerOperation/sellerProfile.xhtml")
-                    || path.equals("/sellerOperation/sellerSellListing.xhtml")) {
+                    || path.equals("/sellerOperation/sellerSellListing.xhtml")
+                    || path.equals("/sellerOperation/sellerEvent.xhtml")
+                    || path.equals("/sellerOperation/sellerAdvertisement.xhtml")) {
                 return true;
             } else {
                 return false;
@@ -113,7 +117,7 @@ public class SecurityFilter implements Filter {
     public Boolean excludeLoginCheck(String path) {
         if (path.equals("/index.xhtml")
                 || path.startsWith("/javax.faces.resource")
-                || path.matches(".*(css|jpg|png|js|map)")) {
+                || path.matches(".*(css|jpg|png|jpeg)")) {
             return true;
         } else {
             return false;

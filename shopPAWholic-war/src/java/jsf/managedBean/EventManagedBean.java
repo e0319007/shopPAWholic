@@ -9,8 +9,6 @@ import ejb.session.stateless.EventSessionBeanLocal;
 import entity.Event;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
@@ -21,8 +19,16 @@ import util.exception.EventNotFoundException;
 import util.exception.InputDataValidationException;
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.ScheduleEntryMoveEvent;
+import org.primefaces.event.ScheduleEntryResizeEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.DefaultScheduleModel;
+import org.primefaces.model.ScheduleEvent;
+import org.primefaces.model.ScheduleModel;
 
 /**
  *
@@ -35,7 +41,8 @@ public class EventManagedBean implements Serializable{
     @EJB(name = "EventSessionBeanLocal")
     private EventSessionBeanLocal eventSessionBeanLocal;
 
-    
+    private ScheduleModel scheduleModel;
+    private ScheduleEvent scheduleEvent;
 
     private List<Event> events;
     
@@ -48,24 +55,31 @@ public class EventManagedBean implements Serializable{
     private Date endDateTime;
     private String url;
     private Long sellerId;
-    
+    private Event selectedEvent;
+    private Event newEvent;
     //for filtering events
     private List<Event> filterBySeller;
     
     
     public EventManagedBean() {
+        scheduleModel = new DefaultScheduleModel();
+        scheduleEvent = new DefaultScheduleEvent();
+        newEvent = new Event();
+     
     }
     
     @PostConstruct
     public void PostConstruct() {
         events = eventSessionBeanLocal.retrieveAllEvent();
+        //hardcoded event as example
+        scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
     }
     
     public void createNewEvent(ActionEvent event) {
         try {
-            Event eventToCreate = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
-            eventSessionBeanLocal.createNewEvent(eventToCreate,sellerId);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + eventToCreate.getEventId() + ")", null));
+           newEvent = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
+            eventSessionBeanLocal.createNewEvent(newEvent,sellerId);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + newEvent.getEventId() + ")", null));
         } catch (CreateNewEventException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
         } catch (InputDataValidationException ex) {
@@ -74,6 +88,7 @@ public class EventManagedBean implements Serializable{
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
+    
     
     public void updateEvent(ActionEvent event) {
         try {
@@ -95,6 +110,81 @@ public class EventManagedBean implements Serializable{
         } catch (EventNotFoundException ex) {
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
         }
+    }
+    
+    public void addEvent(ActionEvent actionEvent) 
+    {
+        if(scheduleEvent.getId() == null)
+            scheduleModel.addEvent(scheduleEvent);
+        else
+            scheduleModel.updateEvent(scheduleEvent);
+         
+        scheduleEvent = new DefaultScheduleEvent();
+    }
+    
+    
+    
+    public void onEventSelect(SelectEvent selectEvent) 
+    {
+        scheduleEvent = (ScheduleEvent) selectEvent.getObject();
+    }
+    
+    
+    
+    public void onDateSelect(SelectEvent selectEvent) 
+    {
+        scheduleEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    }
+    
+    
+    
+    public void onEventMove(ScheduleEntryMoveEvent scheduleEvent) 
+    {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
+         
+        addMessage(message);
+    }
+    
+    
+    
+    public void onEventResize(ScheduleEntryResizeEvent scheduleEvent) 
+    {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
+         
+        addMessage(message);
+    }
+     
+    
+    
+    private void addMessage(FacesMessage message) 
+    {
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    
+    
+    private Calendar today() 
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+ 
+        return calendar;
+    }
+    private Date today1Pm() 
+    {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.HOUR, 1);
+
+        return t.getTime();
+    }
+    private Date today6Pm() 
+    {
+        Calendar t = (Calendar) today().clone();
+        t.set(Calendar.AM_PM, Calendar.PM);
+        t.set(Calendar.HOUR, 6);
+
+        return t.getTime();
     }
 
     public List<Event> getEvents() {
@@ -184,7 +274,65 @@ public class EventManagedBean implements Serializable{
     public void setSellerId(Long sellerId) {
         this.sellerId = sellerId;
     }
-    
+
+    /**
+     * @return the scheduleModel
+     */
+    public ScheduleModel getScheduleModel() {
+        return scheduleModel;
+    }
+
+    /**
+     * @param scheduleModel the scheduleModel to set
+     */
+    public void setScheduleModel(ScheduleModel scheduleModel) {
+        this.scheduleModel = scheduleModel;
+    }
+
+    /**
+     * @return the scheduleEvent
+     */
+    public ScheduleEvent getScheduleEvent() {
+        return scheduleEvent;
+    }
+
+    /**
+     * @param scheduleEvent the scheduleEvent to set
+     */
+    public void setScheduleEvent(ScheduleEvent scheduleEvent) {
+        this.scheduleEvent = scheduleEvent;
+    }
+
+    /**
+     * @return the selectedEvent
+     */
+    public Event getSelectedEvent() {
+        return selectedEvent;
+    }
+
+    /**
+     * @param selectedEvent the selectedEvent to set
+     */
+    public void setSelectedEvent(Event selectedEvent) {
+        this.selectedEvent = selectedEvent;
+    }
+
+    /**
+     * @return the newEvent
+     */
+    public Event getNewEvent() {
+        return newEvent;
+    }
+
+    /**
+     * @param newEvent the newEvent to set
+     */
+    public void setNewEvent(Event newEvent) {
+        this.newEvent = newEvent;
+    }
+
+   
+   
     
     
 }

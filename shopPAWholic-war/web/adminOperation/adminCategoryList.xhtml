@@ -4,11 +4,13 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
-
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
         <div>
+            <h1></h1>
+            <ez:Breadcrumb pageName="categoryList"/>
             <h:form id="formCreateNewCategory" > 
                 <p:panel header="Create New Category" toggleable="true" collapsed="true" >
                     <h:messages id="messagesCreateNewCategory"/> 
@@ -54,10 +56,13 @@
                                 <p:outputLabel for="parentCat" value="Select Category: " /> 
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="parentCat" value="#{categoryManagedBean.parentCategory}" dynamic="true">
-                                    <f:selectItem itemLabel="Select Parent Category" itemValue=""/>
+                                <p:selectOneMenu id="parentCat" value="#{categoryManagedBean.newCategory.parentCategory}" converter="categoryConverter">
+                                    <f:selectItem itemLabel="Select Parent Category"/>
                                     <f:selectItems value="#{categoryManagedBean.parentCategories}" var="category" itemValue="#{category}" itemLabel="#{category.name}"/> 
                                 </p:selectOneMenu> 
+                            </p:column>
+                            <p:column>
+                                <p:message for="parentCat" />
                             </p:column>
 
                         </p:row>
@@ -97,6 +102,7 @@
 
             <!--table of categories--> 
             <h:form id="formDataTable">
+                <h:messages id="messages" />
                 <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{viewAllCategoriesManagedBean.categories}" var="category">
                     <p:column headerText="Name"> 
                         <h:outputText value="#{category.name}"/> 
@@ -107,9 +113,9 @@
                     </p:column>
 
                     <p:column headerText="Action"> 
-                        <p:commandButton icon="pi pi-trash" actionListener="#{categoryManagedBean.deleteCategory}" update="formDataTable">
-                            <f:attribute name="categoryToDelete" value="category" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete?" icon="pi pi-alert" />
+                        <p:commandButton icon="pi pi-trash" actionListener="#{categoryManagedBean.deleteCategory}" update="formDataTable:dataTableCategories formDataTable:messages">
+                            <f:attribute name="categoryToDelete" value="#{category}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete [#{category.name}] ?" icon="pi pi-alert" />
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>

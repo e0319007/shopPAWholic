@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../template/CustomerTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <br/><br/>
+        <!--display picture-->
+        <div style="display: flex; ">
+            <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
+                <br></br>
+                <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
+                <br></br>
+                <br></br>
+                <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+            </p:panel>
+            
+            
+           <h:form id="formCustomerProfile">
+            <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
+                
+                <p:tab title="Profile">
+          
+                    <p:messages id="messages" redisplay="false" closable="true" />
+                        <p:panelGrid style="margin: 0 auto; width: 100%;" >
+                            
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="userName" value="Name: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="userName" value="#{userManagementManagedBean.currentCustomer.name}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="email" value="Email: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="email" value="#{userManagementManagedBean.currentCustomer.email}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="contactNumber" value="Contact Number: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="contactNumber" value="#{userManagementManagedBean.currentCustomer.contactNumber}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="password" value="Password: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="password" value="#{userManagementManagedBean.currentCustomer.password}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                  
+                    <f:facet name="actions">
+                        <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
+                            <f:setPropertyActionListener value="#{currentCustomer}" target="#{userManagementManagedBean.selectedCustomerToUpdate}" />
+                        </p:commandButton>
+                    </f:facet>
+                </p:tab>
+         
+             </p:tabView>
+            </h:form>   
+        </div>
+        <h:form id="formUpdateProfile">
+             <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Edit Profile" closable="true">
+                <p:messages id="messagesUpdateProfile" redisplay="false"/>
+                 <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{userManagementManagedBean.selectedCustomerToUpdate.name}" required="true" requiredMessage="Name is required"/> 
+                        </p:column>
+                        <p:column>
+                            <p:message for="name"/>
+                        </p:column>
+                    </p:row>
+                                
+                     <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNumber" value="Contact Number: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="contactNumber" value="#{userManagementManagedBean.selectedCustomerToUpdate.contactNumber}" required="true" requiredMessage="Contact number is required"/> 
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNumber"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton style="color: black; background-color: orange;" value="Update Profile" update="@form formCustomerProfile" actionListener="#{userManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateProfile').show();" />
+                        </p:column>
+                    </p:row>
+                             
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

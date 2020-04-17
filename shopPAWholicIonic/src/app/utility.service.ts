@@ -35,8 +35,8 @@ export class UtilityService {
     }
   }
 
-  setIsLogin() : void {
-    sessionStorage.isLogin = true;
+  setIsLogin(isLogin : boolean) : void {
+    sessionStorage.isLogin = isLogin;
   }
 
   getCurrentUser() : User {
@@ -77,6 +77,15 @@ export class UtilityService {
     } else {
       return false;
     } */
+  }
+
+  isSeller(): boolean {
+    let currentUser = this.getCurrentUser();
+    if (currentUser instanceof Seller) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   checkAccessRight(path) : boolean {

@@ -2,12 +2,11 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity (name="Customer")
 public class Customer extends User implements Serializable {
@@ -38,12 +37,9 @@ public class Customer extends User implements Serializable {
         comments = new ArrayList<>();
     }
 
-    public Customer(String name, String email, String contactNumber, String password) {
-        super(name, email, contactNumber, password);
+    public Customer(String name, String email, String contactNumber, String password, Date accCreatedDate) {
+        super(name, email, contactNumber, password, accCreatedDate);
     }
-    
-
-
 
     public List<BillingDetail> getBillingDetails() {
 

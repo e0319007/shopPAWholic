@@ -1,37 +1,178 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="../template/SellerFormTemplate.xhtml"
+                template="../template/SellerTemplate.xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     <ui:define name="content">
-        <!--display picture-->
-        <div style="display: flex; ">
-            <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
-                <br></br>
-                <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
-                <br></br>
-                <br></br>
-                <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
-            </p:panel>
+        <style type="text/css"> 
+            /*demo*/
+            .ui-dataview-list .ui-dataview-row {
+                border-bottom: 1px solid #A8A8A8;
+                padding: 25px 10px;
+            }
 
-            <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
-                
-                <p:tab title="Listing">
-                    <!--display listing owned by this username-->
-                    <f:facet name="actions">
-                        <p:button value="Edit Profile"/>
-                    </f:facet>
-                </p:tab>
-                <p:tab title="Reviews">
-                    <!--display review owned by this username-->
-                    
-                    <f:facet name="actions">
-                        <p:button value="Edit Profile"/>
-                    </f:facet>
-                </p:tab>
-            </p:tabView>
-        </div>
+            .logo {
+                width: 5%;
+            }
+            .detail {
+                width: 85%;
+                padding-left: 25px;
+            }
+
+        </style>
+        <!--display picture-->
+        <h:form id="formSellerProfile">
+            <div style="display: flex; ">
+                <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
+                    <br></br>
+                    <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
+                    <br></br>
+                    <br></br>
+                    <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+                </p:panel>
+
+                <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
+
+                    <p:tab title="Listings">
+                        <!--display listing owned by this username-->
+                        <p:dataView var="listing" value="#{listingManagementManagedBean.listings}" gridIcon="pi pi-th-large">
+                            <p:dataViewGridItem>
+                                <p:panel header="#{listing.skuCode}" style="text-align: center">
+                                    <p:panelGrid columns="1" style="width:100%" >
+                                        <p:graphicImage value="../resources/image/petEvent1.jpg" width="200" height="100"/>
+                                        <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
+                                        <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
+
+                                        <p:column>
+                                            <p:commandButton update=""  oncomplete="PF('listingDialog').show()" icon="pi pi-search" title="View Details">                                 
+                                                <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToView}"/>
+                                            </p:commandButton>
+
+                                            <p:commandButton update="" oncomplete="PF('dialogUpdateListing').show()" icon="pi pi-pencil" title="Update">
+                                                <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToUpdate}" />
+                                            </p:commandButton>
+
+                                            <p:commandButton update="" icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}">
+                                                <f:attribute name="listingToDelete" value="#{listing}" />
+                                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="pi pi-exclamation-triangle" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </p:dataViewGridItem>
+                        </p:dataView>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>
+
+                        <p:dialog header="Listing Details" widgetVar="listingDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="listingDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="">
+                                    <f:facet name="header">
+                                        <p:graphicImage value="../resources/image/shopPAWholic.png"/> 
+                                    </f:facet>
+
+                                    <h:outputText value="Name:" />
+                                    <h:outputText value="" />
+
+                                    <h:outputText value="Category:" />
+                                    <h:outputText value="" />
+
+                                    <h:outputText value="Price:" />
+                                    <h:outputText value=""/>
+
+                                    <h:outputText value="Description:" />
+                                    <h:outputText value="" />
+
+                                    <h:outputText value="Tags:" />
+                                    <h:outputText value="" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+
+                    </p:tab>
+                    <p:tab title="Reviews">
+                        <!--display review owned by this username-->
+
+
+                    </p:tab>
+                    <p:tab title="Profile">
+                        <p:panelGrid style="margin: 0 auto; width: 100%;" >
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="userName" value="Name: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="userName" value="#{userManagementManagedBean.currentSeller.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="email" value="Email: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="email" value="#{userManagementManagedBean.currentSeller.email}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contactNum" value="Contact Number: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="contactNum" value="#{userManagementManagedBean.currentSeller.contactNumber}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <f:facet name="actions">
+                            <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
+                                <f:setPropertyActionListener value="#{currentSeller}" target="#{userManagementManagedBean.selectedSellerToUpdate}" />
+                            </p:commandButton>
+                        </f:facet>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </h:form>
+        <h:form id="formUpdateProfile">
+            <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Edit Profile" closable="true">
+                <p:messages id="messagesUpdateProfile" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{userManagementManagedBean.selectedSellerToUpdate.name}" required="true" requiredMessage="Name is required"/> 
+                        </p:column>
+                        <p:column>
+                            <p:message for="name"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNumber" value="Contact Number: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="contactNumber" value="#{userManagementManagedBean.selectedSellerToUpdate.contactNumber}" required="true" requiredMessage="Contact number is required"/> 
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNumber"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton style="color: black; background-color: orange;" value="Update Profile" update="@form formSellerProfile" actionListener="#{userManagementManagedBean.updateSeller}" oncomplete="PF('dialogUpdateProfile').show();" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
     </ui:define>
 </ui:composition>

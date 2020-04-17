@@ -11,11 +11,15 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
+import util.exception.SellerNotFoundException;
 
 @Named(value = "userManagementManagedBean")
 @ViewScoped
@@ -38,19 +42,37 @@ public class UserManagementManagedBean implements Serializable {
 
     private List<Customer> customerList;
     private List<Customer> filteredCustomerList;
-    
+
     private List<Seller> sellerList;
     private List<Seller> filteredSellerList;
 
     private User selectedUserToView;
     private Customer selectedCustomerToView;
     private Seller selectedSellerrToView;
+
+    private User currentUser;
+    private Customer currentCustomer;
+    private Seller currentSeller;
     
     private User userToView;
     private Customer customerToView;
     private Seller sellerToView;
+
+    private Customer selectedCustomerToUpdate;
+    private Long customerIdUpdate;
+
+    private Seller selectedSellerToUpdate;
+    private Long sellerIdUpdate;
     
     public UserManagementManagedBean() {
+        currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        if (currentUser instanceof Customer){
+            currentCustomer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        } else {
+            currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        }
+        System.out.println("''''''''''''''''''''''''''''''''''''' current Customer: "+currentCustomer);
+        
     }
 
     @PostConstruct
@@ -64,6 +86,25 @@ public class UserManagementManagedBean implements Serializable {
         Long userIdToView = (Long) event.getComponent().getAttributes().get("userId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("userIdToView", userIdToView);
         FacesContext.getCurrentInstance().getExternalContext().redirect("adminViewUserDetails.xhtml");
+    }
+
+    public void updateCustomer(ActionEvent event) throws InputDataValidationException {
+
+        try {
+            customerSessionBeanLocal.updateCustomer(selectedCustomerToUpdate);
+
+        } catch (CustomerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
+        }
+    }
+    public void updateSeller(ActionEvent event) throws InputDataValidationException {
+
+        try {
+            sellerSessionBeanLocal.updateSeller(selectedSellerToUpdate);
+
+        } catch (SellerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating seller: " + ex.getMessage(), null));
+        }
     }
 
     public List<Customer> getCustomerList() {
@@ -145,7 +186,7 @@ public class UserManagementManagedBean implements Serializable {
     public void setFilteredSellerList(List<Seller> filteredSellerList) {
         this.filteredSellerList = filteredSellerList;
     }
-    
+
     public User getUserToView() {
         return userToView;
     }
@@ -168,6 +209,75 @@ public class UserManagementManagedBean implements Serializable {
 
     public void setSellerToView(Seller sellerToView) {
         this.sellerToView = sellerToView;
+    }
+
+    public Customer getSelectedCustomerToUpdate() {
+        return selectedCustomerToUpdate;
+    }
+
+    public void setSelectedCustomerToUpdate(Customer selectedCustomerToUpdate) {
+        this.selectedCustomerToUpdate = selectedCustomerToUpdate;
+    }
+
+    public Long getCustomerIdUpdate() {
+        return customerIdUpdate;
+    }
+
+    public void setCustomerIdUpdate(Long customerIdUpdate) {
+        this.customerIdUpdate = customerIdUpdate;
+    }
+
+    
+    public User getCurrentUser(){
+        return currentUser;
+    }
+    
+    public void setCurrentUser(){
+        this.currentUser = currentUser;
+    }
+    
+    public Customer getCurrentCustomer() {
+        return currentCustomer;
+    }
+
+    public Seller getCurrentSeller() {
+        return currentSeller;
+    }
+
+    public void setCurrentCustomer(Customer currentCustomer) {
+        this.currentCustomer = currentCustomer;
+    }
+
+    public void setCurrentSeller(Seller currentSeller) {
+        this.currentSeller = currentSeller;
+    }
+
+    /**
+     * @return the selectedSellerToUpdate
+     */
+    public Seller getSelectedSellerToUpdate() {
+        return selectedSellerToUpdate;
+    }
+
+    /**
+     * @param selectedSellerToUpdate the selectedSellerToUpdate to set
+     */
+    public void setSelectedSellerToUpdate(Seller selectedSellerToUpdate) {
+        this.selectedSellerToUpdate = selectedSellerToUpdate;
+    }
+
+    /**
+     * @return the sellerIdUpdate
+     */
+    public Long getSellerIdUpdate() {
+        return sellerIdUpdate;
+    }
+
+    /**
+     * @param sellerIdUpdate the sellerIdUpdate to set
+     */
+    public void setSellerIdUpdate(Long sellerIdUpdate) {
+        this.sellerIdUpdate = sellerIdUpdate;
     }
 
 }

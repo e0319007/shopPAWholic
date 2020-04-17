@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.ListingSessionBeanLocal;
@@ -23,150 +18,101 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 
-/**
- *
- * @author EileenLeong
- */
 @Named(value = "filterListingsByTagsManagedBean")
 @ViewScoped
-public class FilterListingsByTagsManagedBean implements Serializable{
+public class FilterListingsByTagsManagedBean implements Serializable {
 
     @EJB(name = "ListingSessionBeanLocal")
     private ListingSessionBeanLocal listingSessionBeanLocal;
 
     @EJB(name = "TagSessionBeanLocal")
     private TagSessionBeanLocal tagSessionBeanLocal;
-    
+
     @Inject
     private ViewListingManagedBean viewListingManagedBean;
-    
+
     private String condition;
     private List<Long> selectedTagIds;
     private List<SelectItem> selectItems;
     private List<Listing> listings;
-    
 
-    /**
-     * Creates a new instance of FilterListingsByTagsManagedBean
-     */
     public FilterListingsByTagsManagedBean() {
         condition = "OR";
     }
-    
-    
+
     @PostConstruct
-    public void postConstruct()
-    {
+    public void postConstruct() {
         List<Tag> tags = tagSessionBeanLocal.retrieveAllTags();
-        selectItems = new ArrayList<>();
-        
-        for(Tag tag:tags)
-        {
-            selectItems.add(new SelectItem(tag.getTagId(), tag.getName(), tag.getName()));
+        setSelectItems(new ArrayList<>());
+
+        for (Tag tag : tags) {
+            getSelectItems().add(new SelectItem(tag.getTagId(), tag.getName(), tag.getName()));
         }
-      
-        
-        condition = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCondition");        
-        selectedTagIds = (List<Long>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterTags");
-        
+
+        setCondition((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCondition"));
+        setSelectedTagIds((List<Long>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterTags"));
+
         filterListing();
     }
-     
-    @PreDestroy
-    public void preDestroy()
-    {
-      
+
+    @PreDestroy()
+    public void preDestroy() {
+
     }
-    
-    public void filterListing()
-    {        
-        if(selectedTagIds != null && selectedTagIds.size() > 0)
-        {
+
+    public void filterListing() {
+        if (selectedTagIds != null && selectedTagIds.size() > 0) {
+            System.out.println("################################### listings is in");
             listings = listingSessionBeanLocal.filterListingsByTags(selectedTagIds, condition);
-        }
-        else
-        {
+        } else {
             listings = listingSessionBeanLocal.retrieveAllListings();
         }
     }
-    
-    public void viewListingDetails(ActionEvent event) throws IOException
-    {
-        Long listingIdToView = (Long)event.getComponent().getAttributes().get("listingId");
+
+    public void viewListingDetails(ActionEvent event) throws IOException {
+        Long listingIdToView = (Long) event.getComponent().getAttributes().get("listingId");
         FacesContext.getCurrentInstance().getExternalContext().getFlash().put("listingIdToView", listingIdToView);
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("backMode", "filterListingsByTags");
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("backMode", "filterListingByTags");
         FacesContext.getCurrentInstance().getExternalContext().redirect("viewListingDetails.xhtml");
     }
 
-    /**
-     * @return the viewListingManagedBean
-     */
-    public ViewListingManagedBean getViewListingManagedBean() {
-        return viewListingManagedBean;
-    }
-
-    /**
-     * @param viewListingManagedBean the viewListingManagedBean to set
-     */
-    public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
-        this.viewListingManagedBean = viewListingManagedBean;
-    }
-
-    /**
-     * @return the condition
-     */
     public String getCondition() {
         return condition;
     }
 
-    /**
-     * @param condition the condition to set
-     */
-    public void setCondition(String condition) {
-        this.condition = condition;
-    }
-
-    /**
-     * @return the selectedTagIds
-     */
-    public List<Long> getSelectedTagIds() {
-        return selectedTagIds;
-    }
-
-    /**
-     * @param selectedTagIds the selectedTagIds to set
-     */
-    public void setSelectedTagIds(List<Long> selectedTagIds) {
-        this.selectedTagIds = selectedTagIds;
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listingFilterTags", selectedTagIds);
-    }
-
-    /**
-     * @return the selectItems
-     */
     public List<SelectItem> getSelectItems() {
         return selectItems;
     }
 
-    /**
-     * @param selectItems the selectItems to set
-     */
+    public List<Long> getSelectedTagIds() {
+        return selectedTagIds;
+    }
+
+    public ViewListingManagedBean getViewListingManagedBean() {
+        return viewListingManagedBean;
+    }
+
+    public void setCondition(String condition) {
+        this.condition = condition;
+    }
+
     public void setSelectItems(List<SelectItem> selectItems) {
         this.selectItems = selectItems;
     }
 
-    /**
-     * @return the listings
-     */
+    public void setSelectedTagIds(List<Long> selectedTagIds) {
+        this.selectedTagIds = selectedTagIds;
+    }
+
+    public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
+        this.viewListingManagedBean = viewListingManagedBean;
+    }
+
     public List<Listing> getListings() {
         return listings;
     }
 
-    /**
-     * @param listings the listings to set
-     */
     public void setListings(List<Listing> listings) {
         this.listings = listings;
     }
-    
 }

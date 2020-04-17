@@ -41,9 +41,6 @@ public class CategoryManagedBean implements Serializable {
 
     private Category categoryToUpdate;
 
-    /**
-     * Creates a new instance of CategoryManagedBean
-     */
     public CategoryManagedBean() {
         newCategory = new Category();
     }
@@ -69,6 +66,7 @@ public class CategoryManagedBean implements Serializable {
     }*/
     public void createNewCategory(ActionEvent event) {
         try {
+            System.out.println("################ i am in category;");
             Category category = categorySessionBeanLocal.createNewCategory(newCategory, parentCategoryId);
             categories.add(newCategory);
 
@@ -92,66 +90,45 @@ public class CategoryManagedBean implements Serializable {
 
     public void deleteCategory(ActionEvent event) throws DeleteCategoryException {
         try {
-            Category categoryToDelete = (Category) event.getComponent().getAttributes().get("CategoryToDelete");
+            Category categoryToDelete = (Category) event.getComponent().getAttributes().get("categoryToDelete");
             categorySessionBeanLocal.deleteCategory(categoryToDelete.getCategoryId());
             categories.remove(categoryToDelete);
-        } catch (CategoryNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with given ID is not found", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Category deleted successfully.", null));
+        } catch (CategoryNotFoundException | DeleteCategoryException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured while deleting product: " + ex.getMessage(), null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occured: " + ex.getMessage(), null));
         }
     }
 
-    /**
-     * @return the categories
-     */
     public List<Category> getCategories() {
         return categories;
     }
 
-    /**
-     * @param categories the categories to set
-     */
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the parentCategoryId
-     */
     public Long getParentCategoryId() {
         return parentCategoryId;
     }
 
-    /**
-     * @param parentCategoryId the parentCategoryId to set
-     */
     public void setParentCategoryId(Long parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }

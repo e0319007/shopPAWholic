@@ -4,56 +4,128 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                template="./../template/SellerFormTemplate.xhtml">
+                template="../template/SellerTemplate.xhtml">
+
     <ui:define name="content">
         <h:form enctype="multipart/form-data">
             <p:growl id="msg"></p:growl>
-            <p:fileUpload value="#{fileUplaodView.file}"
+            <p:fileUpload value="#{fileUploadView.file}"
                           invalidSizeMessage="JournalDev: Invalid Size"
                           invalidFileMessage="JournalDev: Invalid File Type"
                           fileLimitMessage="JournalDev: Invalid File Limit"
-                          mode="advanced" multiple="true" fileLimit="3" sizeLimit="100000"
+                          mode="advanced" multiple="true" fileLimit="300000" sizeLimit="100000"
                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
                           fileUploadListener="#{fileUploadView.fileUploadListener}"
                           auto="true"
                           update="msg"></p:fileUpload>
 
         </h:form>
-        <h:form>
 
-            <p:panel header="What are you listing today?" style="width: 490px;">
-                <p:panelGrid columns="2" >
-                    <p:outputLabel for="category" value="Category: "/>
-                    <p:selectOneMenu id="category" value="" required="true" style="width: 150px;">
-                        <f:selectItem itemLabel="" itemValue=""/>
-                        <f:selectItems value=""/>
-                    </p:selectOneMenu>
+        <h:form id="formCreateNewListing">
+            <p:panel header="What are you listing today?" style="width: 800px;">
 
-                    <p:outputLabel for="listingTitle" value="Listing Title:"/>
-                    <p:inputText id="listingTitle" required="true"/>
+                <p:messages id="messagesCreateNewListing" redisplay="false" />
 
-                    <p:outputLabel for="condition" value="Item Condition:"/>
-                    <p:selectOneRadio id="condition" unselectable="true">
-                        <f:selectItem itemLabel="New" itemValue="New"/>
-                        <f:selectItem itemLabel="Used" itemValue="Used"/>
-                    </p:selectOneRadio>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.newListing.skuCode}" placeholder="LIST999" required="true" requiredMessage="SKU Code is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="skuCode" />
+                        </p:column>
+                    </p:row>
 
-                    <p:outputLabel for="price" value="Price:"/>
-                    <p:inputText id="price" required="true"/>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="listingTitle" value="Listing Title:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="listingTitle" value="#{listingManagementManagedBean.newListing.name}" required="true" requiredMessage="title is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="listingTitle"/>
+                        </p:column>
+                    </p:row>
 
-                    <p:outputLabel for="description" value="Desciption:"/>
-                    <p:inputTextarea id="description" rows="6" cols="33"/>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="Description:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputTextarea id="description" value="#{listingManagementManagedBean.newListing.description}" rows="6" cols="33" required="true" requiredMessage="Description is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="description"/>
+                        </p:column>
+                    </p:row>
 
-                    <p:outputLabel for="tag" value="Tags "/>
-                    <p:selectOneMenu id="tag" value="" style="width: 150px;">
-                        <f:selectItem itemLabel="" itemValue=""/>
-                        <f:selectItems value=""/>
-                    </p:selectOneMenu>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" value="Price:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" required="true" requiredMessage="Price is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="price"/>
+                        </p:column>
+                    </p:row>
 
-                    <input type="hidden"></input>
-                    <p:commandButton value="List now"></p:commandButton>
-                </p:panelGrid>    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:spinner id="quantityOnHand" value="#{listingManagementManagedBean.newListing.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="quantityOnHand" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdNew}" style="width: 150px;">
+                                <f:selectItem itemLabel="[Select One]" itemValue="0" noSelectionOption="true"/>
+                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selCategory"/>
+                        </p:column>          
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selTags" value="Tags " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true" style="width: 150px;">
+                                <f:selectItems value="#{listingManagementManagedBean.tags}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}"/>
+                            </p:selectManyMenu>
+
+                        </p:column>
+                        <p:column>
+                            <p:message for="selTags"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton type="reset" value="Clear" />&nbsp;
+                            <p:commandButton id="createNewListing" value="List now" update="@form" actionListener="#{listingManagementManagedBean.createNewListing}"/>
+                        </p:column>
+                    </p:row>     
+                </p:panelGrid>   
+
             </p:panel>
-        </h:form>   
+        </h:form> 
     </ui:define>
 </ui:composition>
