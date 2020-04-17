@@ -1,6 +1,32 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
                 template="../template/SellerTemplate.xhtml">
 
+    <p:growl id="growl" showSummary="true" showDetail="true">
+        <p:autoUpdate />
+    </p:growl>
+
+    <p:timeline id="timeline" value="#{basicTimelineView.model}" height="250px"
+                selectable="#{basicTimelineView.selectable}"
+                zoomable="#{basicTimelineView.zoomable}"
+                moveable="#{basicTimelineView.moveable}"
+                stackEvents="#{basicTimelineView.stackEvents}"
+                axisOnTop="#{basicTimelineView.axisOnTop}"
+                eventStyle="#{basicTimelineView.eventStyle}"
+                showCurrentTime="#{basicTimelineView.showCurrentTime}">
+
+        <p:ajax event="select" listener="#{basicTimelineView.onSelect}"/>
+    </p:timeline>
+    <!--timeline to show their stock and sales-->
+    <!--sales generated-->
+    <p:chart type="bar" model="#{chartView.barModel}" style="height:300px"/>
+    <!--using bar-->
+    
+<!--    average daily sales
+    average sales rank
+    average price
+    reviews& ranks
+    summary > revenue and etc.-->
 </ui:composition>

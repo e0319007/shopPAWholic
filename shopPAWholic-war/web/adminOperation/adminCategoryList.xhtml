@@ -103,7 +103,7 @@
             <!--table of categories--> 
             <h:form id="formDataTable">
                 <h:messages id="messages" />
-                <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{viewAllCategoriesManagedBean.categories}" var="category">
+                <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{categoryManagedBean.categories}" var="category">
                     <p:column headerText="Name"> 
                         <h:outputText value="#{category.name}"/> 
                     </p:column>
