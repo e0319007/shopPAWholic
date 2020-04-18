@@ -53,7 +53,7 @@
 
     <ion-item>
       <ion-label><b>Delivery Method: </b></ion-label>
-      <ion-select placeholder="Select One" id="deliveryMethod" name="deliveryMethod" #deliveryMethod="ngModel" [(ngModel)]="chosenDeliveryMethod" required="true">
+      <ion-select placeholder="Select One" id="deliveryMethod" name="deliveryMethod" #deliveryMethod="ngModel" [(ngModel)]="chosenDeliveryMethod" (click)="checkDelivery()" required="true">
         <ion-select-option value={{deliveryMethods[0]}}>Regular (Singpost)</ion-select-option>
         <ion-select-option value={{deliveryMethods[1]}}>Register (Singpost)</ion-select-option>
         <ion-select-option value={{deliveryMethods[2]}}>NinjaVan</ion-select-option>
@@ -64,7 +64,7 @@
 
     <ion-item>
       <ion-label><b>Credit Card Number: </b></ion-label>
-      <ion-input type="text" id="ccNum" name="ccNum" [(ngModel)]="billingDetail.ccNum" #ccNum="ngModel" required = true></ion-input>
+      <ion-input type="text" id="ccNum" name="ccNum" [(ngModel)]="billingDetail.creditCardDetail" #ccNum="ngModel" required = true></ion-input>
     </ion-item>
 
   </ion-list>
@@ -74,4 +74,22 @@
   </ion-button>
  </form>
 </ion-content>
+<ion-card style="color: cornflowerblue; float: right; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+  <div style="margin: 20px;">
+    <b> Delivery Cost</b>  (changed per seller):<br />
+    Regular(Singpost): $1.50<br />
+    Registered(Singpost): $3.50<br />
+    Qxpress: $5<br />
+    ParknParcel: $5.50<br />
+    NinjaVan: $4<br />
+  </div>
+</ion-card>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+      Back
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
 

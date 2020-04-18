@@ -31,7 +31,7 @@ export class DeliveryDetailService {
   }
 
   updateDeliveryDetail(deliveryDetail: DeliveryDetail, status: string): Observable<any> {
-    console.log("status list to pass back: " + deliveryDetail.statusList)
+    console.log("status list to pass back: " + deliveryDetail.statusLists)
     console.log("updating delivery detail")
     let deliveryDetailUpdateReq = {
       "deliveryDetail": deliveryDetail,

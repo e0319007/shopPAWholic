@@ -78,6 +78,20 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
+  {
+    path: 'sellerOperation/viewMyListings',
+    loadChildren: './sellerOperation/view-my-listings/view-my-listings.module#ViewMyListingsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'customerOperation/createOrderSuccessPage',
+    loadChildren: './customerOperation/create-order-success-page/create-order-success-page.module#CreateOrderSuccessPagePageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/viewBillingDetails',
+    loadChildren: './sellerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
+  },
+
+
  
 ];
 

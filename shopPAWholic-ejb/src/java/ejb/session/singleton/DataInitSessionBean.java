@@ -234,7 +234,9 @@ public class DataInitSessionBean {
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
 
-            //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            OrderEntity o = orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            System.out.println("OrderEntity id: " + o.getOrderId() + " created");
+            System.out.println("OrderEntity has " + o.getListings().size() + " listings");
 
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
@@ -274,7 +276,7 @@ public class DataInitSessionBean {
             System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
 
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
+        } catch (AdminUsernameExistException | CreateNewOrderException |ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
                 | CreateNewEventException | EventNameExistsException ex) {
 
 //CreateNewOrderException

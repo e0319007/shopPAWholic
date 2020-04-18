@@ -23,6 +23,11 @@ export class AppComponent implements OnInit {
       icon: 'arrow-forward'
     },
     {
+      title: 'View My Listings',
+      url: 'sellerOperation/viewMyListings',
+      icon: 'arrow-forward'
+    },
+    {
       title: 'Create New Listing',
       url: 'sellerOperation/createNewListing',
       icon: ''
@@ -45,6 +50,11 @@ export class AppComponent implements OnInit {
     {
       title: 'View Reviews',
       url: '/viewReviews',
+      icon: ''
+    },
+    {
+      title: 'View Billing',
+      url: '/sellerOperation/viewBillingDetails',
       icon: ''
     }
   ];

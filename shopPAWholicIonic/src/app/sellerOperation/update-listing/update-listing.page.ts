@@ -103,6 +103,11 @@ export class UpdateListingPage implements OnInit {
     }
   } 
 
+  addTag() {
+    this.router.navigate(["/sellerOperation/createNewTag"]);
+  }
+
+
   back()
 	{
 		this.router.navigate(["viewListingDetails/" + this.listingToUpdate.listingId]);

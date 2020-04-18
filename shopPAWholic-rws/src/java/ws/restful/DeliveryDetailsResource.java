@@ -26,6 +26,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.enumeration.DeliveryMethod;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.DeliveryDetailNotFoundException;
 import util.exception.InputDataValidationException;
@@ -35,6 +36,7 @@ import ws.datamodel.DeliveryDetailCreateNewRsp;
 import ws.datamodel.DeliveryDetailRetrieveByOrderIdRsp;
 import ws.datamodel.DeliveryDetailUpdateReq;
 import ws.datamodel.ErrorRsp;
+import java.util.Date;
 /**
  *
  * @author shizhan
@@ -61,7 +63,11 @@ public class DeliveryDetailsResource {
         try {
             User user = userSessionBeanLocal.userLogin(deliveryDetailCreateNewReq.getEmail(), deliveryDetailCreateNewReq.getPassword());
             System.out.println("********** DeliveryDetailsResource.retrieveDeliveryDetailByOrderId(): user " + user.getEmail()+ " login remotely via web service");
-            DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.createNewDeliveryDetail(deliveryDetailCreateNewReq.getDeliveryDetail());
+            DeliveryDetail toCreate = new DeliveryDetail(deliveryDetailCreateNewReq.getDeliveryDetail().getAddress(), deliveryDetailCreateNewReq.getDeliveryDetail().getContactNumber(), new Date(), deliveryDetailCreateNewReq.getDeliveryDetail().getDeliveryMethod());
+            System.out.println("Delivery detail to create address: " + toCreate.getAddress());
+            System.out.println("Delivery detail to create price: " + toCreate.getDeliveryPrice());
+            System.out.println("Delivery detail to create date: " + toCreate.getDeliveryDate());
+            DeliveryDetail deliveryDetail = deliveryDetailSessionBeanLocal.createNewDeliveryDetail(toCreate);
             return Response.status(Response.Status.OK).entity(new DeliveryDetailCreateNewRsp(deliveryDetail)).build();
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

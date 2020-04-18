@@ -10,6 +10,7 @@ import { CartItem } from 'src/app/cart-item';
 import { NgForm } from '@angular/forms';
 import { DeliveryMethod } from 'src/app/delivery-method.enum';
 import { BillingDetail } from 'src/app/billing-detail';
+import { OrderEntityService } from 'src/app/order-entity.service';
 
 @Component({
   selector: 'app-check-out',
@@ -29,13 +30,16 @@ export class CheckOutPage implements OnInit {
   successMessage: string;
   orderId: number;
 
-  des: string;
+  deliveryCost: number;
   
   constructor(private cartService: CartService,
               private router: Router,
-              private deliveryDetailService: DeliveryDetailService) 
+              private deliveryDetailService: DeliveryDetailService,
+              private orderService: OrderEntityService) 
   {
     this.deliveryMethods = new Array();
+    this.totalPrice = 0 ;
+    this.deliveryCost = 0;
     
     this.deliveryMethods.push(DeliveryMethod.SingpostRegular);
     this.deliveryMethods.push(DeliveryMethod.SingpostRegistered);
@@ -46,20 +50,54 @@ export class CheckOutPage implements OnInit {
   }
 
   ngOnInit() {
+    this.ionViewWillEnter();
+  }
+
+  ionViewDidEnter(){
+   this.ionViewWillEnter();
+  }
+
+  ionViewWillEnter(){
     this.cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
     console.log("cartItems: " + this.cartItems.length);
-    for (let item of this.cartItems) {
+    this.calculateTotalPrice(this.cartItems);
+    console.log("this total price: " + this.totalPrice);
+  }
+
+  calculateTotalPrice(cartItems : CartItem[]) {
+    this.totalPrice = 0;
+    for (let item of cartItems) {
       this.totalPrice += item.quantity * item.listing.unitPrice;
     }
   }
 
+  tempCost: number;
   initialiseDeliveryMethod() {
     let temp: string = this.chosenDeliveryMethod;
-    if (temp == "SINGPOST_REGULAR") this.deliveryDetail.deliveryMethod = DeliveryMethod.SingpostRegular;
-    else if (temp == "SINGPOST_REGISTERED") this.deliveryDetail.deliveryMethod = DeliveryMethod.SingpostRegistered;
-    else if (temp == "NINJAVAN") this.deliveryDetail.deliveryMethod = DeliveryMethod.Ninjavan;
-    else if (temp == "PARKNPARCEL") this.deliveryDetail.deliveryMethod = DeliveryMethod.ParknParcel;
-    else if (temp == "QXPRESS") this.deliveryDetail.deliveryMethod = DeliveryMethod.Qxpress;
+    if (temp == "SINGPOST_REGULAR") { 
+      this.deliveryDetail.deliveryMethod = DeliveryMethod.SingpostRegular;
+      this.tempCost = 1.50;
+    }
+    else if (temp == "SINGPOST_REGISTERED") {
+      this.deliveryDetail.deliveryMethod = DeliveryMethod.SingpostRegistered;
+      this.tempCost = 3.50;
+    }
+    else if (temp == "NINJAVAN") {
+      this.deliveryDetail.deliveryMethod = DeliveryMethod.Ninjavan;
+      this.tempCost = 4;
+    }
+    else if (temp == "PARKNPARCEL") {
+      this.deliveryDetail.deliveryMethod = DeliveryMethod.ParknParcel;
+      this.tempCost = 5.50;
+    }
+    else if (temp == "QXPRESS") {
+      this.deliveryDetail.deliveryMethod = DeliveryMethod.Qxpress;
+      this.tempCost = 5;
+    }
+  }
+
+  checkDelivery() {
+    this.initialiseDeliveryMethod();
   }
 
   checkout(checkoutForm: NgForm) {
@@ -69,52 +107,88 @@ export class CheckOutPage implements OnInit {
     //this.deliveryDetail.deliveryMethod = this.deliveryMethods[parseInt(this.stringdeliveryMethod)];
     console.log("Reflected delivery method: " + this.deliveryDetail.deliveryMethod)
     if(checkoutForm.valid) {
-      let deliveryDetailCreated: DeliveryDetail = new DeliveryDetail();
-      this.deliveryDetailService.createDeliveryDetail(this.deliveryDetail).subscribe(
-        response => {
-          deliveryDetailCreated = response.deliveryDetail;
-          //delivery detail created
-          console.log("*****delivery detail created")
-          let checkoutListings: Listing[];
-          let map = new Map<Seller, Listing[]>();
-          let sellerSet = new Set<Seller>();
-          for (let i of this.cartItems){
-            if (!sellerSet.has(i.listing.seller)) {
-              sellerSet.add(i.listing.seller)
-            }
+ 
+      //initialise total number of sellers
+      let sellerList: Seller[] = new Array();
+      for (let i of this.cartItems){
+        let added = false;
+        for (let seller of sellerList) {
+          if(seller.userId == i.listing.seller.userId) {
+            sellerList.push(seller);
+            added = true
           }
-          console.log("theres " + sellerSet.size + " number of sellers when checking out")
-      
-          for (let seller of sellerSet) {
-            map.set(seller, new Array);
-            for (let item of this.cartItems) {
-              if (seller.email == item.listing.seller.email) {
-                for (var i = 0; i < item.quantity; i++) {
-                  map.get(seller).push(item.listing);
-                }
-              }
-            }
-          }
-      
-          for (let seller of sellerSet) {
-            this.createOrder(deliveryDetailCreated, map.get(seller));
-          } 
-        },
-        error => {
-          console.log("error while creating delivery detail : " + error);
         }
-      )
+        if(!added) {
+          sellerList.push(i.listing.seller);
+        }
+      }
+      console.log("theres " + sellerList.length + " number of sellers when checking out")
+      this.deliveryCost = this.tempCost * sellerList.length;
+      //mapping sellers to list of listings
+      let map = new Map<Seller, Listing[]>();
+      for (let seller of sellerList) 
+        map.set(seller, new Array);
+      
+      for (let item of this.cartItems) {
+        for (let seller of sellerList) {
+          if (seller.email == item.listing.seller.email) {
+            for (var i = 0; i < item.quantity; i++) {
+              map.get(seller).push(item.listing);
+            }
+          }
+        }
+      }
+      //create orders for individual sellers
+      for (let seller of sellerList) {
+        this.createNewDelivery(map.get(seller));
+      } 
+
+      this.router.navigate(["/viewAllOrders"])
+        
     } 
   }  
 
+  createNewDelivery(listings: Listing[]) {
+    let deliveryDetailCreated: DeliveryDetail = new DeliveryDetail();
+    this.deliveryDetailService.createDeliveryDetail(this.deliveryDetail).subscribe(
+      response => {
+        deliveryDetailCreated = response.deliveryDetail;
+        //delivery detail created
+        console.log("*****delivery detail created")
+        
+        this.createOrder(deliveryDetailCreated, listings);
+
+        this.router.navigate(["/customerOperation/createOrderSuccessPage"])
+      },
+      error => {
+        console.log("error while creating delivery detail : " + error);
+      }
+    );
+      
+  }
+
+  back() {
+    this.router.navigate(["/customerOperation/viewCart"]);
+  }
+
   createOrder(deliveryDetail : DeliveryDetail, listings: Listing[]) {
+    //set price of order
+    let priceOfOrder: number = this.tempCost;
+    for (let l of listings) {
+      priceOfOrder += l.unitPrice;
+    }
+    //initialising order listing and price
     let orderEntity: OrderEntity = new OrderEntity();
     orderEntity.listings = listings;
-    orderEntity.totalPrice = this.totalPrice;
-    this.cartService.createOrder(deliveryDetail, this.billingDetail.creditCardDetail, orderEntity, listings).subscribe(
+    console.log("wait to create order for seller : " + listings[0].seller.name + " with listing length: " + orderEntity.listings.length);
+    orderEntity.totalPrice = priceOfOrder;
+    //create order
+    console.log("&&&&listing length : " + listings.length)
+    this.orderService.createOrder(deliveryDetail, this.billingDetail.creditCardDetail, orderEntity, listings).subscribe(
       response => {
-        this.orderId = response.orderEntityId;
-        this.successMessage = "Order to " + listings[0].seller.userId + "with ID " + this.orderId + "created successfully!"
+        console.log("order created")
+        console.log("orderId: " + response.orderEntityId);
+        this.cartService.afterCheckoutInitCart();
       },
       error => {
         console.log("Error occured : " + error);

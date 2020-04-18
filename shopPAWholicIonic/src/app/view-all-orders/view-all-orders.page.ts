@@ -20,7 +20,7 @@ export class ViewAllOrdersPage implements OnInit {
               private datePipe: DatePipe) { }
 
   orders: OrderEntity[];
-  ordersDisplay: OrderDisplay[] = new Array();
+  hasOrders: boolean = true;
 
   
   ngOnInit() {
@@ -44,13 +44,15 @@ export class ViewAllOrdersPage implements OnInit {
       response => {
         this.orders = response.orders;
         console.log("getting orders with size: " + this.orders.length);
+        this.hasOrders = true;
        // for (let order of this.orders) {
        //   let dateString: string = order.orderDate.toUTCString();
        //   this.ordersDisplay.push(new OrderDisplay(order, dateString));
       //}
       },
       error => {
-        console.log('********** ViewAllOrdersPage.ts: ' + error)
+        console.log('********** ViewAllOrdersPage.ts: ' + error);
+        this.hasOrders = false;
       }
     );
   }

@@ -6,6 +6,8 @@ import { AlertController } from '@ionic/angular';
 import { UtilityService } from '../utility.service';
 import { CartService } from '../cart.service';
 import { CartItem } from '../cart-item';
+import { Seller } from '../seller';
+import { User } from '../user';
 
 @Component({
   selector: 'app-view-listing-details',
@@ -21,6 +23,7 @@ export class ViewListingDetailsPage implements OnInit {
   errorMessage: string;
   resultSuccess: boolean;
   isCustomer: boolean;
+  isCorrectSeller: boolean;
 
   quantityToAddToCart: number;
   errorQuantityToAddExceeded: string;
@@ -30,7 +33,8 @@ export class ViewListingDetailsPage implements OnInit {
     this.retrieveListingError = false;
     this.error = false;
     this.resultSuccess = false;
-    this.quantityToAddToCart = 0;
+    this.quantityToAddToCart = 1;
+    this.isCorrectSeller = true;
   }
 
   ngOnInit() {
@@ -38,10 +42,6 @@ export class ViewListingDetailsPage implements OnInit {
     console.log("called view listing method with listing id: " + this.listingId);
     this.refreshListing();
     this.isCustomer = this.utilityService.isCustomer();
-
-    //deletelater
-    this.cartService.initialiseCart();
-    console.log("pass init call***");
   }
 
   refreshListing() {
@@ -49,12 +49,18 @@ export class ViewListingDetailsPage implements OnInit {
       response => {
         this.listingToView = response.listing;
         console.log(this.listingToView == null);
+        if (this.listingToView.seller.email == this.utilityService.getEmail())  this.isCorrectSeller = true;
+        else this.isCorrectSeller = false;
       },
       error => {
         this.retrieveListingError = true;
         console.log('********* ViewListingDetailsPage.ts: ' + error);
       }
     );
+  }
+
+  ionViewDidEnter(){
+   this.refreshListing();
   }
 
   ionViewWillEnter() 
@@ -119,5 +125,9 @@ export class ViewListingDetailsPage implements OnInit {
 
   back() {
     this.router.navigate(["/viewAllListings"]);
+  }
+
+  goCart() {
+    this.router.navigate(["/customerOperation/viewCart"]);
   }
 }

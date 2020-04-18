@@ -64,7 +64,7 @@
 
     </ion-card-content>
   </ion-card>
-  <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == false">
+  <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == false && isCorrectSeller == true">
 		<ion-button (click)="updateListing()"  expand="block"style="float:left" fill="clear" shape="round">
 			<ion-icon slot="start" name="create"></ion-icon>
 			Update
@@ -92,8 +92,17 @@
   </ion-toolbar>
   
 </ion-content>
-<ion-footer>
-  <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+<ion-footer *ngIf="isCustomer == true">
+  <ion-button (click)="back()" expand="block" fill="clear" style="float:left" shape="round">
+    Back
+  </ion-button>
+  <ion-button (click)="goCart()" expand="block" fill="clear" style="float:right" shape="round">
+    Cart
+  </ion-button>
+</ion-footer>
+
+<ion-footer *ngIf="isCustomer == false">
+  <ion-button (click)="back()" expand="block" fill="clear"  shape="round">
     Back
   </ion-button>
 </ion-footer>

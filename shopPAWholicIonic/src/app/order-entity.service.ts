@@ -4,8 +4,8 @@ import { UtilityService } from './utility.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { OrderEntity } from './order-entity';
-import { Seller } from './seller';
 import { Listing } from './listing';
+import { DeliveryDetail } from './delivery-detail';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -31,7 +31,7 @@ export class OrderEntityService {
       );
   }
 
-  createNewOrder(order: OrderEntity, deliveryDetailId: number, ccNum: string, seller: Seller, listings: Listing[]): Observable<any> {
+  /* createNewOrder(order: OrderEntity, deliveryDetailId: number, ccNum: string, seller: Seller, listings: Listing[]): Observable<any> {
     let orderCreateNewReq = {
       "deliveryDetailId": deliveryDetailId,
       "ccNum": ccNum,
@@ -42,7 +42,23 @@ export class OrderEntityService {
       "password": this.utilityService.getPassword(),
     } 
     return this.httpclient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions).pipe(catchError(this.handleError));
-  }
+  }*/
+
+  createOrder(deliveryDetail: DeliveryDetail, ccNum: string, orderEntity: OrderEntity, listings: Listing[]) {
+    console.log("============")
+    console.log("listings passed to create order has length: " + listings.length);
+    console.log("creating order for seller: " + listings[0].seller.name)
+    let orderCreateNewReq = {
+      "deliveryDetailId": deliveryDetail.deliveryDetailId,
+      "ccNum": ccNum ,
+      "orderEntity": orderEntity,
+      "listings": listings,
+      "seller": listings[0].seller,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(), 
+    }
+    return this.httpclient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions).pipe(catchError(this.handleError));
+   }
 
   changeOrderStatusByCustomer(order: OrderEntity): Observable<any> {
     let orderUpdateOrderReq = {

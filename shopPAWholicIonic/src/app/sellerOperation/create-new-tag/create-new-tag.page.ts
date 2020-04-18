@@ -33,10 +33,15 @@ export class CreateNewTagPage implements OnInit {
     this.router.navigate(["/sellerOperation/createNewListing"]);
   }
 
+  keyPress() {
+    this.errorMessage = null;
+  }
+
   create() {
     for(let t of this.tags) {
       if(t.name == this.newTag.name) {
         this.errorMessage = "Tag already exists!"
+        return;
       }
     } 
     this.tagService.createNewTag(this.newTag).subscribe(

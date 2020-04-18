@@ -29,6 +29,7 @@ import util.enumeration.OrderStatus;
 import util.exception.CreateNewOrderException;
 import util.exception.InputDataValidationException;
 import util.exception.OrderNotFoundException;
+import java.util.ArrayList;
 
 /**
  *
@@ -67,7 +68,8 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
         
         if (constraintViolations.isEmpty()) {
             try {
-                System.out.println("Entering bean");
+                System.out.println("Entering order session bean: create order method");
+                System.out.println("Create order method has listing size: " + listings.size());
                 Date date = new Date(System.currentTimeMillis());
                 BillingDetail billingDetail = new BillingDetail(ccNum, date);
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
@@ -91,17 +93,26 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
 //                    em.persist(listings);
 //                }
 //              
-                
+                System.out.println("create order method passed in listings has size " + listings.size());
+                newOrder.setListings(new ArrayList<>());
                 for (Listing l : listings) {
                     newOrder.getListings().add(l);
-                    l.setQuantityOnHand(l.getQuantityOnHand() - 1);
+                    System.out.println("Adding " + l + " to cart");
                 }
                 System.out.println(newOrder.getListings());
                 em.persist(newOrder);
                 em.flush();
                 
+                for(int i = 0; i < listings.size(); i++) {
+                    Listing l = listings.get(i);
+                    Listing listingfromDatabase = em.find(Listing.class, l.getListingId());
+                    listingfromDatabase.setQuantityOnHand(l.getQuantityOnHand() - 1);
+                    System.out.println("Item being checkedout has quantity: " + listingfromDatabase.getQuantityOnHand());
+                    em.merge(l);
+                    em.flush();
+                }
                 
-                
+                System.out.println("before returning in create order method, listing has size: " + newOrder.getListings());
                 return newOrder;
             } catch (Exception ex) {
                 throw new CreateNewOrderException("An unexpected error has occurred: " + ex.getMessage());
@@ -126,7 +137,9 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     public List<OrderEntity> retrieveAllOrders() {
         Query query = em.createQuery("SELECT o FROM OrderEntity o ORDER BY o.orderId");
         List<OrderEntity> orders = query.getResultList();
-        
+        for (OrderEntity o: orders) {
+            o.getListings().size();
+        }
         return orders;
     }
    
@@ -134,8 +147,11 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
     public List<OrderEntity> retrieveOrderByCustomerId(Long customerId) {
         Query q = em.createQuery("SELECT o FROM OrderEntity o WHERE o.customer.userId = :inUserId");
         q.setParameter("inUserId", customerId);
-        
-        return q.getResultList();
+        List<OrderEntity> orders = q.getResultList();
+        for (OrderEntity o: orders) {
+            o.getListings().size();
+        }
+        return orders;
     }
     
     @Override

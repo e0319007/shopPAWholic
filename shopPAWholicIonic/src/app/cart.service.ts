@@ -41,9 +41,10 @@ export class CartService {
         let exist: boolean = false;
         for(var i = 0; i < cart.listings.length; i++) {
           for(var j = 0; j < cartItems.length; j++) {
-            if(cart.listings[i] == cartItems[j].listing) {
+            if(cart.listings[i].listingId == cartItems[j].listing.listingId) {
               cartItems[j].quantity = cartItems[j].quantity + 1; 
               exist = true;
+              break;
             }
           }
           if (!exist) {
@@ -52,6 +53,7 @@ export class CartService {
         }
         sessionStorage.setItem ('originalCart', JSON.stringify(cart));
         sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+        console.log("initialised cart with : " )
         console.log('===========')
         
       },
@@ -68,19 +70,6 @@ export class CartService {
    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
      catchError(this.handleError)
    );
- }
-  
- createOrder(deliveryDetail: DeliveryDetail, ccNum: string, orderEntity: OrderEntity, listings: Listing[]) {
-  let orderCreateNewReq = {
-    "deliveryDetailId": deliveryDetail.deliveryDetailId,
-    "ccNum": ccNum ,
-    "orderEntity": orderEntity,
-    "listings": listings,
-    "seller": listings[0].seller,
-    "email": this.utilityService.getEmail(),
-    "password": this.utilityService.getPassword(), 
-  }
-  return this.httpClient.put<any>(this.baseUrl, orderCreateNewReq, httpOptions).pipe(catchError(this.handleError));
  }
 
  saveCartToDatabase(): Observable<any> {
@@ -108,6 +97,15 @@ export class CartService {
      "cart": cart,
    };
    return this.httpClient.post<any>(this.baseUrl, cartUpdateReq, httpOptions).pipe(catchError(this.handleError));
+ }
+
+ afterCheckoutInitCart() {
+  let cart: Cart = JSON.parse(sessionStorage.getItem('originalCart'));
+  cart.listings = new Array();
+  let cartItems: CartItem[] = new Array();
+  sessionStorage.setItem ('originalCart', JSON.stringify(cart));
+  sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+
  }
 
  handleError(error: HttpErrorResponse) {

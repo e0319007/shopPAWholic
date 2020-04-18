@@ -18,6 +18,7 @@ export class ViewCartPage implements OnInit {
 
   cartItems: CartItem[];
   totalPrice: number;
+  emptyCart: boolean = true;
   
   
 
@@ -27,10 +28,6 @@ export class ViewCartPage implements OnInit {
               private deliveryDetailService: DeliveryDetailService) {this.totalPrice = 0;}
 
   ngOnInit() {
-    //deletelater
-    this.cartService.initialiseCart;
-    console.log("initialised cart");
-
     let cart: Cart = JSON.parse(sessionStorage.getItem('originalCart'))
     console.log("Cart component: listing in cart: " + cart.listings.length);
     this.refreshCart();
@@ -51,28 +48,39 @@ export class ViewCartPage implements OnInit {
     for (let item of this.cartItems) {
       this.totalPrice += item.quantity * item.listing.unitPrice;
     }
+    if (this.cartItems == null || this.cartItems.length == 0) {
+      this.emptyCart = true;
+    } else {
+      this.emptyCart = false;
+    }
   }
 
-  removeListingFromCart(cartItem: CartItem) {
-    let cartItems: CartItem[] = JSON.parse(sessionStorage.getItem('cartItems'));
-    let quantityLeft: number;
-    let itemChanged: CartItem;
+  refreshPrice() {
+    for (let item of this.cartItems) {
+      this.totalPrice += item.quantity * item.listing.unitPrice;
+    }
+  }
 
-    for (var i = 0; i < cartItems.length; i++) {
-      if(cartItems[i].listing.name == cartItem.listing.name) {
-        cartItem[i].quantity = cartItem[i].quantity - cartItem.quantity;
-        quantityLeft = cartItem[i].quantity;
-        itemChanged = cartItem[i];
-        break;
-      }
-    }
-    if(quantityLeft == 0) {
-      cartItems = cartItems.filter(obj => obj !== itemChanged);
-    }
-    sessionStorage.setItem('cartItem', JSON.stringify(cartItems));
+  toListing(listingId) {
+    this.router.navigate(["/viewListingDetails/" + listingId]);
+  }
+
+  removeListingFromCart(listingId: string) {
+    console.log("remove item of id: " + listingId);
+    let cartItems: CartItem[] = JSON.parse(sessionStorage.getItem('cartItems'));
+    let longlistingId = parseInt(listingId);
+    console.log("cartitems length before: " + cartItems.length)
+    cartItems = cartItems.filter(x => x.listing.listingId !== longlistingId);
+    console.log("cartitems length after: " + cartItems.length)
+    sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
+    this.refreshCart();
   }
 
   checkoutDetails() {
     this.router.navigate(["/customerOperation/checkOutPage"]);
+  }
+
+  shop() {
+    this.router.navigate(["/viewAllListings"]);
   }
 }

@@ -98,6 +98,9 @@
           <ion-select-option *ngFor="let tag of tags" value="{{tag.tagId}}">{{tag.name}}</ion-select-option>
         </ion-select>
       </ion-item>
+      <ion-button (click)="addTag()" expand="block" fill="clear" shape="round">
+        Add Tag
+      </ion-button>
 
       <ion-button type="submit" style="float:right" fill="clear" shape="round">
         Update

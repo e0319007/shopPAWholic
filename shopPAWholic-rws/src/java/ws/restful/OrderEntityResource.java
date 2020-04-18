@@ -72,10 +72,11 @@ public class OrderEntityResource {
                 User user = getUser(orderCreateNewReq.getEmail(), orderCreateNewReq.getPassword(), "OrderEntityResource.createNewOrder()");
                 if (user instanceof Customer == false) throw new InvalidLoginCredentialException();
                 orderCreateNewReq.getOrderEntity().setOrderDate(new Date());
+                System.out.println("Order reqest order has listing size: " + orderCreateNewReq.getOrderEntity().getListings().size());
                 OrderEntity orderEntity = orderSessionBeanLocal.createNewOrder(orderCreateNewReq.getOrderEntity(), orderCreateNewReq.getDeliveryDetailId(), 
                                                                                 orderCreateNewReq.getCcNum(), user.getUserId(), orderCreateNewReq.getListings(), 
                                                                                 orderCreateNewReq.getSeller().getUserId());
-                
+                System.out.println("New order has listing size of: " + orderEntity.getListings().size());
                 return Response.status(Response.Status.OK).entity(new OrderCreateNewRsp(orderEntity.getOrderId())).build();
             } catch (InvalidLoginCredentialException ex) {
                  ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

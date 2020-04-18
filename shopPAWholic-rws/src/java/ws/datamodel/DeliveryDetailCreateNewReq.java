@@ -23,6 +23,10 @@ public class DeliveryDetailCreateNewReq {
         this.password = password;
     }
 
+    public DeliveryDetailCreateNewReq() {
+    }
+
+    
     public DeliveryDetail getDeliveryDetail() {
         return deliveryDetail;
     }

@@ -53,7 +53,7 @@ export class UtilityService {
   }
 
   setEmail(email: string) {
-     let e: string = "sellerOne@email.com";
+     let e: string = "customerOne@email.com";
      sessionStorage.email = e;
     //sessionStorage.email = email;
   }
@@ -70,7 +70,7 @@ export class UtilityService {
   }
 
   isCustomer(): boolean {
-    return false;
+    return true;
    /**  let currentUser = this.getCurrentUser(); 
     if (currentUser instanceof Customer) {
       return true;

@@ -31,6 +31,7 @@ export class ViewDeliveryDetailsPage implements OnInit {
   list: string[] = new Array();
 
   ngOnInit() {
+    this.newDeliveryStatus = "";
     console.log("==================")
     this.deliveryService.retrieveDeliveryDetailByOrderId(this.orderId).subscribe(
       response => {
