@@ -1,8 +1,9 @@
 export enum OrderStatus {
-    PENDINGPAYMENT,
-    PAID,
-    SHIPPED,
-    COMPLETED,
-    LOST,
-    REFUND
+    pendPayment = "PENDINGPAYMENT",
+    paid = "PAID",
+    delivered = "DELIVERED",
+    completed = "COMPLETED",
+    lost = "LOST",
+    refund = "REFUNDED",
+    cancelled = "CANCELLED"
 }

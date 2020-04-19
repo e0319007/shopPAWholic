@@ -1,0 +1,43 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Edit Order Status</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+
+<ion-content>
+  <form #editStatus="ngForm" (ngSubmit)="submit()">
+    <div style="color: red;">
+      <div *ngIf="status.invalid && (status.dirty || status.touched || submitted)" class="errorText">
+        <div *ngIf="status.errors.required">
+          Status is required.
+        </div>
+      </div>
+    </div>
+    <ion-item>
+      <ion-label><b>Status</b></ion-label>
+      <ion-select placeholder="Select One" id="status" name="status" #status="ngModel" [(ngModel)]="statusString" required="true">
+        <ion-select-option *ngFor="let status of orderStatusList" value="{{status}}">{{status}}</ion-select-option>
+      </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label></ion-label>
+    <ion-button type="submit" expand="block" fill="clear" shape="round">
+      submit
+    </ion-button>
+  </ion-item>
+</form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+      back
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

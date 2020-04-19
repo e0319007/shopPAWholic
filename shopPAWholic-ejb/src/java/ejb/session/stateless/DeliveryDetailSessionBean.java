@@ -7,7 +7,9 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import entity.DeliveryDetail;
+import entity.OrderEntity;
 import java.util.List;
+import javax.persistence.Query;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -88,10 +90,24 @@ public class DeliveryDetailSessionBean implements DeliveryDetailSessionBeanLocal
         }
     }
     
+   
     @Override
-    public void setDeliveryStatus(String status, long deliveryStatusId) {
+    public DeliveryDetail retrieveDeliveryDetailByOrderId (long orderId) throws DeliveryDetailNotFoundException{
+        try {
+            OrderEntity order = em.find(OrderEntity.class, orderId);
+            Query q = em.createQuery("SELECT detail FROM DeliveryDetail detail WHERE detail.deliveryDetailId = :inDeliveryId");
+            q.setParameter("inDeliveryId", order.getDeliveryDetail().getDeliveryDetailId());
+            return (DeliveryDetail) q.getSingleResult();
+        } catch (Exception ex) {
+            throw new DeliveryDetailNotFoundException("Delivery Detail ID " + " does not exist!");
+        }
+    }
+    
+    @Override
+    public void addDeliveryStatus(String status, long deliveryStatusId) {
         DeliveryDetail deliveryDetail = em.find(DeliveryDetail.class, deliveryStatusId);
         deliveryDetail.getStatusLists().add(status);
+        em.merge(deliveryDetail);
     }
     
     //also retrieve delivery details by customer

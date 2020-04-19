@@ -23,18 +23,23 @@ export class AppComponent implements OnInit {
       icon: 'arrow-forward'
     },
     {
+      title: 'View My Listings',
+      url: 'sellerOperation/viewMyListings',
+      icon: 'arrow-forward'
+    },
+    {
       title: 'Create New Listing',
-      url: '/createNewListing',
+      url: 'sellerOperation/createNewListing',
       icon: ''
     },
     {
       title: 'View Orders',
-      url: '/viewOrders',
+      url: '/viewAllOrders',
       icon: ''
     },
     {
-      title: 'Shopping Cart',
-      url: '/viewShoppingCart',
+      title: 'Cart',
+      url: '/customerOperation/viewCart',
       icon: ''
     },
     {
@@ -45,6 +50,11 @@ export class AppComponent implements OnInit {
     {
       title: 'View Reviews',
       url: '/viewReviews',
+      icon: ''
+    },
+    {
+      title: 'View Billing',
+      url: '/sellerOperation/viewBillingDetails',
       icon: ''
     }
   ];

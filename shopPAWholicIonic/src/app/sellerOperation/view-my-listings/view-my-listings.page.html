@@ -1,0 +1,45 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>My Listings</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<div *ngIf="noListing == true" style="margin:10px;">
+  <h4>You have no listings</h4>
+</div>
+
+<ion-content>
+  <ion-card>
+    <ion-content>
+      <ion-card-title>View All Listings</ion-card-title>
+    </ion-content>
+
+    <ion-searchbar *ngIf="noListing == false" (ionInput)="filter($event)"></ion-searchbar>
+
+    <ion-card-content *ngIf="noListing == false">
+      <ion-list>
+        <ion-item *ngFor="let listing of filteredListings" (click) = "viewListingDetails($event, listing)">
+          {{listing.name}} <br />
+          Description: {{listing.description}} <br />
+          Price: ${{listing.unitPrice}} <br />
+          
+      </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <div *ngIf="noListing == true">
+    <ion-button (click)="createListing()" expand="block" fill="clear" shape="round">
+      Create new listing
+    </ion-button>
+  </div>
+	
+</ion-footer>

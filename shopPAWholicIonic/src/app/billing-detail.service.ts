@@ -28,8 +28,9 @@ export class BillingDetailService {
    }
 
    retrieveAllSellerBillingDetails() : Observable<any> {
+     
      return this.httpClient.get<any>(this.baseUrl + "/retrieveAllSellerBillingDetails?email=" + 
-     this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword).pipe(
+     this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
        catchError(this.handleError)
      );
    }

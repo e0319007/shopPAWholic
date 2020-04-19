@@ -1,0 +1,39 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Billing Detail</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+<ion-content>
+  <ion-list *ngIf="orderToView != null">
+    <ion-item>
+      <ion-label>Billing ID</ion-label>
+      {{billingDetailId}}
+    </ion-item>
+    <ion-item>
+      <ion-label>Billing Date: </ion-label>
+      {{billingDetail.billingDate}}
+    </ion-item>
+    <ion-item>
+      <ion-label>Credit Card Number: </ion-label>
+      {{newCcNum}}
+    </ion-item>
+  </ion-list>
+  <ion-item>
+    <ion-label> Amount Charged</ion-label>
+    ${{billingPrice}}
+  </ion-item>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+      Back
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
