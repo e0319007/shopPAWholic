@@ -34,7 +34,7 @@ public interface UserSessionBeanLocal {
 
     public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear();
 
-    public Map<Date, Integer> retrieveTotalNumberOfUsersForDay();
+    public Map<String, Integer> retrieveTotalNumberOfUsersForDay();
             
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
 

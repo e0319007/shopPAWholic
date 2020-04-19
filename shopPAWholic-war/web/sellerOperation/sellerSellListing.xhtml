@@ -10,15 +10,14 @@
         <h:form enctype="multipart/form-data">
             <p:growl id="msg"></p:growl>
             <p:fileUpload value="#{fileUploadView.file}"
-                          invalidSizeMessage="JournalDev: Invalid Size"
-                          invalidFileMessage="JournalDev: Invalid File Type"
-                          fileLimitMessage="JournalDev: Invalid File Limit"
-                          mode="advanced" multiple="true" fileLimit="300000" sizeLimit="100000"
+                          sequential="true"
+                          invalidSizeMessage="Invalid Size"
+                          invalidFileMessage="Invalid File Type"
+                          fileLimitMessage="Invalid File Limit"
+                          mode="advanced" multiple="true" fileLimit="8" sizeLimit="10000000"
                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                          fileUploadListener="#{fileUploadView.fileUploadListener}"
-                          auto="true"
+                          fileUploadListener="#{fileUploadView.handleFileUpload}"
                           update="msg"></p:fileUpload>
-
         </h:form>
 
         <h:form id="formCreateNewListing">

@@ -22,7 +22,6 @@
                             <p:message for="name" />
                         </p:column>
                     </p:row>
-
                     <p:row>
                         <p:column colspan="3"> 
                             <p:commandButton id="createNewTag" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableTags" actionListener="#{tagManagedBean.createNewTag}" />
@@ -34,11 +33,10 @@
 
         <h:form id="formDataTable">
             <h:messages id="messages" /> 
-            <p:dataTable id="dataTableTags" widgetVar="dataTableTags" value="#{viewAllTagsManagedBean.tags}" var="tag">
+            <p:dataTable id="dataTableTags" widgetVar="dataTableTags" value="#{tagManagedBean.tags}" var="tag">
                 <p:column headerText="Name"> 
                     <h:outputText value="#{tag.name}"/> 
                 </p:column>
-
                 <p:column headerText="Action"> 
                     <p:commandButton icon="pi pi-trash" actionListener="#{tagManagedBean.deleteTag}" update="formDataTable:dataTableTags formDataTable:messages" >
                         <f:attribute name="tagToDelete" value="#{tag}" />
@@ -46,7 +44,6 @@
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
-
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                 <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />

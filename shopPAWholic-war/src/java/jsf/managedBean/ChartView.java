@@ -5,7 +5,6 @@ import ejb.session.stateless.SellerSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +27,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.DateAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
@@ -87,10 +87,6 @@ public class ChartView {
 
     public LineChartModel getDateModel() {
         return dateModel;
-    }
-
-    public void setDateModel(LineChartModel dateModel) {
-        this.dateModel = dateModel;
     }
 
     public ScheduleEvent getScheduleEvent() {
@@ -159,19 +155,25 @@ public class ChartView {
     }
 
     private void createDateModel() {
+        System.out.println("$$$$$$$");
         dateModel = new LineChartModel();
         LineChartSeries series = new LineChartSeries();
-        Map<Date, Integer> userPerDay = userSessionBeanLocal.retrieveTotalNumberOfUsersForDay();
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
-        System.out.println("***************************** chartView: " + userPerDay);
-
-        for (Date i : userPerDay.keySet()) {
+        Map<String, Integer> userPerDay = userSessionBeanLocal.retrieveTotalNumberOfUsersForDay();
+        System.out.println(userPerDay);
+        
+        for (String i : userPerDay.keySet()) {
             series.set(i, userPerDay.get(i));
-            System.out.println("*********************" + i);
         }
 
         dateModel.addSeries(series);
+        dateModel.setTitle("Total Number of Users Registered Per Day");
+        dateModel.setZoom(true);
+        dateModel.getAxis(AxisType.Y).setLabel("Number of users");
+        dateModel.getAxis(AxisType.Y).setMin(0);
+        DateAxis axis = new DateAxis("Dates");
+        axis.setTickFormat("%b %#d, %y");
+ 
+        dateModel.getAxes().put(AxisType.X, axis);
     }
 
     public void addEvent(ActionEvent actionEvent) {

@@ -25,8 +25,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -41,7 +39,6 @@ import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewEventException;
 import util.exception.CreateNewListingException;
-import util.exception.CreateNewOrderException;
 import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
 import util.exception.EventNameExistsException;
@@ -157,7 +154,19 @@ public class DataInitSessionBean {
             Customer customer8 = new Customer("Fatin Tan", "fatintan@email.com", "91234567", "password", new Date(120, 1, 17));
             Customer customer9 = new Customer("Dave Kang", "dave_kang@email.com", "91234567", "password", new Date(120, 1, 19));
             Customer customer10 = new Customer("Kimberly Wee", "kimwee99@email.com", "91234567", "password", new Date(120, 2, 18));
-
+            Customer customer11 = new Customer("Hew Yee Qing", "yeeqinghew@gmail.com", "98517588", "password", new Date(120, 3, 10));
+            Customer customer12 = new Customer("Ed Fu", "edfued34@gmail.com", "93332597", "password", new Date(120, 3, 11));
+            Customer customer13 = new Customer("Jonas Cheah Kah Hwee", "jonasche54@gmail.com", "97024878", "password", new Date(120, 3, 14));
+            Customer customer14 = new Customer("Casey Chye", "caseychy71@gmail.com", "85609137", "password", new Date(120, 3, 13));
+            Customer customer15 = new Customer("Anabelle Ho", "anabelle10@gmail.com", "94532085", "password", new Date(120, 3, 12));
+            Customer customer16 = new Customer("Nathaniel Shum", "nathanie76@gmail.com", "95801494", "password", new Date(120, 3, 17));
+            Customer customer17 = new Customer("Tan Wee Tat", "tanweeta43@gmail.com", "95511885", "password", new Date(120, 3, 16));
+            Customer customer18 = new Customer("Graham Yap Guowei", "grahamya83@yahoo.com.sg", "80395710", "password", new Date(120, 3, 15));
+            Customer customer19 = new Customer("Gene Lin Guohui", "geneling14@gmail.com", "92560381", "password", new Date(120, 3, 14));
+            Customer customer20 = new Customer("Elaina Fu", "elainafu30@yahoo.com.sg", "98381476", "password", new Date(120, 3, 13));
+            Customer customer21 = new Customer("Teo Mui Ling Chloe", "teomuili54@gmail.com", "98195908", "password", new Date(120, 3, 12));
+            Customer customer22 = new Customer("Soh Min Li Daphne", "sohminli3@gmail.com", "87417338", "password", new Date(120, 3, 11));
+            Customer customer23 = new Customer("Yusuf Mohamad", "yusufmoh31@gmail.com", "93786859", "password", new Date(120, 3, 10));
             userSessionBeanLocal.createNewUser(seller);
             userSessionBeanLocal.createNewUser(seller1);
             userSessionBeanLocal.createNewUser(seller2);
@@ -191,6 +200,19 @@ public class DataInitSessionBean {
             userSessionBeanLocal.createNewUser(customer8);
             userSessionBeanLocal.createNewUser(customer9);
             userSessionBeanLocal.createNewUser(customer10);
+            userSessionBeanLocal.createNewUser(customer11);
+            userSessionBeanLocal.createNewUser(customer12);
+            userSessionBeanLocal.createNewUser(customer13);
+            userSessionBeanLocal.createNewUser(customer14);
+            userSessionBeanLocal.createNewUser(customer15);
+            userSessionBeanLocal.createNewUser(customer16);
+            userSessionBeanLocal.createNewUser(customer17);
+            userSessionBeanLocal.createNewUser(customer18);
+            userSessionBeanLocal.createNewUser(customer19);
+            userSessionBeanLocal.createNewUser(customer20);
+            userSessionBeanLocal.createNewUser(customer21);
+            userSessionBeanLocal.createNewUser(customer22);
+            userSessionBeanLocal.createNewUser(customer23);
 
             em.flush();
 
