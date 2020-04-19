@@ -28,11 +28,10 @@ public class FileUploadView implements Serializable {
     private List<String> imagePaths;
 
     public FileUploadView() {
-        
+        imagePaths = new ArrayList<>();
     }
 
     public void handleFileUpload(FileUploadEvent event) {
-        imagePaths = new ArrayList<>();
         User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         try {
             String destination = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") ;
