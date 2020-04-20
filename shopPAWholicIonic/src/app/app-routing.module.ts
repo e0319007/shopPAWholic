@@ -13,11 +13,7 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
 
-  },   {
-    path: 'view-billing-detail',
-    loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
-
-  },   
+  },  
   {
     path:'viewAllOrders', 
     loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
@@ -72,19 +68,11 @@ const routes: Routes = [
     path: 'sellerOperation/changeOrderStatus/:orderId',
     loadChildren: './sellerOperation/change-order-status/change-order-status.module#ChangeOrderStatusPageModule', canActivate:[AuthGuard]
   },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   {
     path: 'sellerOperation/createNewTag',
     loadChildren: './sellerOperation/create-new-tag/create-new-tag.module#CreateNewTagPageModule', canActivate:[AuthGuard]
-  },
-
- {
-
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'sellerOperation/viewMyListings',

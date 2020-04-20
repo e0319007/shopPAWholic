@@ -22,7 +22,17 @@ export class UserService {
   }
 
   UserLogin(email: string, password: string): Observable<any>{
-		return this.httpClient.get<any>(this.baseUrl + "/UserLogin?email=" + email + "&password=" + password).pipe(catchError(this.handleError));
+    let url: string = this.baseUrl + "/userLogin?email=" + email + "&password=" + password;
+    console.log(url);
+		return this.httpClient.get<any>(url).pipe(catchError(this.handleError));
+  }
+
+  userRegister(user: User, email: string, password: string) {
+    let userCreateNewReq = {
+      "email" : email,
+      "password" : password,
+    }
+    return this.httpClient.put<any>(this.baseUrl, userCreateNewReq, httpOptions).pipe(catchError(this.handleError));
   }
   
   handleError(error: HttpErrorResponse) {
@@ -35,6 +45,11 @@ export class UserService {
     console.error(errorMessage);
     return throwError(errorMessage);
   }
-	
+  
+  userLogout(): void
+	{
+		this.utilityService.setIsLogin(false);
+		this.utilityService.setCurrentUser(null);		
+  }
 
 }

@@ -43,18 +43,19 @@ export class LoginPage implements OnInit {
 
         this.userService.UserLogin(this.email, this.password).subscribe(
           response => {
-            let user : User = response.User;
-
-            if (response.User instanceof Customer) {
+            let user : User = response.user;
+            //got problems with the instanceof im not sure if i need to add a restful method :///
+            if (response.user instanceof Customer) {
               this.utilityService.isCustomer();
-            } else if (response.User instanceof Seller) {
+            } else if (response.user instanceof Seller) {
               this.utilityService.isSeller()
             }
 
             if(user != null){
               this.utilityService.setIsLogin(true);
               this.utilityService.setCurrentUser(user);					
-              this.loginError = false;					
+              this.loginError = false;	
+              console.log(this.utilityService.getIsLogin())				
             } else {
               this.loginError = true;
             }
@@ -66,7 +67,7 @@ export class LoginPage implements OnInit {
         );
 
       } else {
-        //throw userloginform not valid error??
+        this.loginError = true; //some error msg thing
       }
   }
 	
