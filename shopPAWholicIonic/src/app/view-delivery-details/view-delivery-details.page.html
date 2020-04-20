@@ -1,0 +1,61 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Delivery Detail</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="deliveryDetail != null">
+    <ion-item>
+      <ion-label>Delivery Detail Id: </ion-label>
+      {{deliveryDetail.deliveryDetailId}}
+    </ion-item>
+
+    <ion-item>
+    <ion-label>Address: </ion-label>
+      {{deliveryDetail.address}}
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Contact Number: </ion-label>
+      {{deliveryDetail.contactNumber}}
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Delivery Method: </ion-label>
+      {{deliveryDetail.deliveryMethod}}
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Delivery Status: </ion-label>
+      <ol *ngIf="hasStatus == true">
+        <li *ngFor="let status of deliveryDetail.statusLists">{{status}}</li>
+      </ol>
+      <div *ngIf="hasStatus == false">Not Delivered Yet</div>
+      
+    </ion-item>
+
+  </ion-list>
+
+  <ion-card>
+    <ion-label  style="color:#3171e0; padding:10px;">New Status: </ion-label>
+    <ion-input type="text" id="status" name="status" [(ngModel)]="newDeliveryStatus" required="true"></ion-input> <br />
+  </ion-card>
+  <ion-button (click)="addStatus()"  fill="clear" shape="round" style="float:right">
+    add
+  </ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title></ion-title>
+    <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+      Back
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

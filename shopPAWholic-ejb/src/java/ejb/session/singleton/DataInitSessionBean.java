@@ -12,6 +12,7 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
 import entity.Advertisement;
+import entity.Cart;
 import entity.Category;
 import entity.Customer;
 import entity.DeliveryDetail;
@@ -25,8 +26,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -157,7 +156,19 @@ public class DataInitSessionBean {
             Customer customer8 = new Customer("Fatin Tan", "fatintan@email.com", "91234567", "password", new Date(120, 1, 17));
             Customer customer9 = new Customer("Dave Kang", "dave_kang@email.com", "91234567", "password", new Date(120, 1, 19));
             Customer customer10 = new Customer("Kimberly Wee", "kimwee99@email.com", "91234567", "password", new Date(120, 2, 18));
-
+            Customer customer11 = new Customer("Hew Yee Qing", "yeeqinghew@gmail.com", "98517588", "password", new Date(120, 3, 10));
+            Customer customer12 = new Customer("Ed Fu", "edfued34@gmail.com", "93332597", "password", new Date(120, 3, 11));
+            Customer customer13 = new Customer("Jonas Cheah Kah Hwee", "jonasche54@gmail.com", "97024878", "password", new Date(120, 3, 14));
+            Customer customer14 = new Customer("Casey Chye", "caseychy71@gmail.com", "85609137", "password", new Date(120, 3, 13));
+            Customer customer15 = new Customer("Anabelle Ho", "anabelle10@gmail.com", "94532085", "password", new Date(120, 3, 12));
+            Customer customer16 = new Customer("Nathaniel Shum", "nathanie76@gmail.com", "95801494", "password", new Date(120, 3, 17));
+            Customer customer17 = new Customer("Tan Wee Tat", "tanweeta43@gmail.com", "95511885", "password", new Date(120, 3, 16));
+            Customer customer18 = new Customer("Graham Yap Guowei", "grahamya83@yahoo.com.sg", "80395710", "password", new Date(120, 3, 15));
+            Customer customer19 = new Customer("Gene Lin Guohui", "geneling14@gmail.com", "92560381", "password", new Date(120, 3, 14));
+            Customer customer20 = new Customer("Elaina Fu", "elainafu30@yahoo.com.sg", "98381476", "password", new Date(120, 3, 13));
+            Customer customer21 = new Customer("Teo Mui Ling Chloe", "teomuili54@gmail.com", "98195908", "password", new Date(120, 3, 12));
+            Customer customer22 = new Customer("Soh Min Li Daphne", "sohminli3@gmail.com", "87417338", "password", new Date(120, 3, 11));
+            Customer customer23 = new Customer("Yusuf Mohamad", "yusufmoh31@gmail.com", "93786859", "password", new Date(120, 3, 10));
             userSessionBeanLocal.createNewUser(seller);
             userSessionBeanLocal.createNewUser(seller1);
             userSessionBeanLocal.createNewUser(seller2);
@@ -191,6 +202,19 @@ public class DataInitSessionBean {
             userSessionBeanLocal.createNewUser(customer8);
             userSessionBeanLocal.createNewUser(customer9);
             userSessionBeanLocal.createNewUser(customer10);
+            userSessionBeanLocal.createNewUser(customer11);
+            userSessionBeanLocal.createNewUser(customer12);
+            userSessionBeanLocal.createNewUser(customer13);
+            userSessionBeanLocal.createNewUser(customer14);
+            userSessionBeanLocal.createNewUser(customer15);
+            userSessionBeanLocal.createNewUser(customer16);
+            userSessionBeanLocal.createNewUser(customer17);
+            userSessionBeanLocal.createNewUser(customer18);
+            userSessionBeanLocal.createNewUser(customer19);
+            userSessionBeanLocal.createNewUser(customer20);
+            userSessionBeanLocal.createNewUser(customer21);
+            userSessionBeanLocal.createNewUser(customer22);
+            userSessionBeanLocal.createNewUser(customer23);
 
             em.flush();
 
@@ -221,15 +245,22 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"), 30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date, DeliveryMethod.QXPRESS);
+
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
             System.out.println("New Order has price of: " + order.getTotalPrice());
             System.out.println("New Order has date of: " + order.getOrderDate());
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 12l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
-            //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+
+            OrderEntity o = orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            System.out.println("OrderEntity id: " + o.getOrderId() + " created");
+            System.out.println("OrderEntity has " + o.getListings().size() + " listings");
+
             List<String> pictures = new ArrayList<>();
             pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
@@ -242,6 +273,18 @@ public class DataInitSessionBean {
             Review review = new Review("Good Product", 5, date, new ArrayList<>());
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
+
+
+            Cart c = em.find(Cart.class, 1l);
+            List<Listing> listingsToAddToCart = new ArrayList<>();
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 2l));
+            System.out.println(listingsToAddToCart);
+            c.setListings(listingsToAddToCart);
+            c.setTotalPrice(new BigDecimal(40));
+            c.setTotalQuantity(3);
+    
 
             System.out.println("******  I AM IN *******");
             List<String> eventPictures = new ArrayList<>();
@@ -256,8 +299,9 @@ public class DataInitSessionBean {
             System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
 
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
+        } catch (AdminUsernameExistException | CreateNewOrderException |ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
                 | CreateNewEventException | EventNameExistsException ex) {
+
 //CreateNewOrderException
 
             ex.printStackTrace();

@@ -96,7 +96,7 @@ public class Listing implements Serializable {
 
     }
 
-    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, /*List<String> pictures,*/ Integer quantityAtHand, Date listDate) {
+    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, /*List<String> pictures,*/ Integer quantityOnHand, Date listDate) {
         this();
         this.skuCode = skuCode;
         this.name = name;
@@ -104,7 +104,7 @@ public class Listing implements Serializable {
         //this.quantityOnHand = quantityOnHand;
         this.unitPrice = unitPrice;
        // this.pictures = pictures;
-        this.quantityOnHand = quantityAtHand;
+        this.quantityOnHand = quantityOnHand;
         this.listDate = listDate;
         
     }

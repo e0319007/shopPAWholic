@@ -25,14 +25,13 @@ export class ListingService {
   }
 
   retrieveListingById(listingId: number): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + "/retrieveListing/" + listingId + "?email:" 
-    + this.utilityService.getEmail + "&password:" + this.utilityService.getPassword).pipe(catchError(this.handleError));
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveListing/" + listingId).pipe(catchError(this.handleError));
   }
 
   createListing(listing: Listing, categoryId: number, tagIds: number[]): Observable<any> {
     let listingCreateReq = {
-      "email": this.utilityService.getEmail,
-      "password": this.utilityService.getPassword,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
       "listing": listing,
       "categoryId": categoryId,
       "tagIds": tagIds,
@@ -42,8 +41,8 @@ export class ListingService {
 
   updateListing(listing: Listing, categoryId: number, tagIds: number[]): Observable<any> {
     let listingUpdateReq = {
-      "email": this.utilityService.getEmail,
-      "password": this.utilityService.getPassword,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
       "listing": listing,
       "categoryId": categoryId,
       "tagIds": tagIds,
@@ -53,7 +52,7 @@ export class ListingService {
 
   deleteListing(listingId: number): Observable<any> {
     return this.httpClient.delete<any>(this.baseUrl + "/" + listingId + "?email=" + 
-    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword).pipe(
+    this.utilityService.getEmail() + "&password=" + this.utilityService.getPassword()).pipe(
       catchError(this.handleError)
     );
   }

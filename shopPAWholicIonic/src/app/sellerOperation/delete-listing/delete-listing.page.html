@@ -1,0 +1,55 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Delete Listing</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div *ngIf="error == true" style="color:red;">
+        <div>Listing ID {{listingId}} does not exist!</div><br />
+        <ion-button (click)="backViewAll()">
+          Back
+        </ion-button>
+      </div>
+      <div *ngIf="resultSuccess == true" style="color:red;">
+        <div>Listing ID {{listingId}} deleted successfully!</div><br />
+        <ion-button (click)="backViewAll()">
+          Back
+        </ion-button>
+      </div>
+
+      <ion-list *ngIf="error == false && listingToDelete != null && resultSuccess == false">
+        <ion-item>
+          <ion-label>Listing ID: </ion-label>
+          {{listingToDelete.listingId}}
+        </ion-item>
+        <ion-item>
+          <ion-label>SKU Code: </ion-label>
+          {{listingToDelete.skuCode}}
+        </ion-item>
+        <ion-item>
+          <ion-label>Name: </ion-label>
+          {{listingToDelete.name}}
+        </ion-item>
+        <ion-item>
+          <b style="color:red">Delete?</b>
+        </ion-item>
+        <ion-item>
+          <ion-button (click)="back()">
+            Back
+          </ion-button>
+          <ion-button (click)="deleteListing()">
+            Delete
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

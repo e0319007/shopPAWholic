@@ -5,6 +5,7 @@ import { User } from './user';
 import { Customer } from './customer';
 import { Seller } from './seller';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -47,28 +48,35 @@ export class UtilityService {
   }
 
   getEmail(): string {
+    this.setEmail("dummy");
     return sessionStorage.email;
   }
 
   setEmail(email: string) {
-    sessionStorage.email = email;
+     let e: string = "customerOne@email.com";
+     sessionStorage.email = e;
+    //sessionStorage.email = email;
   }
 
   getPassword(): string {
+    this.setPassword("dummy");
     return sessionStorage.password;
   }
 
   setPassword(password: string) {
-    sessionStorage.password = password;
+    let p: string = "password";
+    sessionStorage.password = p;
+    //sessionStorage.password = password;
   }
 
   isCustomer(): boolean {
-    let currentUser = this.getCurrentUser(); 
+    return true;
+   /**  let currentUser = this.getCurrentUser(); 
     if (currentUser instanceof Customer) {
       return true;
     } else {
       return false;
-    }
+    } */
   }
 
   isSeller(): boolean {
@@ -95,6 +103,5 @@ export class UtilityService {
       }
     } 
   }
-
 
 }

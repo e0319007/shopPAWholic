@@ -8,9 +8,10 @@ export class Cart {
     customer: Customer;
     listings: Listing[];
 
-    constructor(cartId?: number) {
+    constructor(cartId?: number, totalPrice?: number, totalQuantity?: number, listings?: Listing[]) {
         this.cartId = cartId;
-        this.totalPrice = 0;
-        this.totalQuantity = 0;
+        this.totalPrice = totalPrice;
+        this.totalQuantity = totalQuantity;
+        this.listings = listings;
     }
 }

@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
@@ -40,13 +42,15 @@ public class Event implements Serializable {
     @Size(min = 10, message = "Location must be more than 10 characters")
     private String location;
 
-    @NotNull
+    
     private List<String> pictures;
-
-    @NotNull
+    
+    
+    @Temporal(TemporalType.DATE)
     private Date startDateTime;
 
-    @NotNull
+    
+    @Temporal(TemporalType.DATE)
     private Date endDateTime;
 
     @URL

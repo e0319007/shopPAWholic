@@ -14,12 +14,24 @@
     <ion-content>
       <ion-card-title>View All Listings</ion-card-title>
     </ion-content>
+
+    <ion-searchbar  (ionInput)="filter($event)"></ion-searchbar>
+
     <ion-card-content>
       <ion-list>
-        <ion-button expand="full" *ngFor="let listing of listings" (click) = "viewProductDetails($event, listing)">
-           {{listing.name}} - {{listing.price}}
-        </ion-button>
+        <ion-item *ngFor="let listing of filteredListings" (click) = "viewListingDetails($event, listing)">
+          {{listing.name}} <br />
+          Description: {{listing.description}} <br />
+          Price: ${{listing.unitPrice}} <br />
+          
+      </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
 </ion-content>
+
+<ion-footer>
+  
+	
+</ion-footer>

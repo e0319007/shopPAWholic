@@ -25,18 +25,23 @@ export class AppComponent implements OnInit {
       icon: 'arrow-forward'
     },
     {
+      title: 'View My Listings',
+      url: 'sellerOperation/viewMyListings',
+      icon: 'arrow-forward'
+    },
+    {
       title: 'Create New Listing',
-      url: '/createNewListing',
+      url: 'sellerOperation/createNewListing',
       icon: ''
     },
     {
       title: 'View Orders',
-      url: '/viewOrders',
+      url: '/viewAllOrders',
       icon: ''
     },
     {
-      title: 'Shopping Cart',
-      url: '/viewShoppingCart',
+      title: 'Cart',
+      url: '/customerOperation/viewCart',
       icon: ''
     },
     {
@@ -50,10 +55,15 @@ export class AppComponent implements OnInit {
       icon: ''
     },
     {
+      title: 'View Billing',
+      url: '/sellerOperation/viewBillingDetails',
+      icon: ''
+    },
+    {
       title: 'Logout',
       url: '/login',
-      icon: 'exit'
-	  }
+  		icon: 'exit'
+    }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
@@ -61,10 +71,8 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public utilityService: UtilityService
   ) {
     this.initializeApp();
-    // this.updateMainMenu();
   }
 
   initializeApp() {
