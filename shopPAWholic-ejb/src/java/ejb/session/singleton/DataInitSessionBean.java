@@ -289,11 +289,12 @@ public class DataInitSessionBean {
             System.out.println("******  I AM IN *******");
             List<String> eventPictures = new ArrayList<>();
             System.out.println("******  I AM IN *******");
-            eventPictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            eventPictures.add("../resources/image/petEvent1.jpg");
+            eventPictures.add("../resources/image/petEvent2.jpg");
             System.out.println("******  I AM IN *******");
-            Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bedok Reservoir", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bishan Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "http://www.spca.org.sg/whatson_details.asp?id=119");
             System.out.println("******  I AM IN *******");
-            Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
+            Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://weekender.com.sg/w/do/indulge-in-your-cat-obsession-at-singapores-first-ever-cat-festival/");
             System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event1, seller7.getUserId());
             System.out.println("******  I AM IN *******");

@@ -11,9 +11,9 @@ import entity.Category;
 import entity.OrderEntity;
 import entity.Review;
 import entity.Seller;
+import entity.User;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.event.ActionEvent;
@@ -23,7 +23,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.inject.Inject;
 import util.exception.CreateNewListingException;
 import util.exception.InputDataValidationException;
 import util.exception.ListingNotFoundException;
@@ -80,6 +79,7 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Review> reviews;
     private List<OrderEntity> orders;
 
+    private Seller sellerId;
     private Seller seller;
     
 
@@ -103,7 +103,10 @@ public class ListingManagementManagedBean implements Serializable {
         categories = categorySessionBeanLocal.retrieveAllLeafCategories();
         tags = tagSessionBeanLocal.retrieveAllTags();
         //reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        
         Seller seller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentSellerEntity");
+        //User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        //sellerId = currentUser.getUserId();
     }
 
    
@@ -119,7 +122,7 @@ public class ListingManagementManagedBean implements Serializable {
             categoryIdNew = null;
         }
         try {
-            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, seller.getUserId());
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, getSeller().getUserId());
             listings.add(l);
             //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
             //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
@@ -394,6 +397,34 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void setSelectedListingToView(Listing selectedListingToView) {
         this.selectedListingToView = selectedListingToView;
+    }
+
+    /**
+     * @return the sellerId
+     */
+    public Seller getSellerId() {
+        return sellerId;
+    }
+
+    /**
+     * @param sellerId the sellerId to set
+     */
+    public void setSellerId(Seller sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    /**
+     * @return the seller
+     */
+    public Seller getSeller() {
+        return seller;
+    }
+
+    /**
+     * @param seller the seller to set
+     */
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     

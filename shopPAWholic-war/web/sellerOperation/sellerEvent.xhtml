@@ -138,8 +138,8 @@
             
             <p:dataViewListItem>
                 <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
-                    <p:graphicImage value="../resources/image/petEvent1.jpg"/>
-                    
+                    <p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/>
+    
                     <p:outputPanel>
                         <h:panelGrid columns="2" cellpadding="5">
                             <h:outputText value="Event name:" />
@@ -166,7 +166,7 @@
                 <p:outputPanel id="eventDetail" style="text-align:center;">
                     <p:panelGrid columns="2" rendered="#{not empty eventManagedBean.selectedEvent}">
                         <f:facet name="header">
-                            <p:graphicImage value="../resources/image/petEvent1.jpg"/> 
+                            <p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/> 
                         </f:facet>
                         
                         <h:outputText value="Name: "/> 
@@ -183,6 +183,9 @@
                         
                         <h:outputText value="To: "/> 
                         <h:outputText value="#{eventManagedBean.selectedEvent.endDateTime}" /> 
+                        
+                        <h:outputText value="Url: "/> 
+                        <h:outputLink value="#{eventManagedBean.selectedEvent.url}">Click here to visit site!</h:outputLink> 
            
                     </p:panelGrid>
                 </p:outputPanel>
