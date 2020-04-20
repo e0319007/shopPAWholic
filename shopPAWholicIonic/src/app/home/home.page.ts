@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../user.service'
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,  private utilityService: UtilityService, private userService: UserService){}
+
+  password : string;
+  email: string;
 
   ngOnInit() {
+    this.email = this.utilityService.getEmail();
+    this.password = this.utilityService.getPassword();
+  }
+
+  goLogin() {
+    this.router.navigate(["/login"]);
+  }
+
+  logout(){
+    this.userService.userLogout();
   }
 
 }
