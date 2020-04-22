@@ -1,0 +1,113 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register as Customer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>      
+	  
+    <ion-card-content>
+      
+  <div *ngIf="resultSuccess == true" style="color: blue;">
+    {{message}}
+  </div>
+  
+  <div *ngIf="resultError == true" style="color: red;">
+    {{message}}
+  </div>
+  
+  <form #customerRegisterForm="ngForm" (ngSubmit)="customerRegister(customerRegisterForm)">				
+  
+    <div style="color: red;">
+    
+      <div *ngIf="name.invalid && (name.dirty || name.touched || submitted)" class="errorText">
+        <div *ngIf="name.errors.required">
+          Name is required.
+        </div>
+      </div>
+  
+      <div *ngIf="email.invalid && (email.dirty || email.touched || submitted)" class="errorText">
+        <div *ngIf="email.errors.required">
+          Email is required.
+        </div>
+        <div *ngIf="email.errors.minlength">
+          Email must be at least 4 characters long.
+        </div>
+        <div *ngIf="email.errors.maxlength">
+          Email cannot exceed 64 characters.
+        </div>
+      </div>
+      
+      <div *ngIf="password.invalid && (password.dirty || password.touched || submitted)" class="errorText">
+        <div *ngIf="password.errors.required">
+         Password is required.
+        </div>
+        <div *ngIf="password.errors.minlength">
+          Password must be at least 4 characters long.
+        </div>
+        <div *ngIf="password.errors.maxlength">
+          Password cannot exceed 32 characters.
+        </div>
+      </div>
+      
+      <div *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched || submitted)" class="errorText">
+        <div *ngIf="contactNumber.errors.required">
+          Contact Number is required.
+        </div>
+      </div>
+      
+    </div>					
+
+    <ion-list>
+          
+      <ion-item>
+        <ion-label fixed><b>Name</b></ion-label>
+        <ion-input type="text" id="name" name="name" [(ngModel)]="newCustomer.name" required="true" #name="ngModel"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label fixed><b>Email</b></ion-label>
+        <ion-input type="text" id="email" name="email" [(ngModel)]="newCustomer.email" required="true" #email="ngModel"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label fixed><b>Password</b></ion-label>
+        <ion-input type="password" id="password" name="password" [(ngModel)]="newCustomer.password" required="true" #password="ngModel"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label fixed><b>Contact Number</b></ion-label>
+        <ion-input type="text" id="contactNumber" name="contactNumber" [(ngModel)]="newCustomer.contactNumber" required="true" #contactNumber="ngModel"></ion-input>
+      </ion-item>
+						
+      
+      <ion-item>
+        <ion-button (click)="clear()">
+          Clear
+        </ion-button>
+        <ion-button type="submit" ion-button block>
+          Create
+        </ion-button>
+      </ion-item>
+
+    </ion-list>
+    
+   </form>
+  
+    </ion-card-content>
+  
+  </ion-card>
+
+  <ion-card *ngIf="utilityService.getIsLogin() == true">
+    <ion-card-content>
+
+      You are login as {{utilityService.getCurrentUser().name}}
+      (
+        <span *ngIf="utilityService.isCustomer()">CUSTOMER</span>
+      )
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

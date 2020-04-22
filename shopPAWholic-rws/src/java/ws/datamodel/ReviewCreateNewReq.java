@@ -6,6 +6,7 @@
 package ws.datamodel;
 
 import entity.Review;
+import java.util.List;
 
 /**
  *
@@ -14,19 +15,25 @@ import entity.Review;
 public class ReviewCreateNewReq {
     
     private Review review;
+    private int rating;
     private Long listingId;
     private String email;
     private String password;
+    private String description;
+    private List<String> reviewPictures;
     
 
     public ReviewCreateNewReq() {
     }
 
-    public ReviewCreateNewReq(Review review, Long listingId, String email, String password) {
+    public ReviewCreateNewReq(Review review, int rating, Long listingId, String email, String password, String description, List<String> reviewPictures) {
         this.review = review;
+        this.rating = rating;
         this.listingId = listingId;
         this.email = email;
         this.password = password;
+        this.description = description;
+        this.reviewPictures = reviewPictures;
     }
 
     /**
@@ -83,6 +90,48 @@ public class ReviewCreateNewReq {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the rating
+     */
+    public int getRating() {
+        return rating;
+    }
+
+    /**
+     * @param rating the rating to set
+     */
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    /**
+     * @return the reviewPictures
+     */
+    public List<String> getReviewPictures() {
+        return reviewPictures;
+    }
+
+    /**
+     * @param reviewPictures the reviewPictures to set
+     */
+    public void setReviewPictures(List<String> reviewPictures) {
+        this.reviewPictures = reviewPictures;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

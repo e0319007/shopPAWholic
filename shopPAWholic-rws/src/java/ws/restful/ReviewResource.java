@@ -10,6 +10,7 @@ import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Listing;
 import entity.Review;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.ws.rs.core.Context;
@@ -99,6 +100,7 @@ public class ReviewResource {
         try {
             Customer customer = (Customer) sessionBeanLookup.lookupUserSessionBeanLocal().userLogin(createNewReviewReq.getEmail(), createNewReviewReq.getPassword());
             System.out.println("********** ReviewResource.createReview(): Customer " + customer.getEmail() + " login remotely via web service");
+            createNewReviewReq.getReview().setReviewDate(new Date());
             Review review = reviewSessionBeanLocal.createNewReview(createNewReviewReq.getReview(), createNewReviewReq.getListingId(), customer.getUserId());
             return Response.status(Status.OK).entity(new ReviewCreateNewRsp(review.getReviewId())).build();              
         } catch (InvalidLoginCredentialException ex) {

@@ -70,6 +70,15 @@ const routes: Routes = [
   },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
+  { 
+    path : 'register/registerCustomer',
+    loadChildren: './register/register-customer/register-customer.module#RegisterCustomerPageModule'
+  },
+  { 
+    path : 'register/registerSeller',
+    loadChildren: './register/register-seller/register-seller.module#RegisterSellerPageModule'
+  },
+  
   {
     path: 'sellerOperation/createNewTag',
     loadChildren: './sellerOperation/create-new-tag/create-new-tag.module#CreateNewTagPageModule', canActivate:[AuthGuard]
