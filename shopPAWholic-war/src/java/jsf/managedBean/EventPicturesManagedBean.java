@@ -11,21 +11,26 @@ import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 
-@Named(value = "imageGalleriaManagedBean")
+/**
+ *
+ * @author EileenLeong
+ */
+@Named(value = "eventPicturesManagedBean")
 @RequestScoped
-public class ImageGalleriaManagedBean {
+public class EventPicturesManagedBean {
 
-    private List<String> images;
+    private List<String> pictures;
 
     @PostConstruct
     public void init() {
-        images = new ArrayList<String>();
-        for (int i = 1; i <= 4; i++) {
-            images.add("petAdvertisement" + i + ".jpg");
+        pictures = new ArrayList<String>();
+        for (int i = 1; i <= 3; i++) {
+            pictures.add("petEvent" + i + ".jpg");
         }
     }
 
-    public List<String> getImages() {
-        return images;
+    public List<String> getPictures() {
+        return pictures;
     }
+    
 }
