@@ -36,7 +36,8 @@
                             <p:menuitem value="Forums" url="../customerOperation/customerForumpage.xhtml" icon="pi pi-envelope"/>
 
                             <f:facet name="options">
-                                <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                                <!-- search button
+                                <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>-->
                                 <p:menuButton value="#{sessionScope.currentUser.name}">
                                     <p:menuitem value="Profile" url="../customerOperation/customerProfile.xhtml" icon="pi pi-user-plus"/>
                                     <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
@@ -47,16 +48,25 @@
                 </ui:insert>
             </div>
 
-            <div id="content" class="center_content">
+            <div id="content" class="center_content"> 
                 <ui:insert name="content">
                     <!--advertisement-->
-                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1440" panelHeight="450"> 
+                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1560" panelHeight="450"> 
                         <p:graphicImage name="image/advertisementDummy/#{image}" />
                     </p:galleria>
-                    <h:form id="form">
+                    <br/>
+                    <h:form id="formMain">
+                        <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}" placeholder="Search">
+                            <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                        </p:inputText>
+                        &nbsp;
+                        <p:commandButton value="Search">
+                            <p:ajax event="click" process="@this formMain:txtSearchString" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                        </p:commandButton>
+                        <br/><br/>
                         <!--based on time-->
-                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3" layout="grid"
-                                    rows="12" paginator="true" id="listings"
+                        <p:dataGrid id="dataGridMain" widgetVar="dataGridMain" var="listing" value="#{searchListingByNameManagedBean.listings}" columns="3" layout="grid"
+                                    rows="12" paginator="true"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
@@ -69,7 +79,7 @@
                                     <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
                                     <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
                                     <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details" style="display: block; width:100%; text-align:center;">                                 
-                                        <f:setPropertyActionListener value="#{listing}" target="#{viewListingManagedBean.listingToView}"/>
+                                        <f:setPropertyActionListener value="#{listing}" target="#{searchListingByNameManagedBean.viewListingManagedBean.listingToView}"/>
                                     </p:commandButton>  
                                 </h:panelGrid>
                             </p:panel>
