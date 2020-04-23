@@ -4,13 +4,15 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <h:head>
         <!-- MAIN CSS -->
         <link rel="stylesheet" href="./resources/css/indexLayout.css"/>      
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>shopPAWholic</title>
     </h:head>
+
 
     <h:body>
         <p:growl id="messages" showDetail="true" life="1000" />  
@@ -26,7 +28,7 @@
                             <p:menuitem value="Forums" action="#{adminLoginManagedBean.authorized(event)}" update="messages" icon="pi pi-envelope"/>
 
                             <f:facet name="options">
-                                <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                                <!--<p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>-->
                                 <p:menuButton>
                                     <p:menuitem value="Admin" onclick="PF('adminLogin').show()"/>
                                     <p:menuitem value="Login" onclick="PF('userLogin').show();" />
@@ -98,27 +100,41 @@
             <div id="content" class="center_content">
                 <ui:insert name="content">
                     <!--advertisement-->
-                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" style="text-align:center;" panelWidth="1420" panelHeight="450"> 
+                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1560" panelHeight="450"> 
                         <p:graphicImage name="image/advertisementDummy/#{image}" />
                     </p:galleria>
-                    <h:form id="form">
-                        <p:dataGrid var="listing" value="#{listingManagementManagedBean.listings}" columns="3"
-                                    rows="12" paginator="true" id="listing"
+                    <br/>
+                    <h:form id="formMain">
+                        <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}" placeholder="Search">
+                            <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                        </p:inputText>
+                        &nbsp;
+                        <p:commandButton value="Search">
+                            <p:ajax event="click" process="@this formMain:txtSearchString" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                        </p:commandButton>
+                        <br/><br/>
+                        <!--based on time-->
+                        <p:dataGrid id="dataGridMain" widgetVar="dataGridMain" var="listing" value="#{searchListingByNameManagedBean.listings}" columns="3" layout="grid"
+                                    rows="12" paginator="true"
                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                     rowsPerPageTemplate="6,12,16">
 
                             <f:facet name="header">
-                                Listings List
+                                Fresh Finds
                             </f:facet>
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
-                                    <h:outputText value="#{listing.name}" />
-                                    <h:outputText value="#{listing.listingId}"/>
+                                    <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
+                                    <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
+                                    <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details" style="display: block; width:100%; text-align:center;">                                 
+                                        <f:setPropertyActionListener value="#{listing}" target="#{searchListingByNameManagedBean.viewListingManagedBean.listingToView}"/>
+                                    </p:commandButton>  
                                 </h:panelGrid>
                             </p:panel>
                         </p:dataGrid>
                     </h:form>
+                    <ez:ViewListing id="ccViewListing"/>
                 </ui:insert>
             </div>
 

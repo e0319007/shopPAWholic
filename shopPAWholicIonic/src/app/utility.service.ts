@@ -88,6 +88,7 @@ export class UtilityService {
     }
   }
 
+
   checkAccessRight(path) : boolean {
     console.log("***************PATH: " + path);
     if(this.getIsLogin()) {

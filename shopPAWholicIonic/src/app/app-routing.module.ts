@@ -12,7 +12,8 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },   
+
+  },  
   {
     path:'viewAllOrders', 
     loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
@@ -32,6 +33,7 @@ const routes: Routes = [
   {
     path: 'sellerOperation/deleteListing/:listingId',
     loadChildren: './sellerOperation/delete-listing/delete-listing.module#DeleteListingPageModule',canActivate: [AuthGuard]
+
   },
   {
     path: 'sellerOperation/updateListing/:listingId',
@@ -45,6 +47,7 @@ const routes: Routes = [
     path: 'customerOperation/viewCart',
     loadChildren: './customerOperation/view-cart/view-cart.module#ViewCartPageModule', canActivate:[AuthGuard]
   },
+
   {
     path: 'customerOperation/checkOutPage',
     loadChildren: './customerOperation/check-out/check-out.module#CheckOutPageModule', canActivate:[AuthGuard]
@@ -65,18 +68,11 @@ const routes: Routes = [
     path: 'sellerOperation/changeOrderStatus/:orderId',
     loadChildren: './sellerOperation/change-order-status/change-order-status.module#ChangeOrderStatusPageModule', canActivate:[AuthGuard]
   },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
   {
     path: 'sellerOperation/createNewTag',
     loadChildren: './sellerOperation/create-new-tag/create-new-tag.module#CreateNewTagPageModule', canActivate:[AuthGuard]
-  },
-
- {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'sellerOperation/viewMyListings',
@@ -90,6 +86,7 @@ const routes: Routes = [
     path: 'sellerOperation/viewBillingDetails',
     loadChildren: './sellerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
   },
+
 
 
  

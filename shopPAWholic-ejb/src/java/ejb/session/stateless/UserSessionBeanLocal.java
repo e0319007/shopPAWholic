@@ -34,10 +34,12 @@ public interface UserSessionBeanLocal {
 
     public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear();
 
-    public Map<Date, Integer> retrieveTotalNumberOfUsersForDay();
+    public Map<String, Integer> retrieveTotalNumberOfUsersForDay();
             
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
 
     public User retrieveUserByEmail(String email) throws UserNotFoundException;
+
+    public void updateUser(User user) throws UserNotFoundException, InputDataValidationException;
 
 }

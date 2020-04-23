@@ -69,6 +69,7 @@ public class AdminLoginManagedBean {
 //        props.setProperty( "mail.pop3.port", "995" );
 //        props.setProperty( "mail.pop3.auth", "true" );      
 //        props.setProperty("mail.pop3.starttls.enable", "true"); 
+//        props.setProperty("mail.protocol.ssl.trust", "pop.gmail.com");
 //       /* props.setProperty( "mail.pop3.starttls.enable", "true" );
 //        props.setProperty( "mail.pop3.starttls.required", "true" );*/
 //

@@ -6,8 +6,6 @@ import entity.User;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -27,7 +25,6 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -110,6 +107,25 @@ public class UserSessionBean implements UserSessionBeanLocal {
             }
         }
     }
+    
+    @Override
+    public void updateUser(User user) throws UserNotFoundException, InputDataValidationException {
+        if(user != null && user.getUserId() !=null) {
+            Set<ConstraintViolation<User>>constraintViolations = validator.validate(user); 
+            if(constraintViolations.isEmpty()) {
+                User userToUpdate = retrieveUserByUserId(user.getUserId()); 
+                if(userToUpdate.getEmail().equals(user.getEmail())) {
+                    userToUpdate.setName(user.getName());
+                    userToUpdate.setContactNumber(user.getContactNumber());
+                    userToUpdate.setPassword(user.getPassword());
+                } else {
+                    throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+                }
+            } else {
+                throw new UserNotFoundException("User ID not provided for user to be updated");
+            }
+        }
+    }
 
     @Override
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException {
@@ -142,69 +158,55 @@ public class UserSessionBean implements UserSessionBeanLocal {
     @Override
     public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
-        System.out.println("**************************" + year);
         Query query;
         Map<String, Integer> userPerMonth = new HashMap<>();
         List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         for (int i = 0; i < months.size(); i++) {
-            System.out.println("***************************" + months.get(i));
             query = em.createQuery("SELECT u FROM User u WHERE EXTRACT(YEAR(u.accCreatedDate)) = :inYear and EXTRACT(MONTH(u.accCreatedDate)) = :inMonth");
             query.setParameter("inYear", year);
             query.setParameter("inMonth", i + 1);
             userPerMonth.put(months.get(i), (query.getResultList()).size());
         }
-        System.out.println("*********************************" + userPerMonth);
         return userPerMonth;
     }
 
     @Override
-    public Map<Date, Integer> retrieveTotalNumberOfUsersForDay() {
-        Date startDate = new Date();
-        
+    public Map<String, Integer> retrieveTotalNumberOfUsersForDay() {
         Query query;
         long days_in_ms = 1000 * 60 * 60 * 24;
-
+        Date startDate = new Date();
         Date endDate = new Date(startDate.getTime() - (7 * days_in_ms));
         List<Date> sevenDays = new ArrayList<>();
-//        sevenDays.add(df.format(startDate));
         DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
-        
-        try {
-            System.out.println("**DATE** "+ dformat.parse(dformat.format(startDate)));
-        } catch (ParseException ex) {
-            Logger.getLogger(UserSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            sevenDays.add(dformat.parse(dformat.format(startDate)));
-        } catch (ParseException ex) {
-            Logger.getLogger(UserSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        sevenDays.add(startDate);
 
         while (endDate.before(startDate)) {
             try {
                 sevenDays.add(dformat.parse(dformat.format(endDate)));
+                endDate = new Date(endDate.getTime() + (days_in_ms));
             } catch (ParseException ex) {
                 Logger.getLogger(UserSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-//            sevenDays.add(df.format(endDate));
-            endDate = new Date(endDate.getTime() + (days_in_ms));
         }
-        System.out.println("**************************" + sevenDays);
-        Map<Date, Integer> sevenDaysCast = new HashMap<>();
-//        Query query2 = em.createQuery("SELECT u FROM User u WHERE date(u.accCreatedDate) = date(2020-01-16)");
-//        System.out.println(query2.getResultList());
+
+        Map<String, Integer> sevenDaysCast = new HashMap<>();
 
         for (int i = 0; i < sevenDays.size(); i++) {
-            System.out.println("************************** i value" + sevenDays.get(i));
-            query = em.createQuery("SELECT u FROM User u WHERE u.accCreatedDate = :inDate");
-            query.setParameter("inDate", sevenDays.get(i), TemporalType.DATE);
+            query = em.createQuery("SELECT u FROM User u WHERE u.accCreatedDate between :inStartDate AND :inEndDate");
+            query.setParameter("inStartDate", sevenDays.get(i));
 
-            //System.out.println("**********************************"+query.setParameter("inDate", sevenDays.get(i), TemporalType.DATE));
-            System.out.println(sevenDays.get(i));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sevenDays.get(i));
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            query.setParameter("inEndDate", calendar.getTime());
+
             List<User> totalNumber = query.getResultList();
-            sevenDaysCast.put(sevenDays.get(i), totalNumber.size());
+            sevenDaysCast.put(dformat.format(sevenDays.get(i)), totalNumber.size());
         }
-        System.out.println("*************************" + sevenDaysCast);
         return sevenDaysCast;
     }
 

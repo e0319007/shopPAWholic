@@ -8,11 +8,11 @@
 
     <ui:define name="content">
         <h:form>
-            <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1440" panelHeight="450"> 
+            <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1560" panelHeight="450"> 
                 <p:graphicImage name="image/advertisementDummy/#{image}" />
             </p:galleria>
         </h:form>
-        
+
         <style type="text/css"> 
             /*demo*/
             .ui-dataview-list .ui-dataview-row {
@@ -30,14 +30,118 @@
                 padding-left: 25px;
             }
         </style>
-        
+        <h:form id="formCreateAd">
+            <p:panel header="Post An Advertisement" toggleable="true" collapsed="true">
+                <p:messages id="messagesCreateNewAdvertisement" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="desc" value="Advertisement Description:"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="desc" value="#{advertisementManagedBean.newAdvertisement.description}" required="true" requiredMessage="Advertisement description is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="desc"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="startDate" value="Start Date: "/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="startDate" value="#{advertisementManagedBean.newAdvertisement.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="startDate"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="endDate" value="End Date: "/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="endDate" value="#{advertisementManagedBean.newAdvertisement.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="endDate"/>
+                        </p:column>
+                    </p:row>
+                    <!-- generates price: $1 x no. of days from start to end date -->
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" value="Price: "/>
+                        </p:column>
+                        <p:column>                          
+                            <p:commandButton id="price" value="generate price" actionListener="#{advertisementManagedBean.generatePrice}" update="@form"/>    
+                        </p:column>
+                        <p:column>
+                            <p:message for="price"/>
+                        </p:column>
+                    </p:row>
+                    <!-- upload picture -->
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="picture" value="Picture:"/>
+                        </p:column>
+                        <p:column>
+                            <p:fileUpload id="picture" value="#{fileUploadView.file}"
+                                          invalidSizeMessage="JournalDev: Invalid Size"
+                                          invalidFileMessage="JournalDev: Invalid File Type"
+                                          fileLimitMessage="JournalDev: Invalid File Limit"
+                                          mode="advanced" multiple="true" fileLimit="30000000" sizeLimit="10000000000000"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                          fileUploadListener="#{fileUploadView.fileUploadListener}"
+                                          auto="true">
+
+                            </p:fileUpload>
+
+                        </p:column>
+
+                        <p:column>
+                            <p:message for="picture"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="url" value="Url: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="url" value="#{advertisementManagedBean.newAdvertisement.url}"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="url"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="ccNum" value="Credit Card Number: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="ccNum" value="#{advertisementManagedBean.ccNum}" required="true" requiredMessage="Credit Card details is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="ccNum"/>
+                        </p:column>
+                    </p:row>
+                    <p:column colspan="3">
+                        <p:commandButton type="reset" value="Reset" />
+                        <p:commandButton id="createNewAdvertisement" value="Post Advertisement" update="@form formDataView:dataViewAdvertisements" actionListener="#{advertisementManagedBean.createNewAdvertisement}" />   
+                    </p:column>
+
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+
         <h:form id="formDataView">
             <p:messages id="messages" redisplay="false" closable="true"/>
-            <p:dataView value="#{advertisementManagedBean.advertisements}" var="ad">
+            <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.advertisements}" var="ad">
                 <p:dataViewListItem>
                     <h:panelGrid columns="3" style="width: 100%" columnClasses="logo,detail">
                         <p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>
-                        
+
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="10">
                                 <h:outputText value="Id:"/>
@@ -45,13 +149,13 @@
 
                                 <h:outputText value="Description:"/>
                                 <h:outputText value="#{ad.description}" style="font-weight: bold"/>
-                                
+
                                 <h:outputText value="Url:"/>
-                                <p:commandLink value="#{ad.url}" style="font-weight: bold"/>
-                                
+                                <h:outputLink value="#{ad.url}"> Click here to visit site</h:outputLink>
+
                                 <h:outputText value="Start Date:"/>
                                 <h:outputText value="#{ad.startDate}" style="font-weight: bold"/>
-                                
+
                                 <h:outputText value="End Date:"/>
                                 <h:outputText value="#{ad.endDate}" style="font-weight: bold"/>
                             </h:panelGrid>
