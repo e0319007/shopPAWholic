@@ -55,7 +55,8 @@ export class LoginPage implements OnInit {
             if(response.user.verified == null)
             {
               console.log('********** DEBUG 3')
-              this.utilityService.setIsCustomer(true);             
+              this.utilityService.setIsCustomer(true);     
+     
             }
             else 
             {
@@ -67,6 +68,10 @@ export class LoginPage implements OnInit {
               this.utilityService.setIsLogin(true);
               this.utilityService.setCurrentUser(user);					
               this.loginError = false;	
+              if (this.utilityService.isCustomer()) {
+                console.log("is customer");
+                 this.initialiseCart();   
+              } 
               console.log(this.utilityService.getIsLogin())				
             } else {
               this.loginError = true;
@@ -93,6 +98,10 @@ export class LoginPage implements OnInit {
     this.utilityService.setIsCustomer(false);
     this.utilityService.setIsSeller(false);
     console.log(sessionStorage.isLogin);
+  }
+
+  initialiseCart() {
+    this.cartService.initialiseCart;
   }
   
   back(){

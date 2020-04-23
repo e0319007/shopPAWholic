@@ -94,7 +94,11 @@ const routes: Routes = [
   {
     path: 'sellerOperation/viewBillingDetails',
     loadChildren: './sellerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
+  },  {
+    path: 'create-advertisement',
+    loadChildren: () => import('./sellerOperation/create-advertisement/create-advertisement.module').then( m => m.CreateAdvertisementPageModule)
   },
+
 
 
 
