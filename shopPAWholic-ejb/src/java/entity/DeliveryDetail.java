@@ -65,7 +65,7 @@ public class DeliveryDetail implements Serializable {
         this.deliveryDate = date;
         this.deliveryMethod = deliveryMethod;
         double dp = 0;
-        if (deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) {
+        if (deliveryMethod.equals(DeliveryMethod.SINGPOST_REGULAR)) {
             dp = 1.50;
         } else if (deliveryMethod.equals(DeliveryMethod.SINGPOST_REGISTERED)) {
             dp = 3.50;
