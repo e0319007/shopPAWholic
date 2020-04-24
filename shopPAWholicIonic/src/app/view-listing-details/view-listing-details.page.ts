@@ -76,6 +76,10 @@ export class ViewListingDetailsPage implements OnInit {
     this.router.navigate(["/sellerOperation/deleteListing/" + this.listingId]);
   }
 
+  viewReviews() {
+    this.router.navigate(["/viewReviewsByListing/" + this.listingId]);
+  }
+
   addToCart() {
     if(this.quantityToAddToCart <= 0) {
       this.addMessage = "Cannot add items of less or equals 0";

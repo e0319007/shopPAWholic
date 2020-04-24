@@ -21,15 +21,19 @@ export class ReviewService {
     this.baseUrl = utilityService.getRootPath() + 'Review';
   }
 
-  //retrieveReviewByListingId
+  retrieveAllReviewsByListingId(listingId: number) {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveAllReviewsByListingId/" + listingId).pipe(
+      catchError(this.handleError)
+    );
+  }
 
-  createReview(review: Review, rating: number, listing: Listing, description: string, reviewPictures: string[]){
+  createReview(review: Review, rating: number, listingId: number, description: string, reviewPictures: string[]){
     let createReviewReq = {
       "review": review,
       "rating": rating,
-      "listingId": listing.listingId,
-      "email": this.utilityService.getEmail,
-      "password": this.utilityService.getPassword,
+      "listingId": listingId,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
       "description" : description,
       "reviewPictures" : reviewPictures,
     }

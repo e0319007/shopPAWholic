@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>View All Advertisements</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-content>
+      <ion-card-title>View All Advertisements</ion-card-title>
+    </ion-content>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let ad of advertisements">
+          <!-- <ion-thumbnail slot="start">
+            <img src="{{ad.pictures[0]}}">
+          </ion-thumbnail> -->
+          <ion-label>{{ad.description}}</ion-label>
+          Start Date: {{ad.startDate}} <br />
+          End Date: {{ad.endDate}} <br />
+          Event URL: {{ad.url}} <br />
+          
+      </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

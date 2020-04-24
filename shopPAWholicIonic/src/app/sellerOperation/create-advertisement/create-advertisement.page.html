@@ -1,9 +1,150 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>createAdvertisement</ion-title>
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Create New Advertisement</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div *ngIf="resultSuccess == true" style="color:blue;">
+        {{message}}
+      </div>
+      <div *ngIf="resultError == true" style="color:red;">
+        {{message}}
+      </div>
 
+      <form #createAdvertisementForm="ngForm" (ngSubmit) = create(createAdvertisementForm)>
+        <div style="color: red;">
+          
+          <!-- <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched || submitted)" class="errorText">
+            <div *ngIf="startDay.errors.required">
+              Day of Start Date is required
+            </div>
+          </div>      
+
+          <div *ngIf="startMth.invalid && (startMth.dirty || startMth.touched || submitted)" class="errorText">
+            <div *ngIf="startMth.errors.required">
+              Month of Start Date is required
+            </div>
+          </div>
+ 
+          
+          <div *ngIf="startYear.invalid && (startYear.dirty || startYear.touched || submitted)" class="errorText">
+            <div *ngIf="startYear.errors.required">
+              Year of Start Date is required.
+            </div>
+          </div>
+
+          <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched || submitted)" class="errorText">
+            <div *ngIf="endDay.errors.required">
+              Day of End Date is required
+            </div>
+          </div>
+
+          <div *ngIf="endMth.invalid && (endMth.dirty || endMth.touched || submitted)" class="errorText">
+            <div *ngIf="endMth.errors.required">
+              Month of End Date is required
+            </div>
+          </div>
+
+          <div *ngIf="endYear.invalid && (endYear.dirty || endYear.touched || submitted)" class="errorText">
+            <div *ngIf="endYear.errors.required">
+              Year of End Date is required.
+            </div>
+          </div> -->
+
+          <!-- <div *ngIf="ccNum.invalid && (ccNum.dirty || ccNum.touched || submitted)" class="errorText">
+            <div *ngIf="ccNum.errors.required">
+              Credit Card Number is required
+            </div>
+          </div> -->
+<!-- 
+          <div *ngIf="picture.invalid && (picture.dirty || picture.touched || submitted)" class="errorText">
+            <div *ngIf="picture.errors.required">
+              Url of Picture is required
+            </div>
+          </div> -->
+
+          <div *ngIf="url.invalid && (url.dirty || url.touched || submitted)" class="errorText">
+            <div *ngIf="url.errors.required">
+              Url to Event is required
+            </div>
+          </div>
+
+          <div *ngIf="description.invalid && (description.dirty || description.touched || submitted)" class="errorText">
+            <div *ngIf="description.errors.required">
+              Description is required
+            </div>
+          </div>
+
+
+      
+        </div>
+
+        <ion-list>
+
+          <ion-item>
+            <ion-label>
+              Start Date
+            </ion-label>
+            <ion-input type="text" id="startDay" name="startDay" [(ngModel)]="startDay" required="true" placeholder="DD"></ion-input>
+            <ion-input type="text" id="startMth" name="startMth" [(ngModel)]="startMth" required="true" placeholder="MM"></ion-input>
+            <ion-input type="text" id="startYear" name="startYear" [(ngModel)]="startYear" required="true" placeholder="YYYY"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              End Date
+            </ion-label>
+            <ion-input type="text" id="endDay" name="endDay" [(ngModel)]="endDay" required="true" placeholder="DD"></ion-input>
+            <ion-input type="text" id="endMth" name="endMth" [(ngModel)]="endMth" required="true" placeholder="MM"></ion-input>
+            <ion-input type="text" id="endYear" name="endYear" [(ngModel)]="endYear" required="true" placeholder="YYYY"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Credit Card Number
+            </ion-label>
+            <ion-input type="password" id="ccNum" name="ccNum" [(ngModel)]="ccNum" required="true"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              URL of Picture
+            </ion-label>
+            <ion-input type="url" id="picture" name="picture" required="true" [(ngModel)]="picture"></ion-input>
+          </ion-item>
+          
+          <ion-item>
+            <ion-label>
+              URL of Event
+            </ion-label>
+            <ion-input type="url" id="url" name="url" required="true" [(ngModel)]="newAdvertisement.url" #url="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Description
+            </ion-label>
+            <ion-input type="text" id="description" name="description" required="true" [(ngModel)]="newAdvertisement.description" #description="ngModel"></ion-input>
+          </ion-item>
+
+        <ion-button (click)="clear()" expand="block"style="float:left" fill="clear" shape="round">
+          Clear
+        </ion-button>
+      
+        <ion-button type="submit" expand="block"style="float:right" fill="clear" shape="round">
+          Create
+        </ion-button>
+
+      </ion-list>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
 </ion-content>
