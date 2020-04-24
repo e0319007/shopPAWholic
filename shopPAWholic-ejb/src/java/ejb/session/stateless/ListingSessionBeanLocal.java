@@ -21,7 +21,7 @@ import util.exception.UpdateListingException;
  * @author EileenLeong
  */
 @Local
-public interface ListingSessionBeanLocal {
+public interface ListingSessionBeanLocal { 
 
     public Listing retrieveListingByListingId(Long listingId) throws ListingNotFoundException;
 
