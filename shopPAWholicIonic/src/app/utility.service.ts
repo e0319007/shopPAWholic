@@ -39,6 +39,14 @@ export class UtilityService {
     sessionStorage.isLogin = isLogin;
   }
 
+  setIsCustomer(isCustomer : boolean) : void {
+    sessionStorage.isCustomer = isCustomer;
+  }
+
+  setIsSeller(isSeller : boolean) : void {
+    sessionStorage.isSeller = isSeller;
+  }
+
   getCurrentUser() : User {
     return JSON.parse(sessionStorage.currentUser);
   }
@@ -48,44 +56,53 @@ export class UtilityService {
   }
 
   getEmail(): string {
-    this.setEmail("dummy");
+    // this.setEmail("dummy");
     return sessionStorage.email;
   }
 
-  setEmail(email: string) {
-     let e: string = "customerOne@email.com";
-     sessionStorage.email = e;
-    //sessionStorage.email = email;
+  setEmail(email: string) : void {
+    //  let e: string = "customerOne@email.com";
+    //  sessionStorage.email = e;
+    sessionStorage.email = email;
   }
 
   getPassword(): string {
-    this.setPassword("dummy");
+    // this.setPassword("dummy");
     return sessionStorage.password;
   }
 
-  setPassword(password: string) {
-    let p: string = "password";
-    sessionStorage.password = p;
-    //sessionStorage.password = password;
+  setPassword(password: string) : void{
+    // let p: string = "password";
+    // sessionStorage.password = p;
+    sessionStorage.password = password;
   }
 
   isCustomer(): boolean {
-    return true;
-   /**  let currentUser = this.getCurrentUser(); 
-    if (currentUser instanceof Customer) {
-      return true;
-    } else {
-      return false;
-    } */
-  }
-
-  isSeller(): boolean {
-    let currentUser = this.getCurrentUser();
-    if (currentUser instanceof Seller) {
+    if (sessionStorage.isCustomer == "true") {
       return true;
     } else {
       return false;
     }
+    // let currentUser = this.getCurrentUser(); 
+    // if (currentUser instanceof Customer) {
+    //   return true;
+    // } else {
+    //   return false;
+    // } 
+  }
+
+  isSeller(): boolean {
+    //let currentUser = this.getCurrentUser();
+    if (sessionStorage.isSeller == "true"){
+        return true;
+    } else {
+      return false;
+    }
+    // if (currentUser instanceof Seller) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 
 

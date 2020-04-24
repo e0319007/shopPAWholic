@@ -4,6 +4,7 @@ import { UtilityService } from './utility.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Review } from './review';
+import {Listing} from './listing';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -22,24 +23,26 @@ export class ReviewService {
 
   //retrieveReviewByListingId
 
-  createReview(review: Review, reviewDate: Date, listingId: number){
+  createReview(review: Review, rating: number, listing: Listing, description: string, reviewPictures: string[]){
     let createReviewReq = {
       "review": review,
-      "listingId": listingId,
+      "rating": rating,
+      "listingId": listing.listingId,
       "email": this.utilityService.getEmail,
       "password": this.utilityService.getPassword,
-      "reviewDate": reviewDate,
+      "description" : description,
+      "reviewPictures" : reviewPictures,
     }
     return this.httpClient.put<any>(this.baseUrl, createReviewReq, httpOptions). pipe(catchError(this.handleError));
   }
 
-  updateReview(review: Review, reviewDate: Date, listingId: number){
+  updateReview(review: Review, listing: Listing, description: string){
     let updateReviewReq = {
       "review": review,
-      "listingId": listingId,
+      "listingId": listing.listingId,
       "email": this.utilityService.getEmail,
       "password": this.utilityService.getPassword,
-      "reviewDate": reviewDate,
+      "description" : description,
     }
     return this.httpClient.put<any>(this.baseUrl, updateReviewReq, httpOptions). pipe(catchError(this.handleError));
   }

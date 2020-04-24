@@ -27,10 +27,12 @@ export class UserService {
 		return this.httpClient.get<any>(url).pipe(catchError(this.handleError));
   }
 
-  userRegister(user: User, email: string, password: string) {
+  userRegister(user: User, name: string, email: string, password: string, contactNumber: string) {
     let userCreateNewReq = {
+      "name" : name,
       "email" : email,
       "password" : password,
+      "contactNumber" : contactNumber,
     }
     return this.httpClient.put<any>(this.baseUrl, userCreateNewReq, httpOptions).pipe(catchError(this.handleError));
   }

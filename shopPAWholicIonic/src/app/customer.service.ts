@@ -22,6 +22,17 @@ export class CustomerService {
   }
 
   //customerRegister
+  customerRegister(customer:Customer, name: string, email: string, password: string, contactNumber: string, accCreatedDate: Date) {
+    let customerCreateNewReq = {
+      "customer": customer,
+      "name" : name,
+      "email" : email,
+      "password" : password,
+      "contactNumber" : contactNumber,
+      "accCreatedDate" : accCreatedDate,
+    }
+    return this.httpClient.put<any>(this.baseUrl, customerCreateNewReq, httpOptions).pipe(catchError(this.handleError));
+  }
 
   
   handleError(error: HttpErrorResponse) {
