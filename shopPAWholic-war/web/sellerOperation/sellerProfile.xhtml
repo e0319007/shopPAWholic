@@ -80,6 +80,7 @@
 
 
                     </p:tab>
+                    <!-- profile details--> 
                     <p:tab title="Profile">
                         <p:panelGrid style="margin: 0 auto; width: 100%;" >
 
@@ -107,17 +108,21 @@
                                     <h:outputText id="contactNum" value="#{userManagementManagedBean.currentSeller.contactNumber}"/>
                                 </p:column>
                             </p:row>
+                       
+                            
                         </p:panelGrid>
 
                         <f:facet name="actions">
                             <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
-                                <f:setPropertyActionListener value="#{currentSeller}" target="#{userManagementManagedBean.selectedUserToUpdate}" />
+                                <f:setPropertyActionListener value="#{userManagementManagedBean.currentSeller}" target="#{userManagementManagedBean.selectedUserToUpdate}" />
                             </p:commandButton>
                         </f:facet>
                     </p:tab>
                 </p:tabView>
             </div>
         </h:form>
+        
+        <!--Update Profile--> 
         <h:form id="formUpdateProfile">
             <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Edit Profile" closable="true">
                 <p:messages id="messagesUpdateProfile" redisplay="false"/>
@@ -145,6 +150,8 @@
                                 <p:message for="contactNum" />
                             </p:column>
                         </p:row>
+                    
+                    <!--change password--> 
 
                     <p:row>
                         <p:column colspan="3">
