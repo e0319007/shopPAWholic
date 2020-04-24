@@ -27,8 +27,18 @@
                             <button onclick="PF('sidebar1').show()"><i class="pi pi-bars"></i></button>
                         </div>
                         <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
-                        <a href="" style="float: right;"><i class="pi pi-envelope" style="size: 25px;"></i></a>
+
                         <h:form style="padding: 15px 10px; float: right;">
+                            <p:selectOneMenu>
+                                <f:selectItems value="#{adminLoginManagedBean.readEmail(event)}" var="emailReader" itemLabel="#{emailReader} "/>
+                                <p:column>
+                                    #{emailReader.from} : #{emailReader.subject}
+                                </p:column>
+                            </p:selectOneMenu>
+                            <p:splitButton id="notification" icon="pi pi-bell">
+                                
+                                <p:menuitem value="#{adminLoginManagedBean.readEmail(event)}" />
+                            </p:splitButton>
                             <p:menuButton value="#{sessionScope.currentAdmin.username}">
                                 <p:menuitem value="Logout" action="#{adminLoginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
                             </p:menuButton>
@@ -39,6 +49,7 @@
         </div>
 
         <div id="left">
+            <p:outputLabel value="#{adminLoginManagedBean.readEmail(event)}"> Value</p:outputLabel>
             <ui:insert name="left">
                 <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
                     <h:form>

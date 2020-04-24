@@ -7,31 +7,44 @@
                 template="../template/SellerTemplate.xhtml">
 
     <ui:define name="content">
-        <h:form enctype="multipart/form-data">
-            <p:growl id="msg"></p:growl>
-            <p:fileUpload value="#{fileUploadView.file}"
-                          sequential="true"
-                          invalidSizeMessage="Invalid Size"
-                          invalidFileMessage="Invalid File Type"
-                          fileLimitMessage="Invalid File Limit"
-                          mode="advanced" multiple="true" fileLimit="8" sizeLimit="10000000"
-                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                          fileUploadListener="#{fileUploadView.handleFileUpload}"
-                          update="msg"></p:fileUpload>
-        </h:form>
-
-        <h:form id="formCreateNewListing">
-            <p:panel header="What are you listing today?" style="width: 800px;">
-
-                <p:messages id="messagesCreateNewListing" redisplay="false" />
-
+        <p:panel header="What are you listing today?" style="width: 490px;">
+            <h:form enctype="multipart/form-data">
                 <p:panelGrid>
+                    <p:growl id="msg"></p:growl>
+
+
+                    <p:fileUpload value="#{listingManagementManagedBean.file}"
+                                  mode="simple"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+
+                    </p:fileUpload>
+                </p:panelGrid>
+
+                <p:messages/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="skuCode" value="SKU Code: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.newListing.skuCode}" required="true" requiredMessage="SKU Code is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="skuCode"/>
+                        </p:column>
+                    </p:row>
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.newListing.skuCode}" placeholder="LIST999" required="true" requiredMessage="SKU Code is required" />
+
+                            <p:selectOneMenu id="category" value="#{listingManagementManagedBean.categoryIdNew}" style="width: 150px;">
+                                <f:selectItem itemLabel="Select Category" itemValue=""/>
+                                <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/> 
+                            </p:selectOneMenu>
+
                         </p:column>
                         <p:column>
                             <p:message for="skuCode" />
@@ -52,22 +65,10 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="description" value="Description:" style="font-weight: bold;"/>
+                            <p:outputLabel for="price" value="Price:"/>
                         </p:column>
                         <p:column>
-                            <p:inputTextarea id="description" value="#{listingManagementManagedBean.newListing.description}" rows="6" cols="33" required="true" requiredMessage="Description is required"/>
-                        </p:column>
-                        <p:column>
-                            <p:message for="description"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="price" value="Price:" style="font-weight: bold;"/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" required="true" requiredMessage="Price is required"/>
+                            <p:inputNumber id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" symbol="$" symbolPosition="s" required="true"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>
@@ -76,34 +77,33 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="quantityOnHand" value="Quantity On Hand " style="font-weight: bold;" />
+
+                            <p:outputLabel for="description" value="Desciption:"/>
                         </p:column>
                         <p:column>
-                            <p:spinner id="quantityOnHand" value="#{listingManagementManagedBean.newListing.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            <p:inputTextarea id="description" value="#{listingManagementManagedBean.newListing.description}" rows="6" cols="33"/>
                         </p:column>
                         <p:column>
-                            <p:message for="quantityOnHand" />
+                            <p:message for="description"/>
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;"/>
+                            <p:outputLabel for="quantityOnHand" value="Quantity on Hands: "/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdNew}" style="width: 150px;">
-                                <f:selectItem itemLabel="[Select One]" itemValue="0" noSelectionOption="true"/>
-                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/>
-                            </p:selectOneMenu>
+                            <p:inputNumber id="quantityOnHand" value="#{listingManagementManagedBean.newListing.quantityOnHand}"  minValue="1" maxValue="9999" decimalPlaces="0"/>
                         </p:column>
                         <p:column>
-                            <p:message for="selCategory"/>
-                        </p:column>          
+                            <p:message for="tag"/>
+
+                        </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="selTags" value="Tags " style="font-weight: bold;"/>
+                            <p:outputLabel for="tag" value="Tag(s): "/>
                         </p:column>
                         <p:column>
                             <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true" style="width: 150px;">
@@ -119,12 +119,14 @@
                     <p:row>
                         <p:column colspan="3">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton id="createNewListing" value="List now" update="@form" actionListener="#{listingManagementManagedBean.createNewListing}"/>
+                            <p:commandButton value="List now" ajax="false" actionListener="#{listingManagementManagedBean.createNewListing}">
+                            </p:commandButton>
                         </p:column>
                     </p:row>     
                 </p:panelGrid>   
 
-            </p:panel>
-        </h:form> 
+
+            </h:form> 
+        </p:panel>
     </ui:define>
 </ui:composition>

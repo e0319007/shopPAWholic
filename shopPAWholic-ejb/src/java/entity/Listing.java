@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -24,12 +19,16 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author EileenLeong
- */
 @Entity
 public class Listing implements Serializable {
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,11 +50,10 @@ public class Listing implements Serializable {
     private String description;
     
     //@NotNull
-    //private List<String> pictures;
+    private String picture;
     
     @OneToMany(mappedBy = "listing") 
     private List<Review> reviews;
-    
     
     @Column(nullable = false)
     @NotNull
@@ -68,7 +66,7 @@ public class Listing implements Serializable {
     @Digits(integer = 9, fraction = 2)
     private BigDecimal unitPrice; 
     
-    @NotNull
+//    @NotNull
     private Date listDate;
     
     @ManyToOne(optional = false) 
@@ -78,7 +76,6 @@ public class Listing implements Serializable {
     @ManyToMany(mappedBy="listings")
     private List<Tag> tags; 
     
-
     @ManyToMany
     private List<OrderEntity> orders;
     
@@ -92,21 +89,18 @@ public class Listing implements Serializable {
         tags = new ArrayList<>();
         reviews = new ArrayList<>();
         orders = new ArrayList<>();
-        //pictures = new ArrayList<>();
-
     }
 
-    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, /*List<String> pictures,*/ Integer quantityOnHand, Date listDate) {
+
+    public Listing(String skuCode, String name, String description, BigDecimal unitPrice, String picture, Integer quantityOnHand, Date listDate) {
         this();
         this.skuCode = skuCode;
         this.name = name;
         this.description = description;
-        //this.quantityOnHand = quantityOnHand;
-        this.unitPrice = unitPrice;
-       // this.pictures = pictures;
         this.quantityOnHand = quantityOnHand;
+        this.unitPrice = unitPrice;
+        this.picture = picture;
         this.listDate = listDate;
-        
     }
     
     public void addTag(Tag tag) {
@@ -164,86 +158,51 @@ public class Listing implements Serializable {
         return "entity.Listing[ id=" + listingId + " ]";
     }
 
-    /**
-     * @return the skuCode
-     */
     public String getSkuCode() {
         return skuCode;
     }
 
-    /**
-     * @param skuCode the skuCode to set
-     */
     public void setSkuCode(String skuCode) {
         this.skuCode = skuCode;
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
+
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /**
-     * @return the quantityOnHand
-     */
-    /*public Integer getQuantityOnHand() {
+    
+    public Integer getQuantityOnHand() {
         return quantityOnHand;
-    }*/
+    }
 
-    /**
-     * @param quantityOnHand the quantityOnHand to set
-     */
-    /*public void setQuantityOnHand(Integer quantityOnHand) {
+    public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
-    }*/
+    }
 
-    /**
-     * @return the unitPrice
-     */
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    /**
-     * @param unitPrice the unitPrice to set
-     */
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    /**
-     * @return the category
-     */
     public Category getCategory() {
         return category;
     }
 
-    /**
-     * @param category the category to set
-     */
     public void setCategory(Category category) {
         if (this.category != null) {
             if (this.category.getListings().contains(this)) {
@@ -258,16 +217,10 @@ public class Listing implements Serializable {
         }
     }
 
-    /**
-     * @return the tags
-     */
     public List<Tag> getTags() {
         return tags;
     }
 
-    /**
-     * @param tags the tags to set
-     */
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
@@ -280,13 +233,6 @@ public class Listing implements Serializable {
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
-    /*public OrderEntity getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderEntity order) {
-        this.order = order;
-    }*/
 
     public List<OrderEntity> getOrders() {
         return orders;
@@ -297,58 +243,19 @@ public class Listing implements Serializable {
 
     }
 
-    /**
-     * @return the seller
-     */
     public Seller getSeller() {
         return seller;
     }
 
-    /**
-     * @param seller the seller to set
-     */
     public void setSeller(Seller seller) {
         this.seller = seller;
     }
 
-    /**
-     * @return the pictures
-     */
-   /* public List<String> getPictures() {
-        return pictures;
-    }*/
 
-    /**
-     * @param pictures the pictures to set
-     */
-    /*public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }*/
-
-    /**
-     * @return the quantityOnHand
-     */
-    public Integer getQuantityOnHand() {
-        return quantityOnHand;
-    }
-
-    /**
-     * @param quantityOnHand the quantityOnHand to set
-     */
-    public void setQuantityOnHand(Integer quantityOnHand) {
-        this.quantityOnHand = quantityOnHand;
-    }
-
-    /**
-     * @return the listDate
-     */
     public Date getListDate() {
         return listDate;
     }
 
-    /**
-     * @param listDate the listDate to set
-     */
     public void setListDate(Date listDate) {
         this.listDate = listDate;
     }
