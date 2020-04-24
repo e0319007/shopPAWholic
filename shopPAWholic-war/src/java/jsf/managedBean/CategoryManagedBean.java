@@ -31,13 +31,9 @@ public class CategoryManagedBean implements Serializable {
     private List<Category> categories;
     private Category newCategory;
 
-    private Category parentCategory;
-    private List<Category> parentCategories;
-
     private String name;
     private String description;
 
-    private Long parentCategoryId;
 
     private Category categoryToUpdate;
 
@@ -48,26 +44,11 @@ public class CategoryManagedBean implements Serializable {
     @PostConstruct
     public void PostConstruct() {
         setCategories(categorySessionBeanLocal.retrieveAllCategories());
-        setParentCategories(categorySessionBeanLocal.retrieveAllRootCategories());
     }
 
-    /*public void createNewCategory(ActionEvent event) {
-        
-        Category category = new Category(name, description);
-        try {
-            
-            categorySessionBeanLocal.createNewCategory(category, getParentCategoryId());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New category created successfully! (Id: " + category.getCategoryId()+ ")", null));
-        } catch (CreateNewCategoryException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Category with name " + category.getName()+ "exists: " + ex.getMessage(), null));
-        } catch (InputDataValidationException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating category: " + ex.getMessage(), null));
-        } 
-    }*/
     public void createNewCategory(ActionEvent event) {
         try {
-            System.out.println("################ i am in category;");
-            Category category = categorySessionBeanLocal.createNewCategory(newCategory, parentCategoryId);
+            Category category = categorySessionBeanLocal.createNewCategory(newCategory);
             categories.add(newCategory);
 
             newCategory = new Category();
@@ -80,7 +61,7 @@ public class CategoryManagedBean implements Serializable {
 
     public void updateCategory(ActionEvent event) throws UpdateCategoryException {
         try {
-            categorySessionBeanLocal.updateCategory(getCategoryToUpdate(), getParentCategoryId());
+            categorySessionBeanLocal.updateCategory(getCategoryToUpdate());
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while editing category: " + ex.getMessage(), null));
         } catch (CategoryNotFoundException ex) {
@@ -125,14 +106,6 @@ public class CategoryManagedBean implements Serializable {
         this.description = description;
     }
 
-    public Long getParentCategoryId() {
-        return parentCategoryId;
-    }
-
-    public void setParentCategoryId(Long parentCategoryId) {
-        this.parentCategoryId = parentCategoryId;
-    }
-
     public Category getNewCategory() {
         return newCategory;
     }
@@ -145,23 +118,9 @@ public class CategoryManagedBean implements Serializable {
         return categoryToUpdate;
     }
 
-    public List<Category> getParentCategories() {
-        return parentCategories;
-    }
 
     public void setCategoryToUpdate(Category categoryToUpdate) {
         this.categoryToUpdate = categoryToUpdate;
     }
 
-    public void setParentCategories(List<Category> parentCategories) {
-        this.parentCategories = parentCategories;
-    }
-
-    public Category getParentCategory() {
-        return parentCategory;
-    }
-
-    public void setParentCategory(Category parentCategory) {
-        this.parentCategory = parentCategory;
-    }
 }

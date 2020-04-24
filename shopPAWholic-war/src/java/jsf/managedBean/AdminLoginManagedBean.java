@@ -21,6 +21,7 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.servlet.http.HttpSession;
+import util.email.EmailManager;
 import util.exception.InvalidLoginCredentialException;
 
 @Named(value = "adminLoginManagedBean")
@@ -33,10 +34,7 @@ public class AdminLoginManagedBean {
     private String username;
     private String password;
 
-    public AdminLoginManagedBean() throws MessagingException {
-//        System.out.println("********** readEmail");
-//        getEmailNumber();
-
+    public AdminLoginManagedBean() {
     }
 
     public void login(ActionEvent event) throws IOException {
@@ -57,48 +55,13 @@ public class AdminLoginManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now logged out.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
-
-//    public void getEmailNumber() throws NoSuchProviderException, MessagingException {
-//        final Properties props = new Properties();
-//       props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-//        props.setProperty("mail.pop3.socketFactory.fallback", "false");
-//        props.setProperty( "mail.pop3.host", "pop.gmail.com" );
-//        props.setProperty( "mail.pop3.user", "shoppawholic");
-//        props.setProperty( "mail.pop3.password", "shoppawholic2020");
-//        props.setProperty( "mail.pop3.ssl.enable", "true");
-//        props.setProperty( "mail.pop3.port", "995" );
-//        props.setProperty( "mail.pop3.auth", "true" );      
-//        props.setProperty("mail.pop3.starttls.enable", "true"); 
-//        props.setProperty("mail.protocol.ssl.trust", "pop.gmail.com");
-//       /* props.setProperty( "mail.pop3.starttls.enable", "true" );
-//        props.setProperty( "mail.pop3.starttls.required", "true" );*/
-//
-//        Session session  = Session.getInstance(props);
-//        session.setDebug(true);
-//
-//        Store store = session.getStore("pop3");
-//        store.connect("shoppawholic", "shoppawholic2020");         
-//        Folder folder = store.getDefaultFolder();
-//        folder.open(Folder.READ_ONLY);
-//        Message message[] = folder.getMessages();
-//        for ( int i = 0; i < message.length; i++ )
-//        {
-//          Message m = message[i];
-//              System.out.println( "-------------------------\nNachricht: " + i );
-//              System.out.println( "From: " + Arrays.toString(m.getFrom()) );
-//              System.out.println( "Topic: " + m.getSubject() );   
-//
-//
-//          if ( m.isMimeType("text/plain") )
-//            try {
-//                System.out.println( m.getContent() );
-//          } catch (IOException ex) {
-//              Logger.getLogger(AdminLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-//          }
-//        }
-//        folder.close( false );
-//        store.close();
-//    }
+    
+    public Message [] readEmail(ActionEvent event) throws MessagingException{
+        EmailManager emailManager = new EmailManager("shoppawholic@gmail.com", "shoppawholic2020");
+        Message [] messages = emailManager.readEmail();
+        System.out.println(messages);
+        return messages;
+    }
 
     public String getUsername() {
         return username;

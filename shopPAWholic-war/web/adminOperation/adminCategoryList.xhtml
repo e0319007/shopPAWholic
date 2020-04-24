@@ -48,58 +48,6 @@
                 </p:panel>
             </h:form>
 
-            <h:form id="formCreateNewSubCategory"> 
-                <p:panel header="Create New Sub Category" toggleable="true" collapsed="true">
-                    <p:panelGrid> 
-                        <p:row> 
-                            <p:column>
-                                <p:outputLabel for="parentCat" value="Select Category: " /> 
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="parentCat" value="#{categoryManagedBean.newCategory.parentCategory}" converter="categoryConverter">
-                                    <f:selectItem itemLabel="Select Parent Category"/>
-                                    <f:selectItems value="#{categoryManagedBean.parentCategories}" var="category" itemValue="#{category}" itemLabel="#{category.name}"/> 
-                                </p:selectOneMenu> 
-                            </p:column>
-                            <p:column>
-                                <p:message for="parentCat" />
-                            </p:column>
-
-                        </p:row>
-
-                        <p:row> 
-                            <p:column>
-                                <p:outputLabel for="name" value="Sub Category Name: " /> 
-                            </p:column>
-                            <p:column> 
-                                <p:inputText id="name" value="#{categoryManagedBean.newCategory.name}" required="true" requiredMessage="Sub Category Name is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="name" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row> 
-                            <p:column>
-                                <p:outputLabel for="description" value="Description: " /> 
-                            </p:column>
-                            <p:column> 
-                                <p:inputText id="description" value="#{categoryManagedBean.newCategory.description}" required="true" requiredMessage="Description is required" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="description" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column colspan="3"> 
-                                <p:commandButton id="createNewSubCategory" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableCategories" actionListener="#{categoryManagedBean.createNewCategory}" />
-                            </p:column> 
-                        </p:row>
-                    </p:panelGrid> 
-                </p:panel>
-            </h:form>
-
             <!--table of categories--> 
             <h:form id="formDataTable">
                 <h:messages id="messages" />

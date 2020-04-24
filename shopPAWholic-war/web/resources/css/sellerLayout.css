@@ -15,3 +15,7 @@ body{
 .ui-growl{
     top: 150px;
 }
+
+.ui-fileupload-buttonbar .ui-fileupload-upload {
+    display: none;
+}

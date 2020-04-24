@@ -41,21 +41,28 @@ public class FilterListingsByCategoryManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        List<Category> categories = categorySessionBeanLocal.retrieveAllRootCategories();
+        List<Category> categories = categorySessionBeanLocal.retrieveAllCategories();
         treeNode = new DefaultTreeNode("Root", null);
 
         for (Category category : categories) {
             createTreeNode(category, treeNode);
         }
+        
+        System.out.println(treeNode);
 
         Long selectedCategoryId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingFilterCategory");
 
+        System.out.println("################### selectedCategoryId: "+selectedCategoryId);
         if (selectedCategoryId != null) {
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+treeNode.getChildren());
             for (TreeNode tn : treeNode.getChildren()) {
                 Category c = (Category) tn.getData();
 
                 if (c.getCategoryId().equals(selectedCategoryId)) {
                     selectedTreeNode = tn;
+                                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+selectedTreeNode);
+
+                    
                     break;
                 } else {
                     selectedTreeNode = searchTreeNode(selectedCategoryId, tn);
@@ -67,9 +74,11 @@ public class FilterListingsByCategoryManagedBean implements Serializable {
     }
 
     public void filterListing() {
+        System.out.println("################### selectedTreeNode: "+selectedTreeNode);
         if (selectedTreeNode != null) {
             try {
                 Category c = (Category) selectedTreeNode.getData();
+                System.out.println(c.getCategoryId());
                 listings = listingSessionBeanLocal.filterListingsByCategory(c.getCategoryId());
             } catch (CategoryNotFoundException ex) {
                 listings = listingSessionBeanLocal.retrieveAllListings();
@@ -88,10 +97,6 @@ public class FilterListingsByCategoryManagedBean implements Serializable {
 
     private void createTreeNode(Category category, TreeNode parentTreeNode) {
         TreeNode treeNode = new DefaultTreeNode(category, parentTreeNode);
-
-        for (Category c : category.getSubCategories()) {
-            createTreeNode(c, treeNode);
-        }
     }
 
     private TreeNode searchTreeNode(Long selectedCategoryId, TreeNode treeNode) {
@@ -104,48 +109,29 @@ public class FilterListingsByCategoryManagedBean implements Serializable {
                 return searchTreeNode(selectedCategoryId, tn);
             }
         }
-
         return null;
     }
 
-    /**
-     * @return the viewListingManagedBean
-     */
     public ViewListingManagedBean getViewListingManagedBean() {
         return viewListingManagedBean;
     }
 
-    /**
-     * @param viewListingManagedBean the viewListingManagedBean to set
-     */
     public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
         this.viewListingManagedBean = viewListingManagedBean;
     }
 
-    /**
-     * @return the treeNode
-     */
     public TreeNode getTreeNode() {
         return treeNode;
     }
 
-    /**
-     * @param treeNode the treeNode to set
-     */
     public void setTreeNode(TreeNode treeNode) {
         this.treeNode = treeNode;
     }
 
-    /**
-     * @return the selectedTreeNode
-     */
     public TreeNode getSelectedTreeNode() {
         return selectedTreeNode;
     }
 
-    /**
-     * @param selectedTreeNode the selectedTreeNode to set
-     */
     public void setSelectedTreeNode(TreeNode selectedTreeNode) {
         this.selectedTreeNode = selectedTreeNode;
         if (selectedTreeNode != null) {
@@ -153,16 +139,10 @@ public class FilterListingsByCategoryManagedBean implements Serializable {
         }
     }
 
-    /**
-     * @return the listings
-     */
     public List<Listing> getListings() {
         return listings;
     }
 
-    /**
-     * @param listings the listings to set
-     */
     public void setListings(List<Listing> listings) {
         this.listings = listings;
     }

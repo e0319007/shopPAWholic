@@ -7,33 +7,40 @@
                 template="../template/SellerTemplate.xhtml">
 
     <ui:define name="content">
-        <h:form enctype="multipart/form-data">
-            <p:growl id="msg"></p:growl>
-            <p:fileUpload value="#{fileUploadView.file}"
-                          sequential="true"
-                          invalidSizeMessage="Invalid Size"
-                          invalidFileMessage="Invalid File Type"
-                          fileLimitMessage="Invalid File Limit"
-                          mode="advanced" multiple="true" fileLimit="8" sizeLimit="10000000"
-                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                          fileUploadListener="#{fileUploadView.handleFileUpload}"
-                          update="msg"></p:fileUpload>
-        </h:form>
-
-
         <p:panel header="What are you listing today?" style="width: 490px;">
-            <h:form id="formMain">
+            <h:form enctype="multipart/form-data">
+                <p:panelGrid>
+                    <p:growl id="msg"></p:growl>
+
+                    <p:fileUpload value="#{listingManagementManagedBean.file}"
+                                  mode="simple"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+                        
+                    </p:fileUpload>
+                </p:panelGrid>
+
                 <p:messages/>
                 <p:panelGrid>
-
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="skuCode" value="SKU Code: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.newListing.skuCode}" required="true" requiredMessage="SKU Code is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="skuCode"/>
+                        </p:column>
+                    </p:row>
+                    
                     <p:row>
                         <p:column>
                             <p:outputLabel for="category" value="Category: "/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="category" value="" style="width: 150px;">
-                                <f:selectItem itemLabel="[Select Parent Category]" itemValue=""/>
-                                <f:selectItems value="" var="category" itemValue="" itemLabel=""/>
+                            <p:selectOneMenu id="category" value="#{listingManagementManagedBean.categoryIdNew}" style="width: 150px;">
+                                <f:selectItem itemLabel="Select Category" itemValue=""/>
+                                <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/> 
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
@@ -55,25 +62,10 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="condition" value="Item Condition:"/>
-                        </p:column>
-                        <p:column>
-                            <p:selectOneRadio id="condition" unselectable="true">
-                                <f:selectItem itemLabel="New" itemValue="New"/>
-                                <f:selectItem itemLabel="Used" itemValue="Used"/>
-                            </p:selectOneRadio>
-                        </p:column>
-                        <p:column>
-                            <p:message for="condition"/>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
                             <p:outputLabel for="price" value="Price:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" required="true"/>
+                            <p:inputNumber id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" symbol="$" symbolPosition="s" required="true"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>
@@ -94,7 +86,19 @@
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="tag" value="Tags "/>
+                            <p:outputLabel for="quantityOnHand" value="Quantity on Hands: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputNumber id="quantityOnHand" value="#{listingManagementManagedBean.newListing.quantityOnHand}"  minValue="1" maxValue="9999" decimalPlaces="0"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="tag"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="tag" value="Tag(s): "/>
                         </p:column>
                         <p:column>
                             <p:selectManyMenu id="tag" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true" style="width: 150px;">
@@ -110,7 +114,8 @@
                     <p:row>
                         <p:column colspan="3">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton value="List now" update="@form" process="@form" actionListener="#{listingManagementManagedBean.createNewListing}"/>
+                            <p:commandButton value="List now" ajax="false" actionListener="#{listingManagementManagedBean.createNewListing}">
+                            </p:commandButton>
                         </p:column>
                     </p:row>     
                 </p:panelGrid>   
