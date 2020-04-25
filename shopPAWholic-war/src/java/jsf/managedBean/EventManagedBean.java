@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.EventSessionBeanLocal;
@@ -30,13 +25,9 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-/**
- *
- * @author Shi Zhan
- */
 @Named(value = "eventManagedBean")
 @ViewScoped
-public class EventManagedBean implements Serializable{
+public class EventManagedBean implements Serializable {
 
     @EJB(name = "EventSessionBeanLocal")
     private EventSessionBeanLocal eventSessionBeanLocal;
@@ -45,51 +36,50 @@ public class EventManagedBean implements Serializable{
     private ScheduleEvent scheduleEvent;
 
     private List<Event> events;
-    
+
     //for creating new events
     private String eventName;
     private String description;
     private String location;
-    private List<String> pictures;
+    private String picture;
     private Date startDateTime;
     private Date endDateTime;
     private String url;
+    private Date listDate;
     private Long sellerId;
     private Event selectedEvent;
     private Event newEvent;
     //for filtering events
     private List<Event> filterBySeller;
-    
-    
+
     public EventManagedBean() {
         scheduleModel = new DefaultScheduleModel();
         scheduleEvent = new DefaultScheduleEvent();
         newEvent = new Event();
-     
+
     }
-    
+
     @PostConstruct
     public void PostConstruct() {
         events = eventSessionBeanLocal.retrieveAllEvent();
         //hardcoded event as example
         scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
     }
-    
+
     public void createNewEvent(ActionEvent event) {
         try {
-           newEvent = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
-            eventSessionBeanLocal.createNewEvent(newEvent,sellerId);
+            newEvent = new Event(eventName, description, location, picture, startDateTime, endDateTime, url, listDate);
+            eventSessionBeanLocal.createNewEvent(newEvent, sellerId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + newEvent.getEventId() + ")", null));
         } catch (CreateNewEventException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
         } catch (InputDataValidationException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
         } catch (EventNameExistsException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
-    
-    
+
     public void updateEvent(ActionEvent event) {
         try {
             Event eventToUpdate = (Event) event.getComponent().getAttributes().get("EventToUpdate");
@@ -101,85 +91,67 @@ public class EventManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
-    
-    public void deleteEvent(ActionEvent event ){
+
+    public void deleteEvent(ActionEvent event) {
         try {
             Event eventToDelete = (Event) event.getComponent().getAttributes().get("EventToDelete");
             eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event deleted successfully! (Id: " + eventToDelete.getEventId() + ")", null));
         } catch (EventNotFoundException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
         }
     }
-    
-    public void addEvent(ActionEvent actionEvent) 
-    {
-        if(scheduleEvent.getId() == null)
+
+    public void addEvent(ActionEvent actionEvent) {
+        if (scheduleEvent.getId() == null) {
             scheduleModel.addEvent(scheduleEvent);
-        else
+        } else {
             scheduleModel.updateEvent(scheduleEvent);
-         
+        }
+
         scheduleEvent = new DefaultScheduleEvent();
     }
-    
-    
-    
-    public void onEventSelect(SelectEvent selectEvent) 
-    {
+
+    public void onEventSelect(SelectEvent selectEvent) {
         scheduleEvent = (ScheduleEvent) selectEvent.getObject();
     }
-    
-    
-    
-    public void onDateSelect(SelectEvent selectEvent) 
-    {
+
+    public void onDateSelect(SelectEvent selectEvent) {
         scheduleEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
     }
-    
-    
-    
-    public void onEventMove(ScheduleEntryMoveEvent scheduleEvent) 
-    {
+
+    public void onEventMove(ScheduleEntryMoveEvent scheduleEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
-         
+
         addMessage(message);
     }
-    
-    
-    
-    public void onEventResize(ScheduleEntryResizeEvent scheduleEvent) 
-    {
+
+    public void onEventResize(ScheduleEntryResizeEvent scheduleEvent) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
-         
+
         addMessage(message);
     }
-     
-    
-    
-    private void addMessage(FacesMessage message) 
-    {
+
+    private void addMessage(FacesMessage message) {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    
-    
-    private Calendar today() 
-    {
+    private Calendar today() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
- 
+
         return calendar;
     }
-    private Date today1Pm() 
-    {
+
+    private Date today1Pm() {
         Calendar t = (Calendar) today().clone();
         t.set(Calendar.AM_PM, Calendar.PM);
         t.set(Calendar.HOUR, 1);
 
         return t.getTime();
     }
-    private Date today6Pm() 
-    {
+
+    private Date today6Pm() {
         Calendar t = (Calendar) today().clone();
         t.set(Calendar.AM_PM, Calendar.PM);
         t.set(Calendar.HOUR, 6);
@@ -227,12 +199,12 @@ public class EventManagedBean implements Serializable{
         this.location = location;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public String getPictures() {
+        return picture;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getStartDateTime() {
@@ -331,8 +303,12 @@ public class EventManagedBean implements Serializable{
         this.newEvent = newEvent;
     }
 
-   
-   
-    
-    
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
+    }
+
 }

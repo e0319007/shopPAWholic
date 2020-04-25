@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -67,6 +69,7 @@ public class Listing implements Serializable {
     private BigDecimal unitPrice; 
     
 //    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
     private Date listDate;
     
     @ManyToOne(optional = false) 
@@ -89,6 +92,15 @@ public class Listing implements Serializable {
         tags = new ArrayList<>();
         reviews = new ArrayList<>();
         orders = new ArrayList<>();
+    }
+    
+     public Listing(String skuCode, String name, String description, BigDecimal unitPrice, Integer quantityOnHand) {
+        this();
+        this.skuCode = skuCode;
+        this.name = name;
+        this.description = description;
+        this.quantityOnHand = quantityOnHand;
+        this.unitPrice = unitPrice;
     }
 
     public Listing(String skuCode, String name, String description, BigDecimal unitPrice, String picture, Integer quantityOnHand, Date listDate) {

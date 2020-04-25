@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,9 +45,6 @@ import util.security.CryptographicHelper;
 @Stateless
 @Local(UserSessionBeanLocal.class)
 public class UserSessionBean implements UserSessionBeanLocal {
-
-    @EJB(name = "CartSessionBeanLocal")
-    private CartSessionBeanLocal cartSessionBeanLocal;
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
     private EntityManager em;
@@ -123,6 +121,12 @@ public class UserSessionBean implements UserSessionBeanLocal {
         Query query = em.createQuery("SELECT u FROM User u");
         return query.getResultList();
     }
+    
+    @Override 
+    public List<String> retrieveAllEmails(){
+        Query query = em.createQuery("SELECT u.email FROM User u");
+        return query.getResultList();
+    }
 
     @Override
     public User retrieveUserByEmail(String email) throws UserNotFoundException {
@@ -170,7 +174,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             }
         }
 
-        Map<String, Integer> sevenDaysCast = new HashMap<>();
+        Map<String, Integer> sevenDaysCast = new LinkedHashMap<>();
 
         for (int i = 0; i < sevenDays.size(); i++) {
             query = em.createQuery("SELECT u FROM User u WHERE u.accCreatedDate between :inStartDate AND :inEndDate");

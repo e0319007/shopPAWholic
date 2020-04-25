@@ -2,8 +2,19 @@ package ejb.session.stateless;
 
 import entity.Event;
 import entity.Seller;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -93,6 +104,61 @@ public class EventSessionBean implements EventSessionBeanLocal {
     public List<Event> retrieveAllEvent() {
         Query query = em.createQuery("SELECT e FROM Event e");
         return query.getResultList();
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfEventsForTheYear() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> listingPerYear = new LinkedHashMap<>();
+        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for (int i = 0; i < months.size(); i++) {
+            query = em.createQuery("SELECT a FROM Advertisement a WHERE EXTRACT(YEAR(a.listDate)) = :inYear and EXTRACT(MONTH(a.listDate)) = :inMonth");
+            query.setParameter("inYear", year);
+            query.setParameter("inMonth", i + 1);
+            listingPerYear.put(months.get(i), (query.getResultList()).size());
+        }
+        return listingPerYear;
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfEventsForDay() {
+        Query query;
+        long days_in_ms = 1000 * 60 * 60 * 24;
+        Date startDate = new Date();
+        Date endDate = new Date(startDate.getTime() - (7 * days_in_ms));
+        List<Date> sevenDays = new ArrayList<>();
+        DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
+        sevenDays.add(startDate);
+
+        while (endDate.before(startDate)) {
+            try {
+                sevenDays.add(dformat.parse(dformat.format(endDate)));
+                endDate = new Date(endDate.getTime() + (days_in_ms));
+            } catch (ParseException ex) {
+                Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        Map<String, Integer> sevenDaysCast = new LinkedHashMap<>();
+
+        for (int i = 0; i < sevenDays.size(); i++) {
+            query = em.createQuery("SELECT e FROM Event e WHERE e.listDate between :inStartDate AND :inEndDate");
+            query.setParameter("inStartDate", sevenDays.get(i));
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sevenDays.get(i));
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            query.setParameter("inEndDate", calendar.getTime());
+
+            List<Event> totalNumber = query.getResultList();
+            sevenDaysCast.put(dformat.format(sevenDays.get(i)), totalNumber.size());
+        }
+        return sevenDaysCast;
     }
 
     @Override

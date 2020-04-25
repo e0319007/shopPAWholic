@@ -31,6 +31,8 @@ public interface UserSessionBeanLocal {
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException;
 
     public List<User> retrieveAllUsers();
+    
+    public List<String> retrieveAllEmails();
 
     public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear();
 

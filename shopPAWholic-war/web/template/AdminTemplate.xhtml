@@ -3,15 +3,10 @@
 <ui-composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <!-- MAIN CSS -->
         <link rel="stylesheet" href="../resources/css/adminLayout.css"/>
-        <!-- GOOGLE FONTS -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"/>
-        <!--PRIMEFACEICON-->
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
         <title>Homepage</title>
     </h:head>
@@ -29,16 +24,15 @@
                         <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
 
                         <h:form style="padding: 15px 10px; float: right;">
-                            <p:selectOneMenu>
-                                <f:selectItems value="#{adminLoginManagedBean.readEmail(event)}" var="emailReader" itemLabel="#{emailReader} "/>
-                                <p:column>
-                                    #{emailReader.from} : #{emailReader.subject}
-                                </p:column>
-                            </p:selectOneMenu>
-                            <p:splitButton id="notification" icon="pi pi-bell">
-                                
-                                <p:menuitem value="#{adminLoginManagedBean.readEmail(event)}" />
-                            </p:splitButton>
+                            <p:commandButton id="emailBtn" type="button" icon="pi pi-bell"/>
+                                <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                                    <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >
+                                        <p:column headerText="Title">
+                                            <h:outputText value="#{email.subject}"/>
+                                        </p:column>    
+                                    </p:dataTable>
+                                </p:overlayPanel>
+                            
                             <p:menuButton value="#{sessionScope.currentAdmin.username}">
                                 <p:menuitem value="Logout" action="#{adminLoginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
                             </p:menuButton>
@@ -49,7 +43,6 @@
         </div>
 
         <div id="left">
-            <p:outputLabel value="#{adminLoginManagedBean.readEmail(event)}"> Value</p:outputLabel>
             <ui:insert name="left">
                 <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
                     <h:form>

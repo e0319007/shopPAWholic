@@ -43,9 +43,10 @@ public class AdvertisementManagedBean implements Serializable{
     private Date startDate;
     private Date endDate;
     private BigDecimal price;
-    private List<String> pictures;
     private String url;
     private String ccNum;
+    private String picture;
+    private Date listDate;
     
     private Long seller;
     
@@ -58,7 +59,6 @@ public class AdvertisementManagedBean implements Serializable{
     @PostConstruct
     public void PostConstruct() {
         advertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
-        List<String> pictures = new ArrayList<>();
     }
     
     public void generatePrice(ActionEvent event) {
@@ -70,7 +70,7 @@ public class AdvertisementManagedBean implements Serializable{
     
     public void createNewAdvertisements(ActionEvent event) {
         try {
-            Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
+            Advertisement advertisement = new Advertisement(description, startDate, endDate, price, picture, url, listDate);
             advertisementSessionBeanLocal.createNewAdvertisement(advertisement, seller, ccNum);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New forum created successfully! (Id: " + advertisement.getAdvertisementId()+ ")", null));
         } catch (CreateNewAdvertisementException ex) {
@@ -149,20 +149,20 @@ public class AdvertisementManagedBean implements Serializable{
         this.price = price;
     }
 
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
     }
     
 }
