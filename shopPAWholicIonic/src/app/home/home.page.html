@@ -23,4 +23,30 @@
   Current user email: {{utilityService.getEmail()}} <br />
   Current user password: {{utilityService.getPassword()}}
 </ion-card>
+
+<ion-slides pager="true" [options]="sliderConfig"> 
+  <ion-slide>
+      <ion-img src='../assets/pictures/petexpo.jpg'></ion-img>
+  </ion-slide>
+  
+  <ion-slide>
+    <ion-img src='../assets/pictures/aquazone.jpg'></ion-img>
+  </ion-slide>
+  
+  <ion-slide>
+      <ion-img src='../assets/pictures/uncaged.jpg'></ion-img>
+  </ion-slide>
+</ion-slides>
+
+<!-- <ion-card>
+<ion-slides class="slide-padding" pager="true" [options]="sliderConfig">
+  <ion-slide *ngFor="let slide of slidesItems">
+      <div class="container">
+          <ion-img src="{{slide.image}}"></ion-img>
+      </div>
+  </ion-slide>
+  </ion-slides>
+</ion-card> -->
+
+
 </ion-content>

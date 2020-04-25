@@ -91,6 +91,10 @@ export class ViewOrderDetailsPage implements OnInit {
     this.router.navigate(["/viewDeliveryDetails/" + this.orderId]);
   }
 
+  createReviewForListing(event, listing) {
+    this.router.navigate(["/customerOperation/createNewReview/" + listing.listingId]);
+  }
+
   cancellOrder() {
     this.orderToView.orderStatus = OrderStatus.cancelled;
     this.orderService.changeOrderStatusByCustomer(this.orderToView).subscribe(

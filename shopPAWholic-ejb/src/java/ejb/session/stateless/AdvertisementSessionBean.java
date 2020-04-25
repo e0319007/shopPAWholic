@@ -60,6 +60,8 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
                 billingDetailSessionBeanLocal.createNewBillingDetail(billingDetail);
                 billingDetail.setAdvertisement(advertisement);
                 advertisement.setBillingDetail(billingDetail);
+                System.out.println("****AdvertisementSessionBean---createNewAdvertisement ccNum: " + ccNum);
+                billingDetail.setCreditCardDetail(ccNum);
                 
                 Seller seller = em.find(Seller.class, sellerId);
                 seller.getAdvertisements().add(advertisement);
