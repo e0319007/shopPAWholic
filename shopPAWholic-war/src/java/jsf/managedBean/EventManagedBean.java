@@ -2,6 +2,7 @@ package jsf.managedBean;
 
 import ejb.session.stateless.EventSessionBeanLocal;
 import entity.Event;
+import entity.User;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -64,7 +65,11 @@ public class EventManagedBean implements Serializable {
         events = eventSessionBeanLocal.retrieveAllEvent();
         //hardcoded event as example
         scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
+        
+        User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        sellerId = currentUser.getUserId();
     }
+
 
     public void createNewEvent(ActionEvent event) {
         try {
@@ -76,7 +81,10 @@ public class EventManagedBean implements Serializable {
         } catch (InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
         } catch (EventNameExistsException ex) {
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
+
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
 
@@ -310,5 +318,4 @@ public class EventManagedBean implements Serializable {
     public void setListDate(Date listDate) {
         this.listDate = listDate;
     }
-
 }

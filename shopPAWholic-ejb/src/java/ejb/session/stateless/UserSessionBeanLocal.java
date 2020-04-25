@@ -42,4 +42,6 @@ public interface UserSessionBeanLocal {
 
     public User retrieveUserByEmail(String email) throws UserNotFoundException;
 
+    public void updateUser(User user) throws UserNotFoundException, InputDataValidationException;
+
 }

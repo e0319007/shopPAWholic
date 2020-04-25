@@ -4,6 +4,8 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
+import {UtilityService} from './utility.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -23,18 +25,23 @@ export class AppComponent implements OnInit {
       icon: 'arrow-forward'
     },
     {
+      title: 'View My Listings',
+      url: 'sellerOperation/viewMyListings',
+      icon: 'arrow-forward'
+    },
+    {
       title: 'Create New Listing',
-      url: '/createNewListing',
+      url: 'sellerOperation/createNewListing',
       icon: ''
     },
     {
       title: 'View Orders',
-      url: '/viewOrders',
+      url: '/viewAllOrders',
       icon: ''
     },
     {
-      title: 'Shopping Cart',
-      url: '/viewShoppingCart',
+      title: 'Cart',
+      url: '/customerOperation/viewCart',
       icon: ''
     },
     {
@@ -46,6 +53,16 @@ export class AppComponent implements OnInit {
       title: 'View Reviews',
       url: '/viewReviews',
       icon: ''
+    },
+    {
+      title: 'View Billing',
+      url: '/sellerOperation/viewBillingDetails',
+      icon: ''
+    },
+    {
+      title: 'Logout',
+      url: '/login',
+  		icon: 'exit'
     }
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
@@ -71,5 +88,39 @@ export class AppComponent implements OnInit {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
   }
+
+  // updateMainMenu()
+	// {
+  //   //if is login
+	// 	if(this.utilityService.getIsLogin())
+	// 	{
+	// 		this.appPages  = [
+	// 			{
+	// 				title: 'Home',
+	// 				url: '/home',
+	// 				icon: 'home'
+	// 			},
+	// 			{
+	// 				title: 'Logout',
+	// 				url: '/login',
+	// 				icon: 'exit'
+	// 			}
+  //     ];
+  //     //is not logged in
+	// 	} else {
+  //     this.appPages  = [
+	// 			{
+	// 				title: 'Home',
+	// 				url: '/home',
+	// 				icon: 'home'
+  //       },
+  //       {
+  //         title: 'View All Listings',
+  //         url: '/viewAllListings',
+  //         icon: 'arrow-forward'
+  //       }
+  //     ];
+  //   }
+	// }
 
 }

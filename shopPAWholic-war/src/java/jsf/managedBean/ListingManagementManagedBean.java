@@ -78,6 +78,7 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Review> reviews;
     private List<OrderEntity> orders;
 
+    private Seller sellerId;
     private Seller seller;
 
     //fileUpload
@@ -152,7 +153,10 @@ public class ListingManagementManagedBean implements Serializable {
         listings = listingSessionBeanLocal.retrieveAllListings();
         tags = tagSessionBeanLocal.retrieveAllTags();
         //reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        
         Seller seller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentSellerEntity");
+        //User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        //sellerId = currentUser.getUserId();
     }
 
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -163,6 +167,7 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void createNewListing(ActionEvent event) {
         try {
+
             Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, seller.getUserId());
             System.out.println("############################# new Listing: " + newListing);
             newListing.setListDate(new Date(System.currentTimeMillis()));
@@ -170,6 +175,7 @@ public class ListingManagementManagedBean implements Serializable {
             System.out.println("############################# categoryIdNew: " + categoryIdNew);
             System.out.println("############################# tagIdsNew: " + tagIdsNew);
             System.out.println("############################# seller: " + seller.getUserId());
+
             listings.add(l);
             //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
             //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
@@ -183,6 +189,7 @@ public class ListingManagementManagedBean implements Serializable {
             newListing = new Listing();
             categoryIdNew = null;
             tagIdsNew = null;
+
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully! (Listing Id: " + l.getListingId() + ")", null));
 

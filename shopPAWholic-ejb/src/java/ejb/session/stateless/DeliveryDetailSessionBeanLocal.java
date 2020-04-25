@@ -26,5 +26,7 @@ public interface DeliveryDetailSessionBeanLocal {
     
     public DeliveryDetail retrieveDeliveryDetailById(Long id) throws DeliveryDetailNotFoundException;
     
-    public void setDeliveryStatus(String status, long deliveryStatusId);
+    public void addDeliveryStatus(String status, long deliveryStatusId);
+    
+    public DeliveryDetail retrieveDeliveryDetailByOrderId(long orderId) throws DeliveryDetailNotFoundException;
 }

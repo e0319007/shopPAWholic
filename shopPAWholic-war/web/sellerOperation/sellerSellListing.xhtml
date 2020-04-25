@@ -12,10 +12,11 @@
                 <p:panelGrid>
                     <p:growl id="msg"></p:growl>
 
+
                     <p:fileUpload value="#{listingManagementManagedBean.file}"
                                   mode="simple"
                                   allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
-                        
+
                     </p:fileUpload>
                 </p:panelGrid>
 
@@ -32,25 +33,27 @@
                             <p:message for="skuCode"/>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="category" value="Category: "/>
+                            <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
+
                             <p:selectOneMenu id="category" value="#{listingManagementManagedBean.categoryIdNew}" style="width: 150px;">
                                 <f:selectItem itemLabel="Select Category" itemValue=""/>
                                 <f:selectItems value="#{categoryManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}"/> 
                             </p:selectOneMenu>
+
                         </p:column>
                         <p:column>
-                            <p:message for="category"/>
-                        </p:column>          
+                            <p:message for="skuCode" />
+                        </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="listingTitle" value="Listing Title:"/>
+                            <p:outputLabel for="listingTitle" value="Listing Title:" style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="listingTitle" value="#{listingManagementManagedBean.newListing.name}" required="true" requiredMessage="title is required"/>
@@ -74,6 +77,7 @@
 
                     <p:row>
                         <p:column>
+
                             <p:outputLabel for="description" value="Desciption:"/>
                         </p:column>
                         <p:column>
@@ -93,6 +97,7 @@
                         </p:column>
                         <p:column>
                             <p:message for="tag"/>
+
                         </p:column>
                     </p:row>
 
@@ -101,13 +106,13 @@
                             <p:outputLabel for="tag" value="Tag(s): "/>
                         </p:column>
                         <p:column>
-                            <p:selectManyMenu id="tag" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true" style="width: 150px;">
+                            <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsNew}" showCheckbox="true" style="width: 150px;">
                                 <f:selectItems value="#{listingManagementManagedBean.tags}" var="tag" itemValue="#{tag.tagId}" itemLabel="#{tag.name}"/>
                             </p:selectManyMenu>
 
                         </p:column>
                         <p:column>
-                            <p:message for="tag"/>
+                            <p:message for="selTags"/>
                         </p:column>
                     </p:row>
 
@@ -119,8 +124,9 @@
                         </p:column>
                     </p:row>     
                 </p:panelGrid>   
+
+
             </h:form> 
         </p:panel>
-
     </ui:define>
 </ui:composition>

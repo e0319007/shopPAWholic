@@ -72,7 +72,7 @@ public class OrderEntity implements Serializable {
 
     public OrderEntity() {
         totalPrice = new BigDecimal("0.00");
-        orderStatus = OrderStatus.PENDINGPAYMENT;
+        orderStatus = OrderStatus.PAID;
         listings = new ArrayList<>();
     }
 

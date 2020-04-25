@@ -21,6 +21,17 @@ export class SellerService {
   }
 
   //sellerRegister
+  sellerRegister(seller: Seller, name: string, email: string, password: string, contactNumber: string, accCreatedDate: Date) {
+    let sellerCreateNewReq = {
+      "seller" : seller,
+      "name" : name,
+      "email" : email,
+      "password" : password,
+      "contactNumber" : contactNumber,
+      "accCreatedDate" : accCreatedDate,
+    }
+    return this.httpClient.put<any>(this.baseUrl, sellerCreateNewReq, httpOptions).pipe(catchError(this.handleError));
+  }
     
   handleError(error: HttpErrorResponse) {
     let errorMessage: string;

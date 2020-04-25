@@ -7,6 +7,7 @@ package ws.restful;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Listing;
+import entity.OrderEntity;
 import entity.Review;
 import entity.Seller;
 import entity.Tag;
@@ -32,8 +33,11 @@ import util.exception.ListingNotFoundException;
 import util.exception.UpdateListingException;
 import ws.datamodel.ListingCreateReq;
 import ws.datamodel.ErrorRsp;
+import ws.datamodel.ListingCreateNewRsp;
+import ws.datamodel.ListingRetrieveDetailRsp;
 import ws.datamodel.ListingUpdateReq;
 import ws.datamodel.ListingsRetrieveAllRsp;
+import java.util.Date;
 
 /**
  *
@@ -75,7 +79,15 @@ public class ListingResource {
         try {
             List<Listing> listings = listingSessionBeanLocal.retrieveAllListings();
             for(Listing l:listings) {
+<<<<<<< HEAD
                 l.getCategory().getListings().clear();
+=======
+                if(l.getCategory().getParentCategory() != null) {
+                    l.getCategory().setParentCategory(null);
+                    l.getCategory().getListings().clear();
+                    l.getCategory().getSubCategories().clear();
+                }
+>>>>>>> master
                 
                 for(Tag t:l.getTags()) {
                     t.getListings().clear();
@@ -84,8 +96,20 @@ public class ListingResource {
                 l.getSeller().getAdvertisements().clear();
                 l.getSeller().getBillingDetails().clear();
                 l.getSeller().getEvents().clear();
-                for (Review r: l.getReviews()) r.setListing(null);
                 l.getSeller().getOrders().clear();
+                
+                for (Review r: l.getReviews()) {
+                    r.setListing(null);
+                    r.getCustomer().setBillingDetails(null);
+                    r.getCustomer().setCart(null);
+                    r.getCustomer().setComments(null);
+                    r.getCustomer().setForumPosts(null);
+                    r.getCustomer().setReviews(null);
+                    r.getCustomer().setOrders(null);
+                }
+                l.getOrders().clear();
+                
+                
             }
             return Response.status(Status.OK).entity(new ListingsRetrieveAllRsp(listings)).build();
         }
@@ -102,23 +126,44 @@ public class ListingResource {
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveListing(@PathParam("listingId") Long listingId) {
+        System.out.println("RetrieveListing by id is called");
         try {
-            Listing l = listingSessionBeanLocal.retrieveListingByListingId(listingId);
+            Listing listing = listingSessionBeanLocal.retrieveListingByListingId(listingId);
             
+<<<<<<< HEAD
             l.getCategory().getListings().clear();
             l.getSeller().getListings().clear();
             for(Tag tag:l.getTags()) {
                 tag.getListings().clear();
+=======
+            if(listing.getCategory().getParentCategory() != null) {
+                listing.getCategory().setParentCategory(null);
+                listing.getCategory().getListings().clear();
+                listing.getCategory().getSubCategories().clear();
             }
-            
-            l.getSeller().getListings().clear();
-            l.getSeller().getAdvertisements().clear();
-            l.getSeller().getBillingDetails().clear();
-            l.getSeller().getEvents().clear();
-            for (Review r: l.getReviews()) r.setListing(null);
-            l.getSeller().getOrders().clear();
-            
-            return Response.status(Status.OK).entity(l).build(); 
+
+            for(Tag t:listing.getTags()) {
+                t.getListings().clear();
+>>>>>>> master
+            }
+            listing.getSeller().getListings().clear();
+            listing.getSeller().getAdvertisements().clear();
+            listing.getSeller().getBillingDetails().clear();
+            listing.getSeller().getEvents().clear();
+            listing.getSeller().getOrders().clear();
+
+            for (Review r: listing.getReviews()) {
+                r.setListing(null);
+                r.getCustomer().setBillingDetails(null);
+                r.getCustomer().setCart(null);
+                r.getCustomer().setComments(null);
+                r.getCustomer().setForumPosts(null);
+                r.getCustomer().setReviews(null);
+                r.getCustomer().setOrders(null);
+            }
+            listing.getOrders().clear();
+                
+            return Response.status(Status.OK).entity(new ListingRetrieveDetailRsp(listing)).build(); 
         }
         catch(ListingNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -140,9 +185,10 @@ public class ListingResource {
         if(createListingReq != null) {
             try {
                 Seller seller = getSellerInstance(createListingReq.getEmail(), createListingReq.getPassword(), "createListing");
+                createListingReq.getListing().setListDate(new Date());
                 Listing listing  = listingSessionBeanLocal.createNewListing(createListingReq.getListing(), createListingReq.getCategoryId(), createListingReq.getTagIds(), seller.getUserId());
                 
-                return Response.status(Response.Status.OK).entity(listing.getListingId()).build();
+                return Response.status(Response.Status.OK).entity(new ListingCreateNewRsp(listing.getListingId())).build();
             }
             catch(InvalidLoginCredentialException ex) {
                 ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -175,7 +221,7 @@ public class ListingResource {
                 Seller seller = getSellerInstance(listingUpdateReq.getEmail(), listingUpdateReq.getPassword(), "updateListing");
                 
                 listingSessionBeanLocal.updateListing(listingUpdateReq.getListing(), listingUpdateReq.getCategoryId(), listingUpdateReq.getTagIds());
-                
+                System.out.println("********** qty on hand : " + listingUpdateReq.getListing().getQuantityOnHand());
                 return Response.status(Response.Status.OK).build();
             }
             catch(InvalidLoginCredentialException ex) {

@@ -33,12 +33,13 @@ public class Event implements Serializable {
     private String location;
 
     @NotNull
-    private String picture;
-
-    @NotNull
+    private String picture;    
+    
+    @Temporal(TemporalType.DATE)
     private Date startDateTime;
 
-    @NotNull
+    
+    @Temporal(TemporalType.DATE)
     private Date endDateTime;
 
     @URL

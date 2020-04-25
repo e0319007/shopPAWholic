@@ -19,6 +19,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.SellerNotFoundException;
+import util.exception.UserNotFoundException;
 
 @Named(value = "userManagementManagedBean")
 @ViewScoped
@@ -60,6 +62,11 @@ public class UserManagementManagedBean implements Serializable {
     private Customer selectedCustomerToUpdate;
     private Long customerIdUpdate;
 
+    private Seller selectedSellerToUpdate;
+    private Long sellerIdUpdate;
+    
+    private User selectedUserToUpdate;
+    
     public UserManagementManagedBean() {
         currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         if (currentUser instanceof Customer){
@@ -92,6 +99,39 @@ public class UserManagementManagedBean implements Serializable {
         } catch (CustomerNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
         }
+    }
+    public void updateSeller(ActionEvent event) {
+
+        try {
+            sellerSessionBeanLocal.updateSeller(selectedSellerToUpdate);
+
+        } catch (SellerNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating seller: " + ex.getMessage(), null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void updateUser(ActionEvent event) {
+
+        try {
+            userSessionBeanLocal.updateUser(selectedUserToUpdate);
+
+        } catch (UserNotFoundException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating user: " + ex.getMessage(), null));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void doUpdateUser(ActionEvent event) {
+        selectedUserToUpdate = (User) event.getComponent().getAttributes().get("userToUpdate");
+    }
+    public void doUpdateSeller(ActionEvent event) {
+        selectedSellerToUpdate = (Seller) event.getComponent().getAttributes().get("sellerToUpdate");
+    }
+    public void doUpdateCustomer(ActionEvent event) {
+        selectedCustomerToUpdate = (Customer) event.getComponent().getAttributes().get("customerToUpdate");
     }
 
     public List<Customer> getCustomerList() {
@@ -237,6 +277,48 @@ public class UserManagementManagedBean implements Serializable {
 
     public void setCurrentSeller(Seller currentSeller) {
         this.currentSeller = currentSeller;
+    }
+
+    /**
+     * @return the selectedSellerToUpdate
+     */
+    public Seller getSelectedSellerToUpdate() {
+        return selectedSellerToUpdate;
+    }
+
+    /**
+     * @param selectedSellerToUpdate the selectedSellerToUpdate to set
+     */
+    public void setSelectedSellerToUpdate(Seller selectedSellerToUpdate) {
+        this.selectedSellerToUpdate = selectedSellerToUpdate;
+    }
+
+    /**
+     * @return the sellerIdUpdate
+     */
+    public Long getSellerIdUpdate() {
+        return sellerIdUpdate;
+    }
+
+    /**
+     * @param sellerIdUpdate the sellerIdUpdate to set
+     */
+    public void setSellerIdUpdate(Long sellerIdUpdate) {
+        this.sellerIdUpdate = sellerIdUpdate;
+    }
+
+    /**
+     * @return the selectedUserToUpdate
+     */
+    public User getSelectedUserToUpdate() {
+        return selectedUserToUpdate;
+    }
+
+    /**
+     * @param selectedUserToUpdate the selectedUserToUpdate to set
+     */
+    public void setSelectedUserToUpdate(User selectedUserToUpdate) {
+        this.selectedUserToUpdate = selectedUserToUpdate;
     }
 
 }

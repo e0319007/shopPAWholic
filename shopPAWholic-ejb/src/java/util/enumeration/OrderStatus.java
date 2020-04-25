@@ -3,8 +3,9 @@ package util.enumeration;
 public enum OrderStatus {
     PENDINGPAYMENT,
     PAID,
-    SHIPPED,
+    DELIVERED,
     COMPLETED,
     LOST,
-    REFUND
+    REFUNDED,
+    CANCELLED
 }

@@ -5,6 +5,7 @@ import { User } from './user';
 import { Customer } from './customer';
 import { Seller } from './seller';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,18 +35,16 @@ export class UtilityService {
     }
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  setIsLogin() : void {
-    sessionStorage.isLogin = true;
-=======
   setIsLogin(isLogin : boolean) : void {
     sessionStorage.isLogin = isLogin;
->>>>>>> origin/joanna2
-=======
-  setIsLogin(isLogin : boolean) : void {
-    sessionStorage.isLogin = isLogin;
->>>>>>> origin/joanna2
+  }
+
+  setIsCustomer(isCustomer : boolean) : void {
+    sessionStorage.isCustomer = isCustomer;
+  }
+
+  setIsSeller(isSeller : boolean) : void {
+    sessionStorage.isSeller = isSeller;
   }
 
   getCurrentUser() : User {
@@ -57,61 +56,61 @@ export class UtilityService {
   }
 
   getEmail(): string {
+    // this.setEmail("dummy");
     return sessionStorage.email;
   }
 
-  setEmail(email: string) {
+  setEmail(email: string) : void {
+    //  let e: string = "customerOne@email.com";
+    //  sessionStorage.email = e;
     sessionStorage.email = email;
   }
 
   getPassword(): string {
+    // this.setPassword("dummy");
     return sessionStorage.password;
   }
 
-  setPassword(password: string) {
+  setPassword(password: string) : void{
+    // let p: string = "password";
+    // sessionStorage.password = p;
     sessionStorage.password = password;
   }
 
   isCustomer(): boolean {
-    let currentUser = this.getCurrentUser(); 
-    if (currentUser instanceof Customer) {
+    if (sessionStorage.isCustomer == "true") {
       return true;
     } else {
       return false;
     }
+    // let currentUser = this.getCurrentUser(); 
+    // if (currentUser instanceof Customer) {
+    //   return true;
+    // } else {
+    //   return false;
+    // } 
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> origin/joanna2
   isSeller(): boolean {
-    let currentUser = this.getCurrentUser();
-    if (currentUser instanceof Seller) {
-      return true;
+    //let currentUser = this.getCurrentUser();
+    if (sessionStorage.isSeller == "true"){
+        return true;
     } else {
       return false;
     }
+    // if (currentUser instanceof Seller) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 
-<<<<<<< HEAD
->>>>>>> origin/joanna2
-=======
->>>>>>> origin/joanna2
+
   checkAccessRight(path) : boolean {
     console.log("***************PATH: " + path);
     if(this.getIsLogin()) {
       let user: User;
-<<<<<<< HEAD
-<<<<<<< HEAD
-      user = this.getCurrentUser;
-=======
       user = this.getCurrentUser();
->>>>>>> origin/joanna2
-=======
-      user = this.getCurrentUser();
->>>>>>> origin/joanna2
       if(user instanceof Customer) {
         //if condition for paths
         return true;
@@ -122,12 +121,4 @@ export class UtilityService {
     } 
   }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/joanna2
-=======
-}
->>>>>>> origin/joanna2

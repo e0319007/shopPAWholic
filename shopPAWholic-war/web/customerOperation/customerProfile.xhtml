@@ -66,7 +66,7 @@
                   
                     <f:facet name="actions">
                         <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
-                            <f:setPropertyActionListener value="#{customer}" target="#{userManagementManagedBean.selectedCustomerToUpdate}" />
+                            <f:setPropertyActionListener value="#{currentCustomer}" target="#{userManagementManagedBean.selectedCustomerToUpdate}" />
                         </p:commandButton>
                     </f:facet>
                 </p:tab>
@@ -103,7 +103,7 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton style="color: black; background-color: orange;" value="Update Profile" update="@form formCustomerProfile" actionListener="#{userManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateProfile').show();" />
+                            <p:commandButton value="Update Profile" update="@form formCustomerProfile" actionListener="#{userManagementManagedBean.updateCustomer}" oncomplete="PF('dialogUpdateProfile').show();" />
                         </p:column>
                     </p:row>
                              

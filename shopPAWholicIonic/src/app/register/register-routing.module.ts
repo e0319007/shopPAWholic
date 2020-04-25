@@ -7,7 +7,15 @@ const routes: Routes = [
   {
     path: '',
     component: RegisterPage
+  },  {
+    path: 'register-customer',
+    loadChildren: () => import('./register-customer/register-customer.module').then( m => m.RegisterCustomerPageModule)
+  },
+  {
+    path: 'register-seller',
+    loadChildren: () => import('./register-seller/register-seller.module').then( m => m.RegisterSellerPageModule)
   }
+
 ];
 
 @NgModule({

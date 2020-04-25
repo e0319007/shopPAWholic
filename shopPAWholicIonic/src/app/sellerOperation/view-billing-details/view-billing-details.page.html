@@ -1,0 +1,25 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>My Billings</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<div *ngIf="noBilling == true" style="margin:10px;">
+  You have no billing details
+</div>
+
+<ion-content style="margin: 10px;">
+  <ion-list *ngIf="noBilling == false">
+    <ion-item *ngFor="let billing of billingDetails" >
+      <ion-label>Billing Id: {{billing.billingDetailId}}</ion-label>
+      Billing Date: {{billing.billingDate}} <br />
+      Credit Card Number: {{billing.creditCardDetail}}<br />
+      Amount Charged: ${{billing.advertisement.price}}<br />
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -14,6 +14,7 @@ export class User {
             this.email = email;
             this.contactNumber = contactNumber;
             this.password = password;
+            this.accCreatedDate = accCreatedDate;
     }
 
 }

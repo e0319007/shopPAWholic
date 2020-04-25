@@ -103,6 +103,7 @@ public class Listing implements Serializable {
         this.unitPrice = unitPrice;
     }
 
+
     public Listing(String skuCode, String name, String description, BigDecimal unitPrice, String picture, Integer quantityOnHand, Date listDate) {
         this();
         this.skuCode = skuCode;

@@ -1,7 +1,7 @@
 export enum DeliveryMethod {
-    SINGPOST_REGULAR,
-    SINGPOST_REGISTERED,
-    NINJAVAN,
-    PARKNPARCEL,
-    QXPRESS
+    SingpostRegular = "SINGPOST_REGULAR" ,
+    SingpostRegistered = "SINGPOST_REGISTERED",
+    Ninjavan = "NINJAVAN",
+    ParknParcel = "PARKNPARCEL",
+    Qxpress = "QXPRESS"
 }

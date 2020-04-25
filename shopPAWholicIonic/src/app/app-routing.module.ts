@@ -12,40 +12,96 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },   {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    path: 'view-billing-detail',
-    loadChildren: () => import('./view-billing-detail/view-billing-detail.module').then( m => m.ViewBillingDetailPageModule)
+
+  },  
+  {
+    path:'viewAllOrders', 
+    loadChildren: './view-all-orders/view-all-orders.module#ViewAllOrdersPageModule', canActivate: [AuthGuard]
+  },
+  { 
+    path: 'viewAllListings', 
+    loadChildren: './view-all-listings/view-all-listings.module#ViewAllListingsPageModule', canActivate: [AuthGuard] 
   },
   {
-    path: 'view-all-orders',
-    loadChildren: () => import('./view-all-orders/view-all-orders.module').then( m => m.ViewAllOrdersPageModule)
+    path: 'viewListingDetails/:listingId', 
+    loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard]
   },
   {
-    path: 'view-all-listings',
-    loadChildren: () => import('./view-all-listings/view-all-listings.module').then( m => m.ViewAllListingsPageModule)
+    path: 'viewListingDetails', 
+    loadChildren: './view-listing-details/view-listing-details.module#ViewListingDetailsPageModule', canActivate: [AuthGuard] 
   },
   {
-    path: 'view-listing-details',
-    loadChildren: () => import('./view-listing-details/view-listing-details.module').then( m => m.ViewListingDetailsPageModule)
-  },
-=======
-=======
->>>>>>> origin/joanna2
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    path: 'sellerOperation/deleteListing/:listingId',
+    loadChildren: './sellerOperation/delete-listing/delete-listing.module#DeleteListingPageModule',canActivate: [AuthGuard]
+
   },
   {
-    path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    path: 'sellerOperation/updateListing/:listingId',
+    loadChildren: './sellerOperation/update-listing/update-listing.module#UpdateListingPageModule', canActivate: [AuthGuard]
+  },
+  {
+    path: 'sellerOperation/createNewListing',
+    loadChildren:'./sellerOperation/create-new-listing/create-new-listing.module#CreateNewListingPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'customerOperation/viewCart',
+    loadChildren: './customerOperation/view-cart/view-cart.module#ViewCartPageModule', canActivate:[AuthGuard]
   },
 
-<<<<<<< HEAD
->>>>>>> origin/joanna2
-=======
->>>>>>> origin/joanna2
- 
+  {
+    path: 'customerOperation/checkOutPage',
+    loadChildren: './customerOperation/check-out/check-out.module#CheckOutPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewOrderDetails/:orderId',
+    loadChildren: './view-order-details/view-order-details.module#ViewOrderDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewDeliveryDetails/:orderId',
+    loadChildren:'./view-delivery-details/view-delivery-details.module#ViewDeliveryDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'viewBillingDetails/:orderId',
+    loadChildren: './customerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/changeOrderStatus/:orderId',
+    loadChildren: './sellerOperation/change-order-status/change-order-status.module#ChangeOrderStatusPageModule', canActivate:[AuthGuard]
+  },
+  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
+  { 
+    path : 'register/registerCustomer',
+    loadChildren: './register/register-customer/register-customer.module#RegisterCustomerPageModule'
+  },
+  { 
+    path : 'register/registerSeller',
+    loadChildren: './register/register-seller/register-seller.module#RegisterSellerPageModule'
+  },
+  
+  {
+    path: 'sellerOperation/createNewTag',
+    loadChildren: './sellerOperation/create-new-tag/create-new-tag.module#CreateNewTagPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/viewMyListings',
+    loadChildren: './sellerOperation/view-my-listings/view-my-listings.module#ViewMyListingsPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'customerOperation/createOrderSuccessPage',
+    loadChildren: './customerOperation/create-order-success-page/create-order-success-page.module#CreateOrderSuccessPagePageModule', canActivate:[AuthGuard]
+  },
+  {
+    path: 'sellerOperation/viewBillingDetails',
+    loadChildren: './sellerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
+  },  {
+    path: 'create-advertisement',
+    loadChildren: () => import('./sellerOperation/create-advertisement/create-advertisement.module').then( m => m.CreateAdvertisementPageModule)
+  },
+
+
+
+
  
 ];
 

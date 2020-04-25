@@ -11,6 +11,7 @@ import { ListingService } from '../listing.service';
 export class ViewAllListingsPage implements OnInit {
 
   listings: Listing[];
+  filteredListings: Listing[];
 
   constructor(private router: Router, private listingService: ListingService) { }
 
@@ -22,10 +23,27 @@ export class ViewAllListingsPage implements OnInit {
     this.refreshListings();
   }
 
+  filter(event) {
+    console.log("filtering********");
+    let searchTerm: string = event.srcElement.value;
+    if(!searchTerm) {
+      return;
+    }
+    this.filteredListings = this.listings.filter(listing => {
+      if (listing.name && searchTerm) {
+        if (listing.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
+          return true;
+        }
+        return false;
+      }
+    });
+  }
+
   refreshListings() {
     this.listingService.retrieveAllListings().subscribe(
       response => {
         this.listings = response.listings;
+        this.filteredListings = this.listings;
       },
       error => {
         console.log('********* ViewAllListingsPage.ts: ' + error);

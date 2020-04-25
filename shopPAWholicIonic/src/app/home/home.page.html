@@ -1,11 +1,26 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
     <ion-title>
           <img src="assets/icon/shopPAWholic.png">
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button routerLink="/register" *ngIf="utilityService.getIsLogin() == false">Register</ion-button>
+      <ion-button routerLink="/login" *ngIf="utilityService.getIsLogin() == false">Login</ion-button>
+      <!-- <ion-button (click)="logout()" *ngIf="utilityService.getIsLogin() == true">Logout</ion-button> -->
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card *ngIf="utilityService.getIsLogin() == true">
+  <!-- <ion-button (click)="initialiseCart()" fill="clear" shape="round">
+    Initialise cart
+  </ion-button> -->
 
+  Current user email: {{utilityService.getEmail()}} <br />
+  Current user password: {{utilityService.getPassword()}}
+</ion-card>
 </ion-content>

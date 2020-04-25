@@ -9,7 +9,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
 
   <ion-card *ngIf="utilityService.getIsLogin() == false">
 
@@ -26,10 +26,10 @@
               Email is required.
             </div>
             <div *ngIf="inemail.errors.minlength">
-              Username must be at least 4 characters long.
+              Email must be at least 4 characters long.
             </div>
             <div *ngIf="inemail.errors.maxlength">
-              Username cannot exceed 64 characters.
+              Email cannot exceed 64 characters.
             </div>
           </div>
           
@@ -83,10 +83,10 @@
   <ion-card *ngIf="utilityService.getIsLogin() == true">
     <ion-card-content>
 
-      You are login as {{utilityService.getCurrentUser.name}}
+      You are login as {{utilityService.getCurrentUser().name}}
       (
-        <span *ngIf="utilityService.isCustomer">CUSTOMER</span>
-        <span *ngIf="utilityService.isSelelr">SELLER</span>
+        <span *ngIf="utilityService.isCustomer()">CUSTOMER</span>
+        <span *ngIf="utilityService.isSeller()">SELLER</span>
       )
 
     </ion-card-content>
@@ -94,9 +94,9 @@
 
 </ion-content>
 
-<ion-footer *ngIf="sessionService.getIsLogin() == true">
+<ion-footer *ngIf="utilityService.getIsLogin() == true">
   <ion-toolbar>
-		<ion-button expand="full" (click)="userLogout()">
+		<ion-button expand="full" (click)="userLogout()" routerLink="/home">
 			<ion-icon slot="start" name="exit"></ion-icon>
 			Logout
 		</ion-button>

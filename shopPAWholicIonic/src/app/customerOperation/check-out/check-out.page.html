@@ -1,0 +1,95 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>Checkout Details</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+<ion-content>
+ <form #checkoutForm="ngForm" (ngSubmit)="checkout(checkoutForm)">
+  <div style="color:red">
+    
+    <div *ngIf="address.invalid && (address.dirty || address.touched || submitted)" class="errorText">
+      <div *ngIf="address.errors.required">
+        Address is required
+      </div>
+    </div>
+
+    <div *ngIf="contactNumber.invalid && (contactNumber.dirty || contactNumber.touched || submitted)" class="errorText">
+      <div *ngIf="contactNumber.errors.required">
+        Contact Number is required
+      </div>
+    </div>
+    
+    <div *ngIf="deliveryMethod.invalid && (deliveryMethod.dirty || deliveryMethod.touched || submitted)" class="errorText">
+      <div *ngIf="deliveryMethod.errors.required">
+        Delivery Method is required
+      </div>
+    </div>
+
+    <div *ngIf="ccNum.invalid && (ccNum.dirty || ccNum.touched || submitted)" class="errorText">
+      <div *ngIf="ccNum.errors.required">
+        Credit Card Number is required
+      </div>
+    </div>
+ 
+  </div>
+
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label><b>Address: </b></ion-label>
+      <ion-input type="text" id="address" name="address" [(ngModel)]="deliveryDetail.address" #address="ngModel" required= true></ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label><b>Contact Number: </b></ion-label>
+      <ion-input type="text" id="contactNumber" name="contactNumber" [(ngModel)]="deliveryDetail.contactNumber" #contactNumber="ngModel" required= true ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Delivery Method: </b></ion-label>
+      <ion-select placeholder="Select One" id="deliveryMethod" name="deliveryMethod" #deliveryMethod="ngModel" [(ngModel)]="chosenDeliveryMethod" (click)="checkDelivery()" required="true">
+        <ion-select-option value={{deliveryMethods[0]}}>Regular (Singpost)</ion-select-option>
+        <ion-select-option value={{deliveryMethods[1]}}>Register (Singpost)</ion-select-option>
+        <ion-select-option value={{deliveryMethods[2]}}>NinjaVan</ion-select-option>
+        <ion-select-option value={{deliveryMethods[3]}}>ParkNParcel </ion-select-option>
+        <ion-select-option value={{deliveryMethods[4]}}>Qxpress</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label><b>Credit Card Number: </b></ion-label>
+      <ion-input type="text" id="ccNum" name="ccNum" [(ngModel)]="billingDetail.creditCardDetail" #ccNum="ngModel" required = true></ion-input>
+    </ion-item>
+
+  </ion-list>
+  
+  <ion-button type="submit" expand="block" fill="clear" shape="round">
+    Place Order
+  </ion-button>
+ </form>
+</ion-content>
+<ion-card style="color: cornflowerblue; float: right; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+  <div style="margin: 20px;">
+    <b> Delivery Cost</b>  (changed per seller):<br />
+    Regular(Singpost): $1.50<br />
+    Registered(Singpost): $3.50<br />
+    Qxpress: $5<br />
+    ParknParcel: $5.50<br />
+    NinjaVan: $4<br />
+  </div>
+</ion-card>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+      Back
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>
+

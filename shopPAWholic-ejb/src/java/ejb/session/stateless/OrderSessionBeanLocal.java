@@ -32,4 +32,6 @@ public interface OrderSessionBeanLocal {
     public String changeOrderStatus(OrderStatus os, Long orderId);
 
     public OrderEntity createNewOrder(OrderEntity newOrder, Long DeliveryDetailId, String ccNum, Long customerId, List<Listing> listings, Long sellerId) throws CreateNewOrderException, InputDataValidationException;
+
+    public void updateDeliveryStatusOfOrder(OrderEntity order);
 }

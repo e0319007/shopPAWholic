@@ -12,6 +12,7 @@ import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
 import entity.Advertisement;
+import entity.Cart;
 import entity.Category;
 import entity.Customer;
 import entity.DeliveryDetail;
@@ -39,6 +40,7 @@ import util.exception.CreateNewCategoryException;
 import util.exception.CreateNewDeliveryDetailException;
 import util.exception.CreateNewEventException;
 import util.exception.CreateNewListingException;
+import util.exception.CreateNewOrderException;
 import util.exception.CreateNewReviewException;
 import util.exception.CreateNewTagException;
 import util.exception.EventNameExistsException;
@@ -245,18 +247,26 @@ public class DataInitSessionBean {
             listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"), picture, 30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date, DeliveryMethod.QXPRESS);
+
             OrderEntity order = new OrderEntity(new BigDecimal(100), date);
             System.out.println("New Order Created with ID: " + order.getOrderId());
             System.out.println("New Order has price of: " + order.getTotalPrice());
             System.out.println("New Order has date of: " + order.getOrderDate());
             List<Listing> listings = new ArrayList<>();
             listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 1l));
+            listings.add(em.find(Listing.class, 12l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
             //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
             String advPicture = "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
             Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, advPicture, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 20));
             Advertisement advertisement2 = new Advertisement("Advertisement Two", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, advPicture, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 23));
+
+            OrderEntity o = orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            System.out.println("OrderEntity id: " + o.getOrderId() + " created");
+            System.out.println("OrderEntity has " + o.getListings().size() + " listings");
+
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller7.getUserId(), "4444 5555 6666 7777");
             advertisementSessionBean.createNewAdvertisement(advertisement2, seller8.getUserId(), "4444 5555 6666 8888");
 
@@ -269,11 +279,30 @@ public class DataInitSessionBean {
             String eventPicture = "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
             Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bedok Reservoir", eventPicture, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 19) );
             Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPicture, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 18));
+
+            Cart c = em.find(Cart.class, 1l);
+            List<Listing> listingsToAddToCart = new ArrayList<>();
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 1l));
+            listingsToAddToCart.add(em.find(Listing.class, 2l));
+            System.out.println(listingsToAddToCart);
+            c.setListings(listingsToAddToCart);
+            c.setTotalPrice(new BigDecimal(40));
+            c.setTotalQuantity(3);
+    
+
+            System.out.println("******  I AM IN *******");
+            List<String> eventPictures = new ArrayList<>();
+            System.out.println("******  I AM IN *******");
+            eventPictures.add("../resources/image/petEvent1.jpg");
+            eventPictures.add("../resources/image/petEvent2.jpg");
+
             eventSessionBeanLocal.createNewEvent(event1, seller7.getUserId());
             eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
 
-        } catch (AdminUsernameExistException | ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
+        } catch (AdminUsernameExistException | CreateNewOrderException |ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException
                 | CreateNewEventException | EventNameExistsException ex) {
+
 //CreateNewOrderException
 
             ex.printStackTrace();

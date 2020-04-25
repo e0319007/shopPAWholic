@@ -1,0 +1,46 @@
+<ion-header>
+
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>My Cart</ion-title>
+	</ion-toolbar>
+  
+</ion-header>
+
+<ion-content>
+	<div style="margin:20px;" *ngIf="emptyCart == true">
+		Cart is empty :( <br /> Add some items to continue...
+	</div>
+	
+	<ion-list *ngFor="let item of cartItems">
+		<div style="margin: 20px; float: right;">
+			Quantity: <ion-input min="1" max="item.listing.quantityOnHand" style=" width:50px; background:#fafafa;box-shadow:inset 0 1px 3px 0 rgba(0,0,0,.08);" type="text" id="qty" name="qty" [(ngModel)]="item.quantity" (keyDown)="refreshPrice()" required="true"></ion-input>
+		</div>
+		<ion-item>
+			<div style="margin: 10px;">
+				<b (click)="toListing(item.listing.listingId)">{{item.listing.name}}</b><br >
+				<p>Unit Price: ${{item.listing.unitPrice}}</p>
+				<p>Total Price: ${{item.quantity * item.listing.unitPrice}}</p>
+				<ion-button style="float: left;" (click)="removeListingFromCart(item.listing.listingId)" expand="block" fill="clear" shape="round">
+					Remove
+				</ion-button>
+			</div>
+		</ion-item>
+	</ion-list>
+	
+</ion-content>
+
+
+<ion-footer>
+	<ion-toolbar>
+		<ion-button (click)="checkoutDetails()" *ngIf="emptyCart == false" expand="block" fill="clear" shape="round">
+			Check Out
+		</ion-button>
+		<ion-button (click)="shop()" *ngIf="emptyCart == true" expand="block" fill="clear" shape="round">
+			Shop
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>
+
