@@ -1,29 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
-/**
- *
- * @author Shi Zhan
- */
 @Entity
 public class Advertisement implements Serializable {
 
@@ -45,7 +37,7 @@ public class Advertisement implements Serializable {
     private BigDecimal price;
 
     @NotNull
-    private List<String> pictures;
+    private String picture;
 
     @URL
     private String url;
@@ -58,21 +50,24 @@ public class Advertisement implements Serializable {
     @OneToOne(optional = false) 
     private BillingDetail billingDetail;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date listDate;
 
 
     public Advertisement() {
-        pictures = new ArrayList<>();
         price = new BigDecimal("0.00");
     }
 
-    public Advertisement(String description, Date startDate, Date endDate, BigDecimal price, List<String> pictures, String url) {
+    public Advertisement(String description, Date startDate, Date endDate, BigDecimal price, String picture, String url, Date listDate) {
         this();
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.price = price;
-        this.pictures = pictures;
+        this.picture = picture;
         this.url = url;
+        this.listDate = listDate;
     }
 
     public Long getAdvertisementId() {
@@ -140,12 +135,12 @@ public class Advertisement implements Serializable {
         this.price = price;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPicture(String pictures) {
+        this.picture = picture;
     }
 
     public String getUrl() {
@@ -176,6 +171,14 @@ public class Advertisement implements Serializable {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
     }
 
 }

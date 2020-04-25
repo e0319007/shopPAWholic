@@ -1,9 +1,6 @@
 package util.email;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -98,8 +95,8 @@ public class EmailManager {
 //            System.out.println("From: " + Arrays.toString(m.getFrom()));
 //            System.out.println("Topic: " + m.getSubject());
 //        }
-        folder.close(false);
-        store.close();
+        //folder.close(false);
+        //store.close();
         return messageList;
     }
 }

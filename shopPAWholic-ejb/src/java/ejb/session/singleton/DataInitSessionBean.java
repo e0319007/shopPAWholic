@@ -258,15 +258,15 @@ public class DataInitSessionBean {
             listings.add(em.find(Listing.class, 12l));
             deliveryDetailSessionBeanLocal.createNewDeliveryDetail(delivery);
 
+            //orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
+            String advPicture = "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
+            Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, advPicture, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 20));
+            Advertisement advertisement2 = new Advertisement("Advertisement Two", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, advPicture, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 23));
 
             OrderEntity o = orderSessionBeanLocal.createNewOrder(order, delivery.getDeliveryDetailId(), "1111 2222 3333 4444", customer.getUserId(), listings, listings.get(0).getSeller().getUserId());
             System.out.println("OrderEntity id: " + o.getOrderId() + " created");
             System.out.println("OrderEntity has " + o.getListings().size() + " listings");
 
-            List<String> pictures = new ArrayList<>();
-            pictures.add("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-            Advertisement advertisement1 = new Advertisement("Advertisement One", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
-            Advertisement advertisement2 = new Advertisement("Advertisement Two", new Date(120, 0, 1), new Date(120, 1, 1), BigDecimal.TEN, pictures, "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500");
             advertisementSessionBean.createNewAdvertisement(advertisement1, seller7.getUserId(), "4444 5555 6666 7777");
             advertisementSessionBean.createNewAdvertisement(advertisement2, seller8.getUserId(), "4444 5555 6666 8888");
 
@@ -276,6 +276,9 @@ public class DataInitSessionBean {
             System.out.println("calling review");
             reviewSessionBeanLocal.createNewReview(review, listingIDtoPassIn, customer.getUserId());
 
+            String eventPicture = "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
+            Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bedok Reservoir", eventPicture, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 19) );
+            Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPicture, new Date(120, 0, 1), new Date(120, 1, 1), "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500", new Date(120, 3, 18));
 
             Cart c = em.find(Cart.class, 1l);
             List<Listing> listingsToAddToCart = new ArrayList<>();
@@ -293,13 +296,8 @@ public class DataInitSessionBean {
             System.out.println("******  I AM IN *******");
             eventPictures.add("../resources/image/petEvent1.jpg");
             eventPictures.add("../resources/image/petEvent2.jpg");
-            System.out.println("******  I AM IN *******");
-            Event event1 = new Event("Doggy Walk Run", "Bring your doggos for a run", "Bishan Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "http://www.spca.org.sg/whatson_details.asp?id=119");
-            System.out.println("******  I AM IN *******");
-            Event event2 = new Event("Cat Walk Run", "Bring your cats for a run", "Tampines Park", eventPictures, new Date(120, 0, 1), new Date(120, 1, 1), "https://weekender.com.sg/w/do/indulge-in-your-cat-obsession-at-singapores-first-ever-cat-festival/");
-            System.out.println("******  I AM IN *******");
+
             eventSessionBeanLocal.createNewEvent(event1, seller7.getUserId());
-            System.out.println("******  I AM IN *******");
             eventSessionBeanLocal.createNewEvent(event2, seller8.getUserId());
 
         } catch (AdminUsernameExistException | CreateNewOrderException |ListingSkuCodeExistException | CreateNewDeliveryDetailException | CreateNewReviewException | CreateNewAdvertisementException | UnknownPersistenceException | InputDataValidationException | CreateNewCategoryException | CreateNewTagException | CreateNewListingException | UserUsernameExistException

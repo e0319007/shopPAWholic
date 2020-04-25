@@ -2,12 +2,13 @@ package jsf.managedBean;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.SellerSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -23,6 +24,9 @@ import util.exception.UserUsernameExistException;
 @Named(value = "registerManagedBean")
 @ViewScoped
 public class RegisterManagedBean implements Serializable {
+
+    @EJB(name = "UserSessionBeanLocal")
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     @EJB(name = "SellerSessionBeanLocal")
     private SellerSessionBeanLocal sellerSessionBeanLocal;
@@ -60,7 +64,7 @@ public class RegisterManagedBean implements Serializable {
             }
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         } else if (role.equals("Seller")) {
-            currentDateTime = new Date();            
+            currentDateTime = new Date();
             System.out.println("*********************************" + currentDateTime);
             sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, currentDateTime, false, 5));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -75,6 +79,16 @@ public class RegisterManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
         }
 
+    }
+
+    public void checkDuplicateEmail() {
+        List<String> emailList = userSessionBeanLocal.retrieveAllEmails();
+        for (String e : emailList) {
+            if (email.equals(e)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Duplication Email", null));
+
+            }
+        }
     }
 
     public Boolean sendEmail(ActionEvent event) {

@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Advertisement;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
@@ -27,6 +28,10 @@ public interface AdvertisementSessionBeanLocal {
 
     public List<Advertisement> retrieveAllAdvertisements();
 
+    public Map<String, Integer> retrieveTotalNumberOfAdvertisementsForDay();
+
+    public Map<String, Integer> retrieveTotalNumberOfAdvertisementsForTheYear();
+
     public Advertisement createNewAdvertisement(Advertisement advertisement, Long sellerId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException;
-    
+
 }

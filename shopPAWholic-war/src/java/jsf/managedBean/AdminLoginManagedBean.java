@@ -3,23 +3,14 @@ package jsf.managedBean;
 import ejb.session.stateless.AdminSessionBeanLocal;
 import entity.Admin;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Properties;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
 import javax.servlet.http.HttpSession;
 import util.email.EmailManager;
 import util.exception.InvalidLoginCredentialException;
@@ -59,7 +50,7 @@ public class AdminLoginManagedBean {
     public Message [] readEmail(ActionEvent event) throws MessagingException{
         EmailManager emailManager = new EmailManager("shoppawholic@gmail.com", "shoppawholic2020");
         Message [] messages = emailManager.readEmail();
-        System.out.println(messages);
+//        System.out.println(messages);
         return messages;
     }
 

@@ -1,40 +1,43 @@
 package jsf.managedBean;
 
+import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.EventSessionBeanLocal;
+import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.SellerSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.ScheduleEntryResizeEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.DateAxis;
-import org.primefaces.model.chart.LineChartModel;
-import org.primefaces.model.chart.LineChartSeries;
-import org.primefaces.model.chart.PieChartModel;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.bar.BarChartDataSet;
+import org.primefaces.model.charts.bar.BarChartModel;
+import org.primefaces.model.charts.line.LineChartDataSet;
+import org.primefaces.model.charts.line.LineChartModel;
+import org.primefaces.model.charts.pie.PieChartDataSet;
+import org.primefaces.model.charts.pie.PieChartModel;
+import org.primefaces.model.charts.polar.PolarAreaChartDataSet;
+import org.primefaces.model.charts.polar.PolarAreaChartModel;
 
 @Named(value = "chartView")
 @RequestScoped
-public class ChartView {
+public class ChartView implements Serializable {
+
+    @EJB(name = "EventSessionBeanLocal")
+    private EventSessionBeanLocal eventSessionBeanLocal;
+
+    @EJB(name = "AdvertisementSessionBeanLocal")
+    private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;
+
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
@@ -45,244 +48,649 @@ public class ChartView {
     @EJB(name = "UserSessionBeanLocal")
     private UserSessionBeanLocal userSessionBeanLocal;
 
-    private BarChartModel barModel;
-    private PieChartModel pieModel;
-    private LineChartModel dateModel;
+    //Dashboard
+    private Integer totalNoOfUsers;
+    private Integer totalNoOfListings;
+    private Integer totalNoOfAdvertisements;
+    private Integer totalNoOfEvents;
+    private Integer totalRevenue;
 
-    private ScheduleModel scheduleModel;
-    private ScheduleEvent scheduleEvent;
+    //userAnalysis
+    private BarChartModel userBarModel;
+    private PieChartModel userPieModel;
+    private LineChartModel userLineModel;
+
+    //listingAnalysis
+    private LineChartModel listingLineModel;
+    private BarChartModel listingBarModel;
+    private PolarAreaChartModel listingPolarAreaModel;
+
+    //advertisementAnalysis
+    private LineChartModel advertisementLineModel;
+    private BarChartModel advertisementBarModel;
+
+    //eventAnalysis
+    private LineChartModel eventLineModel;
+    private BarChartModel eventBarModel;
 
     public ChartView() {
-        scheduleModel = new DefaultScheduleModel();
-        scheduleEvent = new DefaultScheduleEvent();
+
     }
 
     @PostConstruct
     public void postConstruct() {
-        createBarModel();
-        createPieModel();
-        createDateModel();
-        scheduleModel.addEvent(new DefaultScheduleEvent("Champions League Match", previousDay8Pm(), previousDay11Pm()));
-        scheduleModel.addEvent(new DefaultScheduleEvent("Birthday Party", today1Pm(), today6Pm()));
-        scheduleModel.addEvent(new DefaultScheduleEvent("Breakfast at Tiffanys", nextDay9Am(), nextDay11Am()));
-        scheduleModel.addEvent(new DefaultScheduleEvent("Plant the new garden stuff", theDayAfter3Pm(), fourDaysLater3pm()));
-  
+        totalNumberOfUsers();
+        totalNumberOfListings();
+        totalNumberOfAdvertisements();
+        totalNumberOfEvents();
+
+        createUserBarModel();
+        createUserPieModel();
+        createUserLineModel();
+
+        createListingLineModel();
+        createListingBarModel();
+        createListingPolarAreaModel();
+
+        createAdvertisementLineModel();
+        createAdvertisementBarModel();
+
+        createEventLineModel();
+        createEventBarModel();
     }
 
-    public BarChartModel getBarModel() {
-        return barModel;
+    public BarChartModel getUserBarModel() {
+        return userBarModel;
     }
 
-    public void setBarModel(BarChartModel barModel) {
-        this.barModel = barModel;
+    public void setUserBarModel(BarChartModel userBarModel) {
+        this.userBarModel = userBarModel;
     }
 
-    public PieChartModel getPieModel() {
-        return pieModel;
+    public PieChartModel getUserPieModel() {
+        return userPieModel;
     }
 
-    public void setPieModel(PieChartModel pieModel) {
-        this.pieModel = pieModel;
+    public void setUserPieModel(PieChartModel userPieModel) {
+        this.userPieModel = userPieModel;
     }
 
-    public LineChartModel getDateModel() {
-        return dateModel;
+    public LineChartModel getUserLineModel() {
+        return userLineModel;
     }
 
-    public ScheduleEvent getScheduleEvent() {
-        return scheduleEvent;
+    public void setUserLineModel(LineChartModel userLineModel) {
+        this.userLineModel = userLineModel;
     }
 
-    public ScheduleModel getScheduleModel() {
-        return scheduleModel;
+    public LineChartModel getListingLineModel() {
+        return listingLineModel;
     }
 
-    public void setScheduleEvent(ScheduleEvent scheduleEvent) {
-        this.scheduleEvent = scheduleEvent;
+    public void setListingLineModel(LineChartModel listingLineModel) {
+        this.listingLineModel = listingLineModel;
     }
 
-    public void setScheduleModel(ScheduleModel scheduleModel) {
-        this.scheduleModel = scheduleModel;
+    public PolarAreaChartModel getListingPolarAreaModel() {
+        return listingPolarAreaModel;
     }
 
-    private BarChartModel initBarModel() {
-        BarChartModel model = new BarChartModel();
+    public void setListingPolarAreaModel(PolarAreaChartModel listingPolarAreaModel) {
+        this.listingPolarAreaModel = listingPolarAreaModel;
+    }
 
-        ChartSeries numberOfUsers = new ChartSeries();
-        numberOfUsers.setLabel("Number of Users");
+    public BarChartModel getAdvertisementBarModel() {
+        return advertisementBarModel;
+    }
+
+    public LineChartModel getAdvertisementLineModel() {
+        return advertisementLineModel;
+    }
+
+    public void setAdvertisementBarModel(BarChartModel advertisementBarModel) {
+        this.advertisementBarModel = advertisementBarModel;
+    }
+
+    public void setAdvertisementLineModel(LineChartModel advertisementLineModel) {
+        this.advertisementLineModel = advertisementLineModel;
+    }
+
+    public BarChartModel getEventBarModel() {
+        return eventBarModel;
+    }
+
+    public LineChartModel getEventLineModel() {
+        return eventLineModel;
+    }
+
+    public void setEventBarModel(BarChartModel eventBarModel) {
+        this.eventBarModel = eventBarModel;
+    }
+
+    public void setEventLineModel(LineChartModel eventLineModel) {
+        this.eventLineModel = eventLineModel;
+    }
+
+    public Integer getTotalNoOfAdvertisements() {
+        return totalNoOfAdvertisements;
+    }
+
+    public Integer getTotalNoOfListings() {
+        return totalNoOfListings;
+    }
+
+    public Integer getTotalNoOfUsers() {
+        return totalNoOfUsers;
+    }
+
+    public Integer getTotalNoOfEvents() {
+        return totalNoOfEvents;
+    }
+
+    public void setTotalNoOfEvents(Integer totalNoOfEvents) {
+        this.totalNoOfEvents = totalNoOfEvents;
+    }
+
+    public Integer getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public void setTotalNoOfAdvertisements(Integer totalNoOfAdvertisements) {
+        this.totalNoOfAdvertisements = totalNoOfAdvertisements;
+    }
+
+    public void setTotalNoOfListings(Integer totalNoOfListings) {
+        this.totalNoOfListings = totalNoOfListings;
+    }
+
+    public void setTotalNoOfUsers(Integer totalNoOfUsers) {
+        this.totalNoOfUsers = totalNoOfUsers;
+    }
+
+    public void setTotalRevenue(Integer totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+
+    public BarChartModel getListingBarModel() {
+        return listingBarModel;
+    }
+
+    public void setListingBarModel(BarChartModel listingBarModel) {
+        this.listingBarModel = listingBarModel;
+    }
+
+    private void totalNumberOfUsers() {
+        totalNoOfUsers = userSessionBeanLocal.retrieveAllUsers().size();
+    }
+
+    private void totalNumberOfListings() {
+        totalNoOfListings = listingSessionBeanLocal.retrieveAllListings().size();
+    }
+
+    private void totalNumberOfAdvertisements() {
+        totalNoOfAdvertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements().size();
+    }
+
+    private void totalNumberOfEvents() {
+        totalNoOfEvents = eventSessionBeanLocal.retrieveAllEvent().size();
+    }
+
+    private void createUserBarModel() {
+        userBarModel = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        barDataSet.setLabel("Total Number of Users Per Month");
+
         Map<String, Integer> userPerMonth = userSessionBeanLocal.retrieveTotalNumberOfUsersForTheYear();
-        numberOfUsers.set("January", userPerMonth.get("January"));
-        numberOfUsers.set("February", userPerMonth.get("February"));
-        numberOfUsers.set("March", userPerMonth.get("March"));
-        numberOfUsers.set("April", userPerMonth.get("April"));
-        numberOfUsers.set("May", userPerMonth.get("May"));
-        numberOfUsers.set("June", userPerMonth.get("June"));
-        numberOfUsers.set("July", userPerMonth.get("July"));
-        numberOfUsers.set("August", userPerMonth.get("August"));
-        numberOfUsers.set("September", userPerMonth.get("September"));
-        numberOfUsers.set("October", userPerMonth.get("October"));
-        numberOfUsers.set("November", userPerMonth.get("November"));
-        numberOfUsers.set("December", userPerMonth.get("December"));
+        List<Number> values = new ArrayList<>();
 
-        model.addSeries(numberOfUsers);
-        return model;
+        values.add(userPerMonth.get("January"));
+        values.add(userPerMonth.get("February"));
+        values.add(userPerMonth.get("March"));
+        values.add(userPerMonth.get("April"));
+        values.add(userPerMonth.get("May"));
+        values.add(userPerMonth.get("June"));
+        values.add(userPerMonth.get("July"));
+        values.add(userPerMonth.get("August"));
+        values.add(userPerMonth.get("September"));
+        values.add(userPerMonth.get("October"));
+        values.add(userPerMonth.get("November"));
+        values.add(userPerMonth.get("December"));
+        barDataSet.setData(values);
+
+        List<String> bgColor = new ArrayList<>();
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        bgColor.add("rgba(153, 102, 255, 0.2)");
+        bgColor.add("rgba(201, 203, 207, 0.2)");
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        barDataSet.setBackgroundColor(bgColor);
+
+        List<String> borderColor = new ArrayList<>();
+        borderColor.add("rgb(255, 99, 132)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 205, 86)");
+        borderColor.add("rgb(75, 192, 192)");
+        borderColor.add("rgb(54, 162, 235)");
+        borderColor.add("rgb(153, 102, 255)");
+        borderColor.add("rgb(201, 203, 207)");
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
+
+        data.addChartDataSet(barDataSet);
+
+        List<String> labels = new ArrayList<>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");
+        labels.add("July");
+        labels.add("August");
+        labels.add("September");
+        labels.add("October");
+        labels.add("November");
+        labels.add("December");
+        data.setLabels(labels);
+
+        userBarModel.setData(data);
     }
 
-    private void createBarModel() {
-        barModel = initBarModel();
+    private void createUserPieModel() {
+        userPieModel = new PieChartModel();
+        ChartData data = new ChartData();
 
-        barModel.setTitle("Total number of users in " + Calendar.getInstance().get(Calendar.YEAR));
-        barModel.setLegendPosition("ne");
+        PieChartDataSet dataSet = new PieChartDataSet();
 
-        Axis xAxis = barModel.getAxis(AxisType.X);
-        xAxis.setLabel("Months");
-        Axis yAxis = barModel.getAxis(AxisType.Y);
-        yAxis.setLabel("Number of users");
-    }
-
-    private void createPieModel() {
-        pieModel = new PieChartModel();
         List<Seller> sellersList = sellerSessionBeanLocal.retrieveAllSellers();
         List<Customer> customersList = customerSessionBeanLocal.retrieveAllCustomers();
 
         int totalSeller = sellersList.size();
         int totalCustomer = customersList.size();
 
-        pieModel.set("Sellers", totalSeller);
-        pieModel.set("Customers", totalCustomer);
-        pieModel.setTitle("2020");
-        pieModel.setLegendPosition("w");
+        List<Number> values = new ArrayList<>();
+        values.add(totalSeller);
+        values.add(totalCustomer);
+        dataSet.setData(values);
+
+        List<String> bgColors = new ArrayList<>();
+        bgColors.add("rgb(255, 99, 132)");
+        bgColors.add("rgb(54, 162, 235)");
+        dataSet.setBackgroundColor(bgColors);
+
+        data.addChartDataSet(dataSet);
+        List<String> labels = new ArrayList<>();
+        labels.add("Total Number of Seller");
+        labels.add("Total Number of Customer");
+        data.setLabels(labels);
+
+        userPieModel.setData(data);
     }
 
-    private void createDateModel() {
-        System.out.println("$$$$$$$");
-        dateModel = new LineChartModel();
-        LineChartSeries series = new LineChartSeries();
+    public void createUserLineModel() {
+        userLineModel = new LineChartModel();
+        ChartData data = new ChartData();
+
+        LineChartDataSet dataSet = new LineChartDataSet();
+
         Map<String, Integer> userPerDay = userSessionBeanLocal.retrieveTotalNumberOfUsersForDay();
-        System.out.println(userPerDay);
-        
+        List<Number> values = new ArrayList<>();
         for (String i : userPerDay.keySet()) {
-            series.set(i, userPerDay.get(i));
+            values.add(userPerDay.get(i));
         }
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Total Number of Users Registered Per Day");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setLineTension(0.1);
+        data.addChartDataSet(dataSet);
 
-        dateModel.addSeries(series);
-        dateModel.setTitle("Total Number of Users Registered Per Day");
-        dateModel.setZoom(true);
-        dateModel.getAxis(AxisType.Y).setLabel("Number of users");
-        dateModel.getAxis(AxisType.Y).setMin(0);
-        DateAxis axis = new DateAxis("Dates");
-        axis.setTickFormat("%b %#d, %y");
- 
-        dateModel.getAxes().put(AxisType.X, axis);
-    }
-
-    public void addEvent(ActionEvent actionEvent) {
-        if (scheduleEvent.getId() == null) {
-            scheduleModel.addEvent(scheduleEvent);
-        } else {
-            scheduleModel.updateEvent(scheduleEvent);
+        List<String> labels = new ArrayList<>();
+        for (String i : userPerDay.keySet()) {
+            labels.add(i);
         }
-        scheduleEvent = new DefaultScheduleEvent();
+        data.setLabels(labels);
+
+        userLineModel.setData(data);
     }
 
-    public void onEventSelect(SelectEvent selectEvent) {
-        scheduleEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    private void createListingLineModel() {
+        listingLineModel = new LineChartModel();
+        ChartData data = new ChartData();
+
+        LineChartDataSet dataSet = new LineChartDataSet();
+
+        Map<String, Integer> listingPerDay = listingSessionBeanLocal.retrieveTotalNumberOfListingsForDay();
+        List<Number> values = new ArrayList<>();
+        for (String i : listingPerDay.keySet()) {
+            values.add(listingPerDay.get(i));
+        }
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Total Number of Listing Posted Per Day");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setLineTension(0.1);
+        data.addChartDataSet(dataSet);
+
+        List<String> labels = new ArrayList<>();
+        for (String i : listingPerDay.keySet()) {
+            labels.add(i);
+        }
+        data.setLabels(labels);
+
+        listingLineModel.setData(data);
     }
 
-    public void onDateSelect(SelectEvent selectEvent) {
-        scheduleEvent = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+    private void createListingBarModel() {
+        listingBarModel = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        barDataSet.setLabel("Total Number of Listings Per Month");
+
+        Map<String, Integer> userPerMonth = listingSessionBeanLocal.retrieveTotalNumberOfListingsForTheYear();
+        List<Number> values = new ArrayList<>();
+
+        values.add(userPerMonth.get("January"));
+        values.add(userPerMonth.get("February"));
+        values.add(userPerMonth.get("March"));
+        values.add(userPerMonth.get("April"));
+        values.add(userPerMonth.get("May"));
+        values.add(userPerMonth.get("June"));
+        values.add(userPerMonth.get("July"));
+        values.add(userPerMonth.get("August"));
+        values.add(userPerMonth.get("September"));
+        values.add(userPerMonth.get("October"));
+        values.add(userPerMonth.get("November"));
+        values.add(userPerMonth.get("December"));
+        barDataSet.setData(values);
+
+        List<String> bgColor = new ArrayList<>();
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        bgColor.add("rgba(153, 102, 255, 0.2)");
+        bgColor.add("rgba(201, 203, 207, 0.2)");
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        barDataSet.setBackgroundColor(bgColor);
+
+        List<String> borderColor = new ArrayList<>();
+        borderColor.add("rgb(255, 99, 132)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 205, 86)");
+        borderColor.add("rgb(75, 192, 192)");
+        borderColor.add("rgb(54, 162, 235)");
+        borderColor.add("rgb(153, 102, 255)");
+        borderColor.add("rgb(201, 203, 207)");
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
+
+        data.addChartDataSet(barDataSet);
+
+        List<String> labels = new ArrayList<>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");
+        labels.add("July");
+        labels.add("August");
+        labels.add("September");
+        labels.add("October");
+        labels.add("November");
+        labels.add("December");
+        data.setLabels(labels);
+
+        listingBarModel.setData(data);
     }
 
-    public void onEventMove(ScheduleEntryMoveEvent scheduleEvent) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
+    private void createListingPolarAreaModel() {
+        listingPolarAreaModel = new PolarAreaChartModel();
+        ChartData data = new ChartData();
 
-        addMessage(message);
+        PolarAreaChartDataSet dataSet = new PolarAreaChartDataSet();
+        Map<String, Integer> listingsPerCategory = listingSessionBeanLocal.retrieveTotalNumberOfListingsPerCategory();
+        List<Number> values = new ArrayList<>();
+        for (String i : listingsPerCategory.keySet()) {
+            values.add(listingsPerCategory.get(i));
+        }
+        dataSet.setData(values);
+
+        List<String> bgColors = new ArrayList<>();
+        bgColors.add("rgb(255, 99, 132)");
+        bgColors.add("rgb(75, 192, 192)");
+        bgColors.add("rgb(255, 205, 86)");
+        bgColors.add("rgb(201, 203, 207)");
+        bgColors.add("rgb(54, 162, 235)");
+        bgColors.add("rgb(255,192,203)");
+        bgColors.add("rgb(160,82,45)");
+        bgColors.add("rbg(176,196,222)");
+        bgColors.add("rgb(255,240,245)");
+        bgColors.add("rgb(255,218,185)");
+        bgColors.add("rgb(255,218,185)");
+        bgColors.add("rgb(188,143,143)");
+        bgColors.add("rgb(176,196,222)");
+        bgColors.add("rgb(240,255,240)");
+        dataSet.setBackgroundColor(bgColors);
+
+        data.addChartDataSet(dataSet);
+        List<String> labels = new ArrayList<>();
+        for (String i : listingsPerCategory.keySet()) {
+            labels.add(i);
+        }
+        data.setLabels(labels);
+
+        listingPolarAreaModel.setData(data);
     }
 
-    public void onEventResize(ScheduleEntryResizeEvent scheduleEvent) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + scheduleEvent.getDayDelta() + ", Minute delta:" + scheduleEvent.getMinuteDelta());
+    public void createAdvertisementLineModel() {
+        advertisementLineModel = new LineChartModel();
+        ChartData data = new ChartData();
 
-        addMessage(message);
+        LineChartDataSet dataSet = new LineChartDataSet();
+
+        Map<String, Integer> advertisementPerDay = advertisementSessionBeanLocal.retrieveTotalNumberOfAdvertisementsForDay();
+        List<Number> values = new ArrayList<>();
+        for (String i : advertisementPerDay.keySet()) {
+            values.add(advertisementPerDay.get(i));
+        }
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Total Number of Advertisements Posted Per Day");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setLineTension(0.1);
+        data.addChartDataSet(dataSet);
+
+        List<String> labels = new ArrayList<>();
+        for (String i : advertisementPerDay.keySet()) {
+            labels.add(i);
+        }
+        data.setLabels(labels);
+
+        advertisementLineModel.setData(data);
     }
 
-    private void addMessage(FacesMessage message) {
-        FacesContext.getCurrentInstance().addMessage(null, message);
+    public void createAdvertisementBarModel() {
+        advertisementBarModel = new BarChartModel();
+        ChartData data = new ChartData();
+
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        barDataSet.setLabel("Total Number of Listings Per Month");
+
+        Map<String, Integer> userPerMonth = advertisementSessionBeanLocal.retrieveTotalNumberOfAdvertisementsForTheYear();
+        List<Number> values = new ArrayList<>();
+
+        values.add(userPerMonth.get("January"));
+        values.add(userPerMonth.get("February"));
+        values.add(userPerMonth.get("March"));
+        values.add(userPerMonth.get("April"));
+        values.add(userPerMonth.get("May"));
+        values.add(userPerMonth.get("June"));
+        values.add(userPerMonth.get("July"));
+        values.add(userPerMonth.get("August"));
+        values.add(userPerMonth.get("September"));
+        values.add(userPerMonth.get("October"));
+        values.add(userPerMonth.get("November"));
+        values.add(userPerMonth.get("December"));
+        barDataSet.setData(values);
+
+        List<String> bgColor = new ArrayList<>();
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        bgColor.add("rgba(153, 102, 255, 0.2)");
+        bgColor.add("rgba(201, 203, 207, 0.2)");
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        barDataSet.setBackgroundColor(bgColor);
+
+        List<String> borderColor = new ArrayList<>();
+        borderColor.add("rgb(255, 99, 132)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 205, 86)");
+        borderColor.add("rgb(75, 192, 192)");
+        borderColor.add("rgb(54, 162, 235)");
+        borderColor.add("rgb(153, 102, 255)");
+        borderColor.add("rgb(201, 203, 207)");
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
+
+        data.addChartDataSet(barDataSet);
+
+        List<String> labels = new ArrayList<>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");
+        labels.add("July");
+        labels.add("August");
+        labels.add("September");
+        labels.add("October");
+        labels.add("November");
+        labels.add("December");
+        data.setLabels(labels);
+
+        advertisementBarModel.setData(data);
+
     }
 
-    private Calendar today() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
+    private void createEventLineModel() {
+        eventLineModel = new LineChartModel();
+        ChartData data = new ChartData();
 
-        return calendar;
+        LineChartDataSet dataSet = new LineChartDataSet();
+
+        Map<String, Integer> advertisementPerDay = eventSessionBeanLocal.retrieveTotalNumberOfEventsForDay();
+        List<Number> values = new ArrayList<>();
+        for (String i : advertisementPerDay.keySet()) {
+            values.add(advertisementPerDay.get(i));
+        }
+        dataSet.setData(values);
+        dataSet.setFill(false);
+        dataSet.setLabel("Total Number of Events Posted Per Day");
+        dataSet.setBorderColor("rgb(75, 192, 192)");
+        dataSet.setLineTension(0.1);
+        data.addChartDataSet(dataSet);
+
+        List<String> labels = new ArrayList<>();
+        for (String i : advertisementPerDay.keySet()) {
+            labels.add(i);
+        }
+        data.setLabels(labels);
+
+        eventLineModel.setData(data);
     }
 
-    private Date previousDay8Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 8);
+    private void createEventBarModel() {
+        eventBarModel = new BarChartModel();
+        ChartData data = new ChartData();
 
-        return t.getTime();
-    }
+        BarChartDataSet barDataSet = new BarChartDataSet();
+        barDataSet.setLabel("Total Number of Listings Per Month");
 
-    private Date previousDay11Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) - 1);
-        t.set(Calendar.HOUR, 11);
+        Map<String, Integer> userPerMonth = eventSessionBeanLocal.retrieveTotalNumberOfEventsForTheYear();
+        List<Number> values = new ArrayList<>();
 
-        return t.getTime();
-    }
+        values.add(userPerMonth.get("January"));
+        values.add(userPerMonth.get("February"));
+        values.add(userPerMonth.get("March"));
+        values.add(userPerMonth.get("April"));
+        values.add(userPerMonth.get("May"));
+        values.add(userPerMonth.get("June"));
+        values.add(userPerMonth.get("July"));
+        values.add(userPerMonth.get("August"));
+        values.add(userPerMonth.get("September"));
+        values.add(userPerMonth.get("October"));
+        values.add(userPerMonth.get("November"));
+        values.add(userPerMonth.get("December"));
+        barDataSet.setData(values);
 
-    private Date today1Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 1);
+        List<String> bgColor = new ArrayList<>();
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        bgColor.add("rgba(153, 102, 255, 0.2)");
+        bgColor.add("rgba(201, 203, 207, 0.2)");
+        bgColor.add("rgba(255, 99, 132, 0.2)");
+        bgColor.add("rgba(255, 159, 64, 0.2)");
+        bgColor.add("rgba(255, 205, 86, 0.2)");
+        bgColor.add("rgba(75, 192, 192, 0.2)");
+        bgColor.add("rgba(54, 162, 235, 0.2)");
+        barDataSet.setBackgroundColor(bgColor);
 
-        return t.getTime();
-    }
+        List<String> borderColor = new ArrayList<>();
+        borderColor.add("rgb(255, 99, 132)");
+        borderColor.add("rgb(255, 159, 64)");
+        borderColor.add("rgb(255, 205, 86)");
+        borderColor.add("rgb(75, 192, 192)");
+        borderColor.add("rgb(54, 162, 235)");
+        borderColor.add("rgb(153, 102, 255)");
+        borderColor.add("rgb(201, 203, 207)");
+        barDataSet.setBorderColor(borderColor);
+        barDataSet.setBorderWidth(1);
 
-    private Date theDayAfter3Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 2);
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 3);
+        data.addChartDataSet(barDataSet);
 
-        return t.getTime();
-    }
+        List<String> labels = new ArrayList<>();
+        labels.add("January");
+        labels.add("February");
+        labels.add("March");
+        labels.add("April");
+        labels.add("May");
+        labels.add("June");
+        labels.add("July");
+        labels.add("August");
+        labels.add("September");
+        labels.add("October");
+        labels.add("November");
+        labels.add("December");
+        data.setLabels(labels);
 
-    private Date today6Pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.HOUR, 6);
-
-        return t.getTime();
-    }
-
-    private Date nextDay9Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 9);
-
-        return t.getTime();
-    }
-
-    private Date nextDay11Am() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.AM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 1);
-        t.set(Calendar.HOUR, 11);
-
-        return t.getTime();
-    }
-
-    private Date fourDaysLater3pm() {
-        Calendar t = (Calendar) today().clone();
-        t.set(Calendar.AM_PM, Calendar.PM);
-        t.set(Calendar.DATE, t.get(Calendar.DATE) + 4);
-        t.set(Calendar.HOUR, 3);
-
-        return t.getTime();
+        eventBarModel.setData(data);
     }
 }

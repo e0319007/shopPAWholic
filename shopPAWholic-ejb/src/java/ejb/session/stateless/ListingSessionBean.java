@@ -4,11 +4,22 @@ import entity.Category;
 import entity.Listing;
 import entity.Seller;
 import entity.Tag;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -116,6 +127,76 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             listing.getOrders().size();
         }
         return listings;
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfListingsPerCategory() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> listingPerMonth = new LinkedHashMap<>();
+        List<Category> categories = categorySessionBeanLocal.retrieveAllCategories();
+        for (Category c: categories) {
+            query = em.createQuery("SELECT l FROM Listing l WHERE l.category = :inCategory");
+            query.setParameter("inCategory", c);
+            listingPerMonth.put(c.getName(), (query.getResultList()).size());
+        }
+        return listingPerMonth;
+    }
+
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfListingsForTheYear() {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> listingPerYear = new LinkedHashMap<>();
+        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for (int i = 0; i < months.size(); i++) {
+            query = em.createQuery("SELECT l FROM Listing l WHERE EXTRACT(YEAR(l.listDate)) = :inYear and EXTRACT(MONTH(l.listDate)) = :inMonth");
+            query.setParameter("inYear", year);
+            query.setParameter("inMonth", i + 1);
+            listingPerYear.put(months.get(i), (query.getResultList()).size());
+        }
+        return listingPerYear;
+    }
+    
+    @Override
+    public Map<String, Integer> retrieveTotalNumberOfListingsForDay() {
+        Query query;
+        long days_in_ms = 1000 * 60 * 60 * 24;
+        Date startDate = new Date();
+        Date endDate = new Date(startDate.getTime() - (7 * days_in_ms));
+        List<Date> sevenDays = new ArrayList<>();
+        DateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
+        sevenDays.add(startDate);
+
+        while (endDate.before(startDate)) {
+            try {
+                sevenDays.add(dformat.parse(dformat.format(endDate)));
+                endDate = new Date(endDate.getTime() + (days_in_ms));
+            } catch (ParseException ex) {
+                Logger.getLogger(ListingSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        Map<String, Integer> sevenDaysCast = new LinkedHashMap<>();
+
+        for (int i = 0; i < sevenDays.size(); i++) {
+            query = em.createQuery("SELECT l FROM Listing l WHERE l.listDate between :inStartDate AND :inEndDate");
+            query.setParameter("inStartDate", sevenDays.get(i));
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sevenDays.get(i));
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            query.setParameter("inEndDate", calendar.getTime());
+
+            List<Listing> totalNumber = query.getResultList();
+            sevenDaysCast.put(dformat.format(sevenDays.get(i)), totalNumber.size());
+        }
+        return sevenDaysCast;
     }
 
     @Override

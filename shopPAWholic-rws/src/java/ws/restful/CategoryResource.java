@@ -72,10 +72,6 @@ public class CategoryResource
             List<Category> categoryEntities = categorySessionBeanLocal.retrieveAllCategories();
             
             for(Category category:categoryEntities) {
-                if(category.getParentCategory()!= null) {
-                    category.getParentCategory().getSubCategories().clear();
-                }
-                category.getSubCategories().clear();
                 category.getListings().clear();
             }
             return Response.status(Status.OK).entity(new CategoriesRetrieveAllRsp(categoryEntities)).build();
