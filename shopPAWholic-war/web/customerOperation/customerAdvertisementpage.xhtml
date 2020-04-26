@@ -23,11 +23,11 @@
             }
 
             .logo {
-                width: 5%;
+                width: 1%;
             }
             .detail {
-                width: 85%;
-                padding-left: 25px;
+                width: 40%;
+                padding-left: 5px;
             }
         </style>
 
@@ -35,8 +35,9 @@
             <p:messages id="messages" redisplay="false" closable="true"/>
             <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.advertisements}" var="ad">
                 <p:dataViewListItem>
-                    <h:panelGrid columns="3" style="width: 100%" columnClasses="logo,detail">
-                        <p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>
+                    <h:panelGrid cellpadding="30" columns="3" style="width: 100%" columnClasses="logo,detail">
+                        <!--<p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>-->
+                        <p:graphicImage value="#{ad.picture}" style="width:700px; height:300px;"/>
 
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="10">
@@ -47,7 +48,7 @@
                                 <h:outputText value="#{ad.description}" style="font-weight: bold"/>
 
                                 <h:outputText value="Url:"/>
-                                <h:outputLink value="#{ad.url}"> Click here to visit site</h:outputLink>
+                                <h:outputLink target="_blank" value="#{ad.url}"> Click here to visit site</h:outputLink>
 
                                 <h:outputText value="Start Date:"/>
                                 <h:outputText value="#{ad.startDate}" style="font-weight: bold"/>
