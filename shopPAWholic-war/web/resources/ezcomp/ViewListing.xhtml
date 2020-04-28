@@ -14,6 +14,11 @@
             <p:dialog id="dialogViewListing" widgetVar="dialogViewListing" header="View Listing" closable="true">
                 <p:panelGrid>
                     <p:row>
+
+                        <h:graphicImage value="#{viewListingManagedBean.listingToView.picture}" style="width:350px; height:350px; display:block; margin-left: auto; margin-right: auto;"  />
+                        
+                    </p:row>
+                    <p:row>
                         <p:column>
                             <h:outputLabel value="Listing ID: " />
                         </p:column>

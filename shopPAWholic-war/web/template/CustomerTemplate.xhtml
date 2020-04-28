@@ -76,6 +76,7 @@
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">
                                 <h:panelGrid columns="1" style="width:100%">
+                                    <h:graphicImage value="#{listing.picture}" style="width:250px; height:250px; display:block; margin-right: auto; margin-left: auto;"/>
                                     <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
                                     <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
                                     <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details" style="display: block; width:100%; text-align:center;">                                 
