@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Cart;
 import entity.Listing;
+import java.math.BigDecimal;
 import java.util.Set;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -94,7 +95,10 @@ public class CartSessionBean implements CartSessionBeanLocal {
     
     @Override
     public void clearCart(Long cartId) throws CartNotFoundException {
+        System.out.println("Clear cart");
         Cart cart = getCartById(cartId);
+        cart.setTotalPrice(BigDecimal.ZERO);
+        cart.setTotalQuantity(0);
         cart.getListings().clear();
     }
 
@@ -107,7 +111,12 @@ public class CartSessionBean implements CartSessionBeanLocal {
     
     @Override
     public void updateCart(Cart cart) {
-        em.merge(cart);
+        System.out.println("Cart ID passed in: " + cart.getCartId());
+        
+        Cart cartPersisted = em.find(Cart.class, cart.getCartId());
+        cartPersisted.setListings(cart.getListings());
+        cartPersisted.setTotalPrice(cart.getTotalPrice());
+        cartPersisted.setTotalQuantity(cart.getTotalQuantity());
     }
     
 

@@ -9,18 +9,22 @@
   
 </ion-header>
 
+<div *ngIf="hasOrders == false">
+  You don't have any orders yet!
+</div>
+
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <div *ngIf="hasOrders == false" style="color:red;">
-        You don't have any orders yet!
-      </div>
+      
       <ion-list>
         <ion-item *ngFor="let order of orders"  (click) = "viewOrderDetails($event, order)">
-          ID: {{order.orderId}} <br />
-          Date: {{order.orderDate.toLocaleString()}} <br />
-          Total Price: {{order.totalPrice}} <br />
-          Status: {{order.orderStatus}} <br />
+          <div>
+            ID: {{order.orderId}} <br />
+            Date: {{parseDate(order.orderDate) | date: 'dd MMM, yyyy'}} <br />
+            Total Price: ${{order.totalPrice}} <br />
+            Status: {{order.orderStatus}} <br />
+          </div>
         </ion-item>
       </ion-list>
     </ion-card-content>

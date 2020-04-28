@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ws.restful;
 import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
@@ -250,3 +255,4 @@ public class ListingResource {
         }
     }
 }
+

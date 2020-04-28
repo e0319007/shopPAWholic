@@ -111,32 +111,34 @@ public class OrderEntityResource {
             else orders = orderSessionBeanLocal.retrieveOrderBySellerId(user.getUserId());
             System.out.println("***************** ORDERS SIZE: " + orders.size());
             System.out.println("***************** LISTING SIZE: " + orders.get(0).getListings());
-            for(OrderEntity o:orders) {
-                o.getCustomer().getOrders().clear();
-                o.getSeller().getOrders().clear();
-                o.getSeller().getListings().clear();
-                o.getSeller().getAdvertisements().clear();
-                o.getSeller().getBillingDetails().clear();
-                o.getSeller().getEvents().clear();
-                o.getSeller().getOrders().clear();
-                o.getCustomer().getBillingDetails().clear();
-                o.getCustomer().getReviews().clear();
-                o.getCustomer().getComments().clear();
-                o.getCustomer().getForumPosts().clear();
-                o.getCustomer().getOrders().clear();
-                o.getCustomer().setCart(null);
-                o.getBillingDetail().setOrder(null);
-                o.getBillingDetail().setCustomer(null);
-                o.getBillingDetail().setSeller(null);
-                o.getBillingDetail().setAdvertisement(null);
-                for(Listing l: o.getListings()) {
-                    l.setCategory(null);
-                    l.setSeller(null);
-                    l.getReviews().clear();
-                    l.getTags().clear();
-                    l.getOrders().clear();
+            if (orders.size() != 0) {
+                for(OrderEntity o:orders) {
+                    o.getCustomer().getOrders().clear();
+                    o.getSeller().getOrders().clear();
+                    o.getSeller().getListings().clear();
+                    o.getSeller().getAdvertisements().clear();
+                    o.getSeller().getBillingDetails().clear();
+                    o.getSeller().getEvents().clear();
+                    o.getSeller().getOrders().clear();
+                    o.getCustomer().getBillingDetails().clear();
+                    o.getCustomer().getReviews().clear();
+                    o.getCustomer().getComments().clear();
+                    o.getCustomer().getForumPosts().clear();
+                    o.getCustomer().getOrders().clear();
+                    o.getCustomer().setCart(null);
+                    o.getBillingDetail().setOrder(null);
+                    o.getBillingDetail().setCustomer(null);
+                    o.getBillingDetail().setSeller(null);
+                    o.getBillingDetail().setAdvertisement(null);
+                    for(Listing l: o.getListings()) {
+                        l.setCategory(null);
+                        l.setSeller(null);
+                        l.getReviews().clear();
+                        l.getTags().clear();
+                        l.getOrders().clear();
+                    }
+
                 }
-                
             }
             return Response.status(Status.OK).entity(new OrderRetrieveAllRsp(orders)).build();
         } catch (InvalidLoginCredentialException ex) {

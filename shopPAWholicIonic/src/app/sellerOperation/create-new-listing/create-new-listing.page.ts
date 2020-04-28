@@ -120,3 +120,4 @@ export class CreateNewListingPage implements OnInit {
   }
 
 }
+

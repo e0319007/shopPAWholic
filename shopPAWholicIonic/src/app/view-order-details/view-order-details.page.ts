@@ -113,5 +113,9 @@ export class ViewOrderDetailsPage implements OnInit {
     this.router.navigate(["sellerOperation/changeOrderStatus/" + this.orderId]);
   }
 
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
+
 
 }

@@ -49,3 +49,4 @@ export class ViewAllAdvertisementsPage implements OnInit {
 
 
 }
+

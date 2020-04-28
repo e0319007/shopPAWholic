@@ -84,3 +84,4 @@ export class ViewCartPage implements OnInit {
     this.router.navigate(["/viewAllListings"]);
   }
 }
+

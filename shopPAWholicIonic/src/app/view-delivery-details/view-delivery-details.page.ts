@@ -4,6 +4,7 @@ import { OrderEntityService } from '../order-entity.service';
 import { OrderEntity } from '../order-entity';
 import { DeliveryDetail } from '../delivery-detail';
 import { DeliveryDetailService } from '../delivery-detail.service';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-view-delivery-details',
@@ -15,7 +16,8 @@ export class ViewDeliveryDetailsPage implements OnInit {
   constructor(private router: Router,
     private orderService: OrderEntityService,
     private activatedRoute: ActivatedRoute,
-    private deliveryService: DeliveryDetailService) {
+    private deliveryService: DeliveryDetailService,
+    private utilityService: UtilityService) {
       this.orderId = parseInt(this.activatedRoute.snapshot.paramMap.get('orderId'));
       console.log("this order brought over is: " + this.orderId);
       this.hasStatus = true;
@@ -29,10 +31,12 @@ export class ViewDeliveryDetailsPage implements OnInit {
   hasStatus : boolean;
   newDeliveryStatus : string;
   list: string[] = new Array();
+  isCustomer: boolean = false;
 
   ngOnInit() {
     this.newDeliveryStatus = "";
     console.log("==================")
+    this.isCustomer = this.utilityService.isCustomer();
     this.deliveryService.retrieveDeliveryDetailByOrderId(this.orderId).subscribe(
       response => {
         console.log("getting delivery detail with response");
