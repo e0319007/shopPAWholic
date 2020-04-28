@@ -11,10 +11,12 @@ import { AdvertisementService } from '../advertisement.service';
 export class ViewAllAdvertisementsPage implements OnInit {
 
   advertisements:Advertisement[] = new Array();
+  hasAds : boolean = true;
 
   constructor(private router:Router, private advertisementService: AdvertisementService) { }
 
   ngOnInit() {
+    console.log("View All Advertisements page");
     this.refreshAds();
   }
 
@@ -23,15 +25,27 @@ export class ViewAllAdvertisementsPage implements OnInit {
   }
 
   refreshAds() {
+    console.log("*********DEBUG 2")
     this.advertisementService.retrieveAllAdvertisements().subscribe(
       response => {
+        console.log("*********DEBUG 1")
         this.advertisements = response.advertisement;
+        if (this.advertisements.length == 0) {
+          this.hasAds = false;
+        } else {
+          this.hasAds = true;
+        }
       },
       error => {
         console.log('********* ViewAllAdvertisementsPage.ts: ' + error);
       }
     )
   }
+
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
+
 
 
 }

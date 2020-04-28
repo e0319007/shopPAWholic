@@ -12,6 +12,7 @@ import {ReviewService} from 'src/app/review.service';
 export class CreateNewReviewPage implements OnInit {
 
   listingId: number;
+  orderId : number;
 
   submitted: boolean;
   newReview: Review;
@@ -36,6 +37,7 @@ export class CreateNewReviewPage implements OnInit {
 
   ngOnInit() {
     this.listingId = parseInt(this.activatedRoute.snapshot.paramMap.get('listingId'));
+    this.orderId = parseInt(this.activatedRoute.snapshot.paramMap.get('orderId'));
     console.log("called create review method with listing id: " + this.listingId);
   }
 
@@ -92,6 +94,10 @@ export class CreateNewReviewPage implements OnInit {
   private reset() {
     this.newReview  = new Review();
     this.submitted = false;
+  }
+
+  back() {
+    this.router.navigate(["/viewOrderDetails/" + this.orderId]);
   }
 
 }

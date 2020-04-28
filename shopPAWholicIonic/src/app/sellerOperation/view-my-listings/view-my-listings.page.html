@@ -16,7 +16,7 @@
 <ion-content>
   <ion-card>
     <ion-content>
-      <ion-card-title>View All Listings</ion-card-title>
+      <ion-card-title>View My Listings</ion-card-title>
     </ion-content>
 
     <ion-searchbar *ngIf="noListing == false" (ionInput)="filter($event)"></ion-searchbar>
@@ -24,6 +24,7 @@
     <ion-card-content *ngIf="noListing == false">
       <ion-list>
         <ion-item *ngFor="let listing of filteredListings" (click) = "viewListingDetails($event, listing)">
+          <ion-img src='{{listing.picture}}'></ion-img>
           {{listing.name}} <br />
           Description: {{listing.description}} <br />
           Price: ${{listing.unitPrice}} <br />

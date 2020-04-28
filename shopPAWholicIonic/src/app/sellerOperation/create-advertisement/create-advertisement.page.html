@@ -62,12 +62,12 @@
               Credit Card Number is required
             </div>
           </div> -->
-<!-- 
+
           <div *ngIf="picture.invalid && (picture.dirty || picture.touched || submitted)" class="errorText">
             <div *ngIf="picture.errors.required">
               Url of Picture is required
             </div>
-          </div> -->
+          </div>
 
           <div *ngIf="url.invalid && (url.dirty || url.touched || submitted)" class="errorText">
             <div *ngIf="url.errors.required">
@@ -78,6 +78,12 @@
           <div *ngIf="description.invalid && (description.dirty || description.touched || submitted)" class="errorText">
             <div *ngIf="description.errors.required">
               Description is required
+            </div>
+            <div *ngIf="description.errors.minlength">
+              Password must be at least 10 characters long.
+            </div>
+            <div *ngIf="description.errors.maxlength">
+              Password cannot exceed 200 characters.
             </div>
           </div>
 
@@ -109,14 +115,14 @@
             <ion-label>
               Credit Card Number
             </ion-label>
-            <ion-input type="password" id="ccNum" name="ccNum" [(ngModel)]="ccNum" required="true"></ion-input>
+            <ion-input type="text" id="ccNum" name="ccNum" [(ngModel)]="ccNum" required="true"></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-label>
               URL of Picture
             </ion-label>
-            <ion-input type="url" id="picture" name="picture" required="true" [(ngModel)]="picture"></ion-input>
+            <ion-input type="text" id="picture" name="picture" required="true" [(ngModel)]="newAdvertisement.picture" #picture="ngModel"></ion-input>
           </ion-item>
           
           <ion-item>

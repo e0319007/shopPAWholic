@@ -1002,7 +1002,6 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.PrimeFaces_7.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.javaee-api-7.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.JasperReports_6.11.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <copyfiles files="${libs.JasperReports_6.11.0_2.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>

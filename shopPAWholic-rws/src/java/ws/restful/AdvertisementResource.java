@@ -10,6 +10,7 @@ import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Advertisement;
 import entity.Seller;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -121,16 +122,29 @@ public class AdvertisementResource {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(createNewAdvertisementReq.getEmail(), createNewAdvertisementReq.getPassword());
             System.out.println("********** Advertisement.createNewAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
             //trying to circumvent the ts -> java date problem and the @notnull on both start and end date for ads
-            Date start = new Date(createNewAdvertisementReq.getStartYear(), createNewAdvertisementReq.getStartMth(), createNewAdvertisementReq.getStartDay());
-            System.out.println("****** Start Date: " + start);
+            System.out.println("***** Start Year: " + createNewAdvertisementReq.getStartYear());
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String startDate = createNewAdvertisementReq.getStartDay() + "-" + createNewAdvertisementReq.getStartMth() + "-" + createNewAdvertisementReq.getStartYear();
+            Date start = sdf.parse(startDate);
+            System.out.println("*****formatted start date: " + start);
+        
             createNewAdvertisementReq.getAdvertisement().setStartDate(start);
             
-            Date end = new Date(createNewAdvertisementReq.getEndYear(), createNewAdvertisementReq.getEndMth(), createNewAdvertisementReq.getEndDay());
-            System.out.println("****** End Date: " + end);
+            String endDate = createNewAdvertisementReq.getEndDay() + "-" + createNewAdvertisementReq.getEndMth() + "-" + createNewAdvertisementReq.getEndYear();
+            Date end = sdf.parse(endDate);
+            System.out.println("****** formatted End Date: " + end);
             createNewAdvertisementReq.getAdvertisement().setEndDate(end);
             
             BigDecimal price = new BigDecimal(createNewAdvertisementReq.getPrice());
             createNewAdvertisementReq.getAdvertisement().setPrice(price);
+            
+            String picture = createNewAdvertisementReq.getPictures();
+            createNewAdvertisementReq.getAdvertisement().setPicture(picture);
+            System.out.println("picture: " + createNewAdvertisementReq.getAdvertisement().getPicture());
+            
+            Date today = new Date();
+            createNewAdvertisementReq.getAdvertisement().setListDate(today);
             
             System.out.println("***** CCNum: " + createNewAdvertisementReq.getCcNum());
             

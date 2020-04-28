@@ -19,6 +19,7 @@ export class CreateNewListingPage implements OnInit {
   newListing: Listing;
   categoryId: string;
   tagIds: string[];
+  picture: string;
 
   categories: Category[];
   tags: Tag[];
@@ -71,6 +72,7 @@ export class CreateNewListingPage implements OnInit {
 
   create(createListingForm: NgForm) {
     let longTagIds: number[] = new Array();
+    this.newListing.picture = this.picture;
 
     if(this.tagIds != null) {
       for (var i = 0; i < this.tagIds.length; i++) {

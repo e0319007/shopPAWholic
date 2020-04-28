@@ -7,6 +7,7 @@ import { UtilityService } from '../utility.service';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { CartService } from '../cart.service';
+import { AppComponent } from '../app.component';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
 
@@ -26,16 +27,22 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, 
               public utilityService: UtilityService, 
               private userService: UserService,
-              private cartService: CartService) { 
+              private cartService: CartService,
+              private app: AppComponent) { 
       this.submitted = false;
     }
 
   ngOnInit() {
+    this.app.updateMainMenu();
   }
 
   clear()	{
 		this.email = "";
 		this.password = "";
+  }
+
+  refresh(){
+    this.app.updateMainMenu();
   }
   
   userLogin(userLoginForm: NgForm) {
@@ -72,6 +79,7 @@ export class LoginPage implements OnInit {
                 console.log("is customer");
                  this.initialiseCart();   
               } 
+              this.refresh();
               console.log(this.utilityService.getIsLogin())				
             } else {
               this.loginError = true;
@@ -90,18 +98,21 @@ export class LoginPage implements OnInit {
 	
 	userLogout(): void
 	{
-    // this.cartService.saveCartToDatabase();
+    if (this.utilityService.isCustomer()) {
+      this.cartService.saveCartToDatabase();
+    }
     this.utilityService.setIsLogin(false);
     this.utilityService.setCurrentUser(null);		
     this.utilityService.setEmail(null);
     this.utilityService.setPassword(null);
     this.utilityService.setIsCustomer(false);
     this.utilityService.setIsSeller(false);
+    this.refresh();
     console.log(sessionStorage.isLogin);
   }
 
   initialiseCart() {
-    this.cartService.initialiseCart;
+    this.cartService.initialiseCart();
   }
   
   back(){
