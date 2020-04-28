@@ -9,6 +9,7 @@ import { User } from '../user';
 import { CartService } from '../cart.service';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
+import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,8 @@ export class LoginPage implements OnInit {
   constructor(private router: Router, 
               public utilityService: UtilityService, 
               private userService: UserService,
-              private cartService: CartService) { 
+              private cartService: CartService,
+              private app: AppComponent) { 
       this.submitted = false;
     }
 
@@ -90,7 +92,9 @@ export class LoginPage implements OnInit {
 	
 	userLogout(): void
 	{
-    // this.cartService.saveCartToDatabase();
+    if (this.utilityService.isCustomer()) {
+      this.cartService.saveCartToDatabase();
+    }
     this.utilityService.setIsLogin(false);
     this.utilityService.setCurrentUser(null);		
     this.utilityService.setEmail(null);

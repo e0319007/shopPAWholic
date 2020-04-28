@@ -18,6 +18,7 @@ export class ListingService {
 
   constructor(private httpClient: HttpClient, private utilityService: UtilityService) {
     this.baseUrl = utilityService.getRootPath() + 'Listing';
+    console.log("Listing base url: " + this.baseUrl)
   }
 
   retrieveAllListings(): Observable<any> {

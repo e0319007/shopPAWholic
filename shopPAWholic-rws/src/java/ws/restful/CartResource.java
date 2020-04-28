@@ -15,6 +15,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -89,17 +90,23 @@ public class CartResource { //cart transactions will be managed by service
         }   
     }
     
-    @Path("saveCart")
+    
     @POST
+    @Path("saveCartToDatabase")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveCartToDatabase(CartUpdateReq cartUpdateReq) {
+        System.out.println("Called save cart to database");
+        System.out.println("Cart Update req length of listings: " + cartUpdateReq.getCart().getListings());
         try {
             Customer customer = (Customer) userSessionBean.userLogin(cartUpdateReq.getEmail(), cartUpdateReq.getPassword());
             System.out.println("********** CartResource.saveCartToDatabase(): Customer " + customer.getEmail()+ " login remotely via web service");
+            
             cartSessionBean.clearCart(customer.getCart().getCartId());
+            System.out.println("Resource cleared cart");
             cartSessionBean.updateCart(cartUpdateReq.getCart());
-            return Response.status(Response.Status.OK).entity(cartUpdateReq.getCart()).build();
+            System.out.println("Resource update cart");
+            return Response.status(Response.Status.OK).build();
         } catch (CartNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             return Response.status(Status.BAD_REQUEST).entity(errorRsp).build();

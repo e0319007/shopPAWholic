@@ -77,6 +77,10 @@ export class AppComponent implements OnInit {
     this.updateMainMenu();
   }
 
+  ionViewWillEnter(){
+    this.updateMainMenu();
+  }
+
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -89,6 +93,7 @@ export class AppComponent implements OnInit {
     if (path !== undefined) {
       this.selectedIndex = this.appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
+    this.updateMainMenu();
   }
 
   updateMainMenu()
@@ -96,7 +101,7 @@ export class AppComponent implements OnInit {
     //if is login
 		if(this.utilityService.getIsLogin())
 		{
-      if(this.utilityService.isCustomer()) {
+      if(this.utilityService.isCustomer() == true) {
         this.appPages  = [
           {
             title: 'Home',
