@@ -101,7 +101,7 @@ export class LoginPage implements OnInit {
   }
 
   initialiseCart() {
-    this.cartService.initialiseCart;
+    this.cartService.initialiseCart();
   }
   
   back(){

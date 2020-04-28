@@ -20,12 +20,23 @@
 		</div>
 		<ion-item>
 			<div style="margin: 10px;">
-				<b (click)="toListing(item.listing.listingId)">{{item.listing.name}}</b><br >
-				<p>Unit Price: ${{item.listing.unitPrice}}</p>
-				<p>Total Price: ${{item.quantity * item.listing.unitPrice}}</p>
-				<ion-button style="float: left;" (click)="removeListingFromCart(item.listing.listingId)" expand="block" fill="clear" shape="round">
-					Remove
-				</ion-button>
+				<ion-grid>
+					<ion-row>
+						<ion-col>
+							<ion-img style="width: 130px; height: 130px;" src="{{item.listing.picture}}"></ion-img>
+						</ion-col>
+						<ion-col>
+							<b (click)="toListing(item.listing.listingId)">{{item.listing.name}}</b><br >
+							<p>Unit Price: ${{item.listing.unitPrice}}</p>
+							<p>Total Price: ${{item.quantity * item.listing.unitPrice}}</p>
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-button style="float: left;" (click)="removeListingFromCart(item.listing.listingId)" expand="block" fill="clear" shape="round">
+							Remove
+						</ion-button>
+					</ion-row>
+				</ion-grid>
 			</div>
 		</ion-item>
 	</ion-list>

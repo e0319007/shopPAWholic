@@ -22,7 +22,7 @@
   <ion-list *ngIf="retrieveOrderError == false && orderToView != null">
     <ion-item>
       <ion-label>Order Date: </ion-label>
-      {{orderToView.orderDate}}
+        {{parseDate(orderToView.orderDate) | date: 'dd MMM, yyyy'}}
     </ion-item>
     
     <ion-item *ngIf="isCustomer == true">

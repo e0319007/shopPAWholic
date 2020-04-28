@@ -56,6 +56,10 @@ export class ViewAllOrdersPage implements OnInit {
       }
     );
   }
+
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
   
 
 }
