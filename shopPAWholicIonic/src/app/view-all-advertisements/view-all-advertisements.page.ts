@@ -26,6 +26,7 @@ export class ViewAllAdvertisementsPage implements OnInit {
     this.advertisementService.retrieveAllAdvertisements().subscribe(
       response => {
         this.advertisements = response.advertisement;
+        console.log("Advertisement length: " + this.advertisements.length);
       },
       error => {
         console.log('********* ViewAllAdvertisementsPage.ts: ' + error);

@@ -61,6 +61,13 @@
         </div>
 
         <ion-list>
+          <ion-img *ngIf="picture != null" src="{{picture}}"></ion-img>
+          <ion-item>
+            <ion-label>
+              Image
+            </ion-label>
+            <ion-input type="text" id="image" name="image" [(ngModel)]="picture" placeholder="Image URL"></ion-input>
+          </ion-item>
 
           <ion-item>
             <ion-label>

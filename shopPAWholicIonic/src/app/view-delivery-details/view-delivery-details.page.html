@@ -42,11 +42,11 @@
 
   </ion-list>
 
-  <ion-card>
+  <ion-card *ngIf="isCustomer == false">
     <ion-label  style="color:#3171e0; padding:10px;">New Status: </ion-label>
     <ion-input type="text" id="status" name="status" [(ngModel)]="newDeliveryStatus" required="true"></ion-input> <br />
   </ion-card>
-  <ion-button (click)="addStatus()"  fill="clear" shape="round" style="float:right">
+  <ion-button (click)="addStatus()"  fill="clear" shape="round" style="float:right" *ngIf="isCustomer == false">
     add
   </ion-button>
 </ion-content>

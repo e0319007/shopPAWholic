@@ -98,13 +98,9 @@ public class CategoryResource
             Seller seller = (Seller) userSessionBeanLocal.userLogin(email, password);
             System.out.println("********** CategoryResource.retrieveAllLeafCategories(): seller " + seller.getEmail()+ " login remotely via web service");
 
-            List<Category> categoryEntities = categorySessionBeanLocal.retrieveAllLeafCategories();
+            List<Category> categoryEntities = categorySessionBeanLocal.retrieveAllCategories();
             
             for(Category category:categoryEntities) {
-                if(category.getParentCategory()!= null) {
-                    category.getParentCategory().getSubCategories().clear();
-                }
-                category.getSubCategories().clear();
                 category.getListings().clear();
                 System.out.println(category.getDescription());
             }

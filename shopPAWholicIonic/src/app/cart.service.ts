@@ -6,12 +6,12 @@ import { catchError } from 'rxjs/operators';
 import { Cart } from './cart';
 import { Listing } from './listing';
 import { CartItem } from './cart-item';
-import { DeliveryDetail } from './delivery-detail';
-import { OrderEntity } from './order-entity';
+
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
 
 @Injectable({
   providedIn: 'root'
@@ -72,31 +72,59 @@ export class CartService {
    );
  }
 
- saveCartToDatabase(): Observable<any> {
+ saveCartToDatabase() {
    let listings: Listing[] = new Array();
    let cartItems: CartItem[] = JSON.parse(sessionStorage.getItem('cartItems'));
-   for (var i = 0; i < cartItems.length; i++) {
-     for (var j = 0; j < cartItems[i].quantity; i++) {
-      listings.push(cartItems[i].listing);
-     }
-   }
+  //  for (var i = 0; i < cartItems.length; i++) {
+  //   let quantity: number = cartItems[i].quantity;
+  //   let cartItemListing : Listing = cartItems[i].listing;
+  //    for (var j = 0; j < quantity; i++) {
+  //     listings.push(cartItemListing);
+  //    }
+  //  }
+  for(let ci of cartItems) {
+    for(var i = 0; i < ci.quantity; i++) {
+      listings.push(ci.listing);
+    }
+  }
    
    let totalPrice: number = 0;
    for(let l of listings) {
      totalPrice += l.unitPrice;
    }
+   console.log("Total Price will be: " + totalPrice);
 
    let cart: Cart = JSON.parse(sessionStorage.getItem('originalCart'));
    cart.listings = listings;
    cart.totalPrice = totalPrice;
    cart.totalQuantity = listings.length;
+
+   console.log("cart listings: " + cart.listings.length);
+   console.log("cart totalPrice: " + cart.totalPrice);
+   console.log("cart totalQuantity: " + cart.totalQuantity);
    
-   let cartUpdateReq = {
-     "email": this.utilityService.getEmail(),
-     "password": this.utilityService.getPassword(),
-     "cart": cart,
-   };
-   return this.httpClient.post<any>(this.baseUrl, cartUpdateReq, httpOptions).pipe(catchError(this.handleError));
+   this.save(cart).subscribe(
+     response => {
+       console.log("saved :))))))")
+     },
+     error => {
+       console.log("GOT ERROR :(((");
+     }
+   )
+   
+   }
+
+ save(cart: Cart): Observable<any> {
+  let cartUpdateReq = {
+    "email": this.utilityService.getEmail(),
+    "password": this.utilityService.getPassword(),
+    "cart": cart,
+  }
+  console.log("Cart email: " + cartUpdateReq.email);
+  console.log("Cart password: " + cartUpdateReq.password);
+  console.log("cart cart items: " + cartUpdateReq.cart.listings.length);
+  console.log(this.baseUrl);
+  return this.httpClient.post<any>(this.baseUrl + "/saveCartToDatabase" , cartUpdateReq, httpOptions).pipe(catchError(this.handleError));
  }
 
  afterCheckoutInitCart() {

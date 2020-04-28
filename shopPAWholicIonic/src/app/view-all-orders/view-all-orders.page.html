@@ -18,7 +18,7 @@
       <ion-list>
         <ion-item *ngFor="let order of orders"  (click) = "viewOrderDetails($event, order)">
           ID: {{order.orderId}} <br />
-          Date: {{order.orderDate.toLocaleString()}} <br />
+          Date: {{parseDate(order.orderDate) | date: 'dd MMM, yyyy'}} <br />
           Total Price: {{order.totalPrice}} <br />
           Status: {{order.orderStatus}} <br />
         </ion-item>
