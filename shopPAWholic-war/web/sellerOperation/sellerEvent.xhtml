@@ -53,13 +53,13 @@
                         <p:outputLabel for="picture" value="Picture:"/>
                     </p:column>
                     <p:column>
-                        <p:fileUpload id="picture" value="#{fileUploadView.file}"
+                        <p:fileUpload id="picture" 
                           invalidSizeMessage="JournalDev: Invalid Size"
                           invalidFileMessage="JournalDev: Invalid File Type"
                           fileLimitMessage="JournalDev: Invalid File Limit"
                           mode="advanced" multiple="true" fileLimit="30000000" sizeLimit="10000000000000"
                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                          fileUploadListener="#{fileUploadView.fileUploadListener}"
+                          fileUploadListener="#{eventManagedBean.handleFileUpload(event)}"
                           auto="true">
                           
                     </p:fileUpload>
@@ -109,7 +109,7 @@
                 
                 <p:column colspan="3">
                     <p:commandButton type="reset" value="Reset" />
-                    <p:commandButton id="createNewEvent" icon="pi pi-calender" value="Create Event!" update="@form formDataView:dataViewEvents" actionListener="#{eventManagedBean.createNewEvent}" />   
+                    <p:commandButton id="createNewEvent" icon="pi pi-calender" value="Create Event!" update="@form formDataView:dataViewEvents" action="#{eventManagedBean.createNewEvent}" />   
                 </p:column>
                 
                 </p:panelGrid>
