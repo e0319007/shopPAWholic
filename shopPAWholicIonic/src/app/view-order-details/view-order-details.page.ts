@@ -92,7 +92,7 @@ export class ViewOrderDetailsPage implements OnInit {
   }
 
   createReviewForListing(event, listing) {
-    this.router.navigate(["/customerOperation/createNewReview/" + listing.listingId]);
+    this.router.navigate(["/customerOperation/createNewReview/" + this.orderId + "/" + listing.listingId]);
   }
 
   cancellOrder() {

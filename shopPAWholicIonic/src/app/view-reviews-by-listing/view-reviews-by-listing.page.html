@@ -14,17 +14,38 @@
     </ion-content>
 
     <ion-card-content>
+       <!-- <div *ngIf="hasReviews == false" style="color:red;">
+        This listing does not have reviews yet. 
+      </div>
       <ion-list>
         <ion-item *ngFor="let review of reviews">
-          <!-- <ion-thumbnail slot="start">
+          <ion-thumbnail slot="start">
              <img src="{{review.pictures[0]}}">
-          </ion-thumbnail> -->
-          <ion-label fixed>{{review.description}} <br/>
-            Rating: {{review.rating}}</ion-label>
-          <!-- Description: {{review.description}} <br /> -->
+          </ion-thumbnail> 
+           <ion-label fixed>{{review.description}} <br/>
+            Rating: {{review.rating}}</ion-label> 
+           Description: {{review.description}} <br />
+      </ion-item>  -->
+
+      <ion-list>
+      <ion-item *ngFor="let review of reviews">
+        <ion-grid fixed>
+          <!-- <ion-row><ion-img src='{{review.picture}}'></ion-img></ion-row>
+          <br /> -->
+          <ion-row><h2>{{review.description}}</h2> <br /></ion-row>
+          <ion-row><h2>Rating: {{review.rating}}</h2> <br /></ion-row>
+        </ion-grid>
       </ion-item>
+
+
       </ion-list>
     </ion-card-content>
   </ion-card>
 
 </ion-content>
+
+<ion-footer>
+  <ion-button (click)="back()" expand="block" fill="clear"  shape="round">
+    Back
+  </ion-button>
+</ion-footer>

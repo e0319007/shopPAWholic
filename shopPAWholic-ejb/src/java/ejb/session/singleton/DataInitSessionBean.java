@@ -1,3 +1,4 @@
+
 package ejb.session.singleton;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
@@ -324,3 +325,4 @@ public class DataInitSessionBean {
     }
 
 }
+

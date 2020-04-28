@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from 'src/app/cart.service';
 import { Router } from '@angular/router';
-import { DeliveryDetailService } from 'src/app/delivery-detail.service';
-import { Cart } from 'src/app/cart';
 import { CartItem } from 'src/app/cart-item';
+import { Listing } from 'src/app/listing';
+import { DeliveryDetail } from 'src/app/delivery-detail';
+import { DeliveryDetailService } from 'src/app/delivery-detail.service';
+import { OrderEntity } from 'src/app/order-entity';
+import { Seller } from 'src/app/seller';
+import { Cart } from 'src/app/cart';
 
 @Component({
   selector: 'app-view-cart',
@@ -34,6 +38,9 @@ export class ViewCartPage implements OnInit {
    this.refreshCart();
   }
 
+  ionViewCanEnter(){
+   this.refreshCart();
+  }
 
   refreshCart() {
     this.cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
@@ -77,3 +84,4 @@ export class ViewCartPage implements OnInit {
     this.router.navigate(["/viewAllListings"]);
   }
 }
+

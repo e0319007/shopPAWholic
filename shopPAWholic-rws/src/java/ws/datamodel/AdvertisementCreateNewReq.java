@@ -26,7 +26,7 @@ public class AdvertisementCreateNewReq {
     private int endMth;
     private int endDay;
     private String ccNum;
-    private List<String> pictures;
+    private String pictures;
     private String url;
     private String description;
     private String price;
@@ -35,7 +35,7 @@ public class AdvertisementCreateNewReq {
     public AdvertisementCreateNewReq() {
     }
 
-    public AdvertisementCreateNewReq(Advertisement advertisement, String email, String password, Date startDate, Date endDate, String ccNum, List<String> pictures, String url) {
+    public AdvertisementCreateNewReq(Advertisement advertisement, String email, String password, Date startDate, Date endDate, String ccNum, String pictures, String url, String price) {
         this.advertisement = advertisement;
         this.email = email;
         this.password = password;
@@ -110,14 +110,14 @@ public class AdvertisementCreateNewReq {
     /**
      * @return the pictures
      */
-    public List<String> getPictures() {
+    public String getPictures() {
         return pictures;
     }
 
     /**
      * @param pictures the pictures to set
      */
-    public void setPictures(List<String> pictures) {
+    public void setPictures(String pictures) {
         this.pictures = pictures;
     }
 

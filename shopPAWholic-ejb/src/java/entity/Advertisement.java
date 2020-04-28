@@ -139,7 +139,7 @@ public class Advertisement implements Serializable {
         return picture;
     }
 
-    public void setPicture(String pictures) {
+    public void setPicture(String picture) {
         this.picture = picture;
     }
 

@@ -7,6 +7,7 @@ import { UtilityService } from '../utility.service';
 import { UserService } from '../user.service';
 import { User } from '../user';
 import { CartService } from '../cart.service';
+import { AppComponent } from '../app.component';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
 import { AppComponent } from '../app.component';
@@ -33,11 +34,16 @@ export class LoginPage implements OnInit {
     }
 
   ngOnInit() {
+    this.app.updateMainMenu();
   }
 
   clear()	{
 		this.email = "";
 		this.password = "";
+  }
+
+  refresh(){
+    this.app.updateMainMenu();
   }
   
   userLogin(userLoginForm: NgForm) {
@@ -74,6 +80,7 @@ export class LoginPage implements OnInit {
                 console.log("is customer");
                  this.initialiseCart();   
               } 
+              this.refresh();
               console.log(this.utilityService.getIsLogin())				
             } else {
               this.loginError = true;
@@ -101,6 +108,7 @@ export class LoginPage implements OnInit {
     this.utilityService.setPassword(null);
     this.utilityService.setIsCustomer(false);
     this.utilityService.setIsSeller(false);
+    this.refresh();
     console.log(sessionStorage.isLogin);
   }
 

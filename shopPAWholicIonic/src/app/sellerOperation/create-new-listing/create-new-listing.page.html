@@ -61,7 +61,7 @@
         </div>
 
         <ion-list>
-          <ion-img *ngIf="picture != null" src="{{picture}}"></ion-img>
+          <ion-img *ngIf="picture != null || !picture" src="{{picture}}"></ion-img>
           <ion-item>
             <ion-label>
               Image
@@ -138,3 +138,4 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+

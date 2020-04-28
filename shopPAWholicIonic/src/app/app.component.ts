@@ -77,10 +77,6 @@ export class AppComponent implements OnInit {
     this.updateMainMenu();
   }
 
-  ionViewWillEnter(){
-    this.updateMainMenu();
-  }
-
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -101,7 +97,9 @@ export class AppComponent implements OnInit {
     //if is login
 		if(this.utilityService.getIsLogin())
 		{
-      if(this.utilityService.isCustomer() == true) {
+
+		if(this.utilityService.isCustomer()) {
+
         this.appPages  = [
           {
             title: 'Home',

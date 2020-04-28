@@ -49,13 +49,6 @@ export class CreateAdvertisementPage implements OnInit {
   }
 
   create(createAdvertisementForm: NgForm) {
-    
-    let pictures: string[] = new Array();
-
-    console.log(this.picture);
-    if (this.picture != null) {
-      pictures.push(this.picture);
-    }
 
     console.log("start year: " + this.startYear);
     this.startDate.setFullYear(this.startYear);
@@ -75,10 +68,13 @@ export class CreateAdvertisementPage implements OnInit {
 
     console.log("ccNum: " + this.ccNum);
 
+    this.picture = this.newAdvertisement.picture;
+    console.log("picture: " + this.picture);
+
     if (createAdvertisementForm.valid) {
 
       this.advertisementService.createAdvertisement(this.newAdvertisement, this.startDate, this.startYear, this.startMth,
-        this.startDay, this.endDate, this.endYear, this.endMth, this.endDay, this.ccNum, pictures, 
+        this.startDay, this.endDate, this.endYear, this.endMth, this.endDay, this.ccNum, this.picture, 
         this.url, this.description, this.price).subscribe(
           response => {
             let newAdvertisementId: number = response.advertisementId;
