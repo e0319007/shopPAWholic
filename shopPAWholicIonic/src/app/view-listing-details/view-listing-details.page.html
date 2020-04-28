@@ -60,10 +60,15 @@
               <li *ngFor="let tag of listingToView.tags">{{tag.name}}</li>
             </ul>
         </ion-item>
+
+
+
       </ion-list>
 
     </ion-card-content>
   </ion-card>
+
+
   <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == false && isCorrectSeller == true">
 		<ion-button (click)="updateListing()"  expand="block"style="float:left" fill="clear" shape="round">
 			<ion-icon slot="start" name="create"></ion-icon>
@@ -90,6 +95,10 @@
 			Add To Cart
 		</ion-button>
   </ion-toolbar>
+
+  <ion-button (click)="viewReviews()" expand="block" fill="clear" style="float:right" shape="round">
+    View Reviews
+</ion-button>
   
 </ion-content>
 <ion-footer *ngIf="isCustomer == true">

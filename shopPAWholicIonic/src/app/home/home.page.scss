@@ -1,3 +1,22 @@
 img {
     display: flex;
 }
+
+.container{
+    position: relative;
+    width: 100%;
+}
+
+.slidetitle { 
+   position: absolute; 
+   bottom: 60px;
+   left: 18px;
+   color: white;
+   text-align: left;
+   font-family: 'Libre Baskerville', serif;
+}
+
+.block{
+   background-color:rgba(0, 0, 0, 0.5);
+   padding: 4px;
+}

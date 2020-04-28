@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+    <ion-title>Create Review [ListingId: {{listingId}}]</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <div *ngIf="resultSuccess == true" style="color:blue;">
+        {{message}}
+      </div>
+      <div *ngIf="resultError == true" style="color:red;">
+        {{message}}
+      </div>
+
+      <form #createReviewForm="ngForm" (ngSubmit) = create(createReviewForm)>
+        <div style="color: red;">
+
+          <div *ngIf="description.invalid && (description.dirty || description.touched || submitted)" class="errorText">
+            <div *ngIf="description.errors.required">
+              Description is required
+            </div>
+          </div>
+      
+        </div>
+
+        <ion-list>
+          
+          <!-- <ion-button color="primary" (click)="changeRating(-1)">
+            -
+          </ion-button>
+            <b>&ensp;{{rating}}&ensp;</b>
+          <ion-button color="primary" (click)="changeRating(1)">
+              +
+          </ion-button> -->
+
+          <ion-item>
+            <ion-label>
+              Rating
+            </ion-label>
+            <ion-input type="text" id="rating" name="rating" required="true" [(ngModel)]="newReview.rating" #rating="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Description
+            </ion-label>
+            <ion-input type="text" id="description" name="description" required="true" [(ngModel)]="newReview.description" #description="ngModel"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Picture
+            </ion-label>
+            <ion-input type="url" id="picture" name="picture" required="true" [(ngModel)]="picture"></ion-input>
+          </ion-item>
+
+        <ion-button (click)="clear()" expand="block"style="float:left" fill="clear" shape="round">
+          Clear
+        </ion-button>
+      
+        <ion-button type="submit" expand="block"style="float:right" fill="clear" shape="round">
+          Create
+        </ion-button>
+
+      </ion-list>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+

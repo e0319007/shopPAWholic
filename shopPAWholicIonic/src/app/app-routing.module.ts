@@ -44,10 +44,13 @@ const routes: Routes = [
     loadChildren:'./sellerOperation/create-new-listing/create-new-listing.module#CreateNewListingPageModule', canActivate:[AuthGuard]
   },
   {
+    path: 'sellerOperation/createNewAdvertisement',
+    loadChildren:'./sellerOperation/create-advertisement/create-advertisement.module#CreateAdvertisementPageModule', canActivate:[AuthGuard]
+  },
+  {
     path: 'customerOperation/viewCart',
     loadChildren: './customerOperation/view-cart/view-cart.module#ViewCartPageModule', canActivate:[AuthGuard]
   },
-
   {
     path: 'customerOperation/checkOutPage',
     loadChildren: './customerOperation/check-out/check-out.module#CheckOutPageModule', canActivate:[AuthGuard]
@@ -67,6 +70,18 @@ const routes: Routes = [
   {
     path: 'sellerOperation/changeOrderStatus/:orderId',
     loadChildren: './sellerOperation/change-order-status/change-order-status.module#ChangeOrderStatusPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path:'viewReviewsByListing/:listingId',
+    loadChildren: './view-reviews-by-listing/view-reviews-by-listing.module#ViewReviewsByListingPageModule', canActivate:[AuthGuard]
+  },
+  {
+    path:'viewAllAdvertisements',
+    loadChildren: './view-all-advertisements/view-all-advertisements.module#ViewAllAdvertisementsPageModule', canActivate: [AuthGuard]
+  },
+  {
+    path: 'customerOperation/createNewReview/:listingId',
+    loadChildren: './customerOperation/create-new-review/create-new-review.module#CreateNewReviewPageModule', canActivate: [AuthGuard]
   },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
@@ -94,10 +109,25 @@ const routes: Routes = [
   {
     path: 'sellerOperation/viewBillingDetails',
     loadChildren: './sellerOperation/view-billing-details/view-billing-details.module#ViewBillingDetailsPageModule', canActivate:[AuthGuard]
-  },  {
+  },
+  {
     path: 'create-advertisement',
     loadChildren: () => import('./sellerOperation/create-advertisement/create-advertisement.module').then( m => m.CreateAdvertisementPageModule)
   },
+  {
+    path: 'create-new-review',
+    loadChildren: () => import('./customerOperation/create-new-review/create-new-review.module').then( m => m.CreateNewReviewPageModule)
+  },
+  {
+    path: 'view-reviews-by-listing',
+    loadChildren: () => import('./view-reviews-by-listing/view-reviews-by-listing.module').then( m => m.ViewReviewsByListingPageModule)
+  },
+  {
+    path: 'view-all-advertisements',
+    loadChildren: () => import('./view-all-advertisements/view-all-advertisements.module').then( m => m.ViewAllAdvertisementsPageModule)
+  },
+
+
 
 
 

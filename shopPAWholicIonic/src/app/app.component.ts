@@ -45,13 +45,13 @@ export class AppComponent implements OnInit {
       icon: ''
     },
     {
-      title: 'Advertisements',
-      url: '/viewAdvertisements',
+      title: 'Create Advertisement',
+      url: '/sellerOperation/createNewAdvertisement',
       icon: ''
     },
     {
-      title: 'View Reviews',
-      url: '/viewReviews',
+      title: 'View All Advertisements',
+      url: '/viewAllAdvertisements',
       icon: ''
     },
     {
