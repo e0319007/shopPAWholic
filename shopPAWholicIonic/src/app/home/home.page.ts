@@ -37,6 +37,7 @@ export class HomePage implements OnInit {
     this.password = this.utilityService.getPassword();
   }
 
+
   sliderConfig = {
     initialSlide: 0,
     slidesPerView: 1,

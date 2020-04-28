@@ -8,18 +8,20 @@ export class Advertisement {
     startDate: Date;
     endDate: Date;
     price: number;
-    pictures: string[];
+    picture: string;
     url: string;
+    listDate: Date;
 
     constructor(advertisementId?: number, description?: string, startDate?: Date, endDate?:Date, 
-        price?: number, pictures?:string[], url?: string) {
+        price?: number, picture?:string, url?: string, listDate?: Date) {
             this.advertisementId = advertisementId;
             this.description = description;
             this.startDate = startDate;
             this.endDate = endDate;
             this.price = price;
-            this.pictures = pictures;
+            this.picture = picture;
             this.url = url;
+            this.listDate = listDate;
     }
 
 }

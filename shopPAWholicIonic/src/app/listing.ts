@@ -30,3 +30,4 @@ export class Listing {
             this.picture = picture
         }
 }
+
