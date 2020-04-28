@@ -243,7 +243,7 @@ public class DataInitSessionBean {
 
             listingSessionBeanLocal.createNewListing(new Listing("LIST016", "ZuPreem Nut Blend Diet for Medium/Large Birds", "ZuPreem Nut Blend Diet for Medium/Large Birds, 1kg", new BigDecimal("10.00"), "https://images-na.ssl-images-amazon.com/images/I/71Jvb0ViGKL._AC_SX425_.jpg", 20, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller7.getUserId());
             listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Hamster Wheel", "Love Hamster Wheel, Spinner Exercise Wheel", new BigDecimal("20.00"), "https://contestimg.wish.com/api/webimage/5a00103e6531681cb28c7025-large.jpg?cache_buster=f9ae0741b22a2cf38ec28a5e4149fb34", 20, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller6.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("Ecological Fish Tank", "", "Fish tank small ecological fish tank office table fish tank", new BigDecimal("30.00"), "https://gd.image-gmkt.com/li/512/047/1138047512.g_0-w_g.jpg", 30, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST018", "Ecological Fish Tank", "Fish tank small ecological fish tank office table fish tank", new BigDecimal("30.00"), "https://gd.image-gmkt.com/li/512/047/1138047512.g_0-w_g.jpg", 30, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date, DeliveryMethod.QXPRESS);
 
