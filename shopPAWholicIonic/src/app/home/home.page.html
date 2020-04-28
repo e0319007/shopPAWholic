@@ -1,30 +1,3 @@
-<<<<<<< HEAD
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-    <ion-title>
-          <img src="assets/icon/shopPAWholic.png">
-    </ion-title>
-    <ion-buttons slot="primary">
-      <ion-button routerLink="/login" *ngIf="utilityService.getIsLogin() == false">Login</ion-button>
-      <!-- <ion-button (click)="logout()" *ngIf="utilityService.getIsLogin() == true">Logout</ion-button> -->
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-card *ngIf="utilityService.getIsLogin() == true">
-   <ion-button (click)="initialiseCart()" fill="clear" shape="round">
-    Initialise cart
-  </ion-button>
-
-  Current user email: {{email}} <br />
-  Current user password: {{password}}
-</ion-card>
-</ion-content>
-=======
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -77,4 +50,3 @@
 
 
 </ion-content>
->>>>>>> bd46c27a25a382c33ac0cb1bb7a3804a2c2db01e

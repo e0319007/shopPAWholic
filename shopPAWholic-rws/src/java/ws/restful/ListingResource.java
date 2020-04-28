@@ -79,10 +79,10 @@ public class ListingResource {
         try {
             List<Listing> listings = listingSessionBeanLocal.retrieveAllListings();
             for(Listing l:listings) {
-                if(l.getCategory().getParentCategory() != null) {
-                    l.getCategory().setParentCategory(null);
+                if(l.getCategory() != null) {
+                
                     l.getCategory().getListings().clear();
-                    l.getCategory().getSubCategories().clear();
+              
                 }
                 for(Tag t:l.getTags()) {
                     t.getListings().clear();
@@ -125,10 +125,10 @@ public class ListingResource {
         try {
             Listing listing = listingSessionBeanLocal.retrieveListingByListingId(listingId);
             
-            if(listing.getCategory().getParentCategory() != null) {
-                listing.getCategory().setParentCategory(null);
+            if(listing.getCategory() != null) {
+                
                 listing.getCategory().getListings().clear();
-                listing.getCategory().getSubCategories().clear();
+            
             }
 
             for(Tag t:listing.getTags()) {

@@ -14,9 +14,10 @@ export class Listing {
     seller: Seller;
     listingDate: Date;
     category: Category
+    picture: string;
 
     constructor(listingId?: number, skuCode?: string, name?: string, description?: string, 
-        quantityOnHand?: number, unitPrice?: number, category?: Category) {
+        quantityOnHand?: number, unitPrice?: number, category?: Category, picture?: string) {
             this.listingId = listingId;
             this.skuCode = skuCode;
             this.name = name;
@@ -26,5 +27,6 @@ export class Listing {
             let currDate: Date = new Date();
             this.listingDate = currDate;
             this.category = category;
+            this.picture = picture
         }
 }

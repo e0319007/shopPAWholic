@@ -3,7 +3,6 @@ import { Listing } from 'src/app/listing';
 import { Router } from '@angular/router';
 import { ListingService } from 'src/app/listing.service';
 import { UtilityService } from 'src/app/utility.service';
-import { Seller } from 'src/app/seller';
 
 @Component({
   selector: 'app-view-my-listings',
