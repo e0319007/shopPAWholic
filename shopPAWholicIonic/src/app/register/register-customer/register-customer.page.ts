@@ -91,6 +91,9 @@ export class RegisterCustomerPage implements OnInit {
     this.cartService.initialiseCart();
   }
 
+  back() {
+    this.router.navigate(["/register"]);
+  }
 
 
 }

@@ -1,10 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
     <ion-title>Register as Seller</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-img src="../assets/pictures/lovebirds.jpg"> </ion-img>
   <ion-card>      
 	  
     <ion-card-content>
@@ -98,6 +102,15 @@
     </ion-card-content>
   
   </ion-card>
+
+  <ion-footer *ngIf="utilityService.getIsLogin() == false">
+    <ion-toolbar>
+      <ion-title></ion-title>
+      <ion-button (click)="back()" expand="block" fill="clear" shape="round">
+        Back
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>
 
   <ion-card *ngIf="utilityService.getIsLogin() == true">
     <ion-card-content>

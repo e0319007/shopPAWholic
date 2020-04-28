@@ -83,5 +83,8 @@ export class RegisterSellerPage implements OnInit {
     }
 
   }
+  back() {
+    this.router.navigate(["/register"]);
+  }
 
 }
