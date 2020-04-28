@@ -49,11 +49,11 @@ export class ViewMyListingsPage implements OnInit {
   }
 
   refreshListings() {
-    this.allListings = new Array();
-    this.listings = new Array();
-    this.filteredListings = new Array();
     this.listingService.retrieveAllListings().subscribe(
       response => {
+        this.allListings = new Array();
+        this.listings = new Array();
+        this.filteredListings = new Array();
         this.allListings = response.listings;
         for (let listing of this.allListings) {
           if (listing.seller.email == this.utilityService.getEmail()) {

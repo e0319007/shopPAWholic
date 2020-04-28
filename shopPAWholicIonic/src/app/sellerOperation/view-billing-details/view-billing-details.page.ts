@@ -38,5 +38,10 @@ export class ViewBillingDetailsPage implements OnInit {
     )
   }
 
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
+
+
 
 }

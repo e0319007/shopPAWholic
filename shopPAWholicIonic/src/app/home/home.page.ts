@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service'
 import { CartService } from '../cart.service';
 import { UtilityService } from '../utility.service';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class HomePage implements OnInit {
               private activatedRoute: ActivatedRoute,  
               private utilityService: UtilityService, 
               private cartService: CartService,
-              private userService: UserService){
+              private userService: UserService,
+              private app: AppComponent){
 
                   // slidesItems: [
                   //   {image: '../assets/pictures/petexpo.jpg'},
@@ -35,8 +37,18 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.email = this.utilityService.getEmail();
     this.password = this.utilityService.getPassword();
+    this.app.updateMainMenu();
   }
 
+  ionViewWillEnter() {
+    this.refresh();
+    this.email = this.utilityService.getEmail();
+    this.password = this.utilityService.getPassword();
+  }
+
+  refresh(){
+    this.app.updateMainMenu();
+  }
 
   sliderConfig = {
     initialSlide: 0,

@@ -10,7 +10,6 @@ import { CartService } from '../cart.service';
 import { AppComponent } from '../app.component';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
-import { AppComponent } from '../app.component';
 
 @Component({
   selector: 'app-login',

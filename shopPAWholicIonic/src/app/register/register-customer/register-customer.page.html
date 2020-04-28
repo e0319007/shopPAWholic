@@ -84,16 +84,14 @@
         <ion-label fixed><b>Contact Number</b></ion-label>
         <ion-input type="text" id="contactNumber" name="contactNumber" [(ngModel)]="newCustomer.contactNumber" required="true" #contactNumber="ngModel"></ion-input>
       </ion-item>
-						
+    <br/>
       
-      <ion-item>
-        <ion-button (click)="clear()">
+        <ion-button style= "margin-left: 50px " (click)="clear()">
           Clear
         </ion-button>
-        <ion-button type="submit" ion-button block>
+        <ion-button style="float: right; margin-right: 50px" type="submit" ion-button block>
           Create
         </ion-button>
-      </ion-item>
 
     </ion-list>
     
