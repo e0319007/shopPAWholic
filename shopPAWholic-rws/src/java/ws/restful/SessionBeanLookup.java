@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import ejb.session.stateless.BillingDetailSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.DeliveryDetailSessionBeanLocal;
+import ejb.session.stateless.SellerSessionBeanLocal;
 
 /**
  *
@@ -54,6 +56,26 @@ public class SessionBeanLookup {
         try {
             String path = "BillingDetailSessionBean!ejb.session.stateless.BillingDetailSessionBeanLocal";
             return (BillingDetailSessionBeanLocal) initialContextLookup(path);
+        } catch (NamingException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public SellerSessionBeanLocal lookupSellerSessionBeanLocal() {
+        try {
+            String path = "SellerSessionBean!ejb.session.stateless.SellerSessionBeanLocal";
+            return (SellerSessionBeanLocal) initialContextLookup(path);
+        } catch (NamingException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            String path = "CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal";
+            return (CustomerSessionBeanLocal) initialContextLookup(path);
         } catch (NamingException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ex);
             throw new RuntimeException(ex);

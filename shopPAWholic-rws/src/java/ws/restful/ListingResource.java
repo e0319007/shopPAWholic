@@ -84,7 +84,6 @@ public class ListingResource {
                     l.getCategory().getListings().clear();
                     l.getCategory().getSubCategories().clear();
                 }
-                
                 for(Tag t:l.getTags()) {
                     t.getListings().clear();
                 }

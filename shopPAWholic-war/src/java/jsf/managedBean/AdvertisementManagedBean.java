@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.AdvertisementSessionBeanLocal;
@@ -44,9 +39,13 @@ public class AdvertisementManagedBean implements Serializable {
     private Date startDate;
     private Date endDate;
     private BigDecimal price;
-    private List<String> pictures;
     private String url;
     private String ccNum;
+    private String picture;
+    private Date listDate;
+    
+    private Long seller;
+    
 
     private Advertisement newAdvertisement;
     private Long sellerId;
@@ -61,9 +60,9 @@ public class AdvertisementManagedBean implements Serializable {
     @PostConstruct
     public void PostConstruct() {
         advertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
-        List<String> pictures = new ArrayList<>();
         User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         sellerId = currentUser.getUserId();
+
     }
 
     public void generatePrice(ActionEvent event) {
@@ -75,7 +74,7 @@ public class AdvertisementManagedBean implements Serializable {
 
     /*public void createNewAdvertisements(ActionEvent event) {
         try {
-            Advertisement advertisement = new Advertisement(description, startDate, endDate, price, pictures, url);
+            Advertisement advertisement = new Advertisement(description, startDate, endDate, price, picture, url, listDate);
             advertisementSessionBeanLocal.createNewAdvertisement(advertisement, seller, ccNum);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New forum created successfully! (Id: " + advertisement.getAdvertisementId()+ ")", null));
         } catch (CreateNewAdvertisementException ex) {
@@ -165,14 +164,6 @@ public class AdvertisementManagedBean implements Serializable {
         this.price = price;
     }
 
-    public List<String> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -181,9 +172,14 @@ public class AdvertisementManagedBean implements Serializable {
         this.url = url;
     }
 
-    /**
-     * @return the newAdvertisement
-     */
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
+    }
+    
     public Advertisement getNewAdvertisement() {
         return newAdvertisement;
     }
@@ -222,5 +218,4 @@ public class AdvertisementManagedBean implements Serializable {
     public void setCcNum(String ccNum) {
         this.ccNum = ccNum;
     }
-
 }

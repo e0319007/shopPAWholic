@@ -4,6 +4,7 @@ import { UtilityService } from './utility.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Review } from './review';
+import {Listing} from './listing';
 
 const httpOptions = {
 	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -20,26 +21,32 @@ export class ReviewService {
     this.baseUrl = utilityService.getRootPath() + 'Review';
   }
 
-  //retrieveReviewByListingId
+  retrieveAllReviewsByListingId(listingId: number) {
+    return this.httpClient.get<any>(this.baseUrl + "/retrieveAllReviewsByListingId/" + listingId).pipe(
+      catchError(this.handleError)
+    );
+  }
 
-  createReview(review: Review, reviewDate: Date, listingId: number){
+  createReview(review: Review, rating: number, listingId: number, description: string, reviewPictures: string[]){
     let createReviewReq = {
       "review": review,
+      "rating": rating,
       "listingId": listingId,
-      "email": this.utilityService.getEmail,
-      "password": this.utilityService.getPassword,
-      "reviewDate": reviewDate,
+      "email": this.utilityService.getEmail(),
+      "password": this.utilityService.getPassword(),
+      "description" : description,
+      "reviewPictures" : reviewPictures,
     }
     return this.httpClient.put<any>(this.baseUrl, createReviewReq, httpOptions). pipe(catchError(this.handleError));
   }
 
-  updateReview(review: Review, reviewDate: Date, listingId: number){
+  updateReview(review: Review, listing: Listing, description: string){
     let updateReviewReq = {
       "review": review,
-      "listingId": listingId,
+      "listingId": listing.listingId,
       "email": this.utilityService.getEmail,
       "password": this.utilityService.getPassword,
-      "reviewDate": reviewDate,
+      "description" : description,
     }
     return this.httpClient.put<any>(this.baseUrl, updateReviewReq, httpOptions). pipe(catchError(this.handleError));
   }

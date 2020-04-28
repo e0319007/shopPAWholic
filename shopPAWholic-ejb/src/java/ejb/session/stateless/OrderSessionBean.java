@@ -106,9 +106,9 @@ public class OrderSessionBean implements OrderSessionBeanLocal {
                 for(int i = 0; i < listings.size(); i++) {
                     Listing l = listings.get(i);
                     Listing listingfromDatabase = em.find(Listing.class, l.getListingId());
-                    listingfromDatabase.setQuantityOnHand(l.getQuantityOnHand() - 1);
+                    listingfromDatabase.setQuantityOnHand(listingfromDatabase.getQuantityOnHand() - 1);
                     System.out.println("Item being checkedout has quantity: " + listingfromDatabase.getQuantityOnHand());
-                    em.merge(l);
+                    em.merge(listingfromDatabase);
                     em.flush();
                 }
                 

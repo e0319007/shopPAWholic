@@ -1,23 +1,16 @@
 package util.email;
 
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
-import javax.mail.Address;
-import javax.mail.BodyPart;
-import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.search.FlagTerm;
 
 public class EmailManager {
 
@@ -25,7 +18,7 @@ public class EmailManager {
     private final String mailer = "JavaMailer";
     private String smtpAuthUser;
     private String smtpAuthPassword;
-
+    
     public EmailManager() {
     }
 
@@ -73,63 +66,38 @@ public class EmailManager {
             return false;
         }
     }
-
     
-//        Session session = Session.getDefaultInstance(new Properties());
-//        Store store = session.getStore("imaps");
-//        store.connect("imap.googlemail.com", 993, "shoppawholic@gmail.com", "shoppawholic2020");
-//        Folder inbox = store.getFolder("INBOX");
-//        inbox.open(Folder.READ_ONLY);
-//
-//        // Fetch unseen messages from inbox folder
-//        Message[] messages = inbox.search(
-//                new FlagTerm(new Flags(Flags.Flag.SEEN), false));
-//
-//        // Sort messages from recent to oldest
-//        Arrays.sort(messages, (m1, m2) -> {
-//            try {
-//                return m2.getSentDate().compareTo(m1.getSentDate());
-//            } catch (MessagingException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//
-//        for (Message message : messages) {
-//            System.out.println(
-//                    "sendDate: " + message.getSentDate()
-//                    + " subject:" + message.getSubject());
-//        }
+    public Message[] readEmail() throws NoSuchProviderException, MessagingException {
+        final Properties props = new Properties();
+        props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.setProperty("mail.pop3.socketFactory.fallback", "false");
+        props.setProperty("mail.pop3.host", "pop.gmail.com");
+        props.setProperty("mail.pop3.user", "shoppawholic");
+        props.setProperty("mail.pop3.password", "shoppawholic2020");
+        props.setProperty("mail.pop3.ssl.enable", "true");
+        props.setProperty("mail.pop3.port", "995");
+        props.setProperty("mail.pop3.auth", "true");
+        props.setProperty("mail.pop3.starttls.enable", "true");
+        props.setProperty("mail.protocol.ssl.trust", "pop.gmail.com");
 
-//        Properties props = System.getProperties();
-//        props.setProperty("mail.store.protocol", "imaps");
-//        Session session = Session.getDefaultInstance(props, null);
-//
-//        try {
-//            Store store = session.getStore();
-//            store.connect("imap.gmail.com", 993, "shoppawholic@gmail.com", "shoppawholic2020");
-//            System.out.println("************* Store" + store);
-//            
-//            Folder folder = store.getFolder("INBOX");
-//            folder.open(Folder.READ_ONLY);
-//            
-//            Flags seen = new Flags(Flags.Flag.SEEN);
-//            FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
-////            Message[] msgs = folder.getMessages();?
-//            Message messages[] = folder.search(unseenFlagTerm);
-//            
-//            if(messages.length == 0){
-//                System.out.println("No messages found.");
-//            } else {
-//                System.out.println("******************" + messages.length);
-//            }
-//
-////            for (Message msg : msgs) {
-////                System.out.println("***************** Message" + msg);
-////                System.out.println(msg.getSubject());
-////            }
-//        } catch (MessagingException e) {
-//            System.out.println(e);
+        Session session = Session.getInstance(props);
+        session.setDebug(true);
+
+        Store store = session.getStore("pop3");
+        store.connect("shoppawholic", "shoppawholic2020");
+        Folder folder = store.getFolder("INBOX");;
+        folder.open(Folder.READ_ONLY);
+        Message [] messageList = folder.getMessages();
+        
+//        for (int i = 0; i < message.length; i++) {
+//            Message m = message[i];
+//            System.out.println("-------------------------\nNachricht: " + i);
+//            System.out.println("From: " + Arrays.toString(m.getFrom()));
+//            System.out.println("Topic: " + m.getSubject());
 //        }
-//    }
+        //folder.close(false);
+        //store.close();
+        return messageList;
+    }
 }
-//        
+       

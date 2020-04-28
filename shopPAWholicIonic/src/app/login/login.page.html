@@ -26,10 +26,10 @@
               Email is required.
             </div>
             <div *ngIf="inemail.errors.minlength">
-              Username must be at least 4 characters long.
+              Email must be at least 4 characters long.
             </div>
             <div *ngIf="inemail.errors.maxlength">
-              Username cannot exceed 64 characters.
+              Email cannot exceed 64 characters.
             </div>
           </div>
           
@@ -54,7 +54,7 @@
 
           <ion-item>
             <ion-label fixed>Email</ion-label>
-            <ion-input type="text" id="email" name="email" [(ngModel)]="email" minlength="4" maxlength="64" required="true" #inemail="ngModel"></ion-input>
+            <ion-input type="email" id="email" name="email" [(ngModel)]="email" minlength="4" maxlength="64" required="true" #inemail="ngModel"></ion-input>
           </ion-item>
   
           <ion-item>

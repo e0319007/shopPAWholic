@@ -29,14 +29,28 @@ export class AdvertisementService {
     + this.utilityService.getEmail + "&password:" + this.utilityService.getPassword).pipe(catchError(this.handleError));
   }
 
-  createAdvertisement(advertisement: Advertisement, ccNum: string): Observable<any> {
+  createAdvertisement(advertisement: Advertisement, startDate: Date, startYear: number, startMth: number, startDay: number,
+                      endDate: Date, endYear: number, endMth: number, endDay: number, ccNum: string, 
+                      pictures: string[], url: string, description: string, price: number): Observable<any> {
       let advertisementCreateReq = {
-          "email": this.utilityService.getEmail,
-          "password": this.utilityService.getPassword,
           "advertisement": advertisement,
+          "email": this.utilityService.getEmail(),
+          "password": this.utilityService.getPassword(),
+          "startDate" : startDate,
+          "startYear" : startYear,
+          "startMth" : startMth,
+          "startDay" : startDay,
+          "endDate" : endDate,
+          "endYear" : endYear,
+          "endMth" : endMth,
+          "endDay" : endDay,
           "ccNum" : ccNum,
+          "pictures" : pictures,
+          "url" : url,
+          "description" : description,
+          "price" : price,
       }
-      return this.httpClient.put<any>(this.baseUrl, advertisementCreateReq, httpOptions). pipe(catchError(this.handleError));
+      return this.httpClient.put<any>(this.baseUrl, advertisementCreateReq, httpOptions).pipe(catchError(this.handleError));
   }
 
   updateAdvertisement(advertisement: Advertisement, ccNum: string, startDate: Date, endDate: Date): Observable<any> {

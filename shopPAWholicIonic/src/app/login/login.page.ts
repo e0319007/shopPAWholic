@@ -6,6 +6,7 @@ import { NgForm } from '@angular/forms';
 import { UtilityService } from '../utility.service';
 import { UserService } from '../user.service';
 import { User } from '../user';
+import { CartService } from '../cart.service';
 import { Customer } from '../customer';
 import { Seller } from '../seller';
 
@@ -22,7 +23,10 @@ export class LoginPage implements OnInit {
 	loginError: boolean;
   errorMessage: string;
   
-  constructor(private router: Router, public utilityService: UtilityService, private userService: UserService) { 
+  constructor(private router: Router, 
+              public utilityService: UtilityService, 
+              private userService: UserService,
+              private cartService: CartService) { 
       this.submitted = false;
     }
 
@@ -45,16 +49,29 @@ export class LoginPage implements OnInit {
           response => {
             let user : User = response.user;
             //got problems with the instanceof im not sure if i need to add a restful method :///
-            if (response.user instanceof Customer) {
-              this.utilityService.isCustomer();
-            } else if (response.user instanceof Seller) {
-              this.utilityService.isSeller()
+            console.log('********** DEBUG 1')
+            console.log('********** DEBUG ' + response.user.verified)           
+
+            if(response.user.verified == null)
+            {
+              console.log('********** DEBUG 3')
+              this.utilityService.setIsCustomer(true);     
+     
+            }
+            else 
+            {
+              console.log('********** DEBUG 2')
+              this.utilityService.setIsSeller(true);
             }
 
             if(user != null){
               this.utilityService.setIsLogin(true);
               this.utilityService.setCurrentUser(user);					
               this.loginError = false;	
+              if (this.utilityService.isCustomer()) {
+                console.log("is customer");
+                 this.initialiseCart();   
+              } 
               console.log(this.utilityService.getIsLogin())				
             } else {
               this.loginError = true;
@@ -73,8 +90,18 @@ export class LoginPage implements OnInit {
 	
 	userLogout(): void
 	{
-		this.utilityService.setIsLogin(false);
-		this.utilityService.setCurrentUser(null);		
+    // this.cartService.saveCartToDatabase();
+    this.utilityService.setIsLogin(false);
+    this.utilityService.setCurrentUser(null);		
+    this.utilityService.setEmail(null);
+    this.utilityService.setPassword(null);
+    this.utilityService.setIsCustomer(false);
+    this.utilityService.setIsSeller(false);
+    console.log(sessionStorage.isLogin);
+  }
+
+  initialiseCart() {
+    this.cartService.initialiseCart;
   }
   
   back(){

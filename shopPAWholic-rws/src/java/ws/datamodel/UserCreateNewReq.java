@@ -14,16 +14,20 @@ import entity.User;
 public class UserCreateNewReq {
     
     private User user;
+    private String name;
     private String email;
     private String password;
+    private String contactNumber;
 
     public UserCreateNewReq() {
     }
 
-    public UserCreateNewReq(User user, String email, String password) {
+    public UserCreateNewReq(User user, String name, String email, String password, String contactNumber) {
         this.user = user;
+        this.name = name;
         this.email = email;
         this.password = password;
+        this.contactNumber = contactNumber;
     }
 
     /**
@@ -66,6 +70,34 @@ public class UserCreateNewReq {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the contactNumber
+     */
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    /**
+     * @param contactNumber the contactNumber to set
+     */
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
     }
     
     

@@ -9,6 +9,8 @@ import ejb.session.stateless.AdvertisementSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Advertisement;
 import entity.Seller;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -32,6 +34,7 @@ import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
 import ws.datamodel.AdvertisementCreateNewReq;
+import ws.datamodel.AdvertisementCreateNewRsp;
 import ws.datamodel.ErrorRsp;
 import ws.datamodel.AdvertisementRetrieveAllRsp;
 import ws.datamodel.AdvertisementRetrieveByIdRsp;
@@ -117,9 +120,23 @@ public class AdvertisementResource {
         try {
             Seller seller = (Seller) userSessionBeanLocal.userLogin(createNewAdvertisementReq.getEmail(), createNewAdvertisementReq.getPassword());
             System.out.println("********** Advertisement.createNewAdvertisement(): Seller " + seller.getEmail()+ " login remotely via web service");
+            //trying to circumvent the ts -> java date problem and the @notnull on both start and end date for ads
+            Date start = new Date(createNewAdvertisementReq.getStartYear(), createNewAdvertisementReq.getStartMth(), createNewAdvertisementReq.getStartDay());
+            System.out.println("****** Start Date: " + start);
+            createNewAdvertisementReq.getAdvertisement().setStartDate(start);
+            
+            Date end = new Date(createNewAdvertisementReq.getEndYear(), createNewAdvertisementReq.getEndMth(), createNewAdvertisementReq.getEndDay());
+            System.out.println("****** End Date: " + end);
+            createNewAdvertisementReq.getAdvertisement().setEndDate(end);
+            
+            BigDecimal price = new BigDecimal(createNewAdvertisementReq.getPrice());
+            createNewAdvertisementReq.getAdvertisement().setPrice(price);
+            
+            System.out.println("***** CCNum: " + createNewAdvertisementReq.getCcNum());
+            
             Advertisement advertisement  = advertisementSessionBeanLocal.createNewAdvertisement(createNewAdvertisementReq.getAdvertisement(), seller.getUserId(), createNewAdvertisementReq.getCcNum()); 
             //CreateNewAdvertisementRsp createNewAdvertisementRsp = new CreateNewAdvertisementRsp(advertisement.getAdvertisementId());
-            return Response.status(Response.Status.OK).entity(new AdvertisementRetrieveByIdRsp(advertisement)).build();
+            return Response.status(Response.Status.OK).entity(new AdvertisementCreateNewRsp(advertisement.getAdvertisementId())).build();
             
         } catch (InvalidLoginCredentialException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

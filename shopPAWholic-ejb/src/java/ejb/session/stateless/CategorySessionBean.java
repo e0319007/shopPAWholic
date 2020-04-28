@@ -37,7 +37,6 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         Category category = em.find(Category.class, categoryId);
         if (category != null) {
             category.getListings().size();
-            category.getSubCategories().size();
             return category;
         } else {
             throw new CategoryNotFoundException("Category Id " + categoryId + " does not exist!");
@@ -45,18 +44,11 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     }
 
     @Override
-    public Category createNewCategory(Category newCategory, Long parentCategoryId) throws InputDataValidationException, CreateNewCategoryException {
+    public Category createNewCategory(Category newCategory) throws InputDataValidationException, CreateNewCategoryException {
         Set<ConstraintViolation<Category>> constraintViolations = validator.validate(newCategory);
 
         if (constraintViolations.isEmpty()) {
             try {
-                if (parentCategoryId != null) {
-                    Category parentCategory = retrieveCategoryByCategoryId(parentCategoryId);
-                    if (!parentCategory.getListings().isEmpty()) {
-                        throw new CreateNewCategoryException("Parent category cannot be associated with any product!");
-                    }
-                    newCategory.setParentCategory(parentCategory);
-                }
                 em.persist(newCategory);
                 em.flush();
 
@@ -83,55 +75,21 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
         List<Category> categories = query.getResultList();
 
         for (Category category : categories) {
-            category.getParentCategory();
-            category.getSubCategories().size();
             category.getListings().size();
         }
         return categories;
     }
 
-    @Override
-    public List<Category> retrieveAllRootCategories() {
-        Query query = em.createQuery("SELECT c FROM Category c WHERE c.parentCategory IS NULL ORDER BY c.name ASC");
-        List<Category> rootCategories = query.getResultList();
-
-        for (Category rootCategory : rootCategories) {
-            lazilyLoadSubCategories(rootCategory);
-            rootCategory.getListings().size();
-        }
-        return rootCategories;
-    }
-
-    private void lazilyLoadSubCategories(Category category) {
-        for (Category c : category.getSubCategories()) {
-            lazilyLoadSubCategories(c);
-        }
-    }
-
-    @Override
-    public List<Category> retrieveAllLeafCategories() {
-        Query query = em.createQuery("SELECT c FROM Category c WHERE c.subCategories IS EMPTY ORDER BY c.name ASC");
-        List<Category> leafCategories = query.getResultList();
-
-        for (Category leafCategory : leafCategories) {
-            leafCategory.getListings().size();
-        }
-        return leafCategories;
-    }
 
     @Override
     public List<Category> retrieveAllCategoriesWithoutProduct() {
         Query query = em.createQuery("SELECT c FROM Category c WHERE c.listings IS EMPTY ORDER BY c.name ASC");
         List<Category> rootCategories = query.getResultList();
-
-        for (Category rootCategory : rootCategories) {
-            rootCategory.getParentCategory();
-        }
         return rootCategories;
     }
 
     @Override
-    public void updateCategory(Category category, Long parentCategoryId) throws InputDataValidationException, CategoryNotFoundException, UpdateCategoryException {
+    public void updateCategory(Category category) throws InputDataValidationException, CategoryNotFoundException, UpdateCategoryException {
         Set<ConstraintViolation<Category>> constraintViolations = validator.validate(category);
 
         if (constraintViolations.isEmpty()) {
@@ -148,22 +106,6 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
                 categoryToUpdate.setName(category.getName());
                 categoryToUpdate.setDescription(category.getDescription());
 
-                if (parentCategoryId != null) {
-                    if (categoryToUpdate.getCategoryId().equals(parentCategoryId)) {
-                        throw new UpdateCategoryException("Category cannot be its own parent");
-                    } else if (categoryToUpdate.getParentCategory() == null || (!categoryToUpdate.getParentCategory().getCategoryId().equals(parentCategoryId))) {
-                        Category parentCategoryToUpdate = retrieveCategoryByCategoryId(parentCategoryId);
-
-                        if (!parentCategoryToUpdate.getListings().isEmpty()) {
-                            throw new UpdateCategoryException("Parent category cannot have any listing associated with it!");
-
-                        }
-                        categoryToUpdate.setParentCategory(parentCategoryToUpdate);
-
-                    }
-                } else {
-                    throw new CategoryNotFoundException("Category Id not provided for category to be updated!");
-                }
             } else {
                 throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
             }
@@ -174,12 +116,9 @@ public class CategorySessionBean implements CategorySessionBeanLocal {
     public void deleteCategory(Long categoryId) throws CategoryNotFoundException, DeleteCategoryException {
         Category categoryToDelete = retrieveCategoryByCategoryId(categoryId);
         System.out.println(categoryToDelete);
-        if (!categoryToDelete.getSubCategories().isEmpty()) {
-            throw new DeleteCategoryException("Category Id " + categoryId + " is associated with existing sub-categories and cannot be deleted!");
-        } else if (!categoryToDelete.getListings().isEmpty()) {
+        if (!categoryToDelete.getListings().isEmpty()) {
             throw new DeleteCategoryException("Category Id " + categoryId + " is associated with existing listings and cannot be deleted!");
         } else {
-            categoryToDelete.setParentCategory(null);
             em.remove(categoryToDelete);
         }
     }

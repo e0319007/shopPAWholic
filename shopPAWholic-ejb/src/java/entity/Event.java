@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,10 +15,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
-/**
- *
- * @author Shi Zhan
- */
 @Entity
 public class Event implements Serializable {
 
@@ -42,9 +32,8 @@ public class Event implements Serializable {
     @Size(min = 10, message = "Location must be more than 10 characters")
     private String location;
 
-    
-    private List<String> pictures;
-    
+    @NotNull
+    private String picture;    
     
     @Temporal(TemporalType.DATE)
     private Date startDateTime;
@@ -55,23 +44,27 @@ public class Event implements Serializable {
 
     @URL
     private String url;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date listDate;
 
     @ManyToOne(optional = false)
     @JoinColumn(nullable = false)
     private Seller seller;
 
     public Event() {
-        pictures = new ArrayList<>();
     }
 
-    public Event(String eventName, String description, String location, List<String> pictures, Date startDateTime, Date endDateTime, String url) {
+    public Event(String eventName, String description, String location, String picture, Date startDateTime, Date endDateTime, String url, Date listDate) {
         this();
         this.eventName = eventName;
         this.description = description;
         this.location = location;
-        this.pictures = pictures;
+        this.picture = picture;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        this.listDate = listDate;
         this.url = url;
     }
 
@@ -132,12 +125,12 @@ public class Event implements Serializable {
         this.location = location;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public String getPicture() {
+        return picture;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getStartDateTime() {
@@ -170,5 +163,13 @@ public class Event implements Serializable {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
     }
 }

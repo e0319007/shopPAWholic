@@ -39,10 +39,14 @@
 
     <ion-item>
       <ion-label>Listings: </ion-label>
+      <ion-label position = "stacked" *ngIf="isCustomer == true">(Click on listing to give review)</ion-label>
       <ion-list>
-        <ion-item *ngFor="let listing of listingsBought" id="listings" name="listings">
+        <ion-item *ngFor="let listing of listingsBought" id="listings" name="listings" (click) = "createReviewForListing($event, listing)">
           {{listing.name}} &ensp;&ensp; ${{listing.unitPrice}} - x1
         </ion-item>
+        <!-- <ion-item *ngFor="let listing of listingsBought"  (click) = "createReviewForListing($event, listing)">
+          Create Review
+        </ion-item> -->
       </ion-list>
     </ion-item>
 

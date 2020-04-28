@@ -18,17 +18,17 @@ public class ReviewUpdateReq {
     private Long listingId;
     private String email;
     private String password;
-    private Date reviewDate;
+    private String description;
 
     public ReviewUpdateReq() {
     }
 
-    public ReviewUpdateReq(Review review, Long listingId, String email, String password, Date reviewDate) {
+    public ReviewUpdateReq(Review review, Long listingId, String email, String password, String description) {
         this.review = review;
         this.listingId = listingId;
         this.email = email;
         this.password = password;
-        this.reviewDate = reviewDate;
+        this.description = description;
     }
 
     /**
@@ -88,18 +88,19 @@ public class ReviewUpdateReq {
     }
 
     /**
-     * @return the reviewDate
+     * @return the description
      */
-    public Date getReviewDate() {
-        return reviewDate;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @param reviewDate the reviewDate to set
+     * @param description the description to set
      */
-    public void setReviewDate(Date reviewDate) {
-        this.reviewDate = reviewDate;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
     
     
     

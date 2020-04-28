@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -13,16 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author EileenLeong
- */
 @Entity
 public class Category implements Serializable {
 
@@ -39,19 +28,11 @@ public class Category implements Serializable {
     @Column(length = 128)
     @Size(max = 128, message = "Description must not be more than 128 characters")
     private String description; 
-    
-    @OneToMany(mappedBy="parentCategory")
-    private List<Category> subCategories; 
-    
-    @ManyToOne
-    //@JoinColumn(nullable = false)
-    private Category parentCategory; 
-    
+     
     @OneToMany(mappedBy="category")
     private List<Listing> listings; 
 
     public Category() {
-        subCategories = new ArrayList<>();
         listings = new ArrayList<>();
     }
 
@@ -61,8 +42,6 @@ public class Category implements Serializable {
         this.description = description;
     }
     
-    
-
     public Long getCategoryId() {
         return categoryId;
     }
@@ -93,86 +72,29 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Category[ id=" + categoryId + " ]";
+       return String.valueOf(categoryId);
     }
 
-    /**
-     * @return the name
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * @param name the name to set
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return the description
-     */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the subCategories
-     */
-    public List<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    /**
-     * @param subCategories the subCategories to set
-     */
-    public void setSubCategories(List<Category> subCategories) {
-        this.subCategories = subCategories;
-    }
-
-    /**
-     * @return the parentCategory
-     */
-    public Category getParentCategory() {
-        return parentCategory;
-    }
-
-    /**
-     * @param parentCategory the parentCategory to set
-     */
-    public void setParentCategory(Category parentCategory) {
-        if (this.parentCategory != null) {
-            if (this.parentCategory.getSubCategories().contains(this)) {
-                this.parentCategory.getSubCategories().remove(this);
-            }
-        }
-        this.parentCategory = parentCategory; 
-        
-        if (this.parentCategory != null) {
-            if (!this.parentCategory.getSubCategories().contains(this)) {
-                this.parentCategory.getSubCategories().add(this);
-            }
-        }
-    }
-
-    /**
-     * @return the listings
-     */
     public List<Listing> getListings() {
         return listings;
     }
 
-    /**
-     * @param listings the listings to set
-     */
     public void setListings(List<Listing> listings) {
         this.listings = listings;
     }

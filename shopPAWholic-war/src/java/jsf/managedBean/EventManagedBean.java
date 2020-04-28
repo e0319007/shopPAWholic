@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jsf.managedBean;
 
 import ejb.session.stateless.EventSessionBeanLocal;
@@ -31,10 +26,6 @@ import org.primefaces.model.DefaultScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 import org.primefaces.model.ScheduleModel;
 
-/**
- *
- * @author Shi Zhan
- */
 @Named(value = "eventManagedBean")
 @ViewScoped
 public class EventManagedBean implements Serializable {
@@ -51,10 +42,11 @@ public class EventManagedBean implements Serializable {
     private String eventName;
     private String description;
     private String location;
-    private List<String> pictures;
+    private String picture;
     private Date startDateTime;
     private Date endDateTime;
     private String url;
+    private Date listDate;
     private Long sellerId;
     private Event selectedEvent;
     private Event newEvent;
@@ -78,27 +70,21 @@ public class EventManagedBean implements Serializable {
         sellerId = currentUser.getUserId();
     }
 
-    /*public void createNewEvent(ActionEvent event) {
+
+    public void createNewEvent(ActionEvent event) {
         try {
-           newEvent = new Event(eventName, description, location, pictures, startDateTime, endDateTime, url);
-            eventSessionBeanLocal.createNewEvent(newEvent,sellerId);
+            newEvent = new Event(eventName, description, location, picture, startDateTime, endDateTime, url, listDate);
+            eventSessionBeanLocal.createNewEvent(newEvent, sellerId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + newEvent.getEventId() + ")", null));
         } catch (CreateNewEventException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Unknown Error occured while creating the event!", null));
         } catch (InputDataValidationException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error occured: " + ex.getMessage(), null));
         } catch (EventNameExistsException ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
-        }*/
-    public void createNewEvent(ActionEvent event) {
-        try {
-            Event eventt = eventSessionBeanLocal.createNewEvent(newEvent, sellerId);
-            events.add(eventt);
-            newEvent = new Event();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event " + eventt.getEventName() + " created successfully", null));
-        } catch (InputDataValidationException | CreateNewEventException | EventNameExistsException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new event: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
+
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
     }
 
@@ -221,12 +207,12 @@ public class EventManagedBean implements Serializable {
         this.location = location;
     }
 
-    public List<String> getPictures() {
-        return pictures;
+    public String getPictures() {
+        return picture;
     }
 
-    public void setPictures(List<String> pictures) {
-        this.pictures = pictures;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Date getStartDateTime() {
@@ -325,4 +311,11 @@ public class EventManagedBean implements Serializable {
         this.newEvent = newEvent;
     }
 
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
+    }
 }

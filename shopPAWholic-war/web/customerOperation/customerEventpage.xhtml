@@ -19,8 +19,7 @@
                 width: 5%;
             }
             .detail {
-                width: 85%;
-                padding-left: 25px;
+
             }
         </style>
 
@@ -33,11 +32,11 @@
                     Events
                 </f:facet>
                 <p:dataViewListItem>              
-                    <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
-                        <p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/>
-
+                    <h:panelGrid columns="4" style="width:100%" columnClasses="logo,detail">
+                        <!--<p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/>-->
+                        <p:graphicImage value="#{event.picture}" style="width:300px; height:400px;"/>
                         <p:outputPanel>
-                            <h:panelGrid columns="2" cellpadding="5">
+                            <h:panelGrid columns="2" cellpadding="5" style="font-size: large">
                                 <h:outputText value="Event name:" />
                                 <h:outputText value="#{event.eventName}" style="font-weight: bold"/>
 
@@ -49,8 +48,7 @@
                             </h:panelGrid>
                         </p:outputPanel>
 
-                        <p:commandButton update=":formDataView:eventDetail" oncomplete="PF('eventDialog').show()" title="View Details">
-                            <h:outputText styleClass="ui-icon pi pi-info-circle" style="margin:0 auto;" />
+                        <p:commandButton update=":formDataView:eventDetail" oncomplete="PF('eventDialog').show()" title="View Details" icon="pi pi-info-circle" value="View Details">
                             <f:setPropertyActionListener value="#{event}" target="#{eventManagedBean.selectedEvent}" />
                         </p:commandButton>
 
@@ -62,26 +60,27 @@
                 <p:outputPanel id="eventDetail" style="text-align:center;">
                     <p:panelGrid columns="2" rendered="#{not empty eventManagedBean.selectedEvent}">
                         <f:facet name="header">
-                            <p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/> 
+                            <!--<p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/> -->
+                            <p:graphicImage value="#{eventManagedBean.selectedEvent.picture}" style="width:300px; height:400px;"/>
                         </f:facet>
 
                         <h:outputText value="Name: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.eventName}" /> 
+                        <h:outputText value="#{eventManagedBean.selectedEvent.eventName}" style="font-weight: bold"/> 
 
                         <h:outputText value="Description: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.description}" /> 
+                        <h:outputText value="#{eventManagedBean.selectedEvent.description}" style="font-weight: bold"/> 
 
                         <h:outputText value="Location: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.location}" /> 
+                        <h:outputText value="#{eventManagedBean.selectedEvent.location}" style="font-weight: bold"/> 
 
                         <h:outputText value="From: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.startDateTime}" /> 
+                        <h:outputText value="#{eventManagedBean.selectedEvent.startDateTime}" style="font-weight: bold"/> 
 
                         <h:outputText value="To: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.endDateTime}" /> 
+                        <h:outputText value="#{eventManagedBean.selectedEvent.endDateTime}" style="font-weight: bold" /> 
 
                         <h:outputText value="Url: "/> 
-                        <h:outputLink value="#{eventManagedBean.selectedEvent.url}">Click here to visit site!</h:outputLink> 
+                        <h:outputLink target="_blank" value="#{eventManagedBean.selectedEvent.url}">Click here to visit site!</h:outputLink> 
 
                     </p:panelGrid>
                 </p:outputPanel>
