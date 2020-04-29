@@ -6,6 +6,7 @@ import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Admin;
 import entity.Listing;
 import entity.Tag;
 import entity.Category;
@@ -59,7 +60,8 @@ public class ListingManagementManagedBean implements Serializable {
     @EJB(name = "UserSessionBeanLocal")
     private UserSessionBeanLocal userSessionBeanLocal;
 
-    private List<Listing> listings;
+    private List<Listing> allListings;
+    private List<Listing> listingsBySellerId;
     private List<Listing> filteredListings;
 
     private Listing newListing;
@@ -125,7 +127,7 @@ public class ListingManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            picture = "http://localhost:8080/shopPAWholic-war/" + secDest + event.getFile().getFileName();
+            picture = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
 
             while (true) {
                 a = inputStream.read(buffer);
@@ -155,11 +157,16 @@ public class ListingManagementManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        listings = listingSessionBeanLocal.retrieveAllListings();
+        allListings = listingSessionBeanLocal.retrieveAllListings();
         tags = tagSessionBeanLocal.retrieveAllTags();
 
-        User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        sellerId = currentUser.getUserId();
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
+            User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            sellerId = currentUser.getUserId();
+        }
+        
+        listingsBySellerId = listingSessionBeanLocal.retrieveListingsBySellerId(sellerId);
+
     }
 
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -173,7 +180,7 @@ public class ListingManagementManagedBean implements Serializable {
             listDate = new Date();
             newListing = new Listing(skuCode, name, description, unitPrice, picture, quantityOnHand, listDate);
             Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, sellerId);
-            listings.add(l);
+            allListings.add(l);
 
             if (filteredListings != null) {
                 filteredListings.add(l);
@@ -192,7 +199,7 @@ public class ListingManagementManagedBean implements Serializable {
             Listing listingToDelete = (Listing) event.getComponent().getAttributes().get("listingToDelete");
             listingSessionBeanLocal.deleteListing(listingToDelete.getListingId());
 
-            listings.remove(listingToDelete);
+            allListings.remove(listingToDelete);
 
             if (filteredListings != null) {
                 filteredListings.remove(listingToDelete);
@@ -248,12 +255,12 @@ public class ListingManagementManagedBean implements Serializable {
         }
     }
 
-    public List<Listing> getListings() {
-        return listings;
+    public List<Listing> getAllListings() {
+        return allListings;
     }
 
-    public void setListings(List<Listing> listings) {
-        this.listings = listings;
+    public void setAllListings(List<Listing> allListings) {
+        this.allListings = allListings;
     }
 
     public List<Listing> getFilteredListings() {
@@ -406,6 +413,14 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public List<Listing> getListingsBySellerId() {
+        return listingsBySellerId;
+    }
+
+    public void setListingsBySellerId(List<Listing> listingsBySellerId) {
+        this.listingsBySellerId = listingsBySellerId;
     }
 
 }

@@ -86,7 +86,6 @@ public class RegisterManagedBean implements Serializable {
         for (String e : emailList) {
             if (email.equals(e)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Duplication Email", null));
-
             }
         }
     }

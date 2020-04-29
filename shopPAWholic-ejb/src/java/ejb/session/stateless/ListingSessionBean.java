@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,6 +118,20 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     @Override
     public List<Listing> retrieveAllListings() {
         Query query = em.createQuery("SELECT l FROM Listing l ORDER BY l.skuCode ASC");
+        List<Listing> listings = query.getResultList();
+
+        for (Listing listing : listings) {
+            listing.getCategory();
+            listing.getTags().size();
+            listing.getOrders().size();
+        }
+        return listings;
+    }
+    
+    @Override
+    public List<Listing> retrieveListingsBySellerId(Long sellerId) {
+        Query query = em.createQuery("SELECT l FROM Listing l WHERE l.seller.userId = :sellerId");
+        query.setParameter("sellerId", sellerId);
         List<Listing> listings = query.getResultList();
 
         for (Listing listing : listings) {

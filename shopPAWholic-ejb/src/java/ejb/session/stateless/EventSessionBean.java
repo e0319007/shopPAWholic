@@ -32,7 +32,7 @@ import util.exception.InputDataValidationException;
 public class EventSessionBean implements EventSessionBeanLocal {
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
-    private EntityManager em;
+    private EntityManager em; 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 
@@ -162,12 +162,12 @@ public class EventSessionBean implements EventSessionBeanLocal {
     }
 
     @Override
-    public List<Event> retrieveEventBySellerId(Long sellerId) {
+    public List<Event> retrieveEventsBySellerId(Long sellerId) {
         Query query = em.createQuery("SELECT e FROM Event e WHERE e.seller.userId = :sellerId");
         query.setParameter("sellerId", sellerId);
         return query.getResultList();
     }
-
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Event>> constraintViolations) {
         String msg = "Input data validation error!:";
         for (ConstraintViolation constraintViolation : constraintViolations) {

@@ -20,6 +20,8 @@ public interface ListingSessionBeanLocal {
     public Listing retrieveListingBySkuCode(String skuCode) throws ListingNotFoundException;
 
     public List<Listing> retrieveAllListings();
+    
+    public List<Listing> retrieveListingsBySellerId(Long sellerId);
 
     public Map<String, Integer> retrieveTotalNumberOfListingsPerCategory();
 

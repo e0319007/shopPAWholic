@@ -8,7 +8,7 @@
 
     <ui:define name="content">
         <h:form>
-            <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1560" panelHeight="450"> 
+            <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1420" panelHeight="450"> 
                 <p:graphicImage name="image/advertisementDummy/#{image}" />
             </p:galleria>
         </h:form>
@@ -39,7 +39,7 @@
                             <p:outputLabel for="desc" value="Advertisement Description:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="desc" value="#{advertisementManagedBean.newAdvertisement.description}" required="true" requiredMessage="Advertisement description is required"/>
+                            <p:inputText id="desc" value="#{advertisementManagedBean.description}" required="true" requiredMessage="Advertisement description is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="desc"/>
@@ -51,7 +51,7 @@
                             <p:outputLabel for="startDate" value="Start Date: "/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="startDate" value="#{advertisementManagedBean.newAdvertisement.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
+                            <p:calendar id="startDate" value="#{advertisementManagedBean.startDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="startDate"/>
@@ -63,7 +63,9 @@
                             <p:outputLabel for="endDate" value="End Date: "/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="endDate" value="#{advertisementManagedBean.newAdvertisement.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
+                            <p:calendar id="endDate" value="#{advertisementManagedBean.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required">
+                                <p:ajax event="keyup" listener="#{advertisementManagedBean.generatePrice}" update="price"/>
+                            </p:calendar>
                         </p:column>
                         <p:column>
                             <p:message for="endDate"/>
@@ -74,8 +76,8 @@
                         <p:column>
                             <p:outputLabel for="price" value="Price: "/>
                         </p:column>
-                        <p:column>                          
-                            <p:commandButton id="price" value="generate price" actionListener="#{advertisementManagedBean.generatePrice}" update="@form"/>    
+                        <p:column> 
+                            <h:outputText id="price" value="#{advertisementManagedBean.price}"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>
@@ -87,13 +89,13 @@
                             <p:outputLabel for="picture" value="Picture:"/>
                         </p:column>
                         <p:column>
-                            <p:fileUpload id="picture" value="#{fileUploadView.file}"
+                            <p:fileUpload id="picture"
                                           invalidSizeMessage="JournalDev: Invalid Size"
                                           invalidFileMessage="JournalDev: Invalid File Type"
                                           fileLimitMessage="JournalDev: Invalid File Limit"
-                                          mode="advanced" multiple="true" fileLimit="30000000" sizeLimit="10000000000000"
+                                          mode="advanced" sizeLimit="10000000000000"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                          fileUploadListener="#{fileUploadView.fileUploadListener}"
+                                          fileUploadListener="#{advertisementManagedBean.handleFileUpload}"
                                           auto="true">
 
                             </p:fileUpload>
@@ -109,7 +111,7 @@
                             <p:outputLabel for="url" value="Url: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="url" value="#{advertisementManagedBean.newAdvertisement.url}"/>
+                            <p:inputText id="url" value="#{advertisementManagedBean.url}"/>
                         </p:column>
                         <p:column>
                             <p:message for="url"/>
@@ -137,11 +139,10 @@
 
         <h:form id="formDataView">
             <p:messages id="messages" redisplay="false" closable="true"/>
-            <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.advertisements}" var="ad">
+            <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.advertisementsBySellerId}" var="ad">
                 <p:dataViewListItem>
                     <h:panelGrid cellpadding="30" columns="3" style="width: 100%" columnClasses="logo,detail">
-                        <!--<p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>-->
-                        <p:graphicImage value="#{ad.picture}" style="width:700px; height:300px;"/>
+                        <p:graphicImage value="#{ad.picture}" style="width:500px; height:300px;"/>
 
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="10" >
