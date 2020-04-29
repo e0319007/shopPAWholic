@@ -124,21 +124,26 @@
             }
 
             .logo {
-                width: 5%;
+                width: 35%;
+                
             }
             .detail {
-
+                
             }
         </style>
 
         <!--primeface's dataview-->
         <h:form id="formDataView">
+
             <p:messages id="messages" redisplay="false" closable="true" />
             <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.events}" var="event" listIcon="pi pi-bars">
-                <p:dataViewListItem>
+                <f:facet name="header">
+                    Events
+                </f:facet>
+                <p:dataViewListItem>              
                     <h:panelGrid columns="4" style="width:100%" columnClasses="logo,detail">
-                        <p:graphicImage value="#{event.picture}" style="width:400px; height:320px;"/>
-                        
+                    
+                        <p:graphicImage value="#{event.picture}" style="width:300px; height:400px; margin-left: 70px;"/>
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5" style="font-size: large">
                                 <h:outputText value="Event name:" />
