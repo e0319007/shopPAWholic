@@ -47,33 +47,33 @@
                 <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
                     <h:form>
                         <p:panelMenu style="width:280px; margin-top:40px;">
-                            <p:submenu label="Home" >
-                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml"></p:menuitem>
+                            <p:submenu label="Home" icon="p pi-home">
+                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml" icon="pi pi-home"></p:menuitem>
                             </p:submenu>                            
 
-                            <p:submenu label="User">
-                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false"/>
-                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false"></p:menuitem>
-                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false"></p:menuitem>
+                            <p:submenu label="User" icon="pi pi-users">
+                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false" icon="pi pi-users"/>
+                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
+                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Listing" >
-                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml"></p:menuitem>
-                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml"></p:menuitem>
-                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml"></p:menuitem>
-                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml"></p:menuitem>
+                            <p:submenu label="Listing" icon="pi pi-shopping-cart">
+                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml" icon="pi pi-shopping-cart"></p:menuitem>
+                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml" icon="pi pi-search"></p:menuitem>
+                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml" icon="pi pi-filter"></p:menuitem>
+                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml" icon="pi pi-filter"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Category">
-                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon=""></p:menuitem>
+                            <p:submenu label="Category" icon="pi pi-th-large">
+                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon="pi pi-th-large"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Tag">
+                            <p:submenu label="Tag" icon="pi pi-tags">
                                 <p:menuitem value="View all Tags" ajax="false" url="../adminOperation/adminTagList.xhtml" icon="pi pi-tags"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Advertisement">
-                                <p:menuitem value="View all Advertisements" ajax="false" icon="pi pi-file-o"></p:menuitem>
+                            <p:submenu label="Advertisement" icon="pi pi-bookmark">
+                                <p:menuitem value="View all Advertisements" ajax="false" url="../adminOperation/adminViewAllAdvertisements.xhtml" icon="pi pi-bookmark"></p:menuitem>
                             </p:submenu>
 
                         </p:panelMenu>
@@ -85,5 +85,6 @@
         <div id="content" class="left_content">
             <ui:insert name="content"></ui:insert>
         </div>
+        
     </h:body>
 </ui-composition>
