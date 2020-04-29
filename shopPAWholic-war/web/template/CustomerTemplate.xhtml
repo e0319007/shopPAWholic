@@ -33,7 +33,6 @@
                             <p:menuitem value="Listings"  url="../customerOperation/customerListingList.xhtml" icon="pi pi-file"/>
                             <p:menuitem value="Events" url="../customerOperation/customerEventpage.xhtml" icon="pi pi-calendar"/>
                             <p:menuitem value="Advertisement" url="../customerOperation/customerAdvertisementpage.xhtml" icon="pi pi-bookmark"/>
-                            <p:menuitem value="Forums" url="../customerOperation/customerForumpage.xhtml" icon="pi pi-envelope"/>
 
                             <f:facet name="options">
                                 <!-- search button
@@ -56,14 +55,6 @@
                     </p:galleria>
                     <br/>
                     <h:form id="formMain">
-                        <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}" placeholder="Search">
-                            <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
-                        </p:inputText>
-                        &nbsp;
-                        <p:commandButton value="Search">
-                            <p:ajax event="click" process="@this formMain:txtSearchString" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
-                        </p:commandButton>
-                        <br/><br/>
                         <!--based on time-->
                         <p:dataGrid id="dataGridMain" widgetVar="dataGridMain" var="listing" value="#{searchListingByNameManagedBean.listings}" columns="3" layout="grid"
                                     rows="12" paginator="true"

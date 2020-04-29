@@ -126,7 +126,7 @@ public class ListingManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            picture = "http://localhost:8080/shopPAWholic-war/" + secDest + event.getFile().getFileName();
+            picture = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
 
             while (true) {
                 a = inputStream.read(buffer);
