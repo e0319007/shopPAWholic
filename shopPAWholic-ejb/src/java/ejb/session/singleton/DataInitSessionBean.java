@@ -1,3 +1,4 @@
+
 package ejb.session.singleton;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
@@ -98,14 +99,14 @@ public class DataInitSessionBean {
     private void initializeData() {
         try {
             adminSessionBeanLocal.createNewAdmin(new Admin("admin", "password"));
-            Category categoryPetFood = categorySessionBeanLocal.createNewCategory(new Category("Pet Food", "Pet Food"));
+            Category categoryCatFood = categorySessionBeanLocal.createNewCategory(new Category("Cat Food", "Cat Food"));
             Category categoryPetToy = categorySessionBeanLocal.createNewCategory(new Category("Pet Toy", "Pet Toy"));
-            Category categoryA = categorySessionBeanLocal.createNewCategory(new Category("Category A", "Category A"));
-            Category categoryB = categorySessionBeanLocal.createNewCategory(new Category("Category B", "Category B"));
-            Category categoryC = categorySessionBeanLocal.createNewCategory(new Category("Category C", "Category C"));
-            Category categoryX = categorySessionBeanLocal.createNewCategory(new Category("Category X", "Category X"));
-            Category categoryY = categorySessionBeanLocal.createNewCategory(new Category("Category Y", "Category Y"));
-            Category categoryZ = categorySessionBeanLocal.createNewCategory(new Category("Category Z", "Category Z"));
+            Category categoryDogFood = categorySessionBeanLocal.createNewCategory(new Category("Dog Food", "Dog Food"));
+            Category categoryLitters = categorySessionBeanLocal.createNewCategory(new Category("Litters", "Litters"));
+            Category categoryPetGrooming = categorySessionBeanLocal.createNewCategory(new Category("Cat Grooming", "Cat Grooming"));
+            Category categoryPetAccessories = categorySessionBeanLocal.createNewCategory(new Category("Dog Accessories", "Dog Accessories"));
+            Category categoryDogCatBeds = categorySessionBeanLocal.createNewCategory(new Category("Dog/Cat Beds", "Dog/Cat Beds"));
+            Category categoryOthers = categorySessionBeanLocal.createNewCategory(new Category("Others", "Others"));
 
             Tag tagPopular = tagSessionBeanLocal.createNewTag(new Tag("popular"));
             Tag tagDiscount = tagSessionBeanLocal.createNewTag(new Tag("discount"));
@@ -221,29 +222,29 @@ public class DataInitSessionBean {
             Date date = new Date(System.currentTimeMillis());
 
             String picture = "https://www.k9natural.com/wp-content/uploads/2018/11/K9-Natural-Can-170g-Hoki-Beef-600x462.png";
-            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Listing A1", "Listing A1", new BigDecimal("10.00"), picture, 10, date), categoryA.getCategoryId(), tagIdsPopular, seller1.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Listing A2", "Listing A2", new BigDecimal("20.00"), picture, 20, date), categoryA.getCategoryId(), tagIdsDiscount, seller2.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Listing A3", "Listing A3", new BigDecimal("30.00"), picture, 30, date), categoryA.getCategoryId(), tagIdsPopularDiscount, seller3.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST001", "Burp Cat Treat", "Cat Food, Burp Cat Treat 60g", new BigDecimal("10.00"), "https://sg-test-11.slatic.net/p/f64e8a88ed16ce54a37d4089f08cb339.jpg", 10, date), categoryCatFood.getCategoryId(), tagIdsPopular, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST002", "Royal Canin Feline Health Nutrition Kitten Food", "Royal Canin Feline Health Nutrition Kitten Wet Food 85g", new BigDecimal("20.00"), "https://cdn.shopify.com/s/files/1/1149/5008/products/Royal-Canin-Feline-Health-Nutrition-Kitten-Wet-Food-85g.jpg?v=1574670735", 20, date), categoryCatFood.getCategoryId(), tagIdsDiscount, seller2.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST003", "Prama Smokey Baken for Dog", "Prama Smokey Baken for Dog 70g", new BigDecimal("30.00"), "https://cdn.shopify.com/s/files/1/0719/7239/products/prama-delicacy-snack-smoky-bacon-dog-treats-70g-bag-pawpy-kisses_583_grande.jpg?v=1579516561", 30, date), categoryDogFood.getCategoryId(), tagIdsPopularDiscount, seller3.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Listing B1", "Listing B1", new BigDecimal("10.00"), picture, 10, date), categoryB.getCategoryId(), tagIdsEmpty, seller1.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Listing B2", "Listing B2", new BigDecimal("20.00"), picture, 20, date), categoryB.getCategoryId(), tagIdsEmpty, seller5.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Listing B3", "Listing B3", new BigDecimal("30.00"), picture, 30, date), categoryB.getCategoryId(), tagIdsEmpty, seller4.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST004", "Royal Canin Mini Indoor Dry Dog Food", "Royal Canin Mini Indoor Dry Dog Food 500g", new BigDecimal("10.00"), "https://cdn.shopify.com/s/files/1/1149/5008/products/Royal-Canin-Mini-Indoor-Adult_480x480.jpg?v=1566451667", 10, date), categoryDogFood.getCategoryId(), tagIdsEmpty, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST005", "Cat litter box for kitten", "Cat litter box for kitten 50CM X 40CM", new BigDecimal("20.00"), "https://s3-ap-southeast-1.amazonaws.com/kohepets-old/cms_paper-cat-litter-singapore.jpg", 20, date), categoryLitters.getCategoryId(), tagIdsEmpty, seller5.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST006", "Dog Litter Tray", "Pet Toilet for Dog, Pee Training Tray Litter Box for Dog Puppy Pet with Protection Wall", new BigDecimal("30.00"), "https://ae01.alicdn.com/kf/HTB1zOt1avjsK1Rjy1Xaq6zispXaP.jpg", 30, date), categoryLitters.getCategoryId(), tagIdsEmpty, seller4.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Listing C1", "Listing C1", new BigDecimal("10.00"), picture, 10, date), categoryC.getCategoryId(), tagIdsEmpty, seller8.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Listing C2", "Listing C2", new BigDecimal("20.00"), picture, 20, date), categoryC.getCategoryId(), tagIdsEmpty, seller6.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Listing C3", "Listing C3", new BigDecimal("30.00"), picture, 30, date), categoryC.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST007", "Professional Grooming Rake Comb", "2 Sided Pet Detangler Tool - Matted Fur Remover - for Painless Removal of Knots, Tangles & Mats", new BigDecimal("10.00"), "https://images-na.ssl-images-amazon.com/images/I/61oXlk823AL._AC_UL320_.jpg", 10, date), categoryPetGrooming.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST008", "Gmjay Pet Dematting Rake", "Comb Ergonomic de Matting Comb for Dogs and Cats Remove Mats and Tangles Coats Safely", new BigDecimal("20.00"), "https://images-na.ssl-images-amazon.com/images/I/518F7KGyYmL._AC_UL320_.jpg", 20, date), categoryPetGrooming.getCategoryId(), tagIdsEmpty, seller6.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST009", "Reflective Dog Leash", "Nylon Rope Pet Running Tracking Leashes Long Lead Dog", new BigDecimal("15.00"), "https://ae01.alicdn.com/kf/HTB1YJrcJuGSBuNjSspbq6AiipXaJ/Reflective-Large-Dog-Leash-Nylon-Rope-Pet-Running-Tracking-Leashes-Long-Lead-Dog-Mountain-Climbing-Rope.jpg", 30, date), categoryPetAccessories.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Listing X1", "Listing X1", new BigDecimal("10.00"), picture, 10, date), categoryX.getCategoryId(), tagIdsPopular, seller5.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"), picture, 20, date), categoryX.getCategoryId(), tagIdsDiscount, seller1.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Listing X3", "Listing X3", new BigDecimal("30.00"), picture, 30, date), categoryX.getCategoryId(), tagIdsPopularDiscount, seller6.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST010", "Pet Collar", "Adjustable Portable Nylon Dog Accessories", new BigDecimal("10.00"), "https://cf.shopee.sg/file/b458a74c878e1d07b1e6f67f2cd5a912", 10, date), categoryPetAccessories.getCategoryId(), tagIdsPopular, seller5.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST011", "Listing X2", "Listing X2", new BigDecimal("20.00"), picture, 20, date), categoryPetToy.getCategoryId(), tagIdsDiscount, seller1.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST012", "Cat Scratcher", "Marukan Brisky Tunnel Cat Scratcher", new BigDecimal("30.00"), "https://cdn.shopify.com/s/files/1/2977/2416/products/marukan-brisky-tunnel-cat-scratcher-3_1.jpg?v=1571711561", 30, date), categoryPetToy.getCategoryId(), tagIdsPopularDiscount, seller6.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Listing Y1", "Listing Y1", new BigDecimal("10.00"), picture, 10, date), categoryY.getCategoryId(), tagIdsEmpty, seller2.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Listing Y2", "Listing Y2", new BigDecimal("20.00"), picture, 20, date), categoryY.getCategoryId(), tagIdsEmpty, seller3.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Listing Y3", "Listing Y3", new BigDecimal("30.00"), picture, 30, date), categoryY.getCategoryId(), tagIdsEmpty, seller7.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST013", "Goodie Dog Bone", "Dog Bone Kong Company Red", new BigDecimal("10.00"), "https://9ed48207422fa7fc5013-a6297eb5ec0f30e883355c8680f3b2d6.ssl.cf2.rackcdn.com/10014_1_1000x1000.jpg", 10, date), categoryPetToy.getCategoryId(), tagIdsEmpty, seller2.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST014", "Pet Fusion Dog Bed", "Pet Fusion Dog Bed 70CM X 55CM", new BigDecimal("20.00"), "https://static.businessinsider.sg/2020/01/01/5e307b8724306a6f881a9dd7.png", 20, date), categoryDogCatBeds.getCategoryId(), tagIdsEmpty, seller3.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST015", "Tuft + Paw Cat Cave Bed", "Tuft + Paw Cat Cave Bed 55CM", new BigDecimal("30.00"), "https://cdn.shopify.com/s/files/1/1511/7434/products/tuft-paw-cat-cave2_800x.jpg?v=1555446167", 30, date), categoryDogCatBeds.getCategoryId(), tagIdsEmpty, seller7.getUserId());
 
-            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "Listing Z1", "Listing Z1", new BigDecimal("10.00"), picture, 10, date), categoryZ.getCategoryId(), tagIdsEmpty, seller7.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Listing Z2", "Listing Z2", new BigDecimal("20.00"), picture, 20, date), categoryZ.getCategoryId(), tagIdsEmpty, seller6.getUserId());
-            listingSessionBeanLocal.createNewListing(new Listing("LIST019", "Listing Z3", "Listing Z3", new BigDecimal("30.00"), picture, 30, date), categoryZ.getCategoryId(), tagIdsEmpty, seller8.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST016", "ZuPreem Nut Blend Diet for Medium/Large Birds", "ZuPreem Nut Blend Diet for Medium/Large Birds, 1kg", new BigDecimal("10.00"), "https://images-na.ssl-images-amazon.com/images/I/71Jvb0ViGKL._AC_SX425_.jpg", 20, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller7.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST017", "Hamster Wheel", "Love Hamster Wheel, Spinner Exercise Wheel", new BigDecimal("20.00"), "https://contestimg.wish.com/api/webimage/5a00103e6531681cb28c7025-large.jpg?cache_buster=f9ae0741b22a2cf38ec28a5e4149fb34", 20, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller6.getUserId());
+            listingSessionBeanLocal.createNewListing(new Listing("LIST018", "Ecological Fish Tank", "Fish tank small ecological fish tank office table fish tank", new BigDecimal("30.00"), "https://gd.image-gmkt.com/li/512/047/1138047512.g_0-w_g.jpg", 30, date), categoryOthers.getCategoryId(), tagIdsEmpty, seller8.getUserId());
 
             DeliveryDetail delivery = new DeliveryDetail("BLK 1 Street 1", "98765432", date, DeliveryMethod.QXPRESS);
 
@@ -324,3 +325,4 @@ public class DataInitSessionBean {
     }
 
 }
+

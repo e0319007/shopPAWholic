@@ -35,11 +35,11 @@ export class ViewCartPage implements OnInit {
   }
 
   ionViewWillEnter(){
-   this.refreshCart;
+   this.refreshCart();
   }
 
   ionViewCanEnter(){
-   this.refreshCart;
+   this.refreshCart();
   }
 
   refreshCart() {
@@ -84,3 +84,4 @@ export class ViewCartPage implements OnInit {
     this.router.navigate(["/viewAllListings"]);
   }
 }
+

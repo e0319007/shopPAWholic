@@ -21,7 +21,9 @@ export class AdvertisementService {
   }
 
   retrieveAllAdvertisements(): Observable<any> {
-    return this.httpClient.get<any>(this.baseUrl + "/retrieveAllAdvertisements").pipe(catchError(this.handleError));
+    let O: Observable<any> = this.httpClient.get<any>(this.baseUrl + "/retrieveAllAdvertisements").pipe(catchError(this.handleError));
+    console.log(O);
+    return O;
   }
 
   retrieveAdvertisementById(advertisementId: string) : Observable<any> {
@@ -31,7 +33,8 @@ export class AdvertisementService {
 
   createAdvertisement(advertisement: Advertisement, startDate: Date, startYear: number, startMth: number, startDay: number,
                       endDate: Date, endYear: number, endMth: number, endDay: number, ccNum: string, 
-                      pictures: string[], url: string, description: string, price: number): Observable<any> {
+                      picture: string, url: string, description: string, price: number): Observable<any> {
+      console.log(advertisement.picture);
       let advertisementCreateReq = {
           "advertisement": advertisement,
           "email": this.utilityService.getEmail(),
@@ -45,7 +48,7 @@ export class AdvertisementService {
           "endMth" : endMth,
           "endDay" : endDay,
           "ccNum" : ccNum,
-          "pictures" : pictures,
+          "pictures" : picture,
           "url" : url,
           "description" : description,
           "price" : price,

@@ -25,6 +25,10 @@
       
       <ion-list *ngIf="retrieveListingError == false && listingToView != null">
         <ion-item>
+          <ion-label> </ion-label>
+          <ion-img src='{{listingToView.picture}}'></ion-img>
+        </ion-item>
+        <ion-item>
           <ion-label>Listing Id: </ion-label>
           {{listingToView.listingId}}
         </ion-item>
@@ -91,7 +95,7 @@
     </ion-button>
   
 		<ion-button (click)="addToCart()" style="float:right">
-			<ion-icon slot="start" name="create"></ion-icon>
+			<ion-icon slot="cart" name="add"></ion-icon>
 			Add To Cart
 		</ion-button>
   </ion-toolbar>

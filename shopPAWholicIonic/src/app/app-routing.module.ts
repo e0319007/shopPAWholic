@@ -80,7 +80,7 @@ const routes: Routes = [
     loadChildren: './view-all-advertisements/view-all-advertisements.module#ViewAllAdvertisementsPageModule', canActivate: [AuthGuard]
   },
   {
-    path: 'customerOperation/createNewReview/:listingId',
+    path: 'customerOperation/createNewReview/:orderId/:listingId',
     loadChildren: './customerOperation/create-new-review/create-new-review.module#CreateNewReviewPageModule', canActivate: [AuthGuard]
   },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },

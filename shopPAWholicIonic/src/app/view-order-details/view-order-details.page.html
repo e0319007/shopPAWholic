@@ -22,7 +22,7 @@
   <ion-list *ngIf="retrieveOrderError == false && orderToView != null">
     <ion-item>
       <ion-label>Order Date: </ion-label>
-      {{orderToView.orderDate}}
+        {{parseDate(orderToView.orderDate) | date: 'dd MMM, yyyy'}}
     </ion-item>
     
     <ion-item *ngIf="isCustomer == true">
@@ -38,12 +38,23 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Listings: </ion-label>
-      <ion-label position = "stacked" *ngIf="isCustomer == true">(Click on listing to give review)</ion-label>
-      <ion-list>
-        <ion-item *ngFor="let listing of listingsBought" id="listings" name="listings" (click) = "createReviewForListing($event, listing)">
-          {{listing.name}} &ensp;&ensp; ${{listing.unitPrice}} - x1
+      <ion-label style= "font-size: 20px" position = "stacked" style = "margin: 5px;"> Listings: </ion-label>
+      <ion-list >
+        <ion-item *ngFor="let listing of listingsBought" id="listings" name="listings" >
+          <div style = "margin: none;">
+            <ion-grid>
+              <ion-row>
+                    <p style = "float: right">{{listing.name}} &ensp;&ensp; ${{listing.unitPrice}} - x1</p>
+                </ion-row>
+                  <ion-row>
+                    <button style = "float: left; display: flex" expand ="block" fill = "clear" shape ="round" (click) = "createReviewForListing($event, listing)">Review Listing</button>
+              </ion-row>
+            </ion-grid>
+          </div>
         </ion-item>
+        <!-- <ion-item *ngFor="let listing of listingsBought" id="listings" name="listings" (click) = "createReviewForListing($event, listing)">
+          {{listing.name}} &ensp;&ensp; ${{listing.unitPrice}} - x1
+        </ion-item> -->
         <!-- <ion-item *ngFor="let listing of listingsBought"  (click) = "createReviewForListing($event, listing)">
           Create Review
         </ion-item> -->

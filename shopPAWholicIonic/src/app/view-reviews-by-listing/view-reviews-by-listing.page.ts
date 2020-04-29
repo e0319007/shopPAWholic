@@ -13,11 +13,13 @@ import { UtilityService } from '../utility.service';
 export class ViewReviewsByListingPage implements OnInit {
 
   listingId: number;
-  reviews: Review[] = new Array();
+  reviews: Review[];
 
   error: boolean;
   errorMessage: string;
   resultSuccess: boolean;
+
+  hasReviews: boolean = true;
 
   constructor(private router: Router, private utilityService: UtilityService,  
               private activeRoute: ActivatedRoute, private reviewService: ReviewService) 
@@ -30,7 +32,7 @@ export class ViewReviewsByListingPage implements OnInit {
     this.listingId = parseInt(this.activeRoute.snapshot.paramMap.get('listingId'));
     console.log("called view reviews by listing method with listing id: " + this.listingId);
     this.refreshReviews();
-    // console.log("picture url: " + this.reviews[1].reviewPictures[0]);
+   
   }
 
   ionViewWillEnter() {
@@ -41,10 +43,25 @@ export class ViewReviewsByListingPage implements OnInit {
     this.reviewService.retrieveAllReviewsByListingId(this.listingId).subscribe(
       response => {
         this.reviews = response.reviews;
+        console.log("getting listings with size: " + this.reviews.length);
+        // this.hasReviews = true;
+        if (this.reviews.length == 0) {
+          this.hasReviews = false;
+        } else {
+          this.hasReviews = true;
+          for (var i = 0; i < this.reviews.length; i++) {
+            console.log(this.reviews[i].picture);
+        }
+        }
       }, error => {
         console.log('********* ViewAllReviewsByListing.ts: ' + error);
+        this.hasReviews = false;
       }
     )
+  }
+
+  back() {
+    this.router.navigate(["/viewListingDetails/" + this.listingId]);
   }
 
 }
