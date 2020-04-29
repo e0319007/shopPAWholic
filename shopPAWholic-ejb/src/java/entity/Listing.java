@@ -24,14 +24,6 @@ import javax.validation.constraints.Size;
 @Entity
 public class Listing implements Serializable {
 
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +52,6 @@ public class Listing implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Integer quantityOnHand;
-     
     
     @Column(nullable = false, precision = 11, scale = 2)
     @NotNull 
@@ -94,24 +85,14 @@ public class Listing implements Serializable {
         orders = new ArrayList<>();
     }
     
-     public Listing(String skuCode, String name, String description, BigDecimal unitPrice, Integer quantityOnHand) {
-        this();
-        this.skuCode = skuCode;
-        this.name = name;
-        this.description = description;
-        this.quantityOnHand = quantityOnHand;
-        this.unitPrice = unitPrice;
-    }
-
-
     public Listing(String skuCode, String name, String description, BigDecimal unitPrice, String picture, Integer quantityOnHand, Date listDate) {
         this();
         this.skuCode = skuCode;
         this.name = name;
         this.description = description;
-        this.quantityOnHand = quantityOnHand;
         this.unitPrice = unitPrice;
         this.picture = picture;
+        this.quantityOnHand = quantityOnHand;
         this.listDate = listDate;
     }
     
@@ -272,4 +253,11 @@ public class Listing implements Serializable {
         this.listDate = listDate;
     }
     
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
 }
