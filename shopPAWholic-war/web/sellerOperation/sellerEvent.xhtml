@@ -136,8 +136,8 @@
             <p:messages id="messages" redisplay="false" closable="true" />
             <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.eventsBySellerId}" var="event" listIcon="pi pi-bars">
                 <p:dataViewListItem>
-                    <h:panelGrid columns="4" style="width:100%" columnClasses="logo,detail">
-                        <p:graphicImage value="#{event.picture}" style="width:400px; height:320px;"/>
+                    <h:panelGrid cellpadding="30" columns="3" style="width:100%" columnClasses="logo,detail">
+                        <p:graphicImage value="#{event.picture}" style="width:500px; height:320px;"/>
                         
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="5" style="font-size: large">
