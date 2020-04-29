@@ -63,7 +63,9 @@
                             <p:outputLabel for="endDate" value="End Date: "/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="endDate" value="#{advertisementManagedBean.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required"/>
+                            <p:calendar id="endDate" value="#{advertisementManagedBean.endDate}" timeZone="GMT+8" pattern="dd/MM/yyyy" required="true" requiredMessage="Date is required">
+                                <p:ajax event="keyup" listener="#{advertisementManagedBean.generatePrice}" update="price"/>
+                            </p:calendar>
                         </p:column>
                         <p:column>
                             <p:message for="endDate"/>
@@ -74,8 +76,8 @@
                         <p:column>
                             <p:outputLabel for="price" value="Price: "/>
                         </p:column>
-                        <p:column>                          
-                            <p:commandButton id="price" value="generate price" actionListener="#{advertisementManagedBean.generatePrice}" update="@form"/>    
+                        <p:column> 
+                            <h:outputText id="price" value="#{advertisementManagedBean.price}"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>

@@ -9,11 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.event.ActionEvent;
@@ -75,11 +72,13 @@ public class AdvertisementManagedBean implements Serializable {
 
     }
 
-    public void generatePrice() {
+    public BigDecimal generatePrice() {
         //have to input in days by this part
         long days = ChronoUnit.DAYS.between(startDate.toInstant(), endDate.toInstant());
         price = BigDecimal.ONE;
         price = price.multiply(new BigDecimal(days));
+        System.out.println("#################################### "+price);
+        return price;
     }
 
     public void handleFileUpload(FileUploadEvent event) {
