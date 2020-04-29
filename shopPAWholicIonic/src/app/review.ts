@@ -8,7 +8,6 @@ export class Review {
     rating: number;
     reviewDate: Date;
     reviewPictures: string[];
-    picture: string;
 
     constructor(reviewId?:number, description?:string, rating?:number, reviewDate?: Date, reviewPictures?:string[]){
         this.reviewId = reviewId;
@@ -16,7 +15,6 @@ export class Review {
         this.rating = rating;
         this.reviewDate = reviewDate;
         this.reviewPictures = reviewPictures;
-        this.picture = reviewPictures[0];
     }
 
 }

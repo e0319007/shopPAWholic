@@ -46,7 +46,7 @@
               <ion-row>
                     <p style = "float: right">{{listing.name}} &ensp;&ensp; ${{listing.unitPrice}} - x1</p>
                 </ion-row>
-                  <ion-row>
+                  <ion-row *ngIf = "isCustomer == true && completed == true">
                     <button style = "float: left; display: flex" expand ="block" fill = "clear" shape ="round" (click) = "createReviewForListing($event, listing)">Review Listing</button>
               </ion-row>
             </ion-grid>

@@ -28,6 +28,7 @@ export class ReviewService {
   }
 
   createReview(review: Review, rating: number, listingId: number, description: string, reviewPictures: string[]){
+    console.log("****review.service.ts: " + reviewPictures[0]);
     let createReviewReq = {
       "review": review,
       "rating": rating,

@@ -101,6 +101,8 @@ public class ReviewResource {
             Customer customer = (Customer) sessionBeanLookup.lookupUserSessionBeanLocal().userLogin(createNewReviewReq.getEmail(), createNewReviewReq.getPassword());
             System.out.println("********** ReviewResource.createReview(): Customer " + customer.getEmail() + " login remotely via web service");
             createNewReviewReq.getReview().setReviewDate(new Date());
+            createNewReviewReq.getReview().setReviewPictures(createNewReviewReq.getReviewPictures());
+            System.out.println("*****Review Resource pics: " + createNewReviewReq.getReview().getReviewPictures());
             Review review = reviewSessionBeanLocal.createNewReview(createNewReviewReq.getReview(), createNewReviewReq.getListingId(), customer.getUserId());
             return Response.status(Status.OK).entity(new ReviewCreateNewRsp(review.getReviewId())).build();              
         } catch (InvalidLoginCredentialException ex) {

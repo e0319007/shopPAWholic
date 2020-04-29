@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import {SellerService} from 'src/app/seller.service';
 import { Seller } from 'src/app/seller';
 import { UtilityService } from 'src/app/utility.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-register-seller',
@@ -26,7 +27,8 @@ export class RegisterSellerPage implements OnInit {
   constructor(private router: Router,
     private activatedRoute: ActivatedRoute,
     private sellerService: SellerService,
-    private utilityService: UtilityService) { 
+    private utilityService: UtilityService,
+    private app: AppComponent) { 
       this.submitted = false;
       this.newSeller = new Seller();
       this.resultSuccess = false;
@@ -35,7 +37,13 @@ export class RegisterSellerPage implements OnInit {
     }
 
   ngOnInit() {
+    this.app.updateMainMenu();
   }
+
+  refresh(){
+    this.app.updateMainMenu();
+  }
+  
 
   clear()
 	{
@@ -66,8 +74,8 @@ export class RegisterSellerPage implements OnInit {
             this.resultError = false;
             this.resultSuccess = true;
             this.message = "New seller " + newSellerId + " created successfully!"
-            this.utilityService.setIsLogin(true);
-            this.utilityService.setIsSeller;
+            // this.utilityService.setIsLogin(true);
+            // this.utilityService.setIsSeller;
             
             sellerRegisterForm.reset();
             this.reset;
@@ -79,9 +87,18 @@ export class RegisterSellerPage implements OnInit {
             console.log('********** RegisterCustomerPage.ts: ' + error);
           }
         )
-
+          this.refresh();
+          this.login();
     }
 
+  }
+
+  login() {
+    this.router.navigate(["/login"]);
+  }
+
+  back() {
+    this.router.navigate(["/register"]);
   }
 
 }

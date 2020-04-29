@@ -56,4 +56,8 @@ export class ViewBillingDetailsPage implements OnInit {
   back() {
     this.router.navigate(["/viewOrderDetails/" + this.orderId]);
   }
+
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
 }
