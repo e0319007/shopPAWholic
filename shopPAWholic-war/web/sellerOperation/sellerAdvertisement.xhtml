@@ -33,10 +33,10 @@
 
         <h:form id="formDataView">
             <p:messages id="messages" redisplay="false" closable="true"/>
-            <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.advertisementsBySellerId}" var="ad">
+            <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.allAdvertisements}" var="ad">
                 <p:dataViewListItem>
                     <h:panelGrid cellpadding="30" columns="3" style="width: 100%" columnClasses="logo,detail">
-                        <p:graphicImage value="#{ad.picture}" style="width:500px; height:300px;"/>
+                        <p:graphicImage value="#{ad.picture}" style="width:700px; height:300px;"/>
 
                         <p:outputPanel>
                             <h:panelGrid columns="2" cellpadding="10" >
