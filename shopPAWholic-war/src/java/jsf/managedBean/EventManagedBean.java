@@ -90,7 +90,6 @@ public class EventManagedBean implements Serializable {
                     + "Event"
                     + System.getProperty("file.separator");
             File newPath = new File(destination + secDest);
-            // advertisementID
             newPath.mkdirs();
             System.err.println("********** FileUploadView.handleFileUpload(): File name: " + event.getFile().getFileName());
             System.err.println("********** FileUploadView.handleFileUpload(): newFilePath: " + newPath);
@@ -105,11 +104,11 @@ public class EventManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            picture = secDest + event.getFile().getFileName();
+            
+            picture = "http://localhost:8080/shopPAWholic-war/" + secDest + event.getFile().getFileName();
 
             while (true) {
                 a = inputStream.read(buffer);
-
                 if (a < 0) {
                     break;
                 }
@@ -132,10 +131,19 @@ public class EventManagedBean implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
+    
+    public Boolean checkForPicture(){
+        if (picture == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void createNewEvent(ActionEvent event) {
         try {
             System.out.println("****************************************" + picture);
+            listDate = new Date();
             newEvent = new Event(eventName, description, location, picture, startDateTime, endDateTime, url, listDate);
             eventSessionBeanLocal.createNewEvent(newEvent, sellerId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + newEvent.getEventId() + ")", null));
@@ -270,7 +278,7 @@ public class EventManagedBean implements Serializable {
         this.location = location;
     }
 
-    public String getPictures() {
+    public String getPicture() {
         return picture;
     }
 
