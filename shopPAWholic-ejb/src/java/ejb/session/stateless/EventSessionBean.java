@@ -32,7 +32,7 @@ import util.exception.InputDataValidationException;
 public class EventSessionBean implements EventSessionBeanLocal {
 
     @PersistenceContext(unitName = "shopPAWholic-ejbPU")
-    private EntityManager em;
+    private EntityManager em; 
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
 

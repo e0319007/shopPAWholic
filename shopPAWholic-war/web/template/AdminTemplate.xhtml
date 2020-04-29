@@ -23,7 +23,7 @@
                         </div>
                         <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
 
-                        <h:form style="padding: 15px 10px; float: right;">
+                        <h:form style="padding-top: 10px; float: right;">
                             <p:commandButton id="emailBtn" type="button" icon="pi pi-bell"/>
                                 <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
                                     <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >

@@ -21,6 +21,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.SellerNotFoundException;
 import util.exception.UserNotFoundException;
+import util.security.CryptographicHelper;
 
 @Named(value = "userManagementManagedBean")
 @ViewScoped
@@ -54,7 +55,7 @@ public class UserManagementManagedBean implements Serializable {
     private User currentUser;
     private Customer currentCustomer;
     private Seller currentSeller;
-    
+
     private User userToView;
     private Customer customerToView;
     private Seller sellerToView;
@@ -64,18 +65,20 @@ public class UserManagementManagedBean implements Serializable {
 
     private Seller selectedSellerToUpdate;
     private Long sellerIdUpdate;
-    
+
     private User selectedUserToUpdate;
-    
+
+    //changePassword
+    private String currentPassword;
+    private String newPassword;
+
     public UserManagementManagedBean() {
         currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        if (currentUser instanceof Customer){
+        if (currentUser instanceof Customer) {
             currentCustomer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         } else {
             currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         }
-        System.out.println("''''''''''''''''''''''''''''''''''''' current Customer: "+currentCustomer);
-        
     }
 
     @PostConstruct
@@ -100,6 +103,7 @@ public class UserManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
         }
     }
+
     public void updateSeller(ActionEvent event) {
 
         try {
@@ -111,7 +115,7 @@ public class UserManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-    
+
     public void updateUser(ActionEvent event) {
 
         try {
@@ -123,13 +127,25 @@ public class UserManagementManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
     }
-    
+
+    public void checkCurrentPassword() {
+        String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(currentPassword + currentUser.getSalt()));
+        System.out.println("############################ "+passwordHash);
+        System.out.println("############################ "+currentUser.getPassword());
+        if (!currentUser.getPassword().equals(passwordHash)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong current password!", null));
+
+        }
+    }
+
     public void doUpdateUser(ActionEvent event) {
         selectedUserToUpdate = (User) event.getComponent().getAttributes().get("userToUpdate");
     }
+
     public void doUpdateSeller(ActionEvent event) {
         selectedSellerToUpdate = (Seller) event.getComponent().getAttributes().get("sellerToUpdate");
     }
+
     public void doUpdateCustomer(ActionEvent event) {
         selectedCustomerToUpdate = (Customer) event.getComponent().getAttributes().get("customerToUpdate");
     }
@@ -254,15 +270,14 @@ public class UserManagementManagedBean implements Serializable {
         this.customerIdUpdate = customerIdUpdate;
     }
 
-    
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return currentUser;
     }
-    
-    public void setCurrentUser(){
+
+    public void setCurrentUser() {
         this.currentUser = currentUser;
     }
-    
+
     public Customer getCurrentCustomer() {
         return currentCustomer;
     }
@@ -279,46 +294,43 @@ public class UserManagementManagedBean implements Serializable {
         this.currentSeller = currentSeller;
     }
 
-    /**
-     * @return the selectedSellerToUpdate
-     */
     public Seller getSelectedSellerToUpdate() {
         return selectedSellerToUpdate;
     }
 
-    /**
-     * @param selectedSellerToUpdate the selectedSellerToUpdate to set
-     */
     public void setSelectedSellerToUpdate(Seller selectedSellerToUpdate) {
         this.selectedSellerToUpdate = selectedSellerToUpdate;
     }
 
-    /**
-     * @return the sellerIdUpdate
-     */
     public Long getSellerIdUpdate() {
         return sellerIdUpdate;
     }
 
-    /**
-     * @param sellerIdUpdate the sellerIdUpdate to set
-     */
     public void setSellerIdUpdate(Long sellerIdUpdate) {
         this.sellerIdUpdate = sellerIdUpdate;
     }
 
-    /**
-     * @return the selectedUserToUpdate
-     */
     public User getSelectedUserToUpdate() {
         return selectedUserToUpdate;
     }
 
-    /**
-     * @param selectedUserToUpdate the selectedUserToUpdate to set
-     */
     public void setSelectedUserToUpdate(User selectedUserToUpdate) {
         this.selectedUserToUpdate = selectedUserToUpdate;
     }
 
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
+
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 }

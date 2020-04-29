@@ -6,6 +6,7 @@ import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Admin;
 import entity.Listing;
 import entity.Tag;
 import entity.Category;
@@ -158,8 +159,11 @@ public class ListingManagementManagedBean implements Serializable {
         listings = listingSessionBeanLocal.retrieveAllListings();
         tags = tagSessionBeanLocal.retrieveAllTags();
 
-        User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        sellerId = currentUser.getUserId();
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
+            User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            sellerId = currentUser.getUserId();
+        }
+
     }
 
     public void viewListingDetails(ActionEvent event) throws IOException {
