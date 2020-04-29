@@ -20,9 +20,11 @@ import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -38,10 +40,10 @@ public class AdvertisementManagedBean implements Serializable {
 
     //For creating allAdvertisements
     private Advertisement newAdvertisement;
-    
+
     private List<Advertisement> allAdvertisements;
     private List<Advertisement> advertisementsBySellerId;
-    
+
     //for creation
     private String description;
     private Date startDate;
@@ -51,11 +53,11 @@ public class AdvertisementManagedBean implements Serializable {
     private String ccNum;
     private String picture;
     private Date listDate;
-    
+ 
     private Long seller;
-    
+
     private Long sellerId;
-    
+
     //for fileUpload
     private UploadedFile file;
 
@@ -76,12 +78,13 @@ public class AdvertisementManagedBean implements Serializable {
         advertisementsBySellerId = advertisementSessionBeanLocal.retrieveAdvertisementsBySellerId(sellerId);
     }
 
+
     public BigDecimal generatePrice() {
         //have to input in days by this part
         long days = ChronoUnit.DAYS.between(startDate.toInstant(), endDate.toInstant());
         price = BigDecimal.ONE;
         price = price.multiply(new BigDecimal(days));
-        System.out.println("#################################### "+price);
+        System.out.println("#################################### " + price);
         return price;
     }
 
@@ -147,7 +150,7 @@ public class AdvertisementManagedBean implements Serializable {
             allAdvertisements.add(advertisement);
             newAdvertisement = new Advertisement();
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New advertisement " + advertisement.getAdvertisementId()+ " created successfully", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New advertisement " + advertisement.getAdvertisementId() + " created successfully", null));
         } catch (InputDataValidationException | CreateNewAdvertisementException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new advertisement: " + ex.getMessage(), null));
         }
@@ -237,7 +240,7 @@ public class AdvertisementManagedBean implements Serializable {
     public void setListDate(Date listDate) {
         this.listDate = listDate;
     }
-    
+
     public Advertisement getNewAdvertisement() {
         return newAdvertisement;
     }
@@ -292,4 +295,6 @@ public class AdvertisementManagedBean implements Serializable {
     public void setAdvertisementsBySellerId(List<Advertisement> advertisementsBySellerId) {
         this.advertisementsBySellerId = advertisementsBySellerId;
     }
+
+   
 }
