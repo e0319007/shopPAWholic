@@ -25,7 +25,7 @@ public interface EventSessionBeanLocal {
 
     public Map<String, Integer> retrieveTotalNumberOfEventsForDay();
 
-    public List<Event> retrieveEventBySellerId(Long sellerId);
+    public List<Event> retrieveEventsBySellerId(Long sellerId);
 
     public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException;
 

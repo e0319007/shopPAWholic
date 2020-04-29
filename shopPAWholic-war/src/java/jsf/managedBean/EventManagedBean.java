@@ -42,9 +42,10 @@ public class EventManagedBean implements Serializable {
     private ScheduleModel scheduleModel;
     private ScheduleEvent scheduleEvent;
 
-    private List<Event> events;
+    private List<Event> allEvents;
+    private List<Event> eventsBySellerId;
 
-    //for creating new events
+    //for creating new allEvents
     private String eventName;
     private String description;
     private String location;
@@ -57,7 +58,7 @@ public class EventManagedBean implements Serializable {
     private Event selectedEvent;
     private Event newEvent;
 
-    //for filtering events
+    //for filtering allEvents
     private List<Event> filterBySeller;
 
     //fileUpload
@@ -71,12 +72,15 @@ public class EventManagedBean implements Serializable {
 
     @PostConstruct
     public void PostConstruct() {
-        events = eventSessionBeanLocal.retrieveAllEvent();
+        allEvents = eventSessionBeanLocal.retrieveAllEvent();
+        
         //hardcoded event as example
         scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
 
         User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         sellerId = currentUser.getUserId();
+        
+        setEventsBySellerId(eventSessionBeanLocal.retrieveEventsBySellerId(sellerId));
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -238,12 +242,12 @@ public class EventManagedBean implements Serializable {
         return t.getTime();
     }
 
-    public List<Event> getEvents() {
-        return events;
+    public List<Event> getAllEvents() {
+        return allEvents;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setAllEvents(List<Event> allEvents) {
+        this.allEvents = allEvents;
     }
 
     public EventSessionBeanLocal getEventSessionBeanLocal() {
@@ -388,5 +392,13 @@ public class EventManagedBean implements Serializable {
 
     public void setListDate(Date listDate) {
         this.listDate = listDate;
+    }
+
+    public List<Event> getEventsBySellerId() {
+        return eventsBySellerId;
+    }
+
+    public void setEventsBySellerId(List<Event> eventsBySellerId) {
+        this.eventsBySellerId = eventsBySellerId;
     }
 }

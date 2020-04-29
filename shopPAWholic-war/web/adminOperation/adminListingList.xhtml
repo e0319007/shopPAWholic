@@ -12,7 +12,7 @@
             <ez:Breadcrumb pageName="listingList"/>
             <h:form id="formAllListings">
                 <p:messages id="messages" redisplay="false" closable="true" />
-                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.listings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
+                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.allListings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
                              filteredValue="#{listingManagementManagedBean.filteredListings}"
                              rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
 

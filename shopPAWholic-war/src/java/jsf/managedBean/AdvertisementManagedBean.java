@@ -36,9 +36,13 @@ public class AdvertisementManagedBean implements Serializable {
     @EJB(name = "AdvertisementSessionBeanLocal")
     private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;
 
-    //For creating advertisements
+    //For creating allAdvertisements
     private Advertisement newAdvertisement;
-    private List<Advertisement> advertisements;
+    
+    private List<Advertisement> allAdvertisements;
+    private List<Advertisement> advertisementsBySellerId;
+    
+    //for creation
     private String description;
     private Date startDate;
     private Date endDate;
@@ -55,7 +59,7 @@ public class AdvertisementManagedBean implements Serializable {
     //for fileUpload
     private UploadedFile file;
 
-    //For updating advertisements
+    //For updating allAdvertisements
     private Advertisement selectedAdvertisementToUpdate;
 
     public AdvertisementManagedBean() {
@@ -64,12 +68,12 @@ public class AdvertisementManagedBean implements Serializable {
 
     @PostConstruct
     public void PostConstruct() {
-        advertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
+        allAdvertisements = advertisementSessionBeanLocal.retrieveAllAdvertisements();
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
             User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
             sellerId = currentUser.getUserId();
         }
-
+        advertisementsBySellerId = advertisementSessionBeanLocal.retrieveAdvertisementsBySellerId(sellerId);
     }
 
     public BigDecimal generatePrice() {
@@ -140,7 +144,7 @@ public class AdvertisementManagedBean implements Serializable {
             listDate = new Date();
             newAdvertisement = new Advertisement(description, startDate, endDate, price, picture, url, listDate);
             Advertisement advertisement = advertisementSessionBeanLocal.createNewAdvertisement(newAdvertisement, sellerId, ccNum);
-            advertisements.add(advertisement);
+            allAdvertisements.add(advertisement);
             newAdvertisement = new Advertisement();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New advertisement " + advertisement.getAdvertisementId()+ " created successfully", null));
@@ -178,12 +182,12 @@ public class AdvertisementManagedBean implements Serializable {
         this.advertisementSessionBeanLocal = advertisementSessionBeanLocal;
     }
 
-    public List<Advertisement> getAdvertisements() {
-        return advertisements;
+    public List<Advertisement> getAllAdvertisements() {
+        return allAdvertisements;
     }
 
-    public void setAdvertisements(List<Advertisement> advertisements) {
-        this.advertisements = advertisements;
+    public void setAllAdvertisements(List<Advertisement> allAdvertisements) {
+        this.allAdvertisements = allAdvertisements;
     }
 
     public String getDescription() {
@@ -279,5 +283,13 @@ public class AdvertisementManagedBean implements Serializable {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public List<Advertisement> getAdvertisementsBySellerId() {
+        return advertisementsBySellerId;
+    }
+
+    public void setAdvertisementsBySellerId(List<Advertisement> advertisementsBySellerId) {
+        this.advertisementsBySellerId = advertisementsBySellerId;
     }
 }

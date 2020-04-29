@@ -129,6 +129,20 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
     
     @Override
+    public List<Listing> retrieveListingsBySellerId(Long sellerId) {
+        Query query = em.createQuery("SELECT l FROM Listing l WHERE l.seller.userId = :sellerId");
+        query.setParameter("sellerId", sellerId);
+        List<Listing> listings = query.getResultList();
+
+        for (Listing listing : listings) {
+            listing.getCategory();
+            listing.getTags().size();
+            listing.getOrders().size();
+        }
+        return listings;
+    }
+    
+    @Override
     public Map<String, Integer> retrieveTotalNumberOfListingsPerCategory() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
         Query query;

@@ -134,7 +134,7 @@
         <!--primeface's dataview-->
         <h:form id="formDataView">
             <p:messages id="messages" redisplay="false" closable="true" />
-            <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.events}" var="event" listIcon="pi pi-bars">
+            <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.eventsBySellerId}" var="event" listIcon="pi pi-bars">
                 <p:dataViewListItem>
                     <h:panelGrid columns="4" style="width:100%" columnClasses="logo,detail">
                         <p:graphicImage value="#{event.picture}" style="width:400px; height:320px;"/>
