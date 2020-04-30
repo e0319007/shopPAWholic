@@ -114,6 +114,13 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
         return advertisements;
     }
     
+    @Override 
+    public List<String> retrieveAdvertisementImages(){
+        Query query = em.createQuery("SELECT a.picture FROM Advertisement a");
+        List<String> pictureList = query.getResultList();
+        return pictureList;
+    }
+    
     @Override
     public List<Advertisement> retrieveAdvertisementsBySellerId(Long sellerId) {
         Query query = em.createQuery("SELECT a FROM Advertisement a WHERE a.seller.userId = :sellerId");

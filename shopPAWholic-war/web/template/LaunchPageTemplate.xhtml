@@ -19,6 +19,8 @@
         <div id="wrapper">
             <div id="top" class="top">
                 <ui:insert name="top">
+                                   
+
                     <h:form>  
                         <p:menubar>
                             <p:menuitem><h:link outcome="/index.xhtml"><h:graphicImage value="./resources/image/shopPAWholic.png"/></h:link></p:menuitem>
@@ -89,7 +91,18 @@
                                     <f:validateRegex pattern="[6|8|9]\d{7}"/>
                                 </p:inputText>
                                 <f:facet name="footer">
-                                    <p:commandButton value="Register" update="messages" action="#{registerManagedBean.createNewUser(event)}" />
+                                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                                        <f:facet name="start">
+                                        </f:facet>
+
+                                    </p:ajaxStatus>
+
+                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                                        <p:graphicImage library="image" name="ajax-loader.gif" />     
+                                    </p:dialog>
+                                    <p:commandButton value="Register" update="messages" action="#{registerManagedBean.createNewUser(event)}"/>
                                 </f:facet>  
                             </h:panelGrid>
                         </p:dialog> 
@@ -100,8 +113,8 @@
             <div id="content" class="center_content">
                 <ui:insert name="content">
                     <!--advertisement-->
-                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1560" panelHeight="450"> 
-                        <p:graphicImage name="image/advertisementDummy/#{image}"/>
+                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1420" panelHeight="450"> 
+                        <p:graphicImage value="#{image}"/>
                     </p:galleria>
                     <h:form id="formMain">
                         <!--based on time-->

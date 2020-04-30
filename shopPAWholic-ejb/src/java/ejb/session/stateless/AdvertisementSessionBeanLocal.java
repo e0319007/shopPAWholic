@@ -18,7 +18,9 @@ public interface AdvertisementSessionBeanLocal {
     public Advertisement retrieveAdvertisementById(Long id) throws AdvertisementNotFoundException;
 
     public List<Advertisement> retrieveAllAdvertisements();
-    
+
+    public List<String> retrieveAdvertisementImages();
+
     public List<Advertisement> retrieveAdvertisementsBySellerId(Long sellerId);
 
     public Map<String, Integer> retrieveTotalNumberOfAdvertisementsForDay();
