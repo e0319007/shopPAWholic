@@ -112,7 +112,7 @@ public class UserManagementManagedBean implements Serializable {
         }
     }
     
-    public void updateUser(ActionEvent event) {
+    /*public void updateUser(ActionEvent event) {
 
         try {
             userSessionBeanLocal.updateUser(selectedUserToUpdate);
@@ -122,11 +122,18 @@ public class UserManagementManagedBean implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
         }
+    }*/
+     public void updateUser(ActionEvent event) 
+    {
+        userSessionBeanLocal.updateUser(selectedUserToUpdate);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User " + " updated successfully", null));
     }
     
     public void doUpdateUser(ActionEvent event) {
         selectedUserToUpdate = (User) event.getComponent().getAttributes().get("userToUpdate");
     }
+    
     public void doUpdateSeller(ActionEvent event) {
         selectedSellerToUpdate = (Seller) event.getComponent().getAttributes().get("sellerToUpdate");
     }

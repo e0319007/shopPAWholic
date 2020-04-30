@@ -61,7 +61,7 @@ public class EventSessionBean implements EventSessionBeanLocal {
         }
     }
 
-    @Override
+    /*@Override
     public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException {
         Set<ConstraintViolation<Event>> constraintViolations = validator.validate(event);
         if (constraintViolations.isEmpty()) {
@@ -75,6 +75,22 @@ public class EventSessionBean implements EventSessionBeanLocal {
         } else {
             throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
+    }*/
+    
+    @Override
+    public void updateEvent(Event eventToUpdate) {
+        try {
+            Event event = retrieveEventById(eventToUpdate.getEventId());
+            event.setEventName(eventToUpdate.getEventName());
+            event.setDescription(eventToUpdate.getDescription());
+            event.setLocation(eventToUpdate.getLocation());
+            //event.setPicture(eventToUpdate.getPicture());
+            event.setStartDateTime(eventToUpdate.getStartDateTime());
+            event.setEndDateTime(eventToUpdate.getEndDateTime());
+            event.setUrl(eventToUpdate.getUrl());
+        } catch (EventNotFoundException ex) {
+            Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -84,10 +100,26 @@ public class EventSessionBean implements EventSessionBeanLocal {
         return (Event) query.getSingleResult();
     }
 
-    @Override
+    /*@Override
     public void deleteEvent(Long id) throws EventNotFoundException {
         Event event = retrieveEventById(id);
         em.remove(event);
+    }*/
+    @Override
+    public void deleteEvent(Long eventIdToDelete)
+    {
+        Event eventToDelete = em.find(Event.class, eventIdToDelete);
+        
+            em.remove(eventToDelete);
+        
+    }
+    @Override
+    public void deleteEvents(List<Long> eventIdsToDelete)
+    {
+        for(Long eventIdToDelete:eventIdsToDelete)
+        {
+            deleteEvent(eventIdToDelete);
+        }
     }
 
     @Override

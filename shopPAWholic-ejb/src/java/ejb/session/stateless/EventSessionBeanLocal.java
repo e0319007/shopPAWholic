@@ -1,4 +1,3 @@
-
 package ejb.session.stateless;
 
 import entity.Event;
@@ -15,7 +14,8 @@ public interface EventSessionBeanLocal {
 
     public Event retrieveEventByName(String name);
 
-    public void deleteEvent(Long id) throws EventNotFoundException;
+    //public void deleteEvent(Long id) throws EventNotFoundException;
+    public void deleteEvent(Long eventIdToDelete);
 
     public Event retrieveEventById(Long id) throws EventNotFoundException;
 
@@ -27,8 +27,11 @@ public interface EventSessionBeanLocal {
 
     public List<Event> retrieveEventsBySellerId(Long sellerId);
 
-    public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException;
+    //public void updateEvent(Event event) throws InputDataValidationException, EventNameExistsException;
+    public void updateEvent(Event eventToUpdate);
 
     public Event createNewEvent(Event event, Long sellerId) throws CreateNewEventException, InputDataValidationException, EventNameExistsException;
+
+    public void deleteEvents(List<Long> eventIdsToDelete);
 
 }

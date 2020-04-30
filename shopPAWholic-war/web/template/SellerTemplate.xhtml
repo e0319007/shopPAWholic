@@ -27,8 +27,7 @@
                             <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
                             <p:menuButton value="#{sessionScope.currentUser.name}">
                                 <p:menuitem value="Sell" url="../sellerOperation/sellerSellListing.xhtml" icon="pi pi-shopping-cart"/>
-                                <p:menuitem value="Events" url="../sellerOperation/sellerEvent.xhtml" icon="pi pi-calendar"></p:menuitem>
-                                <p:menuitem value="Advertisement" url="../sellerOperation/sellerAdvertisement.xhtml" icon="pi pi-bookmark"/>
+                                <p:menuitem value="Events" url="../sellerOperation/sellerEvent.xhtml" icon="pi pi-calendar"></p:menuitem>                               
                                 <p:menuitem value="Profile" url="../sellerOperation/sellerProfile.xhtml" icon="pi pi-user-plus"/>
                                 <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
                             </p:menuButton>

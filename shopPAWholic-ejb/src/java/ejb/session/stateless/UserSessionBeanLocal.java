@@ -31,17 +31,17 @@ public interface UserSessionBeanLocal {
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException;
 
     public List<User> retrieveAllUsers();
-    
+
     public List<String> retrieveAllEmails();
 
     public Map<String, Integer> retrieveTotalNumberOfUsersForTheYear();
 
     public Map<String, Integer> retrieveTotalNumberOfUsersForDay();
-            
+
     public void deleteUser(Long userId) throws UserNotFoundException, DeleteUserException;
 
     public User retrieveUserByEmail(String email) throws UserNotFoundException;
 
-    public void updateUser(User user) throws UserNotFoundException, InputDataValidationException;
-
+    //public void updateUser(User user) throws UserNotFoundException, InputDataValidationException;
+    public void updateUser(User userToUpdate);
 }

@@ -57,7 +57,7 @@ public class EventManagedBean implements Serializable {
     private Long sellerId;
     private Event selectedEvent;
     private Event newEvent;
-
+    private Event selectedEventToUpdate;
     //for filtering allEvents
     private List<Event> filterBySeller;
 
@@ -163,7 +163,7 @@ public class EventManagedBean implements Serializable {
         }
     }
 
-    public void updateEvent(ActionEvent event) {
+    /*public void updateEvent(ActionEvent event) {
         try {
             Event eventToUpdate = (Event) event.getComponent().getAttributes().get("EventToUpdate");
             eventSessionBeanLocal.updateEvent(eventToUpdate);
@@ -173,17 +173,39 @@ public class EventManagedBean implements Serializable {
         } catch (EventNameExistsException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
+    }*/
+    /*public void updateEvent (ActionEvent event) {
+        try {
+            eventSessionBeanLocal.updateEvent(selectedEventToUpdate);
+        } catch (InputDataValidationException | EventNameExistsException ex) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
+        }
+    }*/
+    
+     public void updateEvent(ActionEvent event) throws InputDataValidationException, EventNameExistsException
+    {
+        eventSessionBeanLocal.updateEvent(selectedEventToUpdate);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event " + " updated successfully", null));
+    }
+    
+
+    
+    public void doUpdateEvent(ActionEvent event) {
+        selectedEventToUpdate = (Event) event.getComponent().getAttributes().get("eventToUpdate");
+
     }
 
-    public void deleteEvent(ActionEvent event) {
-        try {
-            Event eventToDelete = (Event) event.getComponent().getAttributes().get("EventToDelete");
-            eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event deleted successfully! (Id: " + eventToDelete.getEventId() + ")", null));
-        } catch (EventNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
-        }
+     public void deleteEvent(ActionEvent event)
+    {
+        Event eventToDelete = (Event)event.getComponent().getAttributes().get("eventToDelete");
+        
+        eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
+        allEvents.remove(eventToDelete);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event " + eventToDelete.getEventName() + " deleted successfully", "Event " + eventToDelete.getEventName() + " deleted successfully"));
     }
+
 
     public void addEvent(ActionEvent actionEvent) {
         if (scheduleEvent.getId() == null) {
@@ -400,5 +422,19 @@ public class EventManagedBean implements Serializable {
 
     public void setEventsBySellerId(List<Event> eventsBySellerId) {
         this.eventsBySellerId = eventsBySellerId;
+    }
+
+    /**
+     * @return the selectedEventToUpdate
+     */
+    public Event getSelectedEventToUpdate() {
+        return selectedEventToUpdate;
+    }
+
+    /**
+     * @param selectedEventToUpdate the selectedEventToUpdate to set
+     */
+    public void setSelectedEventToUpdate(Event selectedEventToUpdate) {
+        this.selectedEventToUpdate = selectedEventToUpdate;
     }
 }
