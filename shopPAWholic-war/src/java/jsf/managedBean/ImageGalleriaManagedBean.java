@@ -26,7 +26,6 @@ public class ImageGalleriaManagedBean {
     public void init() {
         images = new ArrayList<String>();
         images = advertisementSessionBeanLocal.retrieveAdvertisementImages();
-        System.out.println("##################" + images);
     }
 
     public List<String> getImages() {

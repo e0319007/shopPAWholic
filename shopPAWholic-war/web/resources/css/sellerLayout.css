@@ -20,10 +20,6 @@ body{
     display: none;
 }
 
-.ui-tabs.ui-tabs-top > .ui-tabs-nav li {
-    width: 24.5%;
-}
-
 .p-grid {
   display: -webkit-box;
   display: -ms-flexbox;
