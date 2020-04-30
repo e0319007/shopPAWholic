@@ -9,7 +9,15 @@
 
     <ui:define name="content">
         <div>
-            <h:form id="formMain"> 
+            <h:form id="formMain">
+                <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}" style="font-size: x-large;">
+                    <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}" />
+                </p:inputText>
+
+                <p:commandButton value="Search" style="font-size: x-large;">
+                    <p:ajax event="click" process="@this formMain:txtSearchString" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}" />
+                </p:commandButton>
+
                 <p:layout>
                     <p:layoutUnit position="east" resizable="true">
                         <p:tree value="#{filterListingsByCategoryManagedBean.treeNode}" var="node" selectionMode="single" selection="#{filterListingsByCategoryManagedBean.selectedTreeNode}">
@@ -17,9 +25,23 @@
                                 <h:outputText value="#{node.name}"/>
                             </p:treeNode>
                             <p:ajax event="select" process="@form" update="formMain:dataGridMain" listener="#{filterListingsByCategoryManagedBean.filterListing}"/>
-                        </p:tree>                    
+                        </p:tree>  
+                        <p:separator />     
+                        
+                        <p:outputLabel for="selCondition" value="Condition: " style="font-weight: bold;" />
+                        <p:selectOneMenu id="selCondition" value="#{filterListingsByTagsManagedBean.condition}">
+                            <f:selectItem itemValue="OR" itemLabel="OR" itemDescription="OR" />
+                            <f:selectItem itemValue="AND" itemLabel="AND" itemDescription="AND" />
+                            <p:ajax process="@form" update="formMain:dataGridMain" listener="#{filterListingsByTagsManagedBean.filterListing}" />
+                        </p:selectOneMenu>
+                        <br/><br/>
+                        <p:outputLabel for="selTags" value="Tags: " style="font-weight: bold;" />
+                        <p:selectManyMenu id="selTags" value="#{filterListingsByTagsManagedBean.selectedTagIds}" showCheckbox="true">
+                            <f:selectItems value="#{filterListingsByTagsManagedBean.selectItems}" />
+                            <p:ajax process="@form" update="formMain:dataGridMain" listener="#{filterListingsByTagsManagedBean.filterListing}" />
+                        </p:selectManyMenu>
                     </p:layoutUnit>
-
+                    
                     <p:layoutUnit position="center">
                         <p:dataGrid id="dataGridMain" widgetVar="dataGridMain" var="listing" value="#{filterListingsByCategoryManagedBean.listings}" columns="3" layout="grid"
                                     rows="12" paginator="true"
