@@ -136,6 +136,18 @@ public class UserSessionBean implements UserSessionBeanLocal {
             Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    @Override
+    public void updateEmail(User userToUpdate, String password) {
+        try {
+            User user = retrieveUserByUserId(userToUpdate.getUserId());
+            user.setPassword(password);
+            em.persist(user);
+   
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException {
