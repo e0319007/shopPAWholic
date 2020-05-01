@@ -44,4 +44,6 @@ public interface UserSessionBeanLocal {
 
     //public void updateUser(User user) throws UserNotFoundException, InputDataValidationException;
     public void updateUser(User userToUpdate);
+    
+    public void updateEmail(User userToUpdate, String password);
 }

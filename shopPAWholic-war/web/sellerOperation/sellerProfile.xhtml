@@ -113,7 +113,6 @@
                             </p:commandButton>
                             &nbsp;
                             <p:commandButton value="Change Password" update="formChangePassword" oncomplete="PF('dialogChangePassword').show()" >
-                                <f:setPropertyActionListener value="#{userManagementManagedBean.currentUser}" target="" />
                             </p:commandButton>
                         </f:facet>
                     </p:tab>
@@ -171,7 +170,7 @@
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton value="Update Profile" update="@form formSellerProfile" actionListener="#{userManagementManagedBean.updateUser}" oncomplete="PF('dialogUpdateProfile').show();" style="display: block; width:100%; text-align:center;" />
+                            <p:commandButton value="Update Profile" update="@form formSellerProfile" actionListener="#{userManagementManagedBean.updateUser}" oncomplete="PF('dialogUpdateProfile').hide();" style="display: block; width:100%; text-align:center;" />
                         </p:column>
                     </p:row>
 
@@ -186,43 +185,46 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="currentPw" value="Current Password: " style="font-weight: bold;"/>
+                            <p:outputLabel for="currentPassword" value="Current Password: " style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
-                            <h:inputSecret id="currentPw" value="" required="true" requiredMessage="Current password is required" />
+                            <p:password id="currentPassword" value="#{userManagementManagedBean.currentPassword}" required="true" requiredMessage="Current password is required">
+                                <p:ajax event="change" listener="#{userManagementManagedBean.checkCurrentPassword}" update="messages"/>
+                            </p:password>
                         </p:column>
                         <p:column>
-                            <p:message for="currentPw" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="newPw" value="New Password: " style="font-weight: bold;"/>
-                        </p:column>
-                        <p:column>
-                            <h:inputSecret id="newPw" value="" required="true" requiredMessage="New password is required" />
-                        </p:column>
-                        <p:column>
-                            <p:message for="newPw" />
+                            <p:message for="currentPassword" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="confirmPw" value="Confirm Password: " style="font-weight: bold;"/>
+                            <p:outputLabel for="newPassword" value="New Password: " style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
-                            <h:inputSecret id="confirmPw" value="" required="true" requiredMessage="Confirm password is required" />
+                            <p:password id="newPassword" value="#{userManagementManagedBean.newPassword}" match="confirmPassword" required="true" requiredMessage="New password is required">
+                            </p:password>
                         </p:column>
                         <p:column>
-                            <p:message for="confirmPw" />
+                            <p:message for="newPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="confirmPassword" value="Confirm Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="confirmPassword" value="#{userManagementManagedBean.newPassword}" required="true" requiredMessage="Confirm password is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="confirmPassword" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column colspan="3">
-                            <p:commandButton value="Save Changes" update="@form formSellerProfile" actionListener="#" oncomplete="PF('dialogChangePassword').show();" style="display: block; width:100%; text-align:center;"/>
+                            <p:commandButton value="Save Changes" update="messages" actionListener="#{userManagementManagedBean.changePassword}" oncomplete="PF('dialogChangePassword').hide();" style="display: block; width:100%; text-align:center;"/>
                         </p:column>
                     </p:row>
 
@@ -282,8 +284,8 @@
                             <p:message for="qty" />
                         </p:column>
                     </p:row>
-                    
-                     <p:row>
+
+                    <p:row>
                         <p:column colspan="3">
                             <p:commandButton id="updateListing" value="Save Changes" update="@form" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" style="display: block; width:100%;" />
                         </p:column>

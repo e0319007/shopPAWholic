@@ -110,10 +110,10 @@ public abstract class User implements Serializable {
     public void setPassword(String password) {
         if (password != null) {
             this.password = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(password + this.salt));
+            System.out.println("password"+this.password);
         } else {
             this.password = null;
         }
-
     }
 
     public void setSalt(String salt) {
