@@ -79,7 +79,7 @@
                                 </p:inputText>
                                 <h:outputLabel for="registerEmail" value="Email" />
                                 <p:inputText id="registerEmail" value="#{registerManagedBean.email}" required="true" label="registerEmail" validatorMessage="Wrong email format. Please try again.">
-                                    <p:ajax event="blur" listener="#{registerManagedBean.checkDuplicateEmail}" update="messages" />
+                                    <p:ajax event="change" listener="#{registerManagedBean.checkDuplicateEmail}" update="messages" />
                                     <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                 </p:inputText>
                                 <h:outputLabel for="registerPassword" value="Password:" />
@@ -89,17 +89,7 @@
                                     <f:validateRegex pattern="[6|8|9]\d{7}"/>
                                 </p:inputText>
                                 <f:facet name="footer">
-                                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
-                                        <f:facet name="start">
-                                        </f:facet>
 
-                                    </p:ajaxStatus>
-
-                                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-
-                                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                                        <p:graphicImage library="image" name="ajax-loader.gif" />     
-                                    </p:dialog>
                                     <p:commandButton value="Register" update="messages" action="#{registerManagedBean.createNewUser(event)}"/>
                                 </f:facet>  
                             </h:panelGrid>
@@ -107,6 +97,21 @@
                     </h:form>
                 </ui:insert>
             </div>
+
+            <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                <f:facet name="start">
+                </f:facet>
+
+                <f:facet name="success">
+                </f:facet>
+
+            </p:ajaxStatus>
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage library="image" name="ajax-loader.gif" />     
+            </p:dialog>
 
             <div id="content" class="center_content">
                 <ui:insert name="content">
