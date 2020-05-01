@@ -9,7 +9,7 @@
     <ui:define name="content">
         <h:form id="formCreateNewTag"> 
             <p:panel header="Create New Tag" toggleable="true" collapsed="true">
-                <h:messages id="messages" /> 
+                <p:messages id="messages"  /> 
                 <p:panelGrid> 
                     <p:row> 
                         <p:column>
@@ -32,7 +32,7 @@
         </h:form> 
 
         <h:form id="formDataTable">
-            <h:messages id="messages" /> 
+            <p:messages id="messages" /> 
             <p:dataTable id="dataTableTags" widgetVar="dataTableTags" value="#{tagManagedBean.tags}" var="tag">
                 <p:column headerText="Name"> 
                     <h:outputText value="#{tag.name}"/> 

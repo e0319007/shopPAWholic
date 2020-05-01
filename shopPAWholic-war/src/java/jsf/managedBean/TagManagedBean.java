@@ -86,7 +86,7 @@ public class TagManagedBean implements Serializable {
             Tag tagToDelete = (Tag) event.getComponent().getAttributes().get("tagToDelete");
             tagSessionBeanLocal.deleteTag(tagToDelete.getTagId());
             tags.remove(tagToDelete);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully.", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tag deleted successfully.", null));
         } catch (TagNotFoundException | DeleteTagException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured while deleting tag: " + ex.getMessage(), null));
         } catch (Exception ex){

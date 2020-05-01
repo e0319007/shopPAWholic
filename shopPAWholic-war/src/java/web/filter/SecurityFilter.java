@@ -92,7 +92,9 @@ public class SecurityFilter implements Filter {
                     || path.equals("/customerOperation/customerProfile.xhtml")
                     || path.equals("/customerOperation/customerListingList.xhtml")
                     || path.equals("/customerOperation/customerEditProfile.xhtml")
-                    || path.equals("/customerOperation/customerEventpage.xhtml")) {
+                    || path.equals("/customerOperation/customerEventpage.xhtml")
+                    || path.equals("/customerOperation/customerFilterListingsByCategory.xhtml")
+                    || path.equals("/customerOperation/customerFilterListingsByTags.xhtml")) {
                 return true;
             } else {
                 return false;

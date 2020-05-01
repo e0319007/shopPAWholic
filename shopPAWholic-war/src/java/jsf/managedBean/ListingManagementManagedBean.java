@@ -159,12 +159,13 @@ public class ListingManagementManagedBean implements Serializable {
     public void postConstruct() {
         allListings = listingSessionBeanLocal.retrieveAllListings();
         tags = tagSessionBeanLocal.retrieveAllTags();
+        categories = categorySessionBeanLocal.retrieveAllCategories();
 
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
             User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
             sellerId = currentUser.getUserId();
         }
-        
+
         listingsBySellerId = listingSessionBeanLocal.retrieveListingsBySellerId(sellerId);
 
     }

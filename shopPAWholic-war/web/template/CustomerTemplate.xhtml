@@ -23,13 +23,15 @@
                     <h:form>  
                         <p:menubar>
                             <p:menuitem><h:link outcome="/customerOperation/customerHomepage.xhtml"><h:graphicImage value="../resources/image/shopPAWholic.png"/></h:link></p:menuitem>
-                            <p:menuitem value="Listings"  url="../customerOperation/customerListingList.xhtml" icon="pi pi-shopping-cart"/>
+                            <p:submenu label="Listings" icon="pi pi-shopping-cart">
+                                <p:menuitem value="Filter By Category" url="../customerOperation/customerFilterListingsByCategory.xhtml" icon="pi pi-filter"/>
+                                <p:menuitem value="Filter By Tags" url="../customerOperation/customerFilterListingsByTags.xhtml" icon="pi pi-filter"/>
+                            </p:submenu>
                             <p:menuitem value="Events" url="../customerOperation/customerEventpage.xhtml" icon="pi pi-calendar"/>
                             <p:menuitem value="Advertisement" url="../customerOperation/customerAdvertisementpage.xhtml" icon="pi pi-bookmark"/>
 
                             <f:facet name="options">
-                                <!-- search button
-                                <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>-->
+                          
                                 <p:menuButton value="#{sessionScope.currentUser.name}">
                                     <p:menuitem value="Profile" url="../customerOperation/customerProfile.xhtml" icon="pi pi-user-plus"/>
                                     <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
@@ -56,6 +58,12 @@
 
                             <f:facet name="header">
                                 Fresh Finds
+                           
+                                <div align="right">
+                                <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}"  placeholder="Search for an item...">
+                                    <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                                </p:inputText>
+                                </div>
                             </f:facet>
 
                             <p:panel header="#{listing.skuCode}" style="text-align:center">

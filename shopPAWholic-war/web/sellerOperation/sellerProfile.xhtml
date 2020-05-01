@@ -39,6 +39,7 @@
 
                     <p:tab title="Listings">
                         <!--display listing owned by this username-->
+                        <p:messages id="messages" /> 
                         <p:dataView id="dataViewListings" widgetVar="dataViewListings" var="listing" value="#{listingManagementManagedBean.listingsBySellerId}" gridIcon="pi pi-th-large">
                             <p:dataViewGridItem>
                                 <p:panel header="#{listing.skuCode}" style="text-align: center">
@@ -56,7 +57,7 @@
                                                 <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToUpdate}" />
                                             </p:commandButton>
 
-                                            <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="@form">
+                                            <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="@form formSellerProfile">
                                                 <f:attribute name="listingToDelete" value="#{listing}" /> 
                                                 <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="pi pi-exclamation-triangle" />
                                             </p:commandButton>
@@ -67,6 +68,7 @@
                                 </p:panel>
                             </p:dataViewGridItem>
                         </p:dataView>
+
                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
@@ -282,10 +284,10 @@
                             <p:message for="qty" />
                         </p:column>
                     </p:row>
-                    
-                     <p:row>
+
+                    <p:row>
                         <p:column colspan="3">
-                            <p:commandButton id="updateListing" value="Save Changes" update="@form" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" style="display: block; width:100%;" />
+                            <p:commandButton id="updateListing" value="Save Changes" update="@form formSellerProfile" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" style="display: block; width:100%;" />
                         </p:column>
                     </p:row>
                 </p:panelGrid>

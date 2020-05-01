@@ -40,4 +40,5 @@ public interface ListingSessionBeanLocal {
     public void deleteListing(Long listingId) throws ListingNotFoundException;
 
     public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds, Long sellerId) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException;
+
 }
