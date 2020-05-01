@@ -93,7 +93,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText id="email" value="#{userManagementManagedBean.selectedUserToUpdate.email}" required="true" requiredMessage="Email is required">
-                                <f:validateLength minimum="5" maximum="20" />
+                                <f:validateLength minimum="5" maximum="40" />
                                 <f:validateRegex pattern="^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"/>
                             </p:inputText>                         
 

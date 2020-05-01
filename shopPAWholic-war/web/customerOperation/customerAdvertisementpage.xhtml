@@ -36,7 +36,7 @@
             <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.allAdvertisements}" var="ad">
                 <p:dataViewListItem>
                     <h:panelGrid cellpadding="30" columns="3" style="width: 100%" columnClasses="logo,detail">
-                        <!--<p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>-->
+                    
                         <p:graphicImage value="#{ad.picture}" style="width:700px; height:300px;"/>
 
                         <p:outputPanel>

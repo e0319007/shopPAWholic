@@ -49,15 +49,15 @@
                                         <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
 
                                         <p:column>
-                                            <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details">                                 
+                                            <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details" style="margin-left: 16px;">                                 
                                                 <f:setPropertyActionListener value="#{listing}" target="#{viewListingManagedBean.listingToView}"/>
                                             </p:commandButton>
 
-                                            <p:commandButton update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" title="Edit Listing" icon="pi pi-pencil">
+                                            <p:commandButton update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" title="Edit Listing" icon="pi pi-pencil" style="margin-left: 16px;">
                                                 <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToUpdate}" />
                                             </p:commandButton>
 
-                                            <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="@form formSellerProfile">
+                                            <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="@form formSellerProfile" style="margin-left: 16px;">
                                                 <f:attribute name="listingToDelete" value="#{listing}" /> 
                                                 <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="pi pi-exclamation-triangle" />
                                             </p:commandButton>
@@ -146,7 +146,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText id="email" value="#{userManagementManagedBean.selectedUserToUpdate.email}" required="true" requiredMessage="Email is required">
-                                <f:validateLength minimum="5" maximum="20" />
+                                <f:validateLength minimum="5" maximum="40" />
                                 <f:validateRegex pattern="^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"/>
                             </p:inputText>                         
 
@@ -244,6 +244,28 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
+                            <h:outputLabel value="Listing ID: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.listingId}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="SKU Code: " style="font-weight: bold; "/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.skuCode}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
                             <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
@@ -266,7 +288,7 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="price" value="Price: " style="font-weight: bold;"/>
+                            <p:outputLabel for="price" value="Unit Price: " style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
                             <p:inputText id="price" value="#{listingManagementManagedBean.selectedListingToUpdate.unitPrice}" placeholder="$10" required="true" requiredMessage="Price is required" />
@@ -284,6 +306,34 @@
                         </p:column>
                         <p:column>
                             <p:message for="qty" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdUpdate}">
+                                <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selCategory" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold; " />
+                        </p:column>
+                        <p:column>
+                            <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
+                                <f:selectItems value="#{listingManagementManagedBean.tags}" var="seltag" itemValue="#{seltag.tagId}" itemLabel="#{seltag.name}" />
+                            </p:selectManyMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selTags" />
                         </p:column>
                     </p:row>
 
