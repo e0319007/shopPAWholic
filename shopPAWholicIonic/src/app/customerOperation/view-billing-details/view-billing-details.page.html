@@ -16,7 +16,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Billing Date: </ion-label>
-      {{billingDetail.billingDate}}
+      {{parseDate(orderToView.billingDetail.billingDate) | date: 'dd MMM, yyyy'}}
     </ion-item>
     <ion-item>
       <ion-label>Credit Card Number: </ion-label>

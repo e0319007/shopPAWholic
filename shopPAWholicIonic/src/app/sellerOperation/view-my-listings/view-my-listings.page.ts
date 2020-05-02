@@ -26,10 +26,12 @@ export class ViewMyListingsPage implements OnInit {
 
   ngOnInit() {
     this.refreshListings();
+    console.log("ngOnInit ")
   }
 
   ionViewWillEnter() {
     this.refreshListings();
+    console.log("ion will enter ")
   }
 
   filter(event) {
@@ -38,6 +40,7 @@ export class ViewMyListingsPage implements OnInit {
     if(!searchTerm) {
       return;
     }
+    this.filteredListings = new Array();
     this.filteredListings = this.listings.filter(listing => {
       if (listing.name && searchTerm) {
         if (listing.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1) {
@@ -49,11 +52,13 @@ export class ViewMyListingsPage implements OnInit {
   }
 
   refreshListings() {
-    this.allListings = new Array();
-    this.listings = new Array();
-    this.filteredListings = new Array();
+    console.log("refreshing")
+    
     this.listingService.retrieveAllListings().subscribe(
       response => {
+        this.allListings = new Array();
+        this.listings = new Array();
+        this.filteredListings = new Array();
         this.allListings = response.listings;
         for (let listing of this.allListings) {
           if (listing.seller.email == this.utilityService.getEmail()) {

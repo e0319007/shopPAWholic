@@ -9,16 +9,16 @@
   
 </ion-header>
 
-<div *ngIf="hasOrders == false">
+<div style="margin: 20px;" *ngIf="hasOrders == false">
   You don't have any orders yet!
 </div>
 
 <ion-content>
-  <ion-card>
+  <ion-card *ngFor="let order of orders">
     <ion-card-content>
       
       <ion-list>
-        <ion-item *ngFor="let order of orders"  (click) = "viewOrderDetails($event, order)">
+        <ion-item   (click) = "viewOrderDetails($event, order)">
           <div>
             ID: {{order.orderId}} <br />
             Date: {{parseDate(order.orderDate) | date: 'dd MMM, yyyy'}} <br />

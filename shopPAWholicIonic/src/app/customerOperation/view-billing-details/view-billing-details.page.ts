@@ -37,7 +37,8 @@ export class ViewBillingDetailsPage implements OnInit {
             break;
           }
         }
-        console.log("Order found with id : " + this.orderToView.orderId)
+        console.log("Billing date: " + this.orderToView.billingDetail.billingDate);
+        console.log("Order found with id : " + this.orderToView.orderId);
         this.billingDetail = this.orderToView.billingDetail;
         this.billingDetailId = this.billingDetail.billingDetailId;
         console.log("BILLING DETAIL ID: " + this.billingDetailId);
@@ -56,4 +57,9 @@ export class ViewBillingDetailsPage implements OnInit {
   back() {
     this.router.navigate(["/viewOrderDetails/" + this.orderId]);
   }
+
+  parseDate(d: Date) {
+    return d.toString().replace('[UTC]','');
+  }
+  
 }
