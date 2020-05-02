@@ -25,7 +25,9 @@
                         <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
 
                         <h:form style="padding-top: 10px; float: right;">
-                            <p:commandButton id="emailBtn" type="button" icon="pi pi-bell"/>
+                            <p:commandButton id="composeEmail" type="button" icon="pi pi-upload" onclick="PF('composeBroadcastEmail').show();"/>
+
+                            <p:commandButton id="emailBtn" type="button" icon="pi pi-inbox"/>
                             <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
                                 <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >
                                     <p:column headerText="Title">
@@ -40,6 +42,23 @@
                         </h:form>
                     </div>
                 </h:panelGroup>
+
+                <p:dialog header="Send Broadcast Email" widgetVar="composeBroadcastEmail"  onShow="PF('composeBroadcastEmail').initPosition()">
+                    <h:form>
+                        <p:selectOneMenu id="to" value="#{adminLoginManagedBean.to}" style="width: 750px;">
+                            <f:selectItem itemLabel="To: " itemValue="" />
+                            <f:selectItem itemLabel="All" itemValue="All" />
+                            <f:selectItem itemLabel="Customers" itemValue="Customers" />
+                            <f:selectItem itemLabel="Sellers" itemValue="Sellers"/>
+                        </p:selectOneMenu>
+                        <br/>
+                        <p:inputText id="subject" value="#{adminLoginManagedBean.subject}" style="width: 750px;"/>
+                        <p:watermark for="subject" value="Subject" id="watermark" />
+                        <p:textEditor widgetVar="emailEditor" value="#{adminLoginManagedBean.emailBody}" height="300" style="width: 750px;"/>
+                        <p:commandButton value="Send" actionListener="#{adminLoginManagedBean.sendEmail(event)}" oncomplete="PF('composeBroadcastEmail').hide();" icon="pi pi-save" update="messages" />
+                        <p:commandButton value="Clear" type="button" onclick="PF('emailEditor').clear();" icon="pi pi-times" />
+                    </h:form>
+                </p:dialog>
             </ui:insert>
         </div>
 

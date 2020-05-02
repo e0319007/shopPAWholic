@@ -7,9 +7,6 @@
                 template="../template/SellerTemplate.xhtml">
 
     <ui:define name="content">
-        <p:growl id="growl" showSummary="true" showDetail="true">
-            <p:autoUpdate />
-        </p:growl>
 
         <p:panel id="userToggleable" header="Profit Overview" collapsed="false" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:10px">
             <div class="p-grid p-align-center" style="margin-left: 120px;">
@@ -53,11 +50,28 @@
                     </h:panelGrid>
                 </p:tab>
             </p:tabView>
+
+            <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()"  visible="#{userManagementManagedBean.currentSeller.verification == null}">
+                <h:form style="width: 500px;" enctype="multipart/form-data">
+                    <p:growl id="messages" showDetail="true" life="1000" />   
+                    <p:fileUpload id="filePath" update="messages"
+                                  invalidSizeMessage="JournalDev: Invalid Size"
+                                  invalidFileMessage="JournalDev: Invalid File Type"
+                                  fileLimitMessage="JournalDev: Invalid File Limit"
+                                  mode="advanced" sizeLimit="10000000000000"
+                                  fileUploadListener="#{userManagementManagedBean.verifyYourself}"
+                                  auto="true" oncomplete="PF('verification').hide();">
+
+                    </p:fileUpload>
+                </h:form>
+            </p:dialog>
         </p:panel>
+
+
 
         <!--timeline to show their stock and sales-->
         <!--sales generated-->
-        <!--<p:chart type="bar" model="#{chartView.userBarModel}" style="height:300px"/>-->
+        <!--<p:chart type="bar" model="" style="height:300px"/>-->
         <!--using bar-->
 
         <!--    average daily sales

@@ -5,6 +5,7 @@ import ejb.session.stateless.SellerSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
+import entity.Verification;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -40,7 +41,8 @@ public class RegisterManagedBean implements Serializable {
     private String password;
     private String contactNumber;
     private Date currentDateTime;
-
+    private Verification verification;
+    
     public RegisterManagedBean() {
     }
 
@@ -66,7 +68,7 @@ public class RegisterManagedBean implements Serializable {
         } else if (role.equals("Seller")) {
             currentDateTime = new Date();
             System.out.println("*********************************" + currentDateTime);
-            sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, currentDateTime, false, 5));
+            sellerSessionBeanLocal.createNewSeller(new Seller(name, email, contactNumber, password, currentDateTime, false, 5, getVerification()));
             FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             if (sendEmail(event)) {
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
@@ -135,5 +137,13 @@ public class RegisterManagedBean implements Serializable {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Verification getVerification() {
+        return verification;
+    }
+
+    public void setVerification(Verification verification) {
+        this.verification = verification;
     }
 }

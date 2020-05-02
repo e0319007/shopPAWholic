@@ -1,6 +1,7 @@
 package ejb.session.stateless;
 
 import entity.Seller;
+import entity.Verification;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
@@ -23,4 +24,6 @@ public interface SellerSessionBeanLocal {
     public Seller retrieveSellerByUsername(String username) throws SellerNotFoundException;
 
     public Seller retrieveSellerById(Long sellerId) throws SellerNotFoundException;
+
+    public void updateVerification(Seller seller) throws SellerNotFoundException, InputDataValidationException;
 }

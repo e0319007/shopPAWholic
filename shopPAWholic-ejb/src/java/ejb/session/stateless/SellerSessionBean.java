@@ -1,6 +1,7 @@
 package ejb.session.stateless;
 
 import entity.Seller;
+import entity.Verification;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -77,6 +78,24 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
                 }
             } else {
                 throw new SellerNotFoundException("Seller ID not provided for seller to be updated");
+            }
+        }
+    }
+    
+    @Override 
+    public void updateVerification(Seller seller) throws SellerNotFoundException, InputDataValidationException {
+        if(seller != null && seller.getUserId() !=null) {
+            Set<ConstraintViolation<Seller>>constraintViolations = validator.validate(seller); 
+            if(constraintViolations.isEmpty()) {
+                Seller sellerToUpdate = retrieveSellerById(seller.getUserId()); 
+                if(sellerToUpdate.getEmail().equals(seller.getEmail())) {
+                    System.out.println("VERIFICATIONNNNNNN                    "+seller.getVerification());
+                    sellerToUpdate.setVerification(seller.getVerification());
+                } else {
+                    throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+                }
+            } else {
+                throw new SellerNotFoundException("Veirification ID not provided for seller to be updated");
             }
         }
     }

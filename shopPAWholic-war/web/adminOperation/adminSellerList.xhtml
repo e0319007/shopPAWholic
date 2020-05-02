@@ -93,6 +93,15 @@
                                 <h:outputText value="#{viewUserManagedBean.sellerToView.isFlag}" />
                             </p:column>
                         </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="File To Verify: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewUserManagedBean.sellerToView.verification.filePath}" />
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                 </p:dialog>
             </h:form>

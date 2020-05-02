@@ -4,10 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity (name="Seller")
 public class Seller extends User implements Serializable {
@@ -31,6 +32,10 @@ public class Seller extends User implements Serializable {
     
     @OneToMany(mappedBy="seller") 
     private List<BillingDetail> billingDetails;
+    
+    @OneToOne (optional=true, cascade = CascadeType.PERSIST)
+//    @JoinColumn(nullable = true)
+    private Verification verification;
 
     public Seller() {
         listings = new ArrayList<>();
@@ -39,10 +44,11 @@ public class Seller extends User implements Serializable {
         events = new ArrayList<>();
     }
 
-    public Seller(String name, String email, String contactNumber, String password, Date accCreatedDate, boolean verified, double totalRating ) {
+    public Seller(String name, String email, String contactNumber, String password, Date accCreatedDate, boolean verified, double totalRating, Verification verfication) {
         super(name, email, contactNumber, password, accCreatedDate);
         this.verified = verified;
         this.totalRating = totalRating;
+        this.verification = verfication;
     }
 
     public boolean isVerified() {
@@ -99,5 +105,13 @@ public class Seller extends User implements Serializable {
 
     public void setBillingDetails(List<BillingDetail> billingDetails) {
         this.billingDetails = billingDetails;
+    }
+
+    public Verification getVerification() {
+        return verification;
+    }
+
+    public void setVerification(Verification verification) {
+        this.verification = verification;
     }
 }

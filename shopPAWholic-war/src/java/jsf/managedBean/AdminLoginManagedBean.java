@@ -1,8 +1,12 @@
 package jsf.managedBean;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
+import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Admin;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -17,15 +21,26 @@ import util.exception.InvalidLoginCredentialException;
 
 @Named(value = "adminLoginManagedBean")
 @RequestScoped
-public class AdminLoginManagedBean {
+public class AdminLoginManagedBean implements Serializable {
+
+    @EJB(name = "UserSessionBeanLocal")
+    private UserSessionBeanLocal userSessionBeanLocal;
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
 
+    //for login
     private String username;
     private String password;
 
+    //for composing email
+    private String to;
+    private String subject;
+    private String emailBody;
+    List<String> recipients;
+
     public AdminLoginManagedBean() {
+        recipients = new ArrayList<>();
     }
 
     public void login(ActionEvent event) throws IOException {
@@ -46,12 +61,36 @@ public class AdminLoginManagedBean {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You are now logged out.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
     }
-    
-    public Message [] readEmail(ActionEvent event) throws MessagingException{
+
+    public Message[] readEmail(ActionEvent event) throws MessagingException {
         EmailManager emailManager = new EmailManager("shoppawholic@gmail.com", "shoppawholic2020");
-        Message [] messages = emailManager.readEmail();
-//        System.out.println(messages);
+        Message[] messages = emailManager.readEmail();
         return messages;
+    }
+
+    public void sendEmail(ActionEvent event) {
+        System.out.println("##############################" + to);
+        System.out.println("##############################" + recipients);
+        System.out.println("##############################" + subject);
+        System.out.println("##############################" + emailBody);
+        EmailManager emailManager = new EmailManager("shoppawholic@gmail.com", "shoppawholic2020");
+        if (to.equals("All")) {
+            recipients = userSessionBeanLocal.retrieveAllEmails();
+        } else if (to.equals("Customers")) {
+            recipients = userSessionBeanLocal.retrieveAllCustomersEmails();
+        } else if (to.equals("Sellers")) {
+            recipients = userSessionBeanLocal.retrieveAllSellersEmails();
+        }
+
+        System.out.println("##############################1" + recipients);
+        System.out.println("##############################1" + subject);
+        System.out.println("##############################1" + emailBody);
+        Boolean emailResult = emailManager.broadcastEmail(recipients, "shoppawholic@gmail.com", getSubject(), getEmailBody());
+        if (emailResult.equals(true)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Your email has sent out successfuly.", null));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email failed to send.", null));
+        }
     }
 
     public String getUsername() {
@@ -74,5 +113,29 @@ public class AdminLoginManagedBean {
         FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You need to login.", null));
         FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/index.xhtml");
+    }
+
+    public String getEmailBody() {
+        return emailBody;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setEmailBody(String emailBody) {
+        this.emailBody = emailBody;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

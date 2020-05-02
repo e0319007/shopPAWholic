@@ -6,9 +6,15 @@ import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
 import entity.User;
+import entity.Verification;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -17,6 +23,8 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.SellerNotFoundException;
@@ -72,6 +80,11 @@ public class UserManagementManagedBean implements Serializable {
     private String currentPassword;
     private String newPassword;
 
+    //for verification
+    private Boolean verified;
+    private UploadedFile file;
+    private String filePath;
+    
     public UserManagementManagedBean() {
         currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         if (currentUser instanceof Customer) {
@@ -79,8 +92,6 @@ public class UserManagementManagedBean implements Serializable {
         } else {
             currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         }
-        System.out.println("''''''''''''''''''''''''''''''''''''' current Customer: " + currentCustomer);
-
     }
 
     @PostConstruct
@@ -120,7 +131,6 @@ public class UserManagementManagedBean implements Serializable {
 
     public void checkCurrentPassword() {
         String passwordHash = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(currentPassword + getCurrentUser().getSalt()));
-        System.out.println("I AM YOUR FRIGGING PASSWORD: " + passwordHash);
         if (!currentUser.getPassword().equals(passwordHash)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Wrong current password!", null));
         }
@@ -131,32 +141,66 @@ public class UserManagementManagedBean implements Serializable {
         String currentPasswordNew = CryptographicHelper.getInstance().byteArrayToHexString(CryptographicHelper.getInstance().doMD5Hashing(selectedUserToUpdate.getPassword() + getCurrentUser().getSalt()));
 
         if (newPasswordNew.equals(currentPasswordNew)) {
-            System.out.println("currentPassword" + currentPasswordNew);
-            System.out.println("newPassword" + newPasswordNew);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "New Password cannot be the same as Current Password!", null));
         }
     }
 
     public void changePassword(ActionEvent event) {
         selectedUserToUpdate = currentUser;
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&& "+selectedUserToUpdate);
         userSessionBeanLocal.updateEmail(selectedUserToUpdate, newPassword);
-        System.out.println("in3");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User's password" + " updated successfully", null));
-        System.out.println("in4");
     }
 
-    /*public void updateUser(ActionEvent event) {
-
+    public void verifyYourself(FileUploadEvent event) throws SellerNotFoundException {
+        User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         try {
-            userSessionBeanLocal.updateUser(selectedUserToUpdate);
+            String destination = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator");
+            String secDest = "Seller"
+                    + System.getProperty("file.separator")
+                    + user.getUserId()
+                    + System.getProperty("file.separator")
+                    + "Verification"
+                    + System.getProperty("file.separator");
+            File newPath = new File(destination + secDest);
+            newPath.mkdirs();
+            System.err.println("********** FileUploadView.handleFileUpload(): File name: " + event.getFile().getFileName());
+            System.err.println("********** FileUploadView.handleFileUpload(): newFilePath: " + newPath);
 
-        } catch (UserNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating user: " + ex.getMessage(), null));
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+            File uploadEventImage = new File(newPath + "/" + event.getFile().getFileName());
+            FileOutputStream fileOutputStream = new FileOutputStream(uploadEventImage);
+            //Creates a FileOutputStream to write to the file represented by the specified file
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputstream();
+            //This getInputStream() method of the uploadedFile represents the file content
+            
+            filePath = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
+
+            while (true) {
+                a = inputStream.read(buffer);
+                if (a < 0) {
+                    break;
+                }
+                fileOutputStream.write(buffer, 0, a);
+                //write a bytes from the specified bytes array starting at offset 0 to this FileOutputStream
+                fileOutputStream.flush();
+            }
+            fileOutputStream.close();
+            inputStream.close();
+            Verification verification = new Verification(filePath);
+            currentSeller.setVerification(verification);
+            sellerSessionBeanLocal.updateVerification(currentSeller);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "File uploaded successfully", ""));
+        } catch (IOException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "File upload error: " + ex.getMessage(), ""));
+        } catch (InputDataValidationException ex) {
+            Logger.getLogger(UserManagementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+    }
+    
     public void updateUser(ActionEvent event) {
         userSessionBeanLocal.updateUser(selectedUserToUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User " + " updated successfully", null));
@@ -310,44 +354,26 @@ public class UserManagementManagedBean implements Serializable {
         this.currentSeller = currentSeller;
     }
 
-    /**
-     * @return the selectedSellerToUpdate
-     */
     public Seller getSelectedSellerToUpdate() {
         return selectedSellerToUpdate;
     }
 
-    /**
-     * @param selectedSellerToUpdate the selectedSellerToUpdate to set
-     */
     public void setSelectedSellerToUpdate(Seller selectedSellerToUpdate) {
         this.selectedSellerToUpdate = selectedSellerToUpdate;
     }
 
-    /**
-     * @return the sellerIdUpdate
-     */
     public Long getSellerIdUpdate() {
         return sellerIdUpdate;
     }
 
-    /**
-     * @param sellerIdUpdate the sellerIdUpdate to set
-     */
     public void setSellerIdUpdate(Long sellerIdUpdate) {
         this.sellerIdUpdate = sellerIdUpdate;
     }
 
-    /**
-     * @return the selectedUserToUpdate
-     */
     public User getSelectedUserToUpdate() {
         return selectedUserToUpdate;
     }
 
-    /**
-     * @param selectedUserToUpdate the selectedUserToUpdate to set
-     */
     public void setSelectedUserToUpdate(User selectedUserToUpdate) {
         this.selectedUserToUpdate = selectedUserToUpdate;
     }
@@ -376,4 +402,19 @@ public class UserManagementManagedBean implements Serializable {
         this.currentUser = currentUser;
     }
 
+    public Boolean getVerified() {
+        return verified;
+    }
+
+    public void setVerified(Boolean verified) {
+        this.verified = verified;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
 }

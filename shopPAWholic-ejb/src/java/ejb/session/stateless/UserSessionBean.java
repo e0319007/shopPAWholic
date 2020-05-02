@@ -158,6 +158,18 @@ public class UserSessionBean implements UserSessionBeanLocal {
             throw new UserNotFoundException("User ID " + userId + " does not exist!");
         }
     }
+    
+    @Override 
+    public List<String> retrieveAllSellersEmails(){
+        Query query = em.createQuery("SELECT s.email FROM Seller s");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<String> retrieveAllCustomersEmails(){
+        Query query = em.createQuery("SELECT c.email FROM Customer c");
+        return query.getResultList();
+    }
 
     @Override
     public List<User> retrieveAllUsers() {

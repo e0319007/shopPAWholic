@@ -1,6 +1,7 @@
 package util.email;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import javax.mail.Folder;
 import javax.mail.Message;
@@ -18,7 +19,7 @@ public class EmailManager {
     private final String mailer = "JavaMailer";
     private String smtpAuthUser;
     private String smtpAuthPassword;
-    
+
     public EmailManager() {
     }
 
@@ -66,7 +67,7 @@ public class EmailManager {
             return false;
         }
     }
-    
+
     public Message[] readEmail() throws NoSuchProviderException, MessagingException {
         final Properties props = new Properties();
         props.setProperty("mail.pop3.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
@@ -87,8 +88,8 @@ public class EmailManager {
         store.connect("shoppawholic", "shoppawholic2020");
         Folder folder = store.getFolder("INBOX");;
         folder.open(Folder.READ_ONLY);
-        Message [] messageList = folder.getMessages();
-        
+        Message[] messageList = folder.getMessages();
+
 //        for (int i = 0; i < message.length; i++) {
 //            Message m = message[i];
 //            System.out.println("-------------------------\nNachricht: " + i);
@@ -99,5 +100,45 @@ public class EmailManager {
         //store.close();
         return messageList;
     }
+
+    public Boolean broadcastEmail(List<String> to, String fromEmailAddress, String subject, String emailBody) {
+        try {
+            Properties props = new Properties();
+            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.host", emailServerName);
+            props.put("mail.smtp.ssl.trust", emailServerName);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.debug", "true");
+            javax.mail.Authenticator auth = new SMTPAuthenticator(smtpAuthUser, smtpAuthPassword);
+            Session session = Session.getInstance(props, auth);
+            session.setDebug(true);
+            Message msg = new MimeMessage(session);
+
+            if (msg != null) {
+                msg.setFrom(InternetAddress.parse(fromEmailAddress, false)[0]);
+                for (String eachEmail : to) {
+                    msg.setFrom(InternetAddress.parse(fromEmailAddress, false)[0]);
+                    msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(eachEmail, false));
+                    msg.setSubject("shopPAWholic");
+                    msg.setContent(emailBody, "text/html");
+                    msg.setHeader("X-Mailer", mailer);
+
+                    Date timeStamp = new Date();
+                    msg.setSentDate(timeStamp);
+
+                    Transport.send(msg);
+                }
+
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
-       

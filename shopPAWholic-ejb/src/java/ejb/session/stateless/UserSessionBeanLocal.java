@@ -29,6 +29,10 @@ public interface UserSessionBeanLocal {
     public Long createNewUser(User newUser) throws UserUsernameExistException, UnknownPersistenceException, InputDataValidationException;
 
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException;
+    
+    public List<String> retrieveAllSellersEmails();
+    
+    public List<String> retrieveAllCustomersEmails();
 
     public List<User> retrieveAllUsers();
 
