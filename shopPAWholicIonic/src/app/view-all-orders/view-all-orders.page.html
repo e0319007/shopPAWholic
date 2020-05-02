@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <ion-header>
 
 	<ion-toolbar>
@@ -31,37 +30,3 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-=======
-<ion-header>
-
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>My Orders</ion-title>
-	</ion-toolbar>
-  
-</ion-header>
-
-<div style="margin: 20px;" *ngIf="hasOrders == false">
-  You don't have any orders yet!
-</div>
-
-<ion-content>
-  <ion-card *ngFor="let order of orders">
-    <ion-card-content>
-      
-      <ion-list>
-        <ion-item   (click) = "viewOrderDetails($event, order)">
-          <div>
-            ID: {{order.orderId}} <br />
-            Date: {{parseDate(order.orderDate) | date: 'dd MMM, yyyy'}} <br />
-            Total Price: ${{order.totalPrice}} <br />
-            Status: {{order.orderStatus}} <br />
-          </div>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
-</ion-content>
->>>>>>> master
