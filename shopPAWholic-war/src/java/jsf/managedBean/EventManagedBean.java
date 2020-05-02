@@ -42,9 +42,10 @@ public class EventManagedBean implements Serializable {
     private ScheduleModel scheduleModel;
     private ScheduleEvent scheduleEvent;
 
-    private List<Event> events;
+    private List<Event> allEvents;
+    private List<Event> eventsBySellerId;
 
-    //for creating new events
+    //for creating new allEvents
     private String eventName;
     private String description;
     private String location;
@@ -56,8 +57,8 @@ public class EventManagedBean implements Serializable {
     private Long sellerId;
     private Event selectedEvent;
     private Event newEvent;
-
-    //for filtering events
+    private Event selectedEventToUpdate;
+    //for filtering allEvents
     private List<Event> filterBySeller;
 
     //fileUpload
@@ -71,12 +72,15 @@ public class EventManagedBean implements Serializable {
 
     @PostConstruct
     public void PostConstruct() {
-        events = eventSessionBeanLocal.retrieveAllEvent();
+        allEvents = eventSessionBeanLocal.retrieveAllEvent();
+        
         //hardcoded event as example
         scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
 
         User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         sellerId = currentUser.getUserId();
+        
+        setEventsBySellerId(eventSessionBeanLocal.retrieveEventsBySellerId(sellerId));
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -90,7 +94,6 @@ public class EventManagedBean implements Serializable {
                     + "Event"
                     + System.getProperty("file.separator");
             File newPath = new File(destination + secDest);
-            // advertisementID
             newPath.mkdirs();
             System.err.println("********** FileUploadView.handleFileUpload(): File name: " + event.getFile().getFileName());
             System.err.println("********** FileUploadView.handleFileUpload(): newFilePath: " + newPath);
@@ -105,11 +108,11 @@ public class EventManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            picture = secDest + event.getFile().getFileName();
+            
+            picture = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
 
             while (true) {
                 a = inputStream.read(buffer);
-
                 if (a < 0) {
                     break;
                 }
@@ -132,10 +135,19 @@ public class EventManagedBean implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
+    
+    public Boolean checkForPicture(){
+        if (picture == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public void createNewEvent(ActionEvent event) {
         try {
             System.out.println("****************************************" + picture);
+            listDate = new Date();
             newEvent = new Event(eventName, description, location, picture, startDateTime, endDateTime, url, listDate);
             eventSessionBeanLocal.createNewEvent(newEvent, sellerId);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New event created successfully! (Id: " + newEvent.getEventId() + ")", null));
@@ -151,7 +163,7 @@ public class EventManagedBean implements Serializable {
         }
     }
 
-    public void updateEvent(ActionEvent event) {
+    /*public void updateEvent(ActionEvent event) {
         try {
             Event eventToUpdate = (Event) event.getComponent().getAttributes().get("EventToUpdate");
             eventSessionBeanLocal.updateEvent(eventToUpdate);
@@ -161,17 +173,39 @@ public class EventManagedBean implements Serializable {
         } catch (EventNameExistsException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event name exist already! Please choose a new event name.", null));
         }
+    }*/
+    /*public void updateEvent (ActionEvent event) {
+        try {
+            eventSessionBeanLocal.updateEvent(selectedEventToUpdate);
+        } catch (InputDataValidationException | EventNameExistsException ex) {
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
+        }
+    }*/
+    
+     public void updateEvent(ActionEvent event) throws InputDataValidationException, EventNameExistsException
+    {
+        eventSessionBeanLocal.updateEvent(selectedEventToUpdate);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event " + " updated successfully", null));
+    }
+    
+
+    
+    public void doUpdateEvent(ActionEvent event) {
+        selectedEventToUpdate = (Event) event.getComponent().getAttributes().get("eventToUpdate");
+
     }
 
-    public void deleteEvent(ActionEvent event) {
-        try {
-            Event eventToDelete = (Event) event.getComponent().getAttributes().get("EventToDelete");
-            eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event deleted successfully! (Id: " + eventToDelete.getEventId() + ")", null));
-        } catch (EventNotFoundException ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Event not found. Please select another event.", null));
-        }
+     public void deleteEvent(ActionEvent event)
+    {
+        Event eventToDelete = (Event)event.getComponent().getAttributes().get("eventToDelete");
+        
+        eventSessionBeanLocal.deleteEvent(eventToDelete.getEventId());
+        allEvents.remove(eventToDelete);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Event " + eventToDelete.getEventName() + " deleted successfully", "Event " + eventToDelete.getEventName() + " deleted successfully"));
     }
+
 
     public void addEvent(ActionEvent actionEvent) {
         if (scheduleEvent.getId() == null) {
@@ -230,12 +264,12 @@ public class EventManagedBean implements Serializable {
         return t.getTime();
     }
 
-    public List<Event> getEvents() {
-        return events;
+    public List<Event> getAllEvents() {
+        return allEvents;
     }
 
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    public void setAllEvents(List<Event> allEvents) {
+        this.allEvents = allEvents;
     }
 
     public EventSessionBeanLocal getEventSessionBeanLocal() {
@@ -270,7 +304,7 @@ public class EventManagedBean implements Serializable {
         this.location = location;
     }
 
-    public String getPictures() {
+    public String getPicture() {
         return picture;
     }
 
@@ -380,5 +414,27 @@ public class EventManagedBean implements Serializable {
 
     public void setListDate(Date listDate) {
         this.listDate = listDate;
+    }
+
+    public List<Event> getEventsBySellerId() {
+        return eventsBySellerId;
+    }
+
+    public void setEventsBySellerId(List<Event> eventsBySellerId) {
+        this.eventsBySellerId = eventsBySellerId;
+    }
+
+    /**
+     * @return the selectedEventToUpdate
+     */
+    public Event getSelectedEventToUpdate() {
+        return selectedEventToUpdate;
+    }
+
+    /**
+     * @param selectedEventToUpdate the selectedEventToUpdate to set
+     */
+    public void setSelectedEventToUpdate(Event selectedEventToUpdate) {
+        this.selectedEventToUpdate = selectedEventToUpdate;
     }
 }

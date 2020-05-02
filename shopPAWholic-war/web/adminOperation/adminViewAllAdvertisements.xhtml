@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core"
-                template="./../template/CustomerTemplate.xhtml">
+                xmlns:p="http://primefaces.org/ui">
 
     <ui:define name="content">
         <h:form>
@@ -36,7 +36,7 @@
             <p:dataView id="dataViewAdvertisements" widgetVar="dataViewAdvertisements" value="#{advertisementManagedBean.allAdvertisements}" var="ad">
                 <p:dataViewListItem>
                     <h:panelGrid cellpadding="30" columns="3" style="width: 100%" columnClasses="logo,detail">
-                    
+                        <!--<p:graphicImage value="../resources/image/advertisementDummy/petAdvertisement2.jpg" width="400" height="200"/>-->
                         <p:graphicImage value="#{ad.picture}" style="width:700px; height:300px;"/>
 
                         <p:outputPanel>

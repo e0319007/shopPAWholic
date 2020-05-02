@@ -7,36 +7,45 @@
                 template="../template/SellerTemplate.xhtml">
 
     <ui:define name="content">
-        <p:panel header="What are you listing today?" style="width: 490px;">
+        <p:panel header="What are you listing today?" style="width: 50%; ">
             <h:form enctype="multipart/form-data">
-                <p:panelGrid>
-                    <p:growl id="msg"></p:growl>
-
-
-                    <p:fileUpload value="#{listingManagementManagedBean.file}"
-                                  mode="simple"
-                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
-
-                    </p:fileUpload>
-                </p:panelGrid>
-
+                <p:growl id="messages" showDetail="true" life="1000" />   
                 <p:messages/>
                 <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="picture" value="Picture: "/>
+                        </p:column>
+                        <p:column>
+                            <p:fileUpload id="picture" update="messages"
+                                          invalidSizeMessage="JournalDev: Invalid Size"
+                                          invalidFileMessage="JournalDev: Invalid File Type"
+                                          fileLimitMessage="JournalDev: Invalid File Limit"
+                                          mode="advanced" sizeLimit="10000000000000"
+                                          allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                          fileUploadListener="#{listingManagementManagedBean.handleFileUpload}"
+                                          auto="true">
+
+                            </p:fileUpload>
+                        </p:column>
+                        <p:column>
+                            <p:message for="picture"/>
+                        </p:column>
+                    </p:row>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="skuCode" value="SKU Code: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.newListing.skuCode}" required="true" requiredMessage="SKU Code is required"/>
+                            <p:inputText id="skuCode" value="#{listingManagementManagedBean.skuCode}" required="true" requiredMessage="SKU Code is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="skuCode"/>
                         </p:column>
                     </p:row>
-
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="skuCode" value="SKU Code: " style="font-weight: bold;" />
+                            <p:outputLabel for="skuCode" value="Category:  " style="font-weight: bold;" />
                         </p:column>
                         <p:column>
 
@@ -56,7 +65,7 @@
                             <p:outputLabel for="listingTitle" value="Listing Title:" style="font-weight: bold;"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="listingTitle" value="#{listingManagementManagedBean.newListing.name}" required="true" requiredMessage="title is required"/>
+                            <p:inputText id="listingTitle" value="#{listingManagementManagedBean.name}" required="true" requiredMessage="title is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="listingTitle"/>
@@ -68,7 +77,7 @@
                             <p:outputLabel for="price" value="Price:"/>
                         </p:column>
                         <p:column>
-                            <p:inputNumber id="price" value="#{listingManagementManagedBean.newListing.unitPrice}" symbol="$" symbolPosition="s" required="true"/>
+                            <p:inputNumber id="price" value="#{listingManagementManagedBean.unitPrice}" symbol="$" symbolPosition="s" required="true"/>
                         </p:column>
                         <p:column>
                             <p:message for="price"/>
@@ -81,7 +90,7 @@
                             <p:outputLabel for="description" value="Desciption:"/>
                         </p:column>
                         <p:column>
-                            <p:inputTextarea id="description" value="#{listingManagementManagedBean.newListing.description}" rows="6" cols="33"/>
+                            <p:inputTextarea id="description" value="#{listingManagementManagedBean.description}" rows="6" cols="33"/>
                         </p:column>
                         <p:column>
                             <p:message for="description"/>
@@ -93,7 +102,7 @@
                             <p:outputLabel for="quantityOnHand" value="Quantity on Hands: "/>
                         </p:column>
                         <p:column>
-                            <p:inputNumber id="quantityOnHand" value="#{listingManagementManagedBean.newListing.quantityOnHand}"  minValue="1" maxValue="9999" decimalPlaces="0"/>
+                            <p:inputNumber id="quantityOnHand" value="#{listingManagementManagedBean.quantityOnHand}"  minValue="1" maxValue="9999" decimalPlaces="0"/>
                         </p:column>
                         <p:column>
                             <p:message for="quantityOnHand"/>
@@ -117,9 +126,9 @@
                     </p:row>
 
                     <p:row>
-                        <p:column colspan="3">
+                        <p:column colspan="4">
                             <p:commandButton type="reset" value="Clear" />&nbsp;
-                            <p:commandButton value="List now" ajax="false" actionListener="#{listingManagementManagedBean.createNewListing}">
+                            <p:commandButton value="List now" update="messages" actionListener="#{listingManagementManagedBean.createNewListing}">
                             </p:commandButton>
                         </p:column>
                     </p:row>     

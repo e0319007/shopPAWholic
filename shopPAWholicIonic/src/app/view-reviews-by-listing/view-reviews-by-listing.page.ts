@@ -14,6 +14,7 @@ export class ViewReviewsByListingPage implements OnInit {
 
   listingId: number;
   reviews: Review[];
+  picture: string;
 
   error: boolean;
   errorMessage: string;
@@ -43,15 +44,15 @@ export class ViewReviewsByListingPage implements OnInit {
     this.reviewService.retrieveAllReviewsByListingId(this.listingId).subscribe(
       response => {
         this.reviews = response.reviews;
-        console.log("getting listings with size: " + this.reviews.length);
+        console.log("getting reviews with size: " + this.reviews.length);
         // this.hasReviews = true;
         if (this.reviews.length == 0) {
           this.hasReviews = false;
         } else {
           this.hasReviews = true;
-          for (var i = 0; i < this.reviews.length; i++) {
-            console.log(this.reviews[i].picture);
-        }
+        //   for (var i = 0; i < this.reviews.length; i++) {
+        //     console.log(this.reviews[i].picture);
+        // }
         }
       }, error => {
         console.log('********* ViewAllReviewsByListing.ts: ' + error);

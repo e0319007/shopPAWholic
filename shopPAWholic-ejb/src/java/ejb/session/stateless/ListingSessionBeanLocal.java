@@ -20,6 +20,8 @@ public interface ListingSessionBeanLocal {
     public Listing retrieveListingBySkuCode(String skuCode) throws ListingNotFoundException;
 
     public List<Listing> retrieveAllListings();
+    
+    public List<Listing> retrieveListingsBySellerId(Long sellerId);
 
     public Map<String, Integer> retrieveTotalNumberOfListingsPerCategory();
 
@@ -38,4 +40,5 @@ public interface ListingSessionBeanLocal {
     public void deleteListing(Long listingId) throws ListingNotFoundException;
 
     public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds, Long sellerId) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException;
+
 }

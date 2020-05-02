@@ -5,6 +5,7 @@ import {CustomerService} from 'src/app/customer.service';
 import { Customer } from 'src/app/customer';
 import { UtilityService } from 'src/app/utility.service';
 import { CartService } from 'src/app/cart.service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-register-customer',
@@ -28,7 +29,8 @@ export class RegisterCustomerPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private customerService: CustomerService,
     private utilityService: UtilityService,
-    private cartService : CartService) {
+    private cartService : CartService,
+    private app: AppComponent) {
       this.submitted = false;
       this.newCustomer = new Customer();
       this.resultSuccess = false;
@@ -47,6 +49,10 @@ export class RegisterCustomerPage implements OnInit {
     this.name = "";
 		this.submitted = false;
 		this.newCustomer = new Customer();
+  }
+
+  refresh(){
+    this.app.updateMainMenu();
   }
   
   private reset() {
@@ -68,9 +74,9 @@ export class RegisterCustomerPage implements OnInit {
             this.resultError = false;
             this.resultSuccess = true;
             this.message = "New customer " + newCustomerId + " created successfully!"
-            this.utilityService.setIsLogin(true);
-            this.utilityService.setIsCustomer;
-            this.initialiseCart();
+            // this.utilityService.setIsLogin(true);
+            // this.utilityService.setIsCustomer;
+            // this.initialiseCart();
             
             customerRegisterForm.reset();
             this.reset;
@@ -83,14 +89,24 @@ export class RegisterCustomerPage implements OnInit {
           }
         )
 
+          this.login();
+          this.refresh();
     }
 
+  }
+
+  
+  login() {
+    this.router.navigate(["/login"]);
   }
 
   initialiseCart() {
     this.cartService.initialiseCart();
   }
 
+  back() {
+    this.router.navigate(["/register"]);
+  }
 
 
 }

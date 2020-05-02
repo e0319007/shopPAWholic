@@ -78,6 +78,7 @@ public class SecurityFilter implements Filter {
                     || path.equals("/adminOperation/adminSellerList.xhtml")
                     || path.equals("/adminOperation/adminTagList.xhtml")
                     || path.equals("/adminOperation/adminUserList.xhtml")
+                    || path.equals("/adminOperation/adminViewAllAdvertisements.xhtml")
                     ) {
                 return true;
             } else {
@@ -91,7 +92,9 @@ public class SecurityFilter implements Filter {
                     || path.equals("/customerOperation/customerProfile.xhtml")
                     || path.equals("/customerOperation/customerListingList.xhtml")
                     || path.equals("/customerOperation/customerEditProfile.xhtml")
-                    || path.equals("/customerOperation/customerEventpage.xhtml")) {
+                    || path.equals("/customerOperation/customerEventpage.xhtml")
+                    || path.equals("/customerOperation/customerFilterListingsByCategory.xhtml")
+                    || path.equals("/customerOperation/customerFilterListingsByTags.xhtml")) {
                 return true;
             } else {
                 return false;
@@ -102,8 +105,7 @@ public class SecurityFilter implements Filter {
                     || path.equals("/sellerOperation/sellerOperation.xhtml")
                     || path.equals("/sellerOperation/sellerProfile.xhtml")
                     || path.equals("/sellerOperation/sellerSellListing.xhtml")
-                    || path.equals("/sellerOperation/sellerEvent.xhtml")
-                    || path.equals("/sellerOperation/sellerAdvertisement.xhtml")) {
+                    || path.equals("/sellerOperation/sellerEvent.xhtml")) {
                 return true;
             } else {
                 return false;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.stateless;
 
 import entity.Advertisement;
@@ -13,10 +8,6 @@ import util.exception.AdvertisementNotFoundException;
 import util.exception.CreateNewAdvertisementException;
 import util.exception.InputDataValidationException;
 
-/**
- *
- * @author Shi Zhan
- */
 @Local
 public interface AdvertisementSessionBeanLocal {
 
@@ -27,6 +18,10 @@ public interface AdvertisementSessionBeanLocal {
     public Advertisement retrieveAdvertisementById(Long id) throws AdvertisementNotFoundException;
 
     public List<Advertisement> retrieveAllAdvertisements();
+
+    public List<String> retrieveAdvertisementImages();
+
+    public List<Advertisement> retrieveAdvertisementsBySellerId(Long sellerId);
 
     public Map<String, Integer> retrieveTotalNumberOfAdvertisementsForDay();
 

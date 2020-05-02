@@ -11,13 +11,14 @@
         <h:form id="formCreateEvent">
             <p:panel header="Create An Event" toggleable="true" collapsed="true">
                 <p:messages id="messagesCreateNewEvent" redisplay="false"/>
+                <p:growl id="messages" showDetail="true" life="1000" />   
                 <p:panelGrid>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="eventName" value="Event Name:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="eventName" value="#{eventManagedBean.newEvent.eventName}" required="true" requiredMessage="Event name is required"/>
+                            <p:inputText id="eventName" value="#{eventManagedBean.eventName}" required="true" requiredMessage="Event name is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="eventName"/>
@@ -29,7 +30,7 @@
                             <p:outputLabel for="desc" value="Description:"/>
                         </p:column>
                         <p:column>
-                            <p:inputTextarea id="desc" value="#{eventManagedBean.newEvent.description}" required="true" requiredMessage="Description is required"/>
+                            <p:inputTextarea id="desc" value="#{eventManagedBean.description}" required="true" requiredMessage="Description is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="desc"/>
@@ -41,7 +42,7 @@
                             <p:outputLabel for="location" value="Location:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="location" value="#{eventManagedBean.newEvent.location}" required="true" requiredMessage="Location is required"/>
+                            <p:inputText id="location" value="#{eventManagedBean.location}" required="true" requiredMessage="Location is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="location"/>
@@ -57,9 +58,9 @@
                                           invalidSizeMessage="JournalDev: Invalid Size"
                                           invalidFileMessage="JournalDev: Invalid File Type"
                                           fileLimitMessage="JournalDev: Invalid File Limit"
-                                          mode="advanced" multiple="true" fileLimit="30000000" sizeLimit="10000000000000"
+                                          mode="advanced" sizeLimit="10000000000000"
                                           allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                                          fileUploadListener="#{eventManagedBean.handleFileUpload(event)}"
+                                          fileUploadListener="#{eventManagedBean.handleFileUpload}"
                                           auto="true">
 
                             </p:fileUpload>
@@ -76,7 +77,7 @@
                             <p:outputLabel for="from" value="From:"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="from" value="#{eventManagedBean.newEvent.startDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
+                            <p:calendar id="from" value="#{eventManagedBean.startDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="from"/>
@@ -88,7 +89,7 @@
                             <p:outputLabel for="to" value="To"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="to" value="#{eventManagedBean.newEvent.endDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
+                            <p:calendar id="to" value="#{eventManagedBean.endDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="to"/>
@@ -100,7 +101,7 @@
                             <p:outputLabel for="url" value="Url:"/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="url" value="#{eventManagedBean.newEvent.url}" required="true" requiredMessage="Url is required"/>
+                            <p:inputText id="url" value="#{eventManagedBean.url}" required="true" requiredMessage="Url is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="url"/>
@@ -123,7 +124,8 @@
             }
 
             .logo {
-                width: 5%;
+                width: 35%;
+
             }
             .detail {
 
@@ -132,12 +134,13 @@
 
         <!--primeface's dataview-->
         <h:form id="formDataView">
+
             <p:messages id="messages" redisplay="false" closable="true" />
-            <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.events}" var="event" listIcon="pi pi-bars">
+
+            <p:dataView id="dataViewEvents" widgetVar="dataViewEvents" value="#{eventManagedBean.eventsBySellerId}" var="event" >
 
                 <p:dataViewListItem>
-                    <h:panelGrid columns="4" style="width:100%" columnClasses="logo,detail">
-                        <!--<p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/>-->
+                    <h:panelGrid cellpadding="30" columns="3" style="width:100%" columnClasses="logo,detail">
                         <p:graphicImage value="#{event.picture}" style="width:300px; height:400px;"/>
 
                         <p:outputPanel>
@@ -152,45 +155,148 @@
                                 <h:outputText value="#{event.endDateTime}" style="font-weight: bold"/>
                             </h:panelGrid>
                         </p:outputPanel>
-
-                        <p:commandButton update=":formDataView:eventDetail" oncomplete="PF('eventDialog').show()" title="View Details" icon="pi pi-info-circle" value="View Details">
+                        <p:column>
+                            <p:commandButton update="formViewEvent" oncomplete="PF('dialogViewEvent').show()" title="View Details" icon="pi pi-info-circle" value="View Details">
                             <f:setPropertyActionListener value="#{event}" target="#{eventManagedBean.selectedEvent}" />
                         </p:commandButton>
+                            <br/>&nbsp;
+
+                        <p:commandButton update="formUpdateEvent" oncomplete="PF('dialogUpdateEvent').show()" title="Edit Event" icon="pi pi-pencil" value="Edit Event">
+                            <f:setPropertyActionListener value="#{event}" target="#{eventManagedBean.selectedEventToUpdate}" />
+                        </p:commandButton>
+                   <br/>
+                        <p:commandButton icon="pi pi-trash" actionListener="#{eventManagedBean.deleteEvent}" update="@form formDataView:dataViewEvents formDataView:messages" value="Delete Event"> 
+                            <f:attribute name="eventToDelete" value="#{event}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{event.eventName} ?" icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                        </p:column>
+
+                        
+
 
                     </h:panelGrid>
                 </p:dataViewListItem>
+
             </p:dataView>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
 
-            <p:dialog header="Event Details" widgetVar="eventDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="true">
-                <p:outputPanel id="eventDetail" style="text-align:center;">
-                    <p:panelGrid columns="2" rendered="#{not empty eventManagedBean.selectedEvent}">
-                        <f:facet name="header">
-                            <!--<p:graphicImage value="../resources/image/petEvent/petEvent1.jpg"/>--> 
-                            <p:graphicImage value="#{eventManagedBean.selectedEvent.picture}" style="width:300px; height:400px;"/>
-                        </f:facet>
+        </h:form>
 
-                        <h:outputText value="Name: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.eventName}" style="font-weight: bold"/> 
+        <h:form id="formViewEvent"> 
+            <p:dialog id="dialogViewEvent" widgetVar="dialogViewEvent" header="Event Details" closable="true">        
+                <p:panelGrid columns="2" rendered="#{not empty eventManagedBean.selectedEvent}">
+                    <f:facet name="header">            
+                        <p:graphicImage value="#{eventManagedBean.selectedEvent.picture}" style="width:300px; height:400px;"/>
+                    </f:facet>
 
-                        <h:outputText value="Description: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.description}" style="font-weight: bold"/> 
+                    <h:outputText value="Name: "/> 
+                    <h:outputText value="#{eventManagedBean.selectedEvent.eventName}" style="font-weight: bold"/> 
 
-                        <h:outputText value="Location: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.location}" style="font-weight: bold"/> 
+                    <h:outputText value="Description: "/> 
+                    <h:outputText value="#{eventManagedBean.selectedEvent.description}" style="font-weight: bold"/> 
 
-                        <h:outputText value="From: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.startDateTime}" style="font-weight: bold"/> 
+                    <h:outputText value="Location: "/> 
+                    <h:outputText value="#{eventManagedBean.selectedEvent.location}" style="font-weight: bold"/> 
 
-                        <h:outputText value="To: "/> 
-                        <h:outputText value="#{eventManagedBean.selectedEvent.endDateTime}" style="font-weight: bold"/> 
+                    <h:outputText value="From: "/> 
+                    <h:outputText value="#{eventManagedBean.selectedEvent.startDateTime}" style="font-weight: bold"/> 
 
-                        <h:outputText value="Url: "/> 
-                        <h:outputLink target="_blank" value="#{eventManagedBean.selectedEvent.url}">Click here to visit site!</h:outputLink> 
+                    <h:outputText value="To: "/> 
+                    <h:outputText value="#{eventManagedBean.selectedEvent.endDateTime}" style="font-weight: bold"/> 
 
-                    </p:panelGrid>
-                </p:outputPanel>
+                    <h:outputText value="Url: "/> 
+                    <h:outputLink target="_blank" value="#{eventManagedBean.selectedEvent.url}">Click here to visit site!</h:outputLink> 
+
+                </p:panelGrid>
+
             </p:dialog>
+        </h:form>
 
+        <h:form id="formUpdateEvent">
+            <p:dialog id="dialogUpdateEvent" widgetVar="dialogUpdateEvent" header="Edit Event" closable="true">
+                <p:messages id="messagesUpdateEvent" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{eventManagedBean.selectedEventToUpdate.eventName}" placeholder="Event Name" required="true" requiredMessage="Event Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="desc" value="Description: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="desc" value="#{eventManagedBean.selectedEventToUpdate.description}" placeholder="Event Description" required="true" requiredMessage="Event Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="desc" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="location" value="Location: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="location" value="#{eventManagedBean.selectedEventToUpdate.location}" placeholder="Location" required="true" requiredMessage="Location is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="location" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="from" value="From:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="from" value="#{eventManagedBean.selectedEventToUpdate.startDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="from"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="to" value="To:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:calendar id="to" value="#{eventManagedBean.selectedEventToUpdate.endDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="to"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="url" value="Url:" style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="url" value="#{eventManagedBean.selectedEventToUpdate.url}" required="true" requiredMessage="Url is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="url"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton id="updateEvent" value="Save Changes" update="@form formDataView:dataViewEvents" actionListener="#{eventManagedBean.updateEvent}" oncomplete="PF('dialogUpdateEvent').show();" style="display: block; width:100%;" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
 
     </ui:define>

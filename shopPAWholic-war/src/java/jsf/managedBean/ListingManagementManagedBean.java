@@ -6,6 +6,7 @@ import ejb.session.stateless.OrderSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import ejb.session.stateless.TagSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
+import entity.Admin;
 import entity.Listing;
 import entity.Tag;
 import entity.Category;
@@ -18,6 +19,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,16 +60,28 @@ public class ListingManagementManagedBean implements Serializable {
     @EJB(name = "UserSessionBeanLocal")
     private UserSessionBeanLocal userSessionBeanLocal;
 
-    private List<Listing> listings;
+    private List<Listing> allListings;
+    private List<Listing> listingsBySellerId;
     private List<Listing> filteredListings;
 
     private Listing newListing;
     private Long categoryIdNew;
     private List<Long> tagIdsNew;
+
+    //for creation of new Listing
+    private String skuCode;
+    private String name;
+    private String description;
+    private BigDecimal unitPrice;
+    private String picture;
+    private Integer quantityOnHand;
+    private Date listDate;
+
+    //view
     private List<Category> categories;
     private List<Tag> tags;
 
-    //view
+    //selectedView
     private Listing selectedListingToView;
 
     //update
@@ -78,12 +92,10 @@ public class ListingManagementManagedBean implements Serializable {
     private List<Review> reviews;
     private List<OrderEntity> orders;
 
-    private Seller sellerId;
-    private Seller seller;
+    private Long sellerId;
 
     //fileUpload
     private UploadedFile file;
-    private String imagePath;
 
     public ListingManagementManagedBean() {
         newListing = new Listing();
@@ -100,7 +112,7 @@ public class ListingManagementManagedBean implements Serializable {
                     + "Listing"
                     + System.getProperty("file.separator");
             File newPath = new File(destination + secDest);
-            // advertisementID
+
             newPath.mkdirs();
             System.err.println("********** FileUploadView.handleFileUpload(): File name: " + event.getFile().getFileName());
             System.err.println("********** FileUploadView.handleFileUpload(): newFilePath: " + newPath);
@@ -115,7 +127,7 @@ public class ListingManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            imagePath = secDest + event.getFile().getFileName();
+            picture = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
 
             while (true) {
                 a = inputStream.read(buffer);
@@ -145,18 +157,17 @@ public class ListingManagementManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        //setListings(listingSessionBeanLocal.retrieveAllListings());
-        //setCategories(categorySessionBeanLocal.retrieveAllLeafCategories());
-        //setTags(tagSessionBeanLocal.retrieveAllTags());
-        //setReviews(reviewSessionBeanLocal.retrieveAllReviews());
-        //setOrders(orderSessionBeanLocal.retrieveAllOrders());
-        listings = listingSessionBeanLocal.retrieveAllListings();
+        allListings = listingSessionBeanLocal.retrieveAllListings();
         tags = tagSessionBeanLocal.retrieveAllTags();
-        //reviews = reviewSessionBeanLocal.retrieveAllReviews();
-        
-        Seller seller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentSellerEntity");
-        //User currentUser = (User)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        //sellerId = currentUser.getUserId();
+        categories = categorySessionBeanLocal.retrieveAllCategories();
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
+            User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            sellerId = currentUser.getUserId();
+        }
+
+        listingsBySellerId = listingSessionBeanLocal.retrieveListingsBySellerId(sellerId);
+
     }
 
     public void viewListingDetails(ActionEvent event) throws IOException {
@@ -167,32 +178,18 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void createNewListing(ActionEvent event) {
         try {
-
-            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, seller.getUserId());
-            System.out.println("############################# new Listing: " + newListing);
-            newListing.setListDate(new Date(System.currentTimeMillis()));
-            newListing.setPicture(imagePath);
-            System.out.println("############################# categoryIdNew: " + categoryIdNew);
-            System.out.println("############################# tagIdsNew: " + tagIdsNew);
-            System.out.println("############################# seller: " + seller.getUserId());
-
-            listings.add(l);
-            //Listing l = new Listing(skuCode, name, description, unitPrice, pictures, getQuantityAtHand());
-            //listingSessionBeanLocal.createNewListing(l, getCategoryIdNew(), getTagIdsNew());
-            //listingSessionBeanLocal.createNewListing(getNewListing(), getCategoryIdNew(), getTagIdsNew(), getPictures());
-            //getListings().add(l);
+            listDate = new Date();
+            newListing = new Listing(skuCode, name, description, unitPrice, picture, quantityOnHand, listDate);
+            Listing l = listingSessionBeanLocal.createNewListing(newListing, categoryIdNew, tagIdsNew, sellerId);
+            allListings.add(l);
 
             if (filteredListings != null) {
                 filteredListings.add(l);
             }
-
             newListing = new Listing();
             categoryIdNew = null;
             tagIdsNew = null;
-
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New listing created successfully! (Listing Id: " + l.getListingId() + ")", null));
-
         } catch (InputDataValidationException | CreateNewListingException | ListingSkuCodeExistException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new listing: " + ex.getMessage(), null));
         }
@@ -203,7 +200,7 @@ public class ListingManagementManagedBean implements Serializable {
             Listing listingToDelete = (Listing) event.getComponent().getAttributes().get("listingToDelete");
             listingSessionBeanLocal.deleteListing(listingToDelete.getListingId());
 
-            listings.remove(listingToDelete);
+            allListings.remove(listingToDelete);
 
             if (filteredListings != null) {
                 filteredListings.remove(listingToDelete);
@@ -259,182 +256,98 @@ public class ListingManagementManagedBean implements Serializable {
         }
     }
 
-    /**
-     * @return the listings
-     */
-    public List<Listing> getListings() {
-        return listings;
+    public List<Listing> getAllListings() {
+        return allListings;
     }
 
-    /**
-     * @param listings the listings to set
-     */
-    public void setListings(List<Listing> listings) {
-        this.listings = listings;
+    public void setAllListings(List<Listing> allListings) {
+        this.allListings = allListings;
     }
 
-    /**
-     * @return the filteredListings
-     */
     public List<Listing> getFilteredListings() {
         return filteredListings;
     }
 
-    /**
-     * @param filteredListings the filteredListings to set
-     */
     public void setFilteredListings(List<Listing> filteredListings) {
         this.filteredListings = filteredListings;
     }
 
-    /**
-     * @return the newListing
-     */
     public Listing getNewListing() {
         return newListing;
     }
 
-    /**
-     * @param newListing the newListing to set
-     */
     public void setNewListing(Listing newListing) {
         this.newListing = newListing;
     }
 
-    /**
-     * @return the categoryIdNew
-     */
     public Long getCategoryIdNew() {
         return categoryIdNew;
     }
 
-    /**
-     * @param categoryIdNew the categoryIdNew to set
-     */
     public void setCategoryIdNew(Long categoryIdNew) {
         this.categoryIdNew = categoryIdNew;
     }
 
-    /**
-     * @return the tagIdsNew
-     */
     public List<Long> getTagIdsNew() {
         return tagIdsNew;
     }
 
-    /**
-     * @param tagIdsNew the tagIdsNew to set
-     */
     public void setTagIdsNew(List<Long> tagIdsNew) {
         this.tagIdsNew = tagIdsNew;
     }
 
-    /**
-     * @return the categories
-     */
     public List<Category> getCategories() {
         return categories;
     }
 
-    /**
-     * @param categories the categories to set
-     */
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    /**
-     * @return the tags
-     */
     public List<Tag> getTags() {
         return tags;
     }
 
-    /**
-     * @param tags the tags to set
-     */
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
-    /**
-     * @return the selectedListingToUpdate
-     */
     public Listing getSelectedListingToUpdate() {
         return selectedListingToUpdate;
     }
 
-    /**
-     * @param selectedListingToUpdate the selectedListingToUpdate to set
-     */
     public void setSelectedListingToUpdate(Listing selectedListingToUpdate) {
         this.selectedListingToUpdate = selectedListingToUpdate;
     }
 
-    /**
-     * @return the categoryIdUpdate
-     */
     public Long getCategoryIdUpdate() {
         return categoryIdUpdate;
     }
 
-    /**
-     * @param categoryIdUpdate the categoryIdUpdate to set
-     */
     public void setCategoryIdUpdate(Long categoryIdUpdate) {
         this.categoryIdUpdate = categoryIdUpdate;
     }
 
-    /**
-     * @return the tagIdsUpdate
-     */
     public List<Long> getTagIdsUpdate() {
         return tagIdsUpdate;
     }
 
-    /**
-     * @param tagIdsUpdate the tagIdsUpdate to set
-     */
     public void setTagIdsUpdate(List<Long> tagIdsUpdate) {
         this.tagIdsUpdate = tagIdsUpdate;
     }
 
-    /**
-     * @return the viewListingManagedBean
-     */
-    /*public ViewListingManagedBean getViewListingManagedBean() {
-        return viewListingManagedBean;
-    }*/
-    /**
-     * @param viewListingManagedBean the viewListingManagedBean to set
-     */
-    /*public void setViewListingManagedBean(ViewListingManagedBean viewListingManagedBean) {
-        this.viewListingManagedBean = viewListingManagedBean;
-    }*/
-    /**
-     * @return the reviews
-     */
     public List<Review> getReviews() {
         return reviews;
     }
 
-    /**
-     * @param reviews the reviews to set
-     */
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    /**
-     * @return the orders
-     */
     public List<OrderEntity> getOrders() {
         return orders;
     }
 
-    /**
-     * @param orders the orders to set
-     */
     public void setOrders(List<OrderEntity> orders) {
         this.orders = orders;
     }
@@ -445,6 +358,70 @@ public class ListingManagementManagedBean implements Serializable {
 
     public void setSelectedListingToView(Listing selectedListingToView) {
         this.selectedListingToView = selectedListingToView;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Date getListDate() {
+        return listDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    public String getSkuCode() {
+        return skuCode;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setListDate(Date listDate) {
+        this.listDate = listDate;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setQuantityOnHand(Integer quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
+    }
+
+    public void setSkuCode(String skuCode) {
+        this.skuCode = skuCode;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public List<Listing> getListingsBySellerId() {
+        return listingsBySellerId;
+    }
+
+    public void setListingsBySellerId(List<Listing> listingsBySellerId) {
+        this.listingsBySellerId = listingsBySellerId;
     }
 
 }

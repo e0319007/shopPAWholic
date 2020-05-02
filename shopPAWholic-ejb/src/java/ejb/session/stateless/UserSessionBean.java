@@ -106,7 +106,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
         }
     }
     
-    @Override
+    /*@Override
     public void updateUser(User user) throws UserNotFoundException, InputDataValidationException {
         if(user != null && user.getUserId() !=null) {
             Set<ConstraintViolation<User>>constraintViolations = validator.validate(user); 
@@ -122,6 +122,30 @@ public class UserSessionBean implements UserSessionBeanLocal {
             } else {
                 throw new UserNotFoundException("User ID not provided for user to be updated");
             }
+        }
+    }*/
+    @Override
+    public void updateUser(User userToUpdate) {
+        try {
+            User user = retrieveUserByUserId(userToUpdate.getUserId());
+            user.setName(userToUpdate.getName());
+            user.setContactNumber(userToUpdate.getContactNumber());   
+            user.setEmail(userToUpdate.getEmail());
+   
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Override
+    public void updateEmail(User userToUpdate, String password) {
+        try {
+            User user = retrieveUserByUserId(userToUpdate.getUserId());
+            user.setPassword(password);
+            em.persist(user);
+   
+        } catch (UserNotFoundException ex) {
+            Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

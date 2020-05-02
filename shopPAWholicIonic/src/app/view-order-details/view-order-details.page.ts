@@ -25,6 +25,7 @@ export class ViewOrderDetailsPage implements OnInit {
   isCustomer: boolean;
   cancelSuccessMessage: string;
   cancelled: boolean;
+  completed: boolean;
 
   constructor(private orderService: OrderEntityService,
               private activatedRoute: ActivatedRoute,
@@ -69,6 +70,8 @@ export class ViewOrderDetailsPage implements OnInit {
         if (this.orderToView.orderStatus == OrderStatus.cancelled) {
           this.cancelled = true;
           console.log("is this order cancelled? " + this.cancelled);
+        } else if (this.orderToView.orderStatus == OrderStatus.completed) {
+          this.completed = true;
         }
         
       },

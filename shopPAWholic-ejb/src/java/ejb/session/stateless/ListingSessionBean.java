@@ -13,7 +13,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,14 +127,28 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         }
         return listings;
     }
-    
+
+    @Override
+    public List<Listing> retrieveListingsBySellerId(Long sellerId) {
+        Query query = em.createQuery("SELECT l FROM Listing l WHERE l.seller.userId = :sellerId");
+        query.setParameter("sellerId", sellerId);
+        List<Listing> listings = query.getResultList();
+
+        for (Listing listing : listings) {
+            listing.getCategory();
+            listing.getTags().size();
+            listing.getOrders().size();
+        }
+        return listings;
+    }
+
     @Override
     public Map<String, Integer> retrieveTotalNumberOfListingsPerCategory() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
         Query query;
         Map<String, Integer> listingPerMonth = new LinkedHashMap<>();
         List<Category> categories = categorySessionBeanLocal.retrieveAllCategories();
-        for (Category c: categories) {
+        for (Category c : categories) {
             query = em.createQuery("SELECT l FROM Listing l WHERE l.category = :inCategory");
             query.setParameter("inCategory", c);
             listingPerMonth.put(c.getName(), (query.getResultList()).size());
@@ -143,7 +156,6 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         return listingPerMonth;
     }
 
-    
     @Override
     public Map<String, Integer> retrieveTotalNumberOfListingsForTheYear() {
         int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -158,7 +170,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         }
         return listingPerYear;
     }
-    
+
     @Override
     public Map<String, Integer> retrieveTotalNumberOfListingsForDay() {
         Query query;
@@ -288,6 +300,10 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
 
             if (constraintViolations.isEmpty()) {
                 Listing listingToUpdate = retrieveListingByListingId(listing.getListingId());
+                listingToUpdate.setName(listing.getName());
+                listingToUpdate.setDescription(listing.getDescription());
+                listingToUpdate.setUnitPrice(listing.getUnitPrice());
+                listingToUpdate.setQuantityOnHand(listing.getQuantityOnHand());
 
                 if (listingToUpdate.getSkuCode().equals(listing.getSkuCode())) {
                     if (categoryId != null && (!listingToUpdate.getCategory().getCategoryId().equals(categoryId))) {
@@ -308,10 +324,6 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
                         }
                     }
 
-                    listingToUpdate.setName(listing.getName());
-                    listingToUpdate.setDescription(listing.getDescription());
-                    listingToUpdate.setUnitPrice(listing.getUnitPrice());
-                    listingToUpdate.setQuantityOnHand(listing.getQuantityOnHand());
                 } else {
                     throw new UpdateListingException("Sku code of listing record to be updated does not match existing record!");
 
@@ -323,6 +335,7 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             throw new ListingNotFoundException("Listing Id not provided for listing to be updated!");
         }
     }
+
 
     @Override
     public void deleteListing(Long listingId) throws ListingNotFoundException {

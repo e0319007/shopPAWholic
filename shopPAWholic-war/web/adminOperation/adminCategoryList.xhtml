@@ -13,7 +13,7 @@
             <ez:Breadcrumb pageName="categoryList"/>
             <h:form id="formCreateNewCategory" > 
                 <p:panel header="Create New Category" toggleable="true" collapsed="true" >
-                    <h:messages id="messagesCreateNewCategory"/> 
+                    <p:messages id="messagesCreateNewCategory"/> 
                     <p:panelGrid> 
                         <p:row> 
                             <p:column>
@@ -50,7 +50,7 @@
 
             <!--table of categories--> 
             <h:form id="formDataTable">
-                <h:messages id="messages" />
+                <p:messages id="messages" />
                 <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{categoryManagedBean.categories}" var="category">
                     <p:column headerText="Name"> 
                         <h:outputText value="#{category.name}"/> 

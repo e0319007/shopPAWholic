@@ -3,6 +3,7 @@
 <ui-composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <h:head>
         <link rel="stylesheet" href="../resources/css/adminLayout.css"/>
@@ -23,16 +24,16 @@
                         </div>
                         <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
 
-                        <h:form style="padding: 15px 10px; float: right;">
+                        <h:form style="padding-top: 10px; float: right;">
                             <p:commandButton id="emailBtn" type="button" icon="pi pi-bell"/>
-                                <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
-                                    <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >
-                                        <p:column headerText="Title">
-                                            <h:outputText value="#{email.subject}"/>
-                                        </p:column>    
-                                    </p:dataTable>
-                                </p:overlayPanel>
-                            
+                            <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                                <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >
+                                    <p:column headerText="Title">
+                                        <h:outputText value="#{email.subject}"/>
+                                    </p:column>    
+                                </p:dataTable>
+                            </p:overlayPanel>
+
                             <p:menuButton value="#{sessionScope.currentAdmin.username}">
                                 <p:menuitem value="Logout" action="#{adminLoginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
                             </p:menuButton>
@@ -47,46 +48,56 @@
                 <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
                     <h:form>
                         <p:panelMenu style="width:280px; margin-top:40px;">
-                            <p:submenu label="Home" >
-                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml"></p:menuitem>
+                            <p:submenu label="Home" icon="p pi-home">
+                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml" icon="pi pi-home"></p:menuitem>
                             </p:submenu>                            
 
-                            <p:submenu label="User">
-                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false"/>
-                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false"></p:menuitem>
-                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false"></p:menuitem>
+                            <p:submenu label="User" icon="pi pi-users">
+                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false" icon="pi pi-users"/>
+                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
+                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Listing" >
-                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml"></p:menuitem>
-                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml"></p:menuitem>
-                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml"></p:menuitem>
-                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml"></p:menuitem>
+                            <p:submenu label="Listing" icon="pi pi-shopping-cart">
+                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml" icon="pi pi-shopping-cart"></p:menuitem>
+                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml" icon="pi pi-search"></p:menuitem>
+                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml" icon="pi pi-filter"></p:menuitem>
+                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml" icon="pi pi-filter"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Category">
-                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon=""></p:menuitem>
+                            <p:submenu label="Category" icon="pi pi-th-large">
+                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon="pi pi-th-large"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Tag">
+                            <p:submenu label="Tag" icon="pi pi-tags">
                                 <p:menuitem value="View all Tags" ajax="false" url="../adminOperation/adminTagList.xhtml" icon="pi pi-tags"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Forum">
-                                <p:menuitem value="View all Forums" ajax="false" icon="pi pi-file-o"></p:menuitem>
+                            <p:submenu label="Advertisement" icon="pi pi-bookmark">
+                                <p:menuitem value="View all Advertisements" ajax="false" url="../adminOperation/adminViewAllAdvertisements.xhtml" icon="pi pi-bookmark"></p:menuitem>
                             </p:submenu>
 
-                            <p:submenu label="Review">
-                                <p:menuitem value="View all Reviews" ajax="false" icon="pi pi-comments"></p:menuitem>
-                            </p:submenu>
                         </p:panelMenu>
                     </h:form>
                 </p:sidebar>
             </ui:insert>
         </div>
 
+        <!--loading sign-->
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="start">
+            </f:facet>
+            <f:facet name="success">
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage library="image" name="ajax-loader.gif" />     
+        </p:dialog>
+
         <div id="content" class="left_content">
             <ui:insert name="content"></ui:insert>
         </div>
+
     </h:body>
 </ui-composition>
