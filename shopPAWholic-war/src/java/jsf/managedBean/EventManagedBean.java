@@ -51,6 +51,7 @@ public class EventManagedBean implements Serializable {
     private String location;
     private String picture;
     private Date startDateTime;
+    private Date today;
     private Date endDateTime;
     private String url;
     private Date listDate;
@@ -143,6 +144,8 @@ public class EventManagedBean implements Serializable {
             return false;
         }
     }
+    
+  
 
     public void createNewEvent(ActionEvent event) {
         try {
@@ -436,5 +439,20 @@ public class EventManagedBean implements Serializable {
      */
     public void setSelectedEventToUpdate(Event selectedEventToUpdate) {
         this.selectedEventToUpdate = selectedEventToUpdate;
+    }
+
+    /**
+     * @return the today
+     */
+    public Date getToday() {
+        Calendar c = Calendar.getInstance();
+        return c.getTime();
+    }
+
+    /**
+     * @param today the today to set
+     */
+    public void setToday(Date today) {
+        this.today = today;
     }
 }

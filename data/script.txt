@@ -1,0 +1,18 @@
+Sell (sellerSellListing.xhtml): 
+Picture: <upload photo "listing1.jpg">
+SKU Code: LIST020
+Category: Cat Food
+Listing Title: Grain-free Cat Food
+Price: 23
+Description: Complete and balanced holitic cat food for all ages 
+Quantity on Hands: 1
+Tag(s): discount
+
+Create an event (sellerEvent.xhtml):
+Event name: Pet Expo 2020 
+Description: Singapore's largest pet fair
+Location: Expo Hall 2
+Picture: <upload poster "petEvent5.jpg">
+From: 09/05/2020 10:30:00
+To: 10/05/2020 20:00 
+Url: https://petexposg.com/
