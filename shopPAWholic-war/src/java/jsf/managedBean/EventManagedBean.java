@@ -78,8 +78,12 @@ public class EventManagedBean implements Serializable {
         //hardcoded event as example
         scheduleModel.addEvent(new DefaultScheduleEvent("Doggy Party", today1Pm(), today6Pm()));
 
-        User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        sellerId = currentUser.getUserId();
+        //User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        //sellerId = currentUser.getUserId();
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser") != null) {
+            User currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            sellerId = currentUser.getUserId();
+        }
         
         setEventsBySellerId(eventSessionBeanLocal.retrieveEventsBySellerId(sellerId));
     }
