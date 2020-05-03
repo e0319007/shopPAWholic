@@ -87,15 +87,15 @@
   <ion-toolbar *ngIf="retrieveListingError == false && listingToView != null && isCustomer == true">
    
     <ion-button color="primary" (click)="changeQty(-1)">
-      -
+      <ion-icon name="remove"></ion-icon>
     </ion-button>
       <b>&ensp;{{quantityToAddToCart}}&ensp;</b>
-    <ion-button color="primary" (click)="changeQty(1)">
-        +
-    </ion-button>
+   
+      <ion-icon name="add" (click)="changeQty(1)"></ion-icon>
+    
   
 		<ion-button (click)="addToCart()" style="float:right">
-			<ion-icon slot="cart" name="add"></ion-icon>
+			<ion-icon name="cart"></ion-icon>
 			Add To Cart
 		</ion-button>
   </ion-toolbar>

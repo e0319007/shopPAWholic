@@ -17,9 +17,7 @@
   <ion-list *ngIf="noBilling == false">
     <ion-item *ngFor="let billing of billingDetails" >
       <ion-label>Billing Id: {{billing.billingDetailId}}</ion-label>
-      <!-- Billing Date: {{parseDate(billing.billingDate) | date: 'dd MMM, yyyy'}}<br /> -->
-
-      Billing Date: {{billing.billingDate}} <br />
+      Billing Date: {{parseDate(billing.billingDate) | date: 'dd MMM, yyyy'}}<br /> 
       Credit Card Number: {{billing.creditCardDetail}}<br />
       Amount Charged: ${{billing.advertisement.price}}<br />
     </ion-item>

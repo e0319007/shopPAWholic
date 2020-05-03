@@ -79,6 +79,7 @@ public class SecurityFilter implements Filter {
                     || path.equals("/adminOperation/adminTagList.xhtml")
                     || path.equals("/adminOperation/adminUserList.xhtml")
                     || path.equals("/adminOperation/adminViewAllAdvertisements.xhtml")
+                    || path.equals("/adminOperation/adminViewAllEvents.xhtml")
                     ) {
                 return true;
             } else {

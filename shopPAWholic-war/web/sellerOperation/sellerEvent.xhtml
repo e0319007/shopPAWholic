@@ -77,7 +77,7 @@
                             <p:outputLabel for="from" value="From:"/>
                         </p:column>
                         <p:column>
-                            <p:calendar id="from" value="#{eventManagedBean.startDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
+                            <p:calendar mindate="#{eventManagedBean.today}" id="from" value="#{eventManagedBean.startDateTime}" timeZone="GMT+8" pattern="dd/MM/yyyy HH:mm" required="true" requiredMessage="Date and time is required"/>
                         </p:column>
                         <p:column>
                             <p:message for="from"/>
