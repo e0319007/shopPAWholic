@@ -1,13 +1,14 @@
 package ejb.session.stateless;
 
 import entity.Seller;
-import entity.Verification;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -89,7 +90,6 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
             if(constraintViolations.isEmpty()) {
                 Seller sellerToUpdate = retrieveSellerById(seller.getUserId()); 
                 if(sellerToUpdate.getEmail().equals(seller.getEmail())) {
-                    System.out.println("VERIFICATIONNNNNNN                    "+seller.getVerification());
                     sellerToUpdate.setVerification(seller.getVerification());
                 } else {
                     throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
@@ -99,6 +99,14 @@ public class SellerSessionBean implements SellerSessionBeanLocal {
             }
         }
     }
+    
+    @Override
+    public void updateVerifiedAdmin(Seller sellerToView) {
+        Seller seller = em.find(Seller.class, sellerToView.getUserId());
+        seller.setVerified(true);
+        em.persist(seller);
+    }
+
     @Override
     public Seller retrieveSellerByUsername(String username) throws SellerNotFoundException {
         Query query = em.createQuery("SELECT s FROM Seller s WHERE s.username = :inUsername");

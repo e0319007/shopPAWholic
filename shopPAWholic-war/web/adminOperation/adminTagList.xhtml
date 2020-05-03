@@ -4,9 +4,12 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
+        <h1></h1>
+        <ez:Breadcrumb pageName="tagList"/>
         <h:form id="formCreateNewTag"> 
             <p:panel header="Create New Tag" toggleable="true" collapsed="true">
                 <p:messages id="messages"  /> 

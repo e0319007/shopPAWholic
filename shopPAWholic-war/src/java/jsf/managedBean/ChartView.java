@@ -9,6 +9,7 @@ import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
 import entity.Seller;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class ChartView implements Serializable {
     private Integer totalNoOfListings;
     private Integer totalNoOfAdvertisements;
     private Integer totalNoOfEvents;
-    private Integer totalRevenue;
+    private BigDecimal totalRevenue;
 
     //userAnalysis
     private BarChartModel userBarModel;
@@ -83,6 +84,7 @@ public class ChartView implements Serializable {
         totalNumberOfListings();
         totalNumberOfAdvertisements();
         totalNumberOfEvents();
+        totalRevenue();
 
         createUserBarModel();
         createUserPieModel();
@@ -191,7 +193,7 @@ public class ChartView implements Serializable {
         this.totalNoOfEvents = totalNoOfEvents;
     }
 
-    public Integer getTotalRevenue() {
+    public BigDecimal getTotalRevenue() {
         return totalRevenue;
     }
 
@@ -207,7 +209,7 @@ public class ChartView implements Serializable {
         this.totalNoOfUsers = totalNoOfUsers;
     }
 
-    public void setTotalRevenue(Integer totalRevenue) {
+    public void setTotalRevenue(BigDecimal totalRevenue) {
         this.totalRevenue = totalRevenue;
     }
 
@@ -233,6 +235,10 @@ public class ChartView implements Serializable {
 
     private void totalNumberOfEvents() {
         totalNoOfEvents = eventSessionBeanLocal.retrieveAllEvent().size();
+    }
+    
+    private void totalRevenue(){
+        totalRevenue = advertisementSessionBeanLocal.retrieveAllRevenue();
     }
 
     private void createUserBarModel() {

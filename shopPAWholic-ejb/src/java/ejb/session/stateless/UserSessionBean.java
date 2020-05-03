@@ -2,6 +2,7 @@ package ejb.session.stateless;
 
 import entity.Cart;
 import entity.Customer;
+import entity.Seller;
 import entity.User;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -148,7 +149,7 @@ public class UserSessionBean implements UserSessionBeanLocal {
             Logger.getLogger(EventSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Override
     public User retrieveUserByUserId(Long userId) throws UserNotFoundException {
         User user = em.find(User.class, userId);
