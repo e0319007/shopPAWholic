@@ -41,4 +41,8 @@ public interface ListingSessionBeanLocal {
 
     public Listing createNewListing(Listing newListing, Long categoryId, List<Long> tagIds, Long sellerId) throws InputDataValidationException, ListingSkuCodeExistException, CreateNewListingException;
 
+    public Map<String, Integer> retrieveListingsPerMonthBySellerId(Long sellerId);
+
+    public Map<String, Integer> retrieveAllCategories(Long sellerId);
+
 }

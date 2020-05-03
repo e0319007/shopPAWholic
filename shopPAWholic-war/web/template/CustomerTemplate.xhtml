@@ -7,9 +7,6 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
         <!-- MAIN CSS -->
         <link rel="stylesheet" href="../resources/css/customerLayout.css"/>
         <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
@@ -31,7 +28,7 @@
                             <p:menuitem value="Advertisement" url="../customerOperation/customerAdvertisementpage.xhtml" icon="pi pi-bookmark"/>
 
                             <f:facet name="options">
-                          
+
                                 <p:menuButton value="#{sessionScope.currentUser.name}">
                                     <p:menuitem value="Profile" url="../customerOperation/customerProfile.xhtml" icon="pi pi-user-plus"/>
                                     <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
@@ -58,11 +55,11 @@
 
                             <f:facet name="header">
                                 Fresh Finds
-                           
+
                                 <div align="right">
-                                <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}"  placeholder="Search for an item...">
-                                    <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
-                                </p:inputText>
+                                    <p:inputText id="txtSearchString" value="#{searchListingByNameManagedBean.searchString}"  placeholder="Search for an item...">
+                                        <p:ajax event="keyup" process="@this" update="formMain:dataGridMain" listener="#{searchListingByNameManagedBean.searchListing}"/>
+                                    </p:inputText>
                                 </div>
                             </f:facet>
 
@@ -82,24 +79,22 @@
                 </ui:insert>
             </div>
 
-            <div id="bottom">
+            <div id="bottom" >
                 <ui:insert name="bottom">
-                    <ui:include src="../footer.xhtml"/>
-                    <!--footer-->
+                    Copyright © shopPAWholic 2020
                 </ui:insert>
             </div>
         </div>
-        
 
-            <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
-                <f:facet name="start">
-                </f:facet>
-                <f:facet name="success">
-                </f:facet>
-            </p:ajaxStatus>
-            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-                <p:graphicImage library="image" name="ajax-loader.gif" />     
-            </p:dialog>
+        <p:ajaxStatus>
+            <f:facet name="start">
+            </f:facet>
+            <f:facet name="success">
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage library="image" name="ajax-loader.gif" />     
+        </p:dialog>
     </h:body>
 </ui:composition>

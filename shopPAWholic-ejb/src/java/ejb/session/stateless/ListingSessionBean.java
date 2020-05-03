@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +128,23 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         }
         return listings;
     }
+    
+    @Override 
+    public Map<String, Integer> retrieveAllCategories(Long sellerId){
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> listingPerMonth = new LinkedHashMap<>();
+        List<Category> categories = categorySessionBeanLocal.retrieveAllCategories();
+        for (Category c : categories) {
+            query = em.createQuery("SELECT l FROM Listing l WHERE l.category = :inCategory and l.seller.userId = :inSeller");
+            query.setParameter("inCategory", c);
+            query.setParameter("inSeller", sellerId);
+            listingPerMonth.put(c.getName(), (query.getResultList()).size());
+        }
+        return listingPerMonth;
+    }
 
+    
     @Override
     public List<Listing> retrieveListingsBySellerId(Long sellerId) {
         Query query = em.createQuery("SELECT l FROM Listing l WHERE l.seller.userId = :sellerId");
@@ -140,6 +157,22 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             listing.getOrders().size();
         }
         return listings;
+    }
+
+    @Override
+    public Map<String, Integer> retrieveListingsPerMonthBySellerId(Long sellerId) {
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Query query;
+        Map<String, Integer> userPerMonth = new HashMap<>();
+        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for (int i = 0; i < months.size(); i++) {
+            query = em.createQuery("SELECT l FROM Listing l WHERE EXTRACT(YEAR(l.listDate)) = :inYear and EXTRACT(MONTH(l.listDate)) = :inMonth and l.seller.userId = :inSeller");
+            query.setParameter("inYear", year);
+            query.setParameter("inMonth", i + 1);
+            query.setParameter("inSeller", sellerId);
+            userPerMonth.put(months.get(i), (query.getResultList()).size());
+        }
+        return userPerMonth;
     }
 
     @Override
@@ -212,7 +245,8 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
 
     @Override
-    public List<Listing> searchListingsByName(String searchName) {
+    public List<Listing> searchListingsByName(String searchName
+    ) {
         Query query = em.createQuery("SELECT l FROM Listing l WHERE l.name LIKE :inSearchName ORDER BY l.skuCode ASC");
         query.setParameter("inSearchName", "%" + searchName + "%");
         List<Listing> listings = query.getResultList();
@@ -247,7 +281,8 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
 
     @Override
-    public List<Listing> filterListingsByTags(List<Long> tagIds, String condition) {
+    public List<Listing> filterListingsByTags(List<Long> tagIds, String condition
+    ) {
         List<Listing> listings = new ArrayList<>();
 
         if (tagIds == null || tagIds.isEmpty() || (!condition.equals("AND") && !condition.equals("OR"))) {
@@ -294,7 +329,8 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
     }
 
     @Override
-    public void updateListing(Listing listing, Long categoryId, List<Long> tagIds) throws ListingNotFoundException, CategoryNotFoundException, TagNotFoundException, UpdateListingException, InputDataValidationException {
+    public void updateListing(Listing listing, Long categoryId,
+             List<Long> tagIds) throws ListingNotFoundException, CategoryNotFoundException, TagNotFoundException, UpdateListingException, InputDataValidationException {
         if (listing != null && listing.getListingId() != null) {
             Set<ConstraintViolation<Listing>> constraintViolations = validator.validate(listing);
 
@@ -335,7 +371,6 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
             throw new ListingNotFoundException("Listing Id not provided for listing to be updated!");
         }
     }
-
 
     @Override
     public void deleteListing(Long listingId) throws ListingNotFoundException {
