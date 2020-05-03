@@ -1,6 +1,10 @@
 package jsf.managedBean;
 
+import ejb.session.stateless.AdvertisementSessionBeanLocal;
+import ejb.session.stateless.CartSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.EventSessionBeanLocal;
+import ejb.session.stateless.ListingSessionBeanLocal;
 import ejb.session.stateless.SellerSessionBeanLocal;
 import ejb.session.stateless.UserSessionBeanLocal;
 import entity.Customer;
@@ -28,12 +32,23 @@ import org.primefaces.model.UploadedFile;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.SellerNotFoundException;
-import util.exception.UserNotFoundException;
 import util.security.CryptographicHelper;
 
 @Named(value = "userManagementManagedBean")
 @ViewScoped
 public class UserManagementManagedBean implements Serializable {
+
+    @EJB(name = "CartSessionBeanLocal")
+    private CartSessionBeanLocal cartSessionBeanLocal;
+
+    @EJB(name = "EventSessionBeanLocal")
+    private EventSessionBeanLocal eventSessionBeanLocal;
+
+    @EJB(name = "AdvertisementSessionBeanLocal")
+    private AdvertisementSessionBeanLocal advertisementSessionBeanLocal;
+
+    @EJB(name = "ListingSessionBeanLocal")
+    private ListingSessionBeanLocal listingSessionBeanLocal;
 
     @EJB(name = "SellerSessionBeanLocal")
     private SellerSessionBeanLocal sellerSessionBeanLocal;
@@ -84,7 +99,8 @@ public class UserManagementManagedBean implements Serializable {
     private Boolean verified;
     private UploadedFile file;
     private String filePath;
-    
+
+    //for chart 
     public UserManagementManagedBean() {
         currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
         if (currentUser instanceof Customer) {
@@ -108,17 +124,14 @@ public class UserManagementManagedBean implements Serializable {
     }
 
     public void updateCustomer(ActionEvent event) throws InputDataValidationException {
-
         try {
             customerSessionBeanLocal.updateCustomer(selectedCustomerToUpdate);
-
         } catch (CustomerNotFoundException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating customer: " + ex.getMessage(), null));
         }
     }
 
     public void updateSeller(ActionEvent event) {
-
         try {
             sellerSessionBeanLocal.updateSeller(selectedSellerToUpdate);
 
@@ -176,7 +189,7 @@ public class UserManagementManagedBean implements Serializable {
 
             InputStream inputStream = event.getFile().getInputstream();
             //This getInputStream() method of the uploadedFile represents the file content
-            
+
             filePath = "http://localhost:8080/shopPAWholic-war/uploadedFiles/" + secDest + event.getFile().getFileName();
 
             while (true) {
@@ -200,7 +213,7 @@ public class UserManagementManagedBean implements Serializable {
             Logger.getLogger(UserManagementManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void updateUser(ActionEvent event) {
         userSessionBeanLocal.updateUser(selectedUserToUpdate);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User " + " updated successfully", null));

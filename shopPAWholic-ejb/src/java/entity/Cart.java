@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -19,10 +14,6 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author Joanna Ng
- */
 @Entity
 public class Cart implements Serializable {
 
@@ -55,9 +46,6 @@ public class Cart implements Serializable {
         
     }
     
-    
-    
-
     public Long getCartId() {
         return cartId;
     }
