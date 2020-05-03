@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <link rel="stylesheet" href="../resources/css/sellerLayout.css"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        <title>shopPAWholic</title>
+    </h:head>
+
+    <h:outputStylesheet library="default" name="./resources/css/sellerLayout.css"/>
+    <h:body>
+        <p:growl id="messages" showDetail="true" life="1000" />  
+        <div id="wrapper">
+            <ui:insert name="top">
+                <h:form>  
+                    <p:menubar>
+                        <p:menuitem><h:link  outcome="/sellerOperation/sellerHomepage.xhtml"><h:graphicImage value="../resources/image/shopPAWholic.png"/></h:link></p:menuitem>
+                        <f:facet name="options">
+                            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>
+                            <p:menuButton value="#{sessionScope.currentUser.name}">
+                                <p:menuitem value="Sell" url="../sellerOperation/sellerSellListing.xhtml" icon="pi pi-shopping-cart"/>
+                                <p:menuitem value="Events" url="../sellerOperation/sellerEvent.xhtml" icon="pi pi-calendar"></p:menuitem>                               
+                                <p:menuitem value="Profile" url="../sellerOperation/sellerProfile.xhtml" icon="pi pi-user-plus"/>
+                                <p:menuitem value="Logout" action="#{loginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
+                            </p:menuButton>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </ui:insert>
+
+            <div id="content">
+                <ui:insert name="content">
+                </ui:insert>
+            </div>
+
+            <div id="bottom" >
+                <ui:insert name="bottom">
+                    Copyright © shopPAWholic 2020
+                </ui:insert>
+            </div>
+        </div>
+
+        <p:ajaxStatus>
+            <f:facet name="start">
+            </f:facet>
+            <f:facet name="success">
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage library="image" name="ajax-loader.gif" />     
+        </p:dialog>
+    </h:body>
+</ui:composition>
