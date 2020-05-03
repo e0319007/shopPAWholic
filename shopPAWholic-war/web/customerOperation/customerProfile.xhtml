@@ -40,8 +40,6 @@
                                 </p:column>
                                 <p:column>
                                     <h:outputText id="email" value="#{userManagementManagedBean.currentUser.email}" >
-                                        <p:ajax event="change" listener="#{registerManagedBean.checkDuplicateEmail}" update="messages" />
-                                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </h:outputText>
                                 </p:column>
                             </p:row>
