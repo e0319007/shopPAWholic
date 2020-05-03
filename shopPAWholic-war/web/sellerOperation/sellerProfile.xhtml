@@ -32,7 +32,9 @@
                     <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
                     <br></br>
                     <br></br>
-                    <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+                    <p:outputLabel value="#{sessionScope.currentUser.name}">
+                        <p:graphicImage library="image" name="verified.png" rendered="#{userManagementManagedBean.currentSeller.verified == true}"/>  
+                    </p:outputLabel>
                 </p:panel>
 
                 <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >

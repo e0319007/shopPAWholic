@@ -20,6 +20,8 @@ public interface SellerSessionBeanLocal {
     public Map<String, Integer> retrieveTotalNumberOfSellersForTheYear();
 
     public void updateSeller(Seller seller) throws SellerNotFoundException, InputDataValidationException;
+    
+    public void updateVerifiedAdmin(Seller sellerToView);
 
     public Seller retrieveSellerByUsername(String username) throws SellerNotFoundException;
 

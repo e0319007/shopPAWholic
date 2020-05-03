@@ -3,6 +3,7 @@ package ejb.session.stateless;
 import entity.Advertisement;
 import entity.BillingDetail;
 import entity.Seller;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -153,6 +154,12 @@ public class AdvertisementSessionBean implements AdvertisementSessionBeanLocal{
             listingPerYear.put(months.get(i), (query.getResultList()).size());
         }
         return listingPerYear;
+    }
+    
+    @Override 
+    public BigDecimal retrieveAllRevenue(){
+        Query query = em.createQuery("SELECT SUM(a.price) FROM Advertisement a");
+        return (BigDecimal)query.getSingleResult();
     }
     
     @Override

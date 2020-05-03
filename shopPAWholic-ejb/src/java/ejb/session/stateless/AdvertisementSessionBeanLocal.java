@@ -1,6 +1,7 @@
 package ejb.session.stateless;
 
 import entity.Advertisement;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Local;
@@ -28,5 +29,7 @@ public interface AdvertisementSessionBeanLocal {
     public Map<String, Integer> retrieveTotalNumberOfAdvertisementsForTheYear();
 
     public Advertisement createNewAdvertisement(Advertisement advertisement, Long sellerId, String ccNum) throws CreateNewAdvertisementException, InputDataValidationException;
+
+    public BigDecimal retrieveAllRevenue();
 
 }
