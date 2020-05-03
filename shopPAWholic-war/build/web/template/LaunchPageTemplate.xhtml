@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <h:head>
+        <!-- MAIN CSS -->
+        <link rel="stylesheet" href="./resources/css/indexLayout.css"/>      
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        <title>shopPAWholic</title>
+    </h:head>
+
+    <h:body>
+        <p:growl id="messages" showDetail="true" life="1000" />  
+        <div id="wrapper">
+            <div id="top" class="top">
+                <ui:insert name="top">
+                    <h:form>  
+                        <p:menubar>
+                            <p:menuitem><h:link outcome="/index.xhtml"><h:graphicImage value="./resources/image/shopPAWholic.png"/></h:link></p:menuitem>
+                            <p:menuitem value="Listings" action="#{adminLoginManagedBean.authorized(event)}" update="messages" icon="pi pi-file"/>
+                            <p:menuitem value="Events" action="#{adminLoginManagedBean.authorized(event)}" update="messages" icon="pi pi-calendar"/>
+                            <p:menuitem value="Advertisement" action="#{adminLoginManagedBean.authorized(event)}" update="messages" icon="pi pi-bookmark"/>
+
+                            <f:facet name="options">
+                                <!--<p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>-->
+                                <p:menuButton>
+                                    <p:menuitem value="Admin" onclick="PF('adminLogin').show()"/>
+                                    <p:menuitem value="Login" onclick="PF('userLogin').show();" />
+                                    <p:menuitem value="Register" onclick="PF('userRegistration').show()"/>
+                                </p:menuButton>
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
+
+                    <h:form>     
+                        <p:dialog header="Admin Login" widgetVar="adminLogin" resizable="false">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="adminUsername" value="Username: " />
+                                <p:inputText id="adminUsername" value="#{adminLoginManagedBean.username}" required="true" label="adminUsername" converter="trimConverter" />
+                                <h:outputLabel for="adminPassword" value="Password: " />
+                                <p:password id="adminPassword" value="#{adminLoginManagedBean.password}" required="true" label="adminPassword" converter="trimConverter" />
+                                <f:facet name="footer">
+                                    <p:commandButton value="Login" update="messages" action="#{adminLoginManagedBean.login(event)}"/>
+                                </f:facet>  
+                            </h:panelGrid>
+                        </p:dialog>    
+                    </h:form>
+
+                    <h:form>        
+                        <p:dialog header="User Login" widgetVar="userLogin" resizable="false">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel for="userEmail" value="Email: " />
+                                <p:inputText id="userEmail" value="#{loginManagedBean.email}" required="true" label="userEmail" converter="trimConverter" />
+                                <h:outputLabel for="userPassword" value="Password: " />
+                                <p:password id="userPassword" value="#{loginManagedBean.password}" required="true" label="userPassword" converter="trimConverter"/>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Login" update="messages" action="#{loginManagedBean.login(event)}"/>
+                                </f:facet>  
+                            </h:panelGrid>
+                        </p:dialog>    
+                    </h:form>
+                    <h:form>
+                        <p:dialog header="User Registration" widgetVar="userRegistration" resizable="false">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputLabel>Sign up as: </h:outputLabel>
+                                <p:selectOneRadio id="console" value="#{registerManagedBean.role}" unselectable="true" required="true" label="Role">
+                                    <f:selectItem itemLabel="Customer" itemValue="Customer" />
+                                    <f:selectItem itemLabel="Seller" itemValue="Seller" />
+                                </p:selectOneRadio>
+                                <h:outputLabel for="registerName" value="Name" />
+                                <p:inputText id="registerName" value="#{registerManagedBean.name}" required="true" label="Register Name"
+                                             validatorMessage="You have exceeded 20 words.">
+                                    <f:validateLength maximum="20"></f:validateLength>
+                                </p:inputText>
+                                <h:outputLabel for="registerEmail" value="Email" />
+                                <p:inputText id="registerEmail" value="#{registerManagedBean.email}" required="true" label="registerEmail" validatorMessage="Wrong email format. Please try again.">
+                                    <p:ajax event="change" listener="#{registerManagedBean.checkDuplicateEmail}" update="messages" />
+                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                </p:inputText>
+                                <h:outputLabel for="registerPassword" value="Password:" />
+                                <p:password id="registerPassword" value="#{registerManagedBean.password}" required="true" label="Register Password" />
+                                <h:outputLabel for="registerContactNumber" value="Contact Number" />
+                                <p:inputText id="registerContactNumber" value="#{registerManagedBean.contactNumber}" required="true" label="Register Contact Number">
+                                    <f:validateRegex pattern="[6|8|9]\d{7}"/>
+                                </p:inputText>
+                                <f:facet name="footer">
+
+                                    <p:commandButton value="Register" update="messages" action="#{registerManagedBean.createNewUser(event)}"/>
+                                </f:facet>  
+                            </h:panelGrid>
+                        </p:dialog> 
+                    </h:form>
+                </ui:insert>
+            </div>
+
+            <div id="content" class="center_content">
+                <ui:insert name="content">
+                    <!--advertisement-->
+                    <p:galleria value="#{imageGalleriaManagedBean.images}" var="image" class="advertisement" panelWidth="1420" panelHeight="450"> 
+                        <p:graphicImage value="#{image}"/>
+                    </p:galleria>
+                    <h:form id="formMain">
+                        <!--based on time-->
+                        <p:dataGrid id="dataGridMain" widgetVar="dataGridMain" var="listing" value="#{searchListingByNameManagedBean.listings}" columns="3" layout="grid"
+                                    rows="12" paginator="true"
+                                    paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                    rowsPerPageTemplate="6,12,16">
+
+                            <f:facet name="header">
+                                Fresh Finds
+                            </f:facet>
+                            <p:panel header="#{listing.skuCode}" style="text-align:center">
+                                <h:panelGrid columns="1" style="width:100%">
+                                    <h:graphicImage value="#{listing.picture}" style="width:250px; height:250px;"/>
+                                    <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
+                                    <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
+                                    <p:commandButton oncomplete="PF('userLogin').show()" icon="pi pi-search" title="View Details" style="display: block; width:100%; text-align:center;">                                 
+                                        <f:setPropertyActionListener value="#{listing}" target="#{searchListingByNameManagedBean.viewListingManagedBean.listingToView}"/>
+                                    </p:commandButton>  
+                                </h:panelGrid>
+                            </p:panel>
+                        </p:dataGrid>
+                    </h:form>
+                </ui:insert>
+            </div>
+
+            <div id="bottom" >
+                <ui:insert name="bottom">
+                    Copyright © shopPAWholic 2020
+                </ui:insert>
+            </div>
+        </div>
+        <p:ajaxStatus>
+                <f:facet name="start">
+                </f:facet>
+                <f:facet name="success">
+                </f:facet>
+            </p:ajaxStatus>
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage library="image" name="ajax-loader.gif" />     
+            </p:dialog>
+    </h:body>
+</ui:composition>
