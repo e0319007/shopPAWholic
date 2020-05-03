@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui-composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" href="../resources/css/adminLayout.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"/>
+        <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+        <title>Homepage</title>
+    </h:head>
+
+
+    <h:body>
+        <p:growl id="messages" showDetail="true" life="1000" />   
+        <div id="top" class="top" style="background-color: rgb(236, 239, 244); ">
+            <ui:insert name="top">
+                <h:panelGroup>
+                    <div>
+                        <div class="navbar-btn" style="float: left;">
+                            <button onclick="PF('sidebar1').show()"><i class="pi pi-bars"></i></button>
+                        </div>
+                        <a href="../adminOperation/adminHomepage.xhtml"><img src="https://i.ibb.co/Hp2htdG/shop-PAWholic.png" style="margin-top: 30px"/></a>
+
+                        <h:form style="padding-top: 10px; float: right;">
+                            <p:commandButton id="composeEmail" type="button" icon="pi pi-upload" onclick="PF('composeBroadcastEmail').show();"/>
+
+                            <p:commandButton id="emailBtn" type="button" icon="pi pi-inbox"/>
+                            <p:overlayPanel id="emailPanel" for="emailBtn" hideEffect="fade" dynamic="true" style="width:600px" modal="true">
+                                <p:dataTable var="email" value="#{adminLoginManagedBean.readEmail(event)}" rows="5" paginator="true" >
+                                    <p:column headerText="Title">
+                                        <h:outputText value="#{email.subject}"/>
+                                    </p:column>    
+                                </p:dataTable>
+                            </p:overlayPanel>
+
+                            <p:menuButton value="#{sessionScope.currentAdmin.username}">
+                                <p:menuitem value="Logout" action="#{adminLoginManagedBean.logout(event)}" update="messages" icon="pi pi-sign-out"/>
+                            </p:menuButton>
+                        </h:form>
+                    </div>
+                </h:panelGroup>
+
+                <p:dialog header="Send Broadcast Email" widgetVar="composeBroadcastEmail"  onShow="PF('composeBroadcastEmail').initPosition()">
+                    <h:form>
+                        <p:selectOneMenu id="to" value="#{adminLoginManagedBean.to}" style="width: 750px;">
+                            <f:selectItem itemLabel="To: " itemValue="" />
+                            <f:selectItem itemLabel="All" itemValue="All" />
+                            <f:selectItem itemLabel="Customers" itemValue="Customers" />
+                            <f:selectItem itemLabel="Sellers" itemValue="Sellers"/>
+                        </p:selectOneMenu>
+                        <br/>
+                        <p:inputText id="subject" value="#{adminLoginManagedBean.subject}" style="width: 750px;"/>
+                        <p:watermark for="subject" value="Subject" id="watermark" />
+                        <p:textEditor widgetVar="emailEditor" value="#{adminLoginManagedBean.emailBody}" height="300" style="width: 750px;"/>
+                        <p:commandButton value="Send" actionListener="#{adminLoginManagedBean.sendEmail(event)}" oncomplete="PF('composeBroadcastEmail').hide();" icon="pi pi-save" update="messages" />
+                        <p:commandButton value="Clear" type="button" onclick="PF('emailEditor').clear();" icon="pi pi-times" />
+                    </h:form>
+                </p:dialog>
+            </ui:insert>
+        </div>
+
+        <div id="left">
+            <ui:insert name="left">
+                <p:sidebar widgetVar="sidebar1" style="background-color: rgb(236, 239, 244); ">
+                    <h:form>
+                        <p:panelMenu style="width:280px; margin-top:40px;">
+                            <p:submenu label="Home" icon="p pi-home">
+                                <p:menuitem value="Home" ajax="false" url="../adminOperation/adminHomepage.xhtml" icon="pi pi-home"></p:menuitem>
+                            </p:submenu>                            
+
+                            <p:submenu label="User" icon="pi pi-users">
+                                <p:menuitem value="View all Users" url="../adminOperation/adminUserList.xhtml"  ajax="false" icon="pi pi-users"/>
+                                <p:menuitem value="View all Customers" url="../adminOperation/adminCustomerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
+                                <p:menuitem value="View all Sellers" url="../adminOperation/adminSellerList.xhtml" ajax="false" icon="pi pi-user"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Listing" icon="pi pi-shopping-cart">
+                                <p:menuitem value="View all Listings" ajax="false" url="../adminOperation/adminListingList.xhtml" icon="pi pi-shopping-cart"></p:menuitem>
+                                <p:menuitem value="Search Listing By Name" ajax="false" url="../adminOperation/adminSearchListingsByName.xhtml" icon="pi pi-search"></p:menuitem>
+                                <p:menuitem value="Filter Listing By Tags" ajax="false" url="../adminOperation/adminFilterListingsByTags.xhtml" icon="pi pi-filter"></p:menuitem>
+                                <p:menuitem value="Filter Listings By Category" ajax="false" url="../adminOperation/adminFilterListingsByCategory.xhtml" icon="pi pi-filter"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Category" icon="pi pi-th-large">
+                                <p:menuitem value="View all Categories" ajax="false" url="../adminOperation/adminCategoryList.xhtml" icon="pi pi-th-large"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Tag" icon="pi pi-tags">
+                                <p:menuitem value="View all Tags" ajax="false" url="../adminOperation/adminTagList.xhtml" icon="pi pi-tags"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Advertisement" icon="pi pi-bookmark">
+                                <p:menuitem value="View all Advertisements" ajax="false" url="../adminOperation/adminViewAllAdvertisements.xhtml" icon="pi pi-bookmark"></p:menuitem>
+                            </p:submenu>
+                            
+                            <p:submenu label="Event" icon="pi pi-calendar">
+                                <p:menuitem value="View all Events" ajax="false" url="../adminOperation/adminViewAllEvents.xhtml" icon="pi pi-calendar"></p:menuitem>
+                            </p:submenu>
+
+                        </p:panelMenu>
+                    </h:form>
+                </p:sidebar>
+            </ui:insert>
+        </div>
+
+        <!--loading sign-->
+        <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+            <f:facet name="start">
+            </f:facet>
+            <f:facet name="success">
+            </f:facet>
+        </p:ajaxStatus>
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage library="image" name="ajax-loader.gif" />     
+        </p:dialog>
+
+        <div id="content" class="left_content">
+            <ui:insert name="content"></ui:insert>
+        </div>
+
+    </h:body>
+</ui-composition>

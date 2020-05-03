@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+        <cc:attribute name="pageName" required="true" />
+    </cc:interface>
+
+    <cc:implementation >
+        <h:form id="formMain">
+            <p:breadCrumb >
+                <p:menuitem icon="fa fa-home" url="#{application.contextPath}/adminOperation/adminHomepage.xhtml" />
+                <p:menuitem value="Admin" rendered="#{cc.attrs.pageName == 'categoryManagement' ||
+                                                      cc.attrs.pageName == 'filterListingsByCategory' ||                                                                        
+                                                      cc.attrs.pageName == 'filterListingsByTag' ||                                                                        
+                                                      cc.attrs.pageName == 'listingList' ||
+                                                      cc.attrs.pageName == 'searchListingByName' ||
+                                                      cc.attrs.pageName == 'tagList' ||
+                                                      cc.attrs.pageName == 'userList' ||
+                                                      cc.attrs.pageName == 'categoryList' ||
+                                                      cc.attrs.pageName == 'customerList' ||
+                                                      cc.attrs.pageName == 'sellerList'
+                                                                    }" />
+
+                <p:menuitem value="Category" url="#{application.contextPath}/adminOperation/adminCategoryList.xhtml" rendered="#{cc.attrs.pageName == 'categoryManagement'}" />
+                <p:menuitem value="Filter Listing by Categroy" url="#{application.contextPath}/adminOperation/adminFilterListingsByCategory.xhtml" rendered="#{cc.attrs.pageName == 'filterListingsByCategory'}"/>
+                <p:menuitem value="Filter Listing by Tags" url="#{application.contextPath}/adminOperation/adminFilterListingsByTags.xhtml" rendered="#{cc.attrs.pageName == 'filterListingsByTags'}" />
+                <p:menuitem value="Listing List" url="#{application.contextPath}/adminOperation/adminListingList.xhtml" rendered="#{cc.attrs.pageName == 'listingList'}" />
+                <p:menuitem value="Search Listing by Name" url="#{application.contextPath}/adminOperation/adminSearchListingByName.xhtml" rendered="#{cc.attrs.pageName == 'searchListingByName'}" />                        
+                <p:menuitem value="Tag" url="#{application.contextPath}/adminOperation/adminTagList.xhtml" rendered="#{cc.attrs.pageName == 'tagList'}" />
+                <p:menuitem value="User List" url="#{application.contextPath}/adminOperation/adminUserList.xhtml" rendered="#{cc.attrs.pageName == 'userList'}" />
+                <p:menuitem value="Category List" url="#{application.contextPath}/adminOperation/adminCategoryList.xhtml" rendered="#{cc.attrs.pageName == 'categoryList'}" />
+                <p:menuitem value="Customer List" url="#{application.contextPath}/adminOperation/adminCustomerList.xhtml" rendered="#{cc.attrs.pageName == 'customerList'}" />
+                <p:menuitem value="Seller List" url="#{application.contextPath}/adminOperation/adminSellerList.xhtml" rendered="#{cc.attrs.pageName == 'sellerList'}" />
+
+            </p:breadCrumb>
+        </h:form>
+    </cc:implementation>
+</html>

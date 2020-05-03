@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <div>
+            <h1></h1>
+            <ez:Breadcrumb pageName="categoryList"/>
+            <h:form id="formCreateNewCategory" > 
+                <p:panel header="Create New Category" toggleable="true" collapsed="true" >
+                    <p:messages id="messagesCreateNewCategory"/> 
+                    <p:panelGrid> 
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="name" value="Name: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="name" value="#{categoryManagedBean.newCategory.name}" required="true" requiredMessage="Name is required"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row> 
+                            <p:column>
+                                <p:outputLabel for="description" value="Description: " /> 
+                            </p:column>
+                            <p:column> 
+                                <p:inputText id="description" value="#{categoryManagedBean.newCategory.description}" required="true" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3"> 
+                                <p:commandButton id="createNewCategory" value="Create" icon="pi pi-save" update="@form formDataTable:dataTableCategories" actionListener="#{categoryManagedBean.createNewCategory}" />
+                            </p:column> 
+                        </p:row>
+                    </p:panelGrid> 
+                </p:panel>
+            </h:form>
+
+            <!--table of categories--> 
+            <h:form id="formDataTable">
+                <p:messages id="messages" />
+                <p:dataTable id="dataTableCategories" widgetVar="dataTableCategories" value="#{categoryManagedBean.categories}" var="category">
+                    <p:column headerText="Name"> 
+                        <h:outputText value="#{category.name}"/> 
+                    </p:column>
+
+                    <p:column headerText="Description"> 
+                        <h:outputText value="#{category.description}"/> 
+                    </p:column>
+
+                    <p:column headerText="Action"> 
+                        <p:commandButton icon="pi pi-trash" actionListener="#{categoryManagedBean.deleteCategory}" update="formDataTable:dataTableCategories formDataTable:messages">
+                            <f:attribute name="categoryToDelete" value="#{category}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete [#{category.name}] ?" icon="pi pi-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

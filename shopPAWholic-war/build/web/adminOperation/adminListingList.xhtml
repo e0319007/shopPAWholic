@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../template/AdminTemplate.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+            <h1></h1>
+            <ez:Breadcrumb pageName="listingList"/>
+            <h:form id="formAllListings">
+                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:dataTable id="dataTableAllListings" widgetVar="dataTableAllListings" value="#{listingManagementManagedBean.allListings}" var="listing" rowKey="#{listing.listingId}" rowIndexVar="row"
+                             filteredValue="#{listingManagementManagedBean.filteredListings}"
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right; color: #045491">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllListings').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet> 
+
+                    <p:column headerText="SKU Code" sortBy="#{listing.skuCode}" filterBy="#{listing.skuCode}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.skuCode}" />
+                    </p:column>
+
+                    <p:column headerText="Listing ID" sortBy="#{listing.listingId}" filterBy="#{listing.listingId}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.listingId}" />
+                    </p:column>                            
+
+                    <p:column  headerText="Name" sortBy="#{listing.name}" filterBy="#{listing.name}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.name}" />
+                    </p:column>
+
+
+
+                    <p:column headerText="Description" sortBy="#{listing.description}" filterBy="#{listing.description}" filterMatchMode="contains">
+                        <h:outputText value="#{listing.description}" />
+                    </p:column>
+
+
+
+                    <p:column headerText="Unit Price" sortBy="#{listing.unitPrice}" filterBy="#{listing.unitPrice}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{listing.unitPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Category" sortBy="#{listing.category.name}" filterBy="#{listing.category.name}" filterMatchMode="contains">
+                        <f:facet name="filter">
+                            <p:selectOneMenu  onchange="PF('dataTableAllListings').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.name}" itemLabel="#{category.name}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{listing.category.name}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-file" title="View">
+                            <f:setPropertyActionListener value="#{listing}" target="#{viewListingManagedBean.listingToView}" />
+                        </p:commandButton>
+                      
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                </p:confirmDialog>
+            </h:form> 
+
+            <ez:ViewListing id="ccViewListing" />
+
+            
+    </ui:define>
+</ui:composition>

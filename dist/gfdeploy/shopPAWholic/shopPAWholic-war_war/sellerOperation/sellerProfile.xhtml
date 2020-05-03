@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../template/SellerTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <style type="text/css"> 
+            /*demo*/
+            .ui-dataview-list .ui-dataview-row {
+                border-bottom: 1px solid #A8A8A8;
+                padding: 25px 10px;
+            }
+
+            .logo {
+                width: 5%;
+            }
+            .detail {
+                width: 85%;
+                padding-left: 25px;
+            }
+
+        </style>
+        <!--display picture-->
+        <h:form id="formSellerProfile">
+            <div style="display: flex; ">
+                <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
+                    <br></br>
+                    <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
+                    <br></br>
+                    <br></br>
+                    <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+                </p:panel>
+
+                <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
+
+                    <p:tab title="Listings">
+                        <!--display listing owned by this username-->
+                        <p:messages id="messages" /> 
+                        <p:dataView id="dataViewListings" widgetVar="dataViewListings" var="listing" value="#{listingManagementManagedBean.listingsBySellerId}" gridIcon="pi pi-th-large">
+                            <p:dataViewGridItem>
+                                <p:panel header="#{listing.skuCode}" style="text-align: center">
+                                    <p:panelGrid style="width:100%" >
+                                        <h:graphicImage value="#{listing.picture}" style="width:200px; height:200px;"/>
+                                        <h:outputText value="#{listing.name}" style="display: block; width:100%; text-align:center;"/>
+                                        <h:outputText value="$#{listing.unitPrice}" style="display: block; width:100%; text-align:center;"/>
+
+                                        <p:column>
+                                            <p:commandButton update="ccViewListing:formViewListing" oncomplete="PF('dialogViewListing').show()" icon="pi pi-search" title="View Details" style="margin-left: 16px;">                                 
+                                                <f:setPropertyActionListener value="#{listing}" target="#{viewListingManagedBean.listingToView}"/>
+                                            </p:commandButton>
+
+                                            <p:commandButton update="formUpdateListing" oncomplete="PF('dialogUpdateListing').show()" title="Edit Listing" icon="pi pi-pencil" style="margin-left: 16px;">
+                                                <f:setPropertyActionListener value="#{listing}" target="#{listingManagementManagedBean.selectedListingToUpdate}" />
+                                            </p:commandButton>
+
+                                            <p:commandButton icon="pi pi-trash" actionListener="#{listingManagementManagedBean.deleteListing}" update="@form formSellerProfile" style="margin-left: 16px;">
+                                                <f:attribute name="listingToDelete" value="#{listing}" /> 
+                                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{listing.name} (SKU Code: #{listing.skuCode})?" icon="pi pi-exclamation-triangle" />
+                                            </p:commandButton>
+
+
+                                        </p:column>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </p:dataViewGridItem>
+                        </p:dataView>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                        </p:confirmDialog>
+
+
+                    </p:tab>
+
+                    <!-- profile details--> 
+                    <p:tab title="Profile">
+                        <p:panelGrid style="margin: 0 auto; width: 100%;" >
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="userName" value="Name: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="userName" value="#{userManagementManagedBean.currentUser.name}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="email" value="Email: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="email" value="#{userManagementManagedBean.currentUser.email}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contactNum" value="Contact Number: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="contactNum" value="#{userManagementManagedBean.currentUser.contactNumber}"/>
+                                </p:column>
+                            </p:row>
+
+
+                        </p:panelGrid>
+
+                        <f:facet name="actions">
+                            <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
+                                <f:setPropertyActionListener value="#{userManagementManagedBean.currentUser}" target="#{userManagementManagedBean.selectedUserToUpdate}" />
+                            </p:commandButton>
+                            &nbsp;
+                            <p:commandButton value="Change Password" update="formChangePassword" oncomplete="PF('dialogChangePassword').show()" >
+                            </p:commandButton>
+                        </f:facet>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </h:form>
+
+        <!--Update Profile--> 
+        <h:form id="formUpdateProfile">
+            <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Edit Profile" closable="true">
+                <p:messages id="messagesUpdateProfile" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{userManagementManagedBean.selectedUserToUpdate.name}" placeholder="Name" required="true" requiredMessage="Name is required">
+                                <f:validateLength maximum="32" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="email" value="#{userManagementManagedBean.selectedUserToUpdate.email}" required="true" requiredMessage="Email is required">
+                                <f:validateLength minimum="5" maximum="40" />
+                                <f:validateRegex pattern="^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"/>
+                            </p:inputText>                         
+
+                        </p:column>
+                        <p:column>
+                            <p:message for="email"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNum" value="Contact Number: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="contactNum" value="#{userManagementManagedBean.selectedUserToUpdate.contactNumber}" placeholder="9876 5432" required="true" requiredMessage="Contact Number is required" >
+                                <f:validateLength minimum="8" maximum="8" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNum" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Profile" update="@form formSellerProfile" actionListener="#{userManagementManagedBean.updateUser}" oncomplete="PF('dialogUpdateProfile').hide();" style="display: block; width:100%; text-align:center;" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+
+        <!--Change Password--> 
+        <h:form id="formChangePassword">
+            <p:dialog id="dialogChangePassword" widgetVar="dialogChangePassword" header="Change Password" closable="true">
+                <p:messages id="messagesChangePassword" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="currentPassword" value="Current Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="currentPassword" value="#{userManagementManagedBean.currentPassword}" required="true" requiredMessage="Current password is required">
+                                <p:ajax event="change" listener="#{userManagementManagedBean.checkCurrentPassword}" update="messages"/>
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="currentPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="newPassword" value="New Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="newPassword" value="#{userManagementManagedBean.newPassword}" match="confirmPassword" required="true" requiredMessage="New password is required">
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="newPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="confirmPassword" value="Confirm Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="confirmPassword" value="#{userManagementManagedBean.newPassword}" required="true" requiredMessage="Confirm password is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="confirmPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Save Changes" update="messages" actionListener="#{userManagementManagedBean.changePassword}" oncomplete="PF('dialogChangePassword').hide();" style="display: block; width:100%; text-align:center;"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+
+        <!--view listing details dialog-->
+        <ez:ViewListing id="ccViewListing" />
+
+        <!--update listing--> 
+        <h:form id="formUpdateListing">
+            <p:dialog id="dialogUpdateListing" widgetVar="dialogUpdateListing" header="Edit Listing" closable="true">
+                <p:messages id="messagesUpdateListing" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Listing ID: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.listingId}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="SKU Code: " style="font-weight: bold; "/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{listingManagementManagedBean.selectedListingToUpdate.skuCode}" />
+                        </p:column>
+                        <p:column>
+                            &nbsp;
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{listingManagementManagedBean.selectedListingToUpdate.name}" placeholder="Name" required="true" requiredMessage="Name is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="name" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="desc" value="Description: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="desc" value="#{listingManagementManagedBean.selectedListingToUpdate.description}" placeholder="Description" required="true" requiredMessage="Description is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="desc" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="price" value="Unit Price: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="price" value="#{listingManagementManagedBean.selectedListingToUpdate.unitPrice}" placeholder="$10" required="true" requiredMessage="Price is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="price" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="qty" value="Quantity on Hand: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="qty" value="#{listingManagementManagedBean.selectedListingToUpdate.quantityOnHand}" placeholder="0" required="true" requiredMessage="Quantity on Hand is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="qty" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selCategory" value="Category: " style="font-weight: bold;" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="selCategory" value="#{listingManagementManagedBean.categoryIdUpdate}">
+                                <f:selectItem itemValue="0" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{listingManagementManagedBean.categories}" var="category" itemValue="#{category.categoryId}" itemLabel="#{category.name}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selCategory" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="selTags" value="Tag(s) " style="font-weight: bold; " />
+                        </p:column>
+                        <p:column>
+                            <p:selectManyMenu id="selTags" value="#{listingManagementManagedBean.tagIdsUpdate}" showCheckbox="true">
+                                <f:selectItems value="#{listingManagementManagedBean.tags}" var="seltag" itemValue="#{seltag.tagId}" itemLabel="#{seltag.name}" />
+                            </p:selectManyMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="selTags" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton id="updateListing" value="Save Changes" update="@form formSellerProfile" actionListener="#{listingManagementManagedBean.updateListing}" oncomplete="PF('dialogUpdateListing').show();" style="display: block; width:100%;" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

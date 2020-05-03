@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../template/CustomerTemplate.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <br/><br/>
+        <!--display picture-->
+        <h:form id="formCustomerProfile">
+            <div style="display: flex; ">
+
+                <p:panel style="display: inline-block; width: 350px; margin-left:80px; text-align: center">
+                    <br></br>
+                    <p:graphicImage value="../resources/image/user.png" cache="true" style="width: 100px;"></p:graphicImage>
+                    <br></br>
+                    <br></br>
+                    <p:outputLabel value="#{sessionScope.currentUser.name}"></p:outputLabel>
+                </p:panel>
+
+
+                <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
+                    <p:tab title="Profile">
+                        <p:panelGrid style="margin: 0 auto; width: 100%;" >
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="userName" value="Name: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="userName" value="#{userManagementManagedBean.currentUser.name}"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="email" value="Email: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="email" value="#{userManagementManagedBean.currentUser.email}"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="contactNumber" value="Contact Number: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText id="contactNumber" value="#{userManagementManagedBean.currentUser.contactNumber}"/>
+                                </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+
+                        <f:facet name="actions">
+                            <p:commandButton value="Edit Profile" update="formUpdateProfile" oncomplete="PF('dialogUpdateProfile').show()" >
+                                <f:setPropertyActionListener value="#{userManagementManagedBean.currentUser}" target="#{userManagementManagedBean.selectedUserToUpdate}" />
+                            </p:commandButton>
+                            &nbsp;
+                            <p:commandButton value="Change Password" update="formChangePassword" oncomplete="PF('dialogChangePassword').show()" >
+                            </p:commandButton>
+                        </f:facet>
+                    </p:tab>
+
+                </p:tabView>
+
+            </div>
+        </h:form>
+        <h:form id="formUpdateProfile">
+            <p:dialog id="dialogUpdateProfile" widgetVar="dialogUpdateProfile" header="Edit Profile" closable="true">
+                <p:messages id="messagesUpdateProfile" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="name" value="Name: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="name" value="#{userManagementManagedBean.selectedUserToUpdate.name}" required="true" requiredMessage="Name is required">
+                                <f:validateLength maximum="32" />
+                            </p:inputText> 
+
+                        </p:column>
+                        <p:column>
+                            <p:message for="name"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="email" value="Email: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="email" value="#{userManagementManagedBean.selectedUserToUpdate.email}" required="true" requiredMessage="Email is required">
+                                <f:validateLength minimum="5" maximum="40" />
+                                <f:validateRegex pattern="^[a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]$"/>
+                            </p:inputText>                         
+
+                        </p:column>
+                        <p:column>
+                            <p:message for="email"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="contactNumber" value="Contact Number: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="contactNumber" value="#{userManagementManagedBean.selectedUserToUpdate.contactNumber}" required="true" requiredMessage="Contact number is required">
+                                <f:validateLength minimum="8" maximum="8" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="contactNumber"/>
+                        </p:column>
+                    </p:row>
+
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Profile" update="@form formCustomerProfile" actionListener="#{userManagementManagedBean.updateUser}" oncomplete="PF('dialogUpdateProfile').show();" style="display: block; width:100%; text-align:center;" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+
+        <!--Change Password--> 
+        <h:form id="formChangePassword">
+            <p:dialog id="dialogChangePassword" widgetVar="dialogChangePassword" header="Change Password" closable="true">
+                <p:messages id="messagesChangePassword" redisplay="false"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="currentPassword" value="Current Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="currentPassword" value="#{userManagementManagedBean.currentPassword}" required="true" requiredMessage="Current password is required">
+                                <p:ajax event="change" listener="#{userManagementManagedBean.checkCurrentPassword}" update="messages"/>
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="currentPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="newPassword" value="New Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="newPassword" value="#{userManagementManagedBean.newPassword}" match="confirmPassword" required="true" requiredMessage="New password is required">
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="newPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="confirmPassword" value="Confirm Password: " style="font-weight: bold;"/>
+                        </p:column>
+                        <p:column>
+                            <p:password id="confirmPassword" value="#{userManagementManagedBean.newPassword}" required="true" requiredMessage="Confirm password is required" />
+                        </p:column>
+                        <p:column>
+                            <p:message for="confirmPassword" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Save Changes" update="messages" actionListener="#{userManagementManagedBean.changePassword}" oncomplete="PF('dialogChangePassword').hide();" style="display: block; width:100%; text-align:center;"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
