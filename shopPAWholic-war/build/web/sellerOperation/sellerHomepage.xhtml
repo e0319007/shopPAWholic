@@ -7,67 +7,45 @@
                 template="../template/SellerTemplate.xhtml">
 
     <ui:define name="content">
-
-        <p:panel id="userToggleable" header="Profit Overview" collapsed="false" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:10px">
-            <div class="p-grid p-align-center" style="margin-left: 120px;">
+        <p:panel id="sellerToggleable" header="Profit Overview" collapsed="false" toggleable="true" toggleSpeed="500" closeSpeed="500" style="margin-bottom:10px">
+            <div class="p-grid p-align-center">
                 <div class="p-col">
-                    <p:panel header="Units Sold: ">
-                        <p style="font-size: 30px; text-align: center;"><b></b></p>
+                    <p:panel header="Listing Posted: ">
+                        <p style="font-size: 30px; text-align: center;"><b>#{sellerManagedBean.totalUnitsListed}</b></p>
                     </p:panel>
                 </div>
                 <div class="p-col">
-                    <p:panel header="Net Margin: " >
-                        <p style="font-size: 30px; text-align: center;"><b></b></p>
+                    <p:panel header="Advts Posted: " >
+                        <p style="font-size: 30px; text-align: center;"><b>#{sellerManagedBean.totalAdvtsPosted}</b></p>
+                    </p:panel>
+                </div>
+                <div class="p-col">
+                    <p:panel header="Events Posted: " >
+                        <p style="font-size: 30px; text-align: center;"><b>#{sellerManagedBean.totalEventsPosted}</b></p>
                     </p:panel>
                 </div>
             </div>
-
-            <h3>On-Demand Loading</h3>
-            <p:tabView dynamic="true"  cache="true" effect="fold">
-                <p:tab title="Revenue">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <h:outputLabel value="Summary" style="font-weight: bold;"></h:outputLabel>
-                        <h:outputLabel value="Revenue Over Time" style="font-weight: bold; float: right;"></h:outputLabel>
-
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab title="Cost">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <h:outputLabel value="Summary" style="font-weight: bold;"></h:outputLabel>
-
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab title="Net Profit">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <h:outputLabel value="Summary" style="font-weight: bold;"></h:outputLabel>
-
-                    </h:panelGrid>
-                </p:tab>
-                <p:tab title="Units Sold">
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <h:outputLabel value="Summary" style="font-weight: bold;"></h:outputLabel>
-
-                    </h:panelGrid>
-                </p:tab>
-            </p:tabView>
-
-            <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()"  visible="#{userManagementManagedBean.currentSeller.verification == null}">
-                <h:form style="width: 500px;" enctype="multipart/form-data">
-                    <p:growl id="messages" showDetail="true" life="1000" />   
-                    <p:fileUpload id="filePath" update="messages"
-                                  invalidSizeMessage="JournalDev: Invalid Size"
-                                  invalidFileMessage="JournalDev: Invalid File Type"
-                                  fileLimitMessage="JournalDev: Invalid File Limit"
-                                  mode="advanced" sizeLimit="10000000000000"
-                                  fileUploadListener="#{userManagementManagedBean.verifyYourself}"
-                                  auto="true" oncomplete="PF('verification').hide();">
-
-                    </p:fileUpload>
-                </h:form>
-            </p:dialog>
         </p:panel>
+        <p:panel id="analysis" header="Listing Analysis" style="margin-bottom:10px">
+            <p:barChart model="#{chartView.sellerBarModel}" style="width: 100%; height: 500px;"/>
+            <p:pieChart model="#{chartView.sellerPieModel}" style="width: 100%; height: 500px;"/>
+        </p:panel>
+        
+        
+        <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()" closeOnEscape="true" visible="#{userManagementManagedBean.currentSeller.verification == null}">
+            <h:form style="width: 500px;" enctype="multipart/form-data">
+                <p:growl id="messages" showDetail="true" life="1000" />   
+                <p:fileUpload id="filePath" update="messages"
+                              invalidSizeMessage="JournalDev: Invalid Size"
+                              invalidFileMessage="JournalDev: Invalid File Type"
+                              fileLimitMessage="JournalDev: Invalid File Limit"
+                              mode="advanced" sizeLimit="10000000000000"
+                              fileUploadListener="#{userManagementManagedBean.verifyYourself}" 
+                              auto="true" oncomplete="PF('verification').hide();">
 
-
+                </p:fileUpload>
+            </h:form>
+        </p:dialog>
 
         <!--timeline to show their stock and sales-->
         <!--sales generated-->

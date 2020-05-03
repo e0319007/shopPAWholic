@@ -33,16 +33,15 @@
                     <br></br>
                     <br></br>
                     <p:outputLabel value="#{sessionScope.currentUser.name}">
-                        <p:graphicImage library="image" name="verified.png" rendered="#{userManagementManagedBean.currentSeller.verified == true}"/>  
-                    </p:outputLabel>
+                    </p:outputLabel> <p:spacer width="5"  />
+                    <p:graphicImage library="image" name="verify.png" rendered="#{userManagementManagedBean.currentSeller.verified == true}" style="width:20px; height:20px;"/>  
                 </p:panel>
+                
 
                 <p:tabView style="display: inline-block; width: 900px; margin-left:30px; margin-right:30px;" >
-
                     <p:tab title="Listings">
-                        <!--display listing owned by this username-->
                         <p:messages id="messages" /> 
-                        <p:dataView id="dataViewListings" widgetVar="dataViewListings" var="listing" value="#{listingManagementManagedBean.listingsBySellerId}" gridIcon="pi pi-th-large">
+                        <p:dataView id="dataViewListings" widgetVar="dataViewListings" var="listing" value="#{listingManagementManagedBean.listingsBySellerId}">
                             <p:dataViewGridItem>
                                 <p:panel header="#{listing.skuCode}" style="text-align: center">
                                     <p:panelGrid style="width:100%" >
@@ -96,7 +95,8 @@
                                     <p:outputLabel for="email" value="Email: "/>
                                 </p:column>
                                 <p:column>
-                                    <h:outputText id="email" value="#{userManagementManagedBean.currentUser.email}"/>
+                                    <h:outputText id="email" value="#{userManagementManagedBean.currentUser.email}">
+                                    </h:outputText>
                                 </p:column>
                             </p:row>
                             <p:row>
