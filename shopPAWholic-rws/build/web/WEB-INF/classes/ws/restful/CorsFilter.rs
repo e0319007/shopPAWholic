@@ -1,1 +1,0 @@
-ws.restful.resources.CorsFilter
