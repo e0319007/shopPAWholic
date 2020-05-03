@@ -32,7 +32,7 @@
         </p:panel>
         
         
-        <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()" closeOnEscape="true" visible="#{userManagementManagedBean.currentSeller.verification == null}">
+        <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()" visible="#{userManagementManagedBean.currentSeller.verification == null}">
             <h:form style="width: 500px;" enctype="multipart/form-data">
                 <p:growl id="messages" showDetail="true" life="1000" />   
                 <p:fileUpload id="filePath" update="messages"

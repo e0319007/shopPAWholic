@@ -87,13 +87,15 @@ public class ChartView implements Serializable {
     private LineChartModel sellerLineModel;
 
     public ChartView() {
-        currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        if (currentUser instanceof Customer) {
-            currentCustomer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
-        } else {
-            currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+        if (currentUser != null) {
+            currentUser = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            if (currentUser instanceof Customer) {
+                currentCustomer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            } else {
+                currentSeller = (Seller) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentUser");
+            }
+            System.out.println("#########" + currentSeller);
         }
-        System.out.println("#########" + currentSeller);
     }
 
     @PostConstruct
