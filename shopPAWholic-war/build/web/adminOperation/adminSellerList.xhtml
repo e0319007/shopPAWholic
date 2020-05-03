@@ -12,40 +12,6 @@
         <div>
             <h1></h1>
             <ez:Breadcrumb pageName="sellerList"/>
-            <h:form id="formAllSellers">
-                <p:messages id="messages" redisplay="false" closable="true" />
-                <p:dataTable id="dataTableAllSellers" widgetVar="dataTableAllUsers" value="#{userManagementManagedBean.sellerList}" var="seller" rowKey="#{seller.userId}" rowIndexVar="row"
-                             filteredValue="#{userManagementManagedBean.filteredSellerList}"
-                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
-                    <f:facet name="header">
-                        <p:outputPanel style="text-align: right;">
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllSellers').filter()" style="width:300px" placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>
-
-                    <p:column headerText="Seller Id" sortBy="#{seller.userId}" filterBy="#{seller.userId}" filterMatchMode="contains" style="width: 100px;">
-                        <h:outputText value="#{seller.userId}" />
-                    </p:column>
-
-                    <p:column headerText="Name" sortBy="#{seller.name}" filterBy="#{seller.name}" filterMatchMode="contains">
-                        <h:outputText value="#{seller.name}" />
-                    </p:column>
-
-                    <p:column headerText="Verified" sortBy="#{seller.verified}" filterBy="#{seller.verified}" filterMatchMode="contains">
-                        <h:outputText value="#{seller.verified}" />
-                    </p:column>
-
-                    <p:column headerText="Action" >
-                        <p:commandButton update="formViewSellers" oncomplete="PF('dialogViewSeller').show()" icon="pi pi-user">
-                            <f:setPropertyActionListener value="#{seller}" target="#{userManagementManagedBean.viewUserManagedBean.sellerToView}" />
-                        </p:commandButton>
-                    </p:column>
-
-                </p:dataTable>
-
-            </h:form>
-
             <h:form id="formViewSellers">
                 <p:dialog id="dialogViewSeller" widgetVar="dialogViewSeller" header="View Seller" closable="true">
                     <p:panelGrid>
@@ -93,17 +59,60 @@
                                 <h:outputText value="#{viewUserManagedBean.sellerToView.isFlag}" />
                             </p:column>
                         </p:row>
-                        
+
                         <p:row>
                             <p:column>
                                 <h:outputLabel value="File To Verify: " />
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{viewUserManagedBean.sellerToView.verification.filePath}" />
+                                <p:commandButton value="Download" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="pi pi-arrow-down">
+                                    <p:fileDownload value="#{viewUserManagedBean.sellerToView.verification.filePath}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="5">
+                                <p:commandButton value="Approve" icon="ui-icon-check" actionListener="#{viewUserManagedBean.verifyAdmin(event)}" rendered="#{viewUserManagedBean.sellerToView.verified == false}">
+                                    <f:setPropertyActionListener value="#{viewUserManagedBean.sellerToView}" target="#{viewUserManagedBean.sellerToView}" />
+                                    <p:ajax update="@form formAllSellers:dataTableAllSellers"/>
+                                </p:commandButton>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
                 </p:dialog>
+            </h:form>
+            
+            <h:form id="formAllSellers">
+                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:dataTable id="dataTableAllSellers" widgetVar="dataTableAllSellers" value="#{userManagementManagedBean.sellerList}" var="seller" rowKey="#{seller.userId}" rowIndexVar="row"
+                             filteredValue="#{userManagementManagedBean.filteredSellerList}"
+                             rows="12" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="12,25,50">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllSellers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Seller Id" sortBy="#{seller.userId}" filterBy="#{seller.userId}" filterMatchMode="contains" style="width: 100px;">
+                        <h:outputText value="#{seller.userId}" />
+                    </p:column>
+
+                    <p:column headerText="Name" sortBy="#{seller.name}" filterBy="#{seller.name}" filterMatchMode="contains">
+                        <h:outputText value="#{seller.name}" />
+                    </p:column>
+
+                    <p:column headerText="Verified" sortBy="#{seller.verified}" filterBy="#{seller.verified}" filterMatchMode="contains">
+                        <h:outputText value="#{seller.verified}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton update="formViewSellers" oncomplete="PF('dialogViewSeller').show()" icon="pi pi-user">
+                            <f:setPropertyActionListener value="#{seller}" target="#{userManagementManagedBean.viewUserManagedBean.sellerToView}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
             </h:form>
         </div>
     </ui:define>

@@ -6,32 +6,31 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="./../template/AdminTemplate.xhtml">
     <ui:define name="content">
-        <br/>
-
-        <div class="p-grid p-align-center" style="margin-left: 120px;">
+        <h1></h1>
+        <div class="p-grid p-align-center" >
             <div class="p-col">
-                <p:panel style="background-color: rgba(54, 162, 235, 0.2);" header="Total Users" >
+                <p:panel header="Total Users" >
                     <p style="font-size: 30px; text-align: center;"><b>#{chartView.totalNoOfUsers}</b></p>
                 </p:panel>
             </div>
             <div class="p-col">
-                <p:panel style="background-color: rgba(75, 192, 192, 0.2);" header="Total Listings">
+                <p:panel header="Total Listings">
                     <p style="font-size: 30px; text-align: center;"><b>#{chartView.totalNoOfListings}</b></p>
                 </p:panel>
             </div>
             <div class="p-col">
-                <p:panel style="background-color: rgba(255, 205, 86, 0.2);" header="Total Adverts">
+                <p:panel header="Total Adverts">
                     <p style="font-size: 30px; text-align: center;"><b>#{chartView.totalNoOfAdvertisements}</b></p>
                 </p:panel>
             </div>
             <div class="p-col">
-                <p:panel style="background-color: rgb(255,228,225);" header="Total Events">
+                <p:panel header="Total Events">
                     <p style="font-size: 30px; text-align: center;"><b>#{chartView.totalNoOfEvents}</b></p>
                 </p:panel>
             </div>
             <div class="p-col">
-                <p:panel style="background-color: rgba(255, 159, 64, 0.2);" header="Total Revenue">
-                    <p style="font-size: 30px; text-align: center;"><b></b></p>
+                <p:panel header="Total Revenue">
+                    <p style="font-size: 30px; text-align: center;"><b>#{chartView.totalRevenue}</b></p>
                 </p:panel>
             </div>
         </div>

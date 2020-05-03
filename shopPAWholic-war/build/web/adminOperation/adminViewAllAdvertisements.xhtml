@@ -4,7 +4,8 @@
                 template="./../template/AdminTemplate.xhtml"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
         <style type="text/css"> 
@@ -24,6 +25,8 @@
                 padding-left: 5px;
             }
         </style>
+        <h1></h1>
+        <ez:Breadcrumb pageName="advertisementList"/>
 
         <h:form id="formDataView">
             <p:messages id="messages" redisplay="false" closable="true"/>
