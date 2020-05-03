@@ -27,21 +27,12 @@
             </div>
         </p:panel>
         <p:panel id="analysis" header="Listing Analysis" style="margin-bottom:10px">
-<<<<<<< HEAD
-            <p:barChart model="#{chartView.sellerBarModel}" style="width: 100%; height: 500px;"/>
-            <p:pieChart model="#{chartView.sellerPieModel}" style="width: 100%; height: 500px;"/>
-        </p:panel>
-        
-        
-        <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()" closeOnEscape="true" visible="#{userManagementManagedBean.currentSeller.verification == null}">
-=======
             <p:barChart model="#{sellerChartView.sellerBarModel}" style="width: 100%; height: 500px;"/>
             <p:pieChart model="#{sellerChartView.sellerPieModel}" style="width: 100%; height: 500px;"/>
         </p:panel>
         
         
         <p:dialog header="Verify yourself" widgetVar="verification" onShow="PF('verification').initPosition()" visible="#{userManagementManagedBean.currentSeller.verification == null}">
->>>>>>> origin/yeeqing
             <h:form style="width: 500px;" enctype="multipart/form-data">
                 <p:growl id="messages" showDetail="true" life="1000" />   
                 <p:fileUpload id="filePath" update="messages"
