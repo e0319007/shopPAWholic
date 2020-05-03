@@ -31,7 +31,7 @@ public class SearchListingsByNameManagedBean implements Serializable {
     public void postConstruct() {
         searchString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listingSearchString");
         if (searchString == null || searchString.trim().length() == 0) {
-            listings = listingSessionBeanLocal.retrieveAllListings();
+            listings = listingSessionBeanLocal.retrieveLatestListings();
         } else {
             listings = listingSessionBeanLocal.searchListingsByName(searchString);
         }

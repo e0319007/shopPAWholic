@@ -129,6 +129,19 @@ public class ListingSessionBean implements ListingSessionBeanLocal {
         return listings;
     }
     
+    @Override
+    public List<Listing> retrieveLatestListings() {
+        Query query = em.createQuery("SELECT l FROM Listing l ORDER BY l.listDate DESC");
+        List<Listing> listings = query.getResultList();
+
+        for (Listing listing : listings) {
+            listing.getCategory();
+            listing.getTags().size();
+            listing.getOrders().size();
+        }
+        return listings;
+    }
+    
     @Override 
     public Map<String, Integer> retrieveAllCategories(Long sellerId){
         int year = Calendar.getInstance().get(Calendar.YEAR);

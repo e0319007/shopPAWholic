@@ -45,4 +45,6 @@ public interface ListingSessionBeanLocal {
 
     public Map<String, Integer> retrieveAllCategories(Long sellerId);
 
+    public List<Listing> retrieveLatestListings();
+
 }
